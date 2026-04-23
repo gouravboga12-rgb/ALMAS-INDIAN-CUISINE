@@ -35,17 +35,30 @@
     </div>
   </nav>
 
-  <!-- Mobile Menu Overlay -->
-  <div id="mobile-menu" class="fixed inset-0 bg-primary-deep z-[60] hidden flex-col items-center justify-center text-white p-8">
-    <button id="close-btn" class="absolute top-8 right-8 text-white">
-        <div class="space-y-12" data-aos="fade-left">
-          <div class="card-premium bg-white/5 border-white/5">
-            <h3 class="text-xs uppercase tracking-[0.4em] font-bold text-gold mb-8">Our Signature Location</h3>
-            <div class="space-y-6">
-              <div class="flex items-start space-x-6">
-                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                </div>
+  <!-- Mobile Menu Backdrop -->
+  <div id="menu-overlay"></div>
+
+  <!-- Mobile Menu Half-Panel -->
+  <div id="mobile-menu">
+    <button id="close-btn" class="absolute top-6 right-6 text-white/60 hover:text-white transition-colors">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+    <div class="mb-10">
+      <img src="/logo.jpg" alt="ALMAS" class="h-14 w-auto object-contain opacity-80">
+    </div>
+    <nav class="flex flex-col space-y-6 text-white text-lg font-semibold uppercase tracking-widest">
+      <a href="/" class="hover:text-primary transition-colors">Home</a>
+      <a href="/about.html" class="hover:text-primary transition-colors">About</a>
+      <a href="/services.html" class="hover:text-primary transition-colors">Services</a>
+      <a href="/menu.html" class="hover:text-primary transition-colors">Menu</a>
+      <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
+    </nav>
+    <a href="/contact.html" class="mt-10 btn-premium text-sm px-8 py-3">Order Now</a>
+    <div class="mt-10 pt-8 border-t border-white/10 w-full">
+      <p class="text-white/30 text-[10px] uppercase tracking-widest">209 Ellesmere Rd, Unit 6</p>
+      <p class="text-white/30 text-[10px] uppercase tracking-widest">Scarborough, ON</p>
+    </div>
+  </div>
                 <div>
                   <p class="text-white/60 text-xs uppercase tracking-widest mb-1">Address</p>
                   <p class="text-lg font-light">209 Ellesmere Rd, Unit 6, Scarborough, ON</p>

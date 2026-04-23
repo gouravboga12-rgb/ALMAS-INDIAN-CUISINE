@@ -35,19 +35,30 @@
     </div>
   </nav>
 
-  <!-- Mobile Menu Overlay -->
-  <div id="mobile-menu" class="fixed inset-0 bg-primary-deep z-[60] hidden flex-col items-center justify-center text-white p-8">
-    <button id="close-btn" class="absolute top-8 right-8 text-white">
-      <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+  <!-- Mobile Menu Backdrop -->
+  <div id="menu-overlay"></div>
+
+  <!-- Mobile Menu Half-Panel -->
+  <div id="mobile-menu">
+    <button id="close-btn" class="absolute top-6 right-6 text-white/60 hover:text-white transition-colors">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
     </button>
-    <div class="flex flex-col space-y-10 text-center text-3xl font-heading">
-      <a href="/" class="hover:text-secondary">Home</a>
-      <a href="/about.html" class="hover:text-secondary">About</a>
-      <a href="/services.html" class="hover:text-secondary">Services</a>
-      <a href="/menu.html" class="hover:text-secondary">Menu</a>
-      <a href="/contact.html" class="hover:text-secondary">Contact</a>
-      <a href="/contact.html" class="btn-premium-outline text-lg mt-6">Order Now</a>
+    <div class="mb-10">
+      <img src="/logo.jpg" alt="ALMAS" class="h-14 w-auto object-contain opacity-80">
     </div>
+    <nav class="flex flex-col space-y-6 text-white text-lg font-semibold uppercase tracking-widest">
+      <a href="/" class="hover:text-primary transition-colors">Home</a>
+      <a href="/about.html" class="hover:text-primary transition-colors">About</a>
+      <a href="/services.html" class="hover:text-primary transition-colors">Services</a>
+      <a href="/menu.html" class="hover:text-primary transition-colors">Menu</a>
+      <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
+    </nav>
+    <a href="/contact.html" class="mt-10 btn-premium text-sm px-8 py-3">Order Now</a>
+    <div class="mt-10 pt-8 border-t border-white/10 w-full">
+      <p class="text-white/30 text-[10px] uppercase tracking-widest">209 Ellesmere Rd, Unit 6</p>
+      <p class="text-white/30 text-[10px] uppercase tracking-widest">Scarborough, ON</p>
+    </div>
+  </div>
   </div>
 
 
