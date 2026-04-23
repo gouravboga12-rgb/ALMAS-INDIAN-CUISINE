@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Menu | ALMAS Indian Cuisine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body class="bg-background text-text-primary">
+
+  <!-- Navigation -->
+  <nav class="glass-nav w-full z-50">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center h-28 md:h-24">
+      <div class="flex items-center">
+        <a href="/" class="flex items-center">
+          <img src="/logo.jpg" alt="ALMAS INDIAN CUISINE" class="h-20 md:h-16 w-auto object-contain">
+        </a>
+      </div>
+      <div class="hidden md:flex items-center space-x-12">
+        <a href="/" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Home</a>
+        <a href="/about.html" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">About</a>
+        <a href="/services.html" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Services</a>
+        <a href="/menu.html" class="text-sm uppercase tracking-widest font-semibold text-primary border-b border-primary">Menu</a>
+        <a href="/contact.html" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Contact</a>
+        <a href="/contact.html" class="btn-premium py-3 px-8 text-xs">Order Online</a>
+      </div>
+      <button id="menu-btn" class="md:hidden text-primary focus:outline-none p-2 -mr-2">
+        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobile-menu" class="fixed inset-0 bg-primary-deep z-[60] hidden flex-col items-center justify-center text-white p-8">
+    <button id="close-btn" class="absolute top-8 right-8 text-white">
+      <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+    <div class="flex flex-col space-y-10 text-center text-3xl font-heading">
+      <a href="/" class="hover:text-secondary">Home</a>
+      <a href="/about.html" class="hover:text-secondary">About</a>
+      <a href="/services.html" class="hover:text-secondary">Services</a>
+      <a href="/menu.html" class="hover:text-secondary">Menu</a>
+      <a href="/contact.html" class="hover:text-secondary">Contact</a>
+      <a href="/contact.html" class="btn-premium-outline text-lg mt-6">Order Now</a>
+    </div>
+  </div>
+
+
+  <!-- Hero -->
+  <section class="bg-primary-deep py-40 text-white text-center">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <span class="text-secondary font-bold tracking-[0.4em] uppercase text-[10px] md:text-sm mb-6 block" data-aos="fade-up">A Symphony of Spices</span>
+      <h1 class="text-4xl sm:text-6xl md:text-8xl font-black mb-8" data-aos="fade-up" data-aos-delay="100">The <span class="italic text-secondary">Menu.</span></h1>
+    </div>
+  </section>
+
+  <!-- Menu Content -->
+  <section class="py-32">
+    <div class="max-w-4xl mx-auto px-6 md:px-12">
+      
+      <!-- Category 1 -->
+      <div class="mb-32" data-aos="fade-up">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-heading mb-4 italic">Hyderabadi Biryani & Mandi</h2>
+          <div class="w-12 h-px bg-gold mx-auto"></div>
+        </div>
+        <div class="space-y-12">
+          <div class="group flex justify-between items-end border-b border-primary/10 pb-4">
+            <div class="max-w-xl">
+              <h4 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Special Mutton Biryani</h4>
+              <p class="text-text-secondary font-light text-sm italic">Slow-cooked premium mutton nestled in fragrant, long-grain basmati rice.</p>
+            </div>
+            <span class="text-gold font-bold text-lg">$22.99</span>
+          </div>
+          <div class="group flex justify-between items-end border-b border-primary/10 pb-4">
+            <div class="max-w-xl">
+              <h4 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Chicken Dum Biryani</h4>
+              <p class="text-text-secondary font-light text-sm italic">Traditional Hyderabadi spice blend, served with Mirchi ka Salan and Raita.</p>
+            </div>
+            <span class="text-gold font-bold text-lg">$18.99</span>
+          </div>
+          <div class="group flex justify-between items-end border-b border-primary/10 pb-4">
+            <div class="max-w-xl">
+              <h4 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Chicken Mandi Platter</h4>
+              <p class="text-text-secondary font-light text-sm italic">Roasted whole chicken on a bed of spiced Yemeni Mandi rice with dried fruits.</p>
+            </div>
+            <span class="text-gold font-bold text-lg">$20.99</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 2 -->
+      <div class="mb-32" data-aos="fade-up">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-heading mb-4 italic">Lebanese Grills</h2>
+          <div class="w-12 h-px bg-gold mx-auto"></div>
+        </div>
+        <div class="space-y-12">
+          <div class="group flex justify-between items-end border-b border-primary/10 pb-4">
+            <div class="max-w-xl">
+              <h4 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Shish Tawook</h4>
+              <p class="text-text-secondary font-light text-sm italic">Marinated chicken skewers, grilled on charcoal, served with garlic toum.</p>
+            </div>
+            <span class="text-gold font-bold text-lg">$17.99</span>
+          </div>
+          <div class="group flex justify-between items-end border-b border-primary/10 pb-4">
+            <div class="max-w-xl">
+              <h4 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Mixed Grill Platter</h4>
+              <p class="text-text-secondary font-light text-sm italic">A selection of Kofta, Tawook, and Lamb Kebabs. A feast for the senses.</p>
+            </div>
+            <span class="text-gold font-bold text-lg">$28.99</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- More sections can be added... -->
+       <div class="text-center pt-20">
+          <a href="#" class="btn-premium px-20">Order for Pickup</a>
+       </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black text-white pt-24 pb-12 md:pt-32 md:pb-16">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-20 mb-24">
+      <div>
+        <div class="mb-8">
+          <img src="/logo.jpg" alt="ALMAS INDIAN CUISINE" class="h-24 w-auto object-contain">
+        </div>
+        <p class="text-white/40 leading-relaxed font-light">The premier destination for authentic Hyderabadi and Middle Eastern cuisine in Scarborough.</p>
+      </div>
+      <div>
+        <h4 class="text-xs uppercase tracking-[0.3em] font-bold mb-10 text-gold">Navigation</h4>
+        <ul class="space-y-4 text-white/60 font-light text-sm uppercase tracking-widest">
+          <li><a href="/" class="hover:text-primary transition-colors">Home</a></li>
+          <li><a href="/about.html" class="hover:text-primary transition-colors">About</a></li>
+          <li><a href="/services.html" class="hover:text-primary transition-colors">Services</a></li>
+          <li><a href="/menu.html" class="hover:text-primary transition-colors">Menu</a></li>
+          <li><a href="/contact.html" class="hover:text-primary transition-colors">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs uppercase tracking-[0.3em] font-bold mb-10 text-gold">Contact</h4>
+        <ul class="space-y-6 text-white/60 font-light text-sm">
+          <li class="leading-relaxed">209 Ellesmere Rd, Unit 6, Scarborough, ON, M1R 4E2</li>
+          <li>almasindiancuisine@gmail.com</li>
+          <li class="text-primary font-bold tracking-widest">WHATSAPP: TBD</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs uppercase tracking-[0.3em] font-bold mb-10 text-gold">Hours</h4>
+        <ul class="space-y-4 text-white/60 font-light text-sm uppercase tracking-widest">
+          <li class="flex justify-between"><span>Mon - Thu</span> <span>11AM - 10PM</span></li>
+          <li class="flex justify-between"><span>Fri - Sat</span> <span>11AM - 11PM</span></li>
+          <li class="flex justify-between text-primary"><span>Sunday</span> <span>12PM - 10PM</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/5 pt-16 flex flex-col md:flex-row justify-between items-center text-white/20 text-[10px] uppercase tracking-[0.4em]">
+      <p>&copy; 2024 ALMAS INDIAN CUISINE. Crafted with Excellence.</p>
+      <div class="flex space-x-8 mt-6 md:mt-0">
+        <a href="#" class="hover:text-white transition-colors">Instagram</a>
+        <a href="#" class="hover:text-white transition-colors">Facebook</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a href="https://wa.me/TBD" class="whatsapp-float group">
+    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.56 5.338-11.898 11.898-11.898 3.18 0 6.17 1.24 8.416 3.486 2.245 2.246 3.485 5.237 3.485 8.413 0 6.561-5.338 11.899-11.898 11.899-2.003 0-3.967-.504-5.713-1.46L0 24zm11.956-2.009c1.782 0 3.52-.48 5.034-1.388l.361-.214 3.75.983-.999-3.656.235-.374c.997-1.589 1.522-3.435 1.522-5.344 0-5.457-4.44-9.897-9.897-9.897-2.645 0-5.13 1.03-7.001 2.901-1.871 1.87-2.901 4.354-2.901 6.996 0 5.458 4.439 9.898 9.897 9.898zm5.419-7.422c-.298-.149-1.761-.869-2.034-.968-.273-.099-.472-.148-.671.148-.198.297-.768.968-.941 1.166-.173.199-.347.223-.645.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.149-.174.198-.298.298-.496.099-.198.05-.371-.025-.521-.075-.148-.671-1.611-.919-2.207-.242-.579-.487-.501-.671-.51l-.571-.01c-.198 0-.521.074-.794.371-.272.297-1.041 1.016-1.041 2.478 0 1.462 1.066 2.875 1.214 3.074.149.198 2.097 3.203 5.081 4.487.71.306 1.265.489 1.696.626.713.226 1.36.194 1.872.118.571-.085 1.761-.719 2.009-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+  </a>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

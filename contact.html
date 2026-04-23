@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | ALMAS Indian Cuisine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body class="bg-background text-text-primary">
+
+  <!-- Navigation -->
+  <nav class="glass-nav w-full z-50">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center h-28 md:h-24">
+      <div class="flex items-center">
+        <a href="/" class="flex items-center">
+          <img src="/logo.jpg" alt="ALMAS INDIAN CUISINE" class="h-20 md:h-16 w-auto object-contain">
+        </a>
+      </div>
+      <div class="hidden md:flex items-center space-x-12">
+        <a href="/" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Home</a>
+        <a href="/about.html" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">About</a>
+        <a href="/services.html" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Services</a>
+        <a href="/menu.html" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Menu</a>
+        <a href="/contact.html" class="text-sm uppercase tracking-widest font-semibold text-primary border-b border-primary">Contact</a>
+        <a href="/contact.html" class="btn-premium py-3 px-8 text-xs">Order Online</a>
+      </div>
+      <button id="menu-btn" class="md:hidden text-primary focus:outline-none p-2 -mr-2">
+        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobile-menu" class="fixed inset-0 bg-primary-deep z-[60] hidden flex-col items-center justify-center text-white p-8">
+    <button id="close-btn" class="absolute top-8 right-8 text-white">
+        <div class="space-y-12" data-aos="fade-left">
+          <div class="card-premium bg-white/5 border-white/5">
+            <h3 class="text-xs uppercase tracking-[0.4em] font-bold text-gold mb-8">Our Signature Location</h3>
+            <div class="space-y-6">
+              <div class="flex items-start space-x-6">
+                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </div>
+                <div>
+                  <p class="text-white/60 text-xs uppercase tracking-widest mb-1">Address</p>
+                  <p class="text-lg font-light">209 Ellesmere Rd, Unit 6, Scarborough, ON</p>
+                </div>
+              </div>
+              <div class="flex items-start space-x-6">
+                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                </div>
+                <div>
+                  <p class="text-white/60 text-xs uppercase tracking-widest mb-1">Email</p>
+                  <p class="text-lg font-light">almasindiancuisine@gmail.com</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-8">
+            <div>
+              <h4 class="text-gold text-[10px] uppercase tracking-widest font-bold mb-4">Hours</h4>
+              <ul class="text-sm font-light space-y-2 text-white/60">
+                <li>Mon-Thu: 11AM - 10PM</li>
+                <li>Fri-Sat: 11AM - 11PM</li>
+                <li>Sun: 12PM - 10PM</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-gold text-[10px] uppercase tracking-widest font-bold mb-4">Follow Us</h4>
+              <div class="flex space-x-4">
+                <a href="#" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">FB</a>
+                <a href="#" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all">IG</a>
+              </div>
+            </div>
+          </div>
+        </div>
+</button>
+    <div class="flex flex-col space-y-10 text-center text-3xl font-heading">
+      <a href="/" class="hover:text-secondary">Home</a>
+      <a href="/about.html" class="hover:text-secondary">About</a>
+      <a href="/services.html" class="hover:text-secondary">Services</a>
+      <a href="/menu.html" class="hover:text-secondary">Menu</a>
+      <a href="/contact.html" class="hover:text-secondary">Contact</a>
+      <a href="/contact.html" class="btn-premium-outline text-lg mt-6">Order Now</a>
+    </div>
+  </div>
+
+
+  <!-- Hero Section -->
+  <section class="bg-primary-deep py-24 text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-20">
+      <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop" alt="Contact Us" class="w-full h-full object-cover">
+    </div>
+    <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10 text-center">
+      <span class="text-secondary font-bold tracking-[0.4em] uppercase text-[10px] md:text-sm mb-4 block" data-aos="fade-up">Get in Touch</span>
+      <h1 class="text-4xl md:text-6xl font-black" data-aos="fade-up" data-aos-delay="100">Contact <span class="italic text-secondary">Almas.</span></h1>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="py-20 bg-[#0f0f0f] text-white">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        
+        <!-- Form -->
+        <div data-aos="fade-right">
+          <h2 class="text-3xl font-heading mb-10 text-white">Reservations & Inquiries</h2>
+          <form class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="border-b border-white/10 pb-2">
+                <label class="text-[9px] uppercase tracking-widest font-bold text-gold block mb-2">Name</label>
+                <input type="text" required class="w-full bg-transparent border-none outline-none text-base font-light placeholder:text-white/20 focus:ring-0 text-white" placeholder="Full Name">
+              </div>
+              <div class="border-b border-white/10 pb-2">
+                <label class="text-[9px] uppercase tracking-widest font-bold text-gold block mb-2">Email</label>
+                <input type="email" required class="w-full bg-transparent border-none outline-none text-base font-light placeholder:text-white/20 focus:ring-0 text-white" placeholder="email@example.com">
+              </div>
+              <div class="border-b border-white/10 pb-2">
+                <label class="text-[9px] uppercase tracking-widest font-bold text-gold block mb-2">Phone</label>
+                <input type="tel" required class="w-full bg-transparent border-none outline-none text-base font-light placeholder:text-white/20 focus:ring-0 text-white" placeholder="+1 (___) ___-____">
+              </div>
+              <div class="border-b border-white/10 pb-2">
+                <label class="text-[9px] uppercase tracking-widest font-bold text-gold block mb-2">Service Type</label>
+                <select class="w-full bg-transparent border-none outline-none text-base font-light appearance-none cursor-pointer focus:ring-0 text-white">
+                  <option class="bg-black">Table Reservation</option>
+                  <option class="bg-black">Catering Request</option>
+                  <option class="bg-black">Private Event</option>
+                  <option class="bg-black">General Inquiry</option>
+                </select>
+              </div>
+              <div class="border-b border-white/10 pb-2">
+                <label class="text-[9px] uppercase tracking-widest font-bold text-gold block mb-2">Preferred Date</label>
+                <input type="date" class="w-full bg-transparent border-none outline-none text-base font-light cursor-pointer focus:ring-0 text-white [color-scheme:dark]">
+              </div>
+              <div class="border-b border-white/10 pb-2">
+                <label class="text-[9px] uppercase tracking-widest font-bold text-gold block mb-2">Preferred Time</label>
+                <input type="time" class="w-full bg-transparent border-none outline-none text-base font-light cursor-pointer focus:ring-0 text-white [color-scheme:dark]">
+              </div>
+              <div class="border-b border-white/10 pb-2">
+                <label class="text-[9px] uppercase tracking-widest font-bold text-gold block mb-2">Number of Guests</label>
+                <input type="number" min="1" class="w-full bg-transparent border-none outline-none text-base font-light placeholder:text-white/20 focus:ring-0 text-white" placeholder="e.g. 4">
+              </div>
+              <div class="border-b border-white/10 pb-2">
+                <label class="text-[9px] uppercase tracking-widest font-bold text-gold block mb-2">Occasion (Optional)</label>
+                <input type="text" class="w-full bg-transparent border-none outline-none text-base font-light placeholder:text-white/20 focus:ring-0 text-white" placeholder="Birthday, Anniversary, etc.">
+              </div>
+            </div>
+            <div class="border-b border-white/10 pb-2 relative">
+              <label class="text-[9px] uppercase tracking-widest font-bold text-gold block mb-2">Delivery or Event Address (For Catering)</label>
+              <div class="flex items-center">
+                <input type="text" id="event-address" class="w-full bg-transparent border-none outline-none text-base font-light placeholder:text-white/20 focus:ring-0 text-white" placeholder="Street Address, City, Postal Code">
+                <button type="button" id="get-location" class="ml-4 text-[9px] uppercase tracking-tighter font-bold text-primary border border-primary/20 px-3 py-1 rounded-full hover:bg-primary hover:text-white transition-all whitespace-nowrap">
+                  Share Location
+                </button>
+              </div>
+            </div>
+            <div class="border-b border-white/10 pb-2">
+              <label class="text-[9px] uppercase tracking-widest font-bold text-gold block mb-2">Special Requests</label>
+              <textarea class="w-full bg-transparent border-none outline-none text-base font-light h-20 resize-none placeholder:text-white/20 focus:ring-0 text-white" placeholder="Tell us more about your request..."></textarea>
+            </div>
+            <button type="submit" class="btn-premium w-full md:w-auto px-16 py-4 text-sm">Submit Request</button>
+          </form>
+        </div>
+
+        <!-- Info -->
+        <div data-aos="fade-left">
+          <h2 class="text-4xl font-heading mb-12">Location & Contact</h2>
+          <div class="space-y-16">
+            <div>
+              <h4 class="text-xs uppercase tracking-[0.3em] font-bold text-gold mb-4">Visit Us</h4>
+              <p class="text-2xl font-light leading-relaxed">209 Ellesmere Rd, Unit 6,<br>Scarborough, ON, M1R 4E2</p>
+            </div>
+            <div>
+              <h4 class="text-xs uppercase tracking-[0.3em] font-bold text-gold mb-4">Call & Chat</h4>
+              <p class="text-2xl font-light mb-4">Email: almasindiancuisine@gmail.com</p>
+              <p class="text-primary text-2xl font-bold tracking-widest">WHATSAPP: TBD</p>
+            </div>
+            <div>
+              <h4 class="text-xs uppercase tracking-[0.3em] font-bold text-gold mb-4">Follow</h4>
+              <div class="flex space-x-10 text-sm font-bold uppercase tracking-widest">
+                <a href="#" class="hover:text-primary transition-colors">Instagram</a>
+                <a href="#" class="hover:text-primary transition-colors">Facebook</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="relative">
+    <div class="absolute top-12 left-1/2 -translate-x-1/2 z-10 bg-white/90 backdrop-blur-md px-10 py-4 rounded-full shadow-2xl border border-primary/10">
+      <h3 class="text-xs uppercase tracking-[0.4em] font-bold text-primary">Find Us on the Map</h3>
+    </div>
+    <div class="h-[600px] filter grayscale hover:grayscale-0 transition-all duration-1000">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2881.565842823675!2d-79.3005!3d43.76!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4d16666666667%3A0x6666666666666666!2s209%20Ellesmere%20Rd%20%236%2C%20Scarborough%2C%20ON%20M1R%204E2%2C%20Canada!5e0!3m2!1sen!2sus!4v1713912345678!5m2!1sen!2sus" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black text-white pt-24 pb-12 md:pt-32 md:pb-16">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-20 mb-24">
+      <div>
+        <div class="mb-8">
+          <img src="/logo.jpg" alt="ALMAS INDIAN CUISINE" class="h-24 w-auto object-contain">
+        </div>
+        <p class="text-white/40 leading-relaxed font-light">The premier destination for authentic Hyderabadi and Middle Eastern cuisine in Scarborough.</p>
+      </div>
+      <div>
+        <h4 class="text-xs uppercase tracking-[0.3em] font-bold mb-10 text-gold">Navigation</h4>
+        <ul class="space-y-4 text-white/60 font-light text-sm uppercase tracking-widest">
+          <li><a href="/" class="hover:text-primary transition-colors">Home</a></li>
+          <li><a href="/about.html" class="hover:text-primary transition-colors">About</a></li>
+          <li><a href="/services.html" class="hover:text-primary transition-colors">Services</a></li>
+          <li><a href="/menu.html" class="hover:text-primary transition-colors">Menu</a></li>
+          <li><a href="/contact.html" class="hover:text-primary transition-colors">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs uppercase tracking-[0.3em] font-bold mb-10 text-gold">Contact</h4>
+        <ul class="space-y-6 text-white/60 font-light text-sm">
+          <li class="leading-relaxed">209 Ellesmere Rd, Unit 6, Scarborough, ON, M1R 4E2</li>
+          <li>almasindiancuisine@gmail.com</li>
+          <li class="text-primary font-bold tracking-widest">WHATSAPP: TBD</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs uppercase tracking-[0.3em] font-bold mb-10 text-gold">Hours</h4>
+        <ul class="space-y-4 text-white/60 font-light text-sm uppercase tracking-widest">
+          <li class="flex justify-between"><span>Mon - Thu</span> <span>11AM - 10PM</span></li>
+          <li class="flex justify-between"><span>Fri - Sat</span> <span>11AM - 11PM</span></li>
+          <li class="flex justify-between text-primary"><span>Sunday</span> <span>12PM - 10PM</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/5 pt-16 flex flex-col md:flex-row justify-between items-center text-white/20 text-[10px] uppercase tracking-[0.4em]">
+      <p>&copy; 2024 ALMAS INDIAN CUISINE. Crafted with Excellence.</p>
+      <div class="flex space-x-8 mt-6 md:mt-0">
+        <a href="#" class="hover:text-white transition-colors">Instagram</a>
+        <a href="#" class="hover:text-white transition-colors">Facebook</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a href="https://wa.me/TBD" class="whatsapp-float group">
+    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.56 5.338-11.898 11.898-11.898 3.18 0 6.17 1.24 8.416 3.486 2.245 2.246 3.485 5.237 3.485 8.413 0 6.561-5.338 11.899-11.898 11.899-2.003 0-3.967-.504-5.713-1.46L0 24zm11.956-2.009c1.782 0 3.52-.48 5.034-1.388l.361-.214 3.75.983-.999-3.656.235-.374c.997-1.589 1.522-3.435 1.522-5.344 0-5.457-4.44-9.897-9.897-9.897-2.645 0-5.13 1.03-7.001 2.901-1.871 1.87-2.901 4.354-2.901 6.996 0 5.458 4.439 9.898 9.897 9.898zm5.419-7.422c-.298-.149-1.761-.869-2.034-.968-.273-.099-.472-.148-.671.148-.198.297-.768.968-.941 1.166-.173.199-.347.223-.645.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.149-.174.198-.298.298-.496.099-.198.05-.371-.025-.521-.075-.148-.671-1.611-.919-2.207-.242-.579-.487-.501-.671-.51l-.571-.01c-.198 0-.521.074-.794.371-.272.297-1.041 1.016-1.041 2.478 0 1.462 1.066 2.875 1.214 3.074.149.198 2.097 3.203 5.081 4.487.71.306 1.265.489 1.696.626.713.226 1.36.194 1.872.118.571-.085 1.761-.719 2.009-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+  </a>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
