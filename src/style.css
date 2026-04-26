@@ -20,7 +20,8 @@
 @layer base {
   body {
     @apply bg-background text-text-primary font-body antialiased overflow-x-hidden;
-    background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png');
+    background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+    background-color: #FFF9F0;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-bold tracking-tight;
@@ -37,6 +38,9 @@
   .btn-premium-outline {
     @apply relative overflow-hidden px-8 md:px-10 py-3 md:py-4 rounded-full font-bold uppercase tracking-widest text-[10px] md:text-sm transition-all duration-500 border-2 border-white text-white hover:bg-white hover:text-primary shadow-lg hover:shadow-xl hover:-translate-y-1 active:scale-95 flex items-center justify-center text-center;
   }
+  .btn-premium-outline-dark {
+    @apply relative overflow-hidden px-8 md:px-10 py-3 md:py-4 rounded-full font-bold uppercase tracking-widest text-[10px] md:text-sm transition-all duration-500 border-2 border-primary text-primary hover:bg-primary hover:text-white shadow-lg hover:shadow-xl hover:-translate-y-1 active:scale-95 flex items-center justify-center text-center;
+  }
   .section-title {
     @apply text-center mb-20;
   }
@@ -47,11 +51,7 @@
     @apply text-5xl md:text-6xl mb-6 text-primary-deep;
   }
   .section-title .divider {
-    @apply w-24 h-1 bg-gold mx-auto relative;
-  }
-  .section-title .divider::after {
-    content: '◈';
-    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-4 text-gold;
+    @apply w-16 h-1 bg-gold mx-auto;
   }
   
   .card-premium {
@@ -85,32 +85,92 @@
 
 .whatsapp-float {
   position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
+  bottom: 2rem;
+  right: 2rem;
   background-color: #25D366;
   color: white;
-  width: 56px;
-  height: 56px;
+  width: 62px;
+  height: 62px;
   border-radius: 9999px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  box-shadow: 0 20px 40px rgba(37, 211, 102, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 50;
-  transition: transform 0.3s ease;
-  ring: 4px solid rgba(255,255,255,0.2);
+  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 3px solid white;
+  overflow: visible;
+}
+
+.whatsapp-float::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 9999px;
+  background-color: #25D366;
+  opacity: 0.4;
+  z-index: -1;
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% { transform: scale(1); opacity: 0.4; }
+  100% { transform: scale(1.4); opacity: 0; }
 }
 
 .whatsapp-float:hover {
-  transform: scale(1.1);
+  transform: scale(1.1) translateY(-5px);
+  box-shadow: 0 25px 60px rgba(37, 211, 102, 0.6);
 }
 
 @media (max-width: 768px) {
   .whatsapp-float {
-    bottom: 1.25rem;
-    right: 1rem;
-    width: 50px;
-    height: 50px;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 54px;
+    height: 54px;
+  }
+}
+
+.whatsapp-tooltip {
+  position: absolute;
+  right: 120%;
+  background: white;
+  color: #1a1a1a;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(15px);
+  pointer-events: none;
+}
+
+.whatsapp-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-left-color: white;
+}
+
+.whatsapp-float:hover .whatsapp-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+  .whatsapp-tooltip {
+    display: none;
   }
 }
 

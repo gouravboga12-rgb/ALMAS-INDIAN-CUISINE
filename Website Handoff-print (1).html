@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Almas · Developer Handoff</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #e8dfce; font-family: var(--font-body); color: var(--fg1); }
+  .page {
+    width: 210mm; min-height: 297mm;
+    margin: 16px auto; padding: 22mm 22mm 18mm;
+    background: var(--almas-cream-50);
+    box-shadow: 0 10px 30px rgba(61,26,16,0.18);
+    position: relative;
+    page-break-after: always;
+    break-after: page;
+  }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+
+  .pg-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); padding-bottom: 10px; margin-bottom: 18px; }
+  .pg-head .brand { display: flex; align-items: center; gap: 10px; }
+  .pg-head .brand img { height: 32px; }
+  .pg-head .brand .wm { font-family: 'Cinzel', serif; font-weight: 600; font-size: 12px; letter-spacing: 0.28em; color: var(--almas-ink-800); }
+  .pg-head .meta { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--fg4); }
+
+  .pg-foot { position: absolute; bottom: 10mm; left: 22mm; right: 22mm; display: flex; justify-content: space-between; font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--fg4); border-top: 1px solid var(--rule); padding-top: 8px; }
+
+  h1 { font-family: 'Cinzel', serif; font-weight: 600; font-size: 40px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg1); line-height: 1.05; margin: 20px 0 14px; }
+  h2 { font-family: 'Cinzel', serif; font-weight: 500; font-size: 18px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--almas-copper-700); margin: 22px 0 10px; }
+  h3 { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500; font-size: 16px; color: var(--fg2); margin: 14px 0 6px; }
+  p { font-size: 13px; line-height: 1.55; color: var(--fg3); margin: 0 0 10px; }
+  code, .mono { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 11px; color: var(--almas-ink-800); background: var(--almas-cream-100); padding: 1px 5px; border-radius: 2px; }
+  ul { margin: 6px 0 10px; padding-left: 18px; }
+  li { font-size: 13px; line-height: 1.55; color: var(--fg3); margin-bottom: 4px; }
+  .eye { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--brand); }
+  .lede { font-family: 'Playfair Display', serif; font-style: italic; font-size: 16px; line-height: 1.5; color: var(--fg2); margin: 8px 0 18px; }
+  .orn { color: var(--almas-gold); letter-spacing: 0.5em; font-size: 9px; margin: 12px 0; }
+
+  /* Cover */
+  .cover { text-align: center; padding-top: 60mm; }
+  .cover img.mark { height: 140px; margin-bottom: 10px; }
+  .cover .script { font-family: var(--font-script); font-size: 120px; color: var(--almas-ink-800); line-height: 0.9; margin: 10px 0; }
+  .cover .sub { font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.5em; color: var(--almas-ink-700); }
+  .cover .rule { width: 120px; height: 1px; background: var(--almas-gold); margin: 24px auto; }
+  .cover .title { font-family: 'Cinzel', serif; font-weight: 600; font-size: 28px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--almas-copper-700); }
+  .cover .for { font-family: 'Playfair Display', serif; font-style: italic; font-size: 18px; color: var(--fg3); margin-top: 10px; }
+  .cover .for b { font-style: normal; color: var(--fg1); }
+  .cover .date { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.24em; color: var(--fg4); margin-top: 60mm; }
+
+  /* Palette */
+  .sw-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 10px 0 18px; }
+  .sw { border-radius: 4px; overflow: hidden; border: 1px solid var(--rule); }
+  .sw .chip { height: 52px; }
+  .sw .meta { padding: 6px 8px; background: #fff; }
+  .sw .name { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg2); }
+  .sw .hex { font-family: ui-monospace, Menlo, monospace; font-size: 9px; color: var(--fg4); }
+
+  /* Type */
+  .spec { border-top: 1px solid var(--rule); padding: 10px 0; display: grid; grid-template-columns: 150px 1fr auto; gap: 16px; align-items: baseline; }
+  .spec .role { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--almas-copper-700); }
+  .spec .tag { font-family: ui-monospace, Menlo, monospace; font-size: 10px; color: var(--fg4); }
+  .spec.s1 .sample { font-family: var(--font-script); font-size: 48px; line-height: 1; color: var(--almas-ink-800); }
+  .spec.s2 .sample { font-family: 'Cinzel', serif; font-weight: 600; font-size: 26px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg1); }
+  .spec.s3 .sample { font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px; color: var(--fg2); }
+  .spec.s4 .sample { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--fg3); }
+  .spec.s5 .sample { font-family: 'Amiri', serif; direction: rtl; font-size: 20px; color: var(--fg2); }
+
+  /* Tokens table */
+  table.tokens { width: 100%; border-collapse: collapse; margin: 6px 0 14px; }
+  table.tokens th, table.tokens td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--rule); font-size: 12px; }
+  table.tokens th { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg4); }
+  table.tokens td.v { font-family: ui-monospace, Menlo, monospace; color: var(--almas-ink-800); }
+  table.tokens td.n { font-family: ui-monospace, Menlo, monospace; color: var(--brand); }
+
+  /* Component preview */
+  .preview-box { background: var(--almas-cream-100); border: 1px solid var(--rule); border-radius: 6px; padding: 18px; margin: 8px 0 14px; }
+  .preview-box.dark { background: var(--almas-copper-900); border-color: var(--almas-copper-800); }
+
+  .btn { font-family: 'Cinzel', serif; font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; padding: 10px 20px; border-radius: 4px; border: none; cursor: default; display: inline-block; margin-right: 8px; }
+  .btn--primary { background: var(--brand); color: var(--almas-cream-50); }
+  .btn--ghost { background: transparent; color: var(--brand); border: 1px solid var(--brand); }
+  .btn--dark { background: var(--almas-ink-800); color: var(--almas-cream-50); }
+
+  .badge { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; padding: 5px 10px; border-radius: 2px; margin-right: 6px; display: inline-block; }
+  .b-chef { background: var(--almas-saffron-500); color: var(--almas-ink-900); }
+  .b-spicy { background: var(--almas-burgundy); color: var(--almas-cream-50); }
+  .b-new { background: var(--brand); color: var(--almas-cream-50); }
+  .b-veg { background: transparent; color: var(--almas-pistachio); border: 1px solid var(--almas-pistachio); }
+
+  /* Wireframe */
+  .wire { display: grid; grid-template-columns: 1fr; gap: 6px; margin-top: 8px; }
+  .wire-block {
+    border: 1px dashed var(--rule-strong);
+    padding: 10px 14px;
+    background: #fff;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fg3);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .wire-block.tall { min-height: 80px; }
+  .wire-block.hero { min-height: 130px; background: var(--almas-copper-900); color: var(--almas-copper-200); border-color: var(--almas-copper-700); }
+  .wire-block.accent { background: var(--almas-cream-100); }
+  .wire-block .kind { color: var(--fg4); font-size: 8px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .note { font-family: 'Playfair Display', serif; font-style: italic; font-size: 12px; color: var(--fg4); margin: 4px 0 8px; }
+
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+  .dd { padding: 10px 12px; border-radius: 4px; font-size: 12px; line-height: 1.45; }
+  .dd.do { background: rgba(122,140,74,0.1); border-left: 3px solid var(--almas-pistachio); }
+  .dd.dont { background: rgba(168,48,48,0.08); border-left: 3px solid var(--danger); }
+  .dd .lab { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 4px; display: block; }
+  .dd.do .lab { color: var(--almas-pistachio); }
+  .dd.dont .lab { color: var(--danger); }
+
+  .token-group { margin-bottom: 10px; }
+
+  @page { size: A4; margin: 0; }
+  @media print {
+    html, body { background: #fff; }
+    .page { margin: 0; box-shadow: none; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     PAGE 1 · COVER
+============================================================ -->
+<section class="page cover">
+  <img class="mark" src="assets/almas-mark.png" alt=""/>
+  <div class="script">Almas</div>
+  <div class="sub">INDIAN CUISINE · MANDI, BIRYANI &amp; GRILLS</div>
+  <div class="rule"></div>
+  <div class="title">Website · Developer Handoff</div>
+  <div class="for">Prepared for the <b>web development team</b></div>
+  <div class="orn">◆ &nbsp; ◆ &nbsp; ◆</div>
+  <p style="max-width: 110mm; margin: 16px auto 0; font-family: 'Playfair Display', serif; font-style: italic; font-size: 13px; color: var(--fg3); line-height: 1.55;">
+    Design tokens, typography, components, page architecture and voice for
+    the Almas marketing website. Build from this document. Flag anything unclear.
+  </p>
+  <div class="date">VERSION 1.0 · APRIL 2026</div>
+</section>
+
+<!-- ============================================================
+     PAGE 2 · OVERVIEW
+============================================================ -->
+<section class="page">
+  <div class="pg-head">
+    <div class="brand"><img src="assets/almas-mark.png"/><span class="wm">ALMAS</span></div>
+    <div class="meta">01 · Overview</div>
+  </div>
+
+  <span class="eye">◆ Brief</span>
+  <h1>Overview</h1>
+  <p class="lede">Almas is a Hyderabadi restaurant with a curated Lebanese / Arabic menu — rooted in the old city, anchored by slow-fire cooking. The website is the brand's front door.</p>
+
+  <h2>Scope</h2>
+  <ul>
+    <li>Single-page marketing website: hero, signature dish, menu, story, reservation, footer.</li>
+    <li>Responsive from 375 px mobile to 1440+ px desktop.</li>
+    <li>Static site acceptable — no CMS required for v1. Reservation form submits to email / WhatsApp for now.</li>
+    <li>SEO-optimized: semantic HTML, Open Graph tags, JSON-LD for <code>Restaurant</code> schema.</li>
+  </ul>
+
+  <h2>Brand posture</h2>
+  <ul>
+    <li><b>Warm, analog, old-world.</b> Think printed menu, not app screen.</li>
+    <li><b>Serif body copy throughout.</b> Sans-serif is off-brand.</li>
+    <li><b>Copper &amp; cream palette.</b> Never pure white. Never pure black.</li>
+    <li><b>No emoji.</b> Use the ornamental diamond (◆) as the celebratory glyph.</li>
+    <li><b>Motion is slow and confident.</b> 280–520 ms fades. No bouncy springs, no hover scale.</li>
+  </ul>
+
+  <h2>Reference files delivered</h2>
+  <table class="tokens">
+    <tr><th>File</th><th>Purpose</th></tr>
+    <tr><td class="v">colors_and_type.css</td><td>All design tokens (CSS custom properties) + semantic type classes. Drop in as-is.</td></tr>
+    <tr><td class="v">ui_kits/website/</td><td>Working HTML + JSX reference build of the home page. Copy components.</td></tr>
+    <tr><td class="v">assets/</td><td>Logos (JPG, PNG), ornaments (SVG), Charminar illustration (PNG). Use directly.</td></tr>
+    <tr><td class="v">fonts/KultumRamadhan.otf</td><td>The script font for "Almas". Self-host.</td></tr>
+  </table>
+
+  <div class="pg-foot"><span>ALMAS · INDIAN CUISINE</span><span>02</span></div>
+</section>
+
+<!-- ============================================================
+     PAGE 3 · COLOR
+============================================================ -->
+<section class="page">
+  <div class="pg-head">
+    <div class="brand"><img src="assets/almas-mark.png"/><span class="wm">ALMAS</span></div>
+    <div class="meta">02 · Color</div>
+  </div>
+
+  <span class="eye">◆ Color System</span>
+  <h1>Color</h1>
+  <p class="lede">One hero hue — the copper-terracotta of the logo arch — anchored by warm ink and floated on cream. Saffron, burgundy and gold accent sparingly.</p>
+
+  <h2>Copper · Primary ramp</h2>
+  <div class="sw-grid">
+    <div class="sw"><div class="chip" style="background:#f9e5d5"></div><div class="meta"><div class="name">Copper 50</div><div class="hex">#F9E5D5</div></div></div>
+    <div class="sw"><div class="chip" style="background:#f2c9ae"></div><div class="meta"><div class="name">Copper 100</div><div class="hex">#F2C9AE</div></div></div>
+    <div class="sw"><div class="chip" style="background:#e8a884"></div><div class="meta"><div class="name">Copper 200</div><div class="hex">#E8A884</div></div></div>
+    <div class="sw"><div class="chip" style="background:#d98858"></div><div class="meta"><div class="name">Copper 300</div><div class="hex">#D98858</div></div></div>
+    <div class="sw"><div class="chip" style="background:#c66a38"></div><div class="meta"><div class="name">Copper 400</div><div class="hex">#C66A38</div></div></div>
+    <div class="sw"><div class="chip" style="background:#b85422"></div><div class="meta"><div class="name">500 · BRAND</div><div class="hex">#B85422</div></div></div>
+    <div class="sw"><div class="chip" style="background:#9a411c"></div><div class="meta"><div class="name">Copper 600</div><div class="hex">#9A411C</div></div></div>
+    <div class="sw"><div class="chip" style="background:#7a3319"></div><div class="meta"><div class="name">Copper 700</div><div class="hex">#7A3319</div></div></div>
+    <div class="sw"><div class="chip" style="background:#5b2616"></div><div class="meta"><div class="name">Copper 800</div><div class="hex">#5B2616</div></div></div>
+    <div class="sw"><div class="chip" style="background:#3d1a10"></div><div class="meta"><div class="name">Copper 900</div><div class="hex">#3D1A10</div></div></div>
+  </div>
+
+  <h2>Cream · Page surfaces</h2>
+  <div class="sw-grid">
+    <div class="sw"><div class="chip" style="background:#fbf6ef"></div><div class="meta"><div class="name">50 · PAGE</div><div class="hex">#FBF6EF</div></div></div>
+    <div class="sw"><div class="chip" style="background:#f6ecdd"></div><div class="meta"><div class="name">Cream 100</div><div class="hex">#F6ECDD</div></div></div>
+    <div class="sw"><div class="chip" style="background:#efe0c9"></div><div class="meta"><div class="name">Cream 200</div><div class="hex">#EFE0C9</div></div></div>
+    <div class="sw"><div class="chip" style="background:#e5cfae"></div><div class="meta"><div class="name">Cream 300</div><div class="hex">#E5CFAE</div></div></div>
+    <div class="sw"><div class="chip" style="background:#d7b98a"></div><div class="meta"><div class="name">Cream 400</div><div class="hex">#D7B98A</div></div></div>
+  </div>
+
+  <h2>Accents · Use sparingly</h2>
+  <div class="sw-grid">
+    <div class="sw"><div class="chip" style="background:#3e1f18"></div><div class="meta"><div class="name">Ink 800 · TEXT</div><div class="hex">#3E1F18</div></div></div>
+    <div class="sw"><div class="chip" style="background:#e09a2a"></div><div class="meta"><div class="name">Saffron</div><div class="hex">#E09A2A</div></div></div>
+    <div class="sw"><div class="chip" style="background:#661f1f"></div><div class="meta"><div class="name">Burgundy</div><div class="hex">#661F1F</div></div></div>
+    <div class="sw"><div class="chip" style="background:#b8873d"></div><div class="meta"><div class="name">Gold</div><div class="hex">#B8873D</div></div></div>
+    <div class="sw"><div class="chip" style="background:#7a8c4a"></div><div class="meta"><div class="name">Pistachio</div><div class="hex">#7A8C4A</div></div></div>
+  </div>
+
+  <h2>Semantic tokens</h2>
+  <table class="tokens">
+    <tr><th>Token</th><th>Value</th><th>Use</th></tr>
+    <tr><td class="n">--bg</td><td class="v">#FBF6EF</td><td>Page surface. Never <code>#fff</code>.</td></tr>
+    <tr><td class="n">--bg-inverse</td><td class="v">#3D1A10</td><td>Footer, dark sections.</td></tr>
+    <tr><td class="n">--fg1</td><td class="v">#2A1410</td><td>Primary text. Never <code>#000</code>.</td></tr>
+    <tr><td class="n">--fg3</td><td class="v">#4A3A30</td><td>Body text.</td></tr>
+    <tr><td class="n">--brand</td><td class="v">#B85422</td><td>Buttons, links, accents.</td></tr>
+    <tr><td class="n">--brand-hover</td><td class="v">#9A411C</td><td>Hover only — no scale change.</td></tr>
+    <tr><td class="n">--rule</td><td class="v">rgba(61,26,16,0.14)</td><td>Hairline separators.</td></tr>
+  </table>
+
+  <div class="pg-foot"><span>ALMAS · INDIAN CUISINE</span><span>03</span></div>
+</section>
+
+<!-- ============================================================
+     PAGE 4 · TYPOGRAPHY
+============================================================ -->
+<section class="page">
+  <div class="pg-head">
+    <div class="brand"><img src="assets/almas-mark.png"/><span class="wm">ALMAS</span></div>
+    <div class="meta">03 · Typography</div>
+  </div>
+
+  <span class="eye">◆ Type System</span>
+  <h1>Typography</h1>
+  <p class="lede">Five families, each with a clear job. Host <b>Kultum Ramadhan</b> locally. Load the others from Google Fonts.</p>
+
+  <div class="spec s1">
+    <div><div class="role">Script</div><div class="tag">--font-script</div></div>
+    <div class="sample">Almas</div>
+    <div class="tag">Kultum Ramadhan · OTF</div>
+  </div>
+  <div class="spec s2">
+    <div><div class="role">Display</div><div class="tag">--font-display · h1, h2</div></div>
+    <div class="sample">FROM THE TANDOOR</div>
+    <div class="tag">Cinzel · 600</div>
+  </div>
+  <div class="spec s3">
+    <div><div class="role">Subhead</div><div class="tag">--font-serif · h3, .lead</div></div>
+    <div class="sample">Slow fires, old spices.</div>
+    <div class="tag">Playfair Display · 500 italic</div>
+  </div>
+  <div class="spec s4">
+    <div><div class="role">Body</div><div class="tag">--font-body · p</div></div>
+    <div class="sample">Tender chicken, soaked in buttermilk for four hours.</div>
+    <div class="tag">Cormorant Garamond · 400</div>
+  </div>
+  <div class="spec s5">
+    <div><div class="role">Arabic</div><div class="tag">--font-arabic</div></div>
+    <div class="sample">حيدرآباد كا اصل ذائقه</div>
+    <div class="tag">Amiri · RTL</div>
+  </div>
+
+  <h2>Rules</h2>
+  <ul>
+    <li><b>Body copy is serif.</b> 18 px base, 1.55 line-height, Cormorant Garamond. Never sans.</li>
+    <li><b>Display is UPPERCASE with 0.08–0.18 em tracking.</b> Never tight caps.</li>
+    <li><b>The script font is used once per surface</b> — as the "Almas" signature. Never in running text.</li>
+    <li><b>Italic serif</b> (Playfair) carries pull-quotes, dish names, descriptive captions.</li>
+    <li><b>Arabic text</b> uses Amiri, RTL, same color as body ink.</li>
+  </ul>
+
+  <h2>Loading order</h2>
+  <table class="tokens">
+    <tr><th>Family</th><th>Method</th><th>Weights</th></tr>
+    <tr><td>Kultum Ramadhan</td><td class="v">@font-face · fonts/KultumRamadhan.otf</td><td>400</td></tr>
+    <tr><td>Cinzel</td><td class="v">Google Fonts</td><td>400, 500, 600, 700</td></tr>
+    <tr><td>Playfair Display</td><td class="v">Google Fonts</td><td>400, 500, 600 · italic</td></tr>
+    <tr><td>Cormorant Garamond</td><td class="v">Google Fonts</td><td>400, 500</td></tr>
+    <tr><td>Amiri</td><td class="v">Google Fonts</td><td>400, 700</td></tr>
+  </table>
+  <p class="note">All included via <code>@import</code> at the top of <code>colors_and_type.css</code>. For production, move to <code>&lt;link&gt;</code> tags in <code>&lt;head&gt;</code> for better performance.</p>
+
+  <div class="pg-foot"><span>ALMAS · INDIAN CUISINE</span><span>04</span></div>
+</section>
+
+<!-- ============================================================
+     PAGE 5 · COMPONENTS
+============================================================ -->
+<section class="page">
+  <div class="pg-head">
+    <div class="brand"><img src="assets/almas-mark.png"/><span class="wm">ALMAS</span></div>
+    <div class="meta">04 · Components</div>
+  </div>
+
+  <span class="eye">◆ Core UI</span>
+  <h1>Components</h1>
+
+  <h2>Buttons</h2>
+  <div class="preview-box">
+    <span class="btn btn--primary">Reserve a Table</span>
+    <span class="btn btn--ghost">View the Menu</span>
+    <span class="btn btn--dark">Order Online</span>
+  </div>
+  <p class="note">Cinzel · 12 px · 0.2 em tracking · 4 px radius · 15/30 padding. Hover darkens one step, no scale. Focus: 2 px gold ring (<code>#D9B273</code>), never browser blue.</p>
+
+  <h2>Badges</h2>
+  <div class="preview-box">
+    <span class="badge b-chef">◆ Chef's Pick</span>
+    <span class="badge b-veg">● Vegetarian</span>
+    <span class="badge b-spicy">Fiery</span>
+    <span class="badge b-new">New</span>
+  </div>
+  <p class="note">2 px radius, 0.2 em tracking. Never rounded-pills.</p>
+
+  <h2>Forms — input + focus</h2>
+  <div class="preview-box">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+      <div>
+        <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--fg3);margin-bottom:6px;">Your name</div>
+        <div style="background:var(--almas-cream-50);border:1px solid rgba(61,26,16,0.22);border-radius:4px;padding:10px 12px;font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--fg4);font-style:italic;">As on reservation…</div>
+      </div>
+      <div>
+        <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--fg3);margin-bottom:6px;">Phone · focused</div>
+        <div style="background:var(--almas-cream-50);border:1px solid var(--brand);border-radius:4px;padding:10px 12px;font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--fg1);box-shadow: 0 0 0 2px var(--almas-gold-soft);">+91 98450 12345</div>
+      </div>
+    </div>
+  </div>
+  <p class="note">Cream fill, ink border at 22% alpha. Focus: copper border + gold 2 px outline ring. Placeholder: italic serif.</p>
+
+  <h2>Menu row — dish list</h2>
+  <div class="preview-box">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px dotted rgba(61,26,16,0.3);">
+      <div>
+        <div style="font-family:'Cinzel',serif;font-size:13px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--fg1);"><span style="color:var(--brand);margin-right:6px;">◆</span>Almas Whole Grill</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:var(--fg3);margin-top:4px;">Four hours in buttermilk, ten in spice.</div>
+      </div>
+      <div style="font-family:'Cinzel',serif;font-size:13px;font-weight:500;color:var(--fg1);letter-spacing:0.06em;">₹ 1,280</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;">
+      <div>
+        <div style="font-family:'Cinzel',serif;font-size:13px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--fg1);">Kacchi Gosht Biryani</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:var(--fg3);margin-top:4px;">Sealed clay, one pot, one hour of dum.</div>
+      </div>
+      <div style="font-family:'Cinzel',serif;font-size:13px;font-weight:500;color:var(--fg1);">₹ 720</div>
+    </div>
+  </div>
+
+  <h2>Interaction states</h2>
+  <table class="tokens">
+    <tr><th>State</th><th>Change</th><th>Timing</th></tr>
+    <tr><td>Hover</td><td>Color darkens one step → <code>--brand-hover</code></td><td class="v">240 ms ease-out</td></tr>
+    <tr><td>Press</td><td>Color darkens again → <code>--brand-press</code></td><td class="v">no transition</td></tr>
+    <tr><td>Focus</td><td>2 px gold ring, 2 px offset</td><td class="v">box-shadow only</td></tr>
+    <tr><td>Disabled</td><td>35% opacity, <code>cursor: not-allowed</code></td><td class="v">—</td></tr>
+  </table>
+  <p class="note"><b>Never apply scale or transform on hover/press.</b> No bounce. No glow pulses.</p>
+
+  <div class="pg-foot"><span>ALMAS · INDIAN CUISINE</span><span>05</span></div>
+</section>
+
+<!-- ============================================================
+     PAGE 6 · LAYOUT / PAGE ARCHITECTURE
+============================================================ -->
+<section class="page">
+  <div class="pg-head">
+    <div class="brand"><img src="assets/almas-mark.png"/><span class="wm">ALMAS</span></div>
+    <div class="meta">05 · Page Architecture</div>
+  </div>
+
+  <span class="eye">◆ Home page</span>
+  <h1>Page Architecture</h1>
+  <p class="lede">Single scrolling marketing page. Seven sections, top to bottom. Reference build: <code>ui_kits/website/index.html</code>.</p>
+
+  <div class="wire">
+    <div class="wire-block"><span>01 · Header — sticky, cream-blur, 80px</span><span class="kind">Logo · Nav · Reserve CTA</span></div>
+    <div class="wire-block hero"><span>02 · Hero — 820px min-height, Charminar BG</span><span class="kind">Eyebrow · Script wordmark · Urdu · Lede · 2× CTA</span></div>
+    <div class="wire-block tall"><span>03 · Signature Dish — 2-col, 120px padding</span><span class="kind">Framed image · Name · Metadata · Order CTA</span></div>
+    <div class="wire-block accent tall"><span>04 · Menu — cream-100 bg, tabbed categories</span><span class="kind">Tabs (Tandoor / Biryani / Mandi / Lebanese / Sweet) · Dish rows</span></div>
+    <div class="wire-block hero"><span>05 · Our Story — copper-900 dark, centered</span><span class="kind">Mark · Headline · Ornament · 2 paragraphs</span></div>
+    <div class="wire-block tall accent"><span>06 · Reserve — centered card, gold inset frame</span><span class="kind">Name · Phone · Guests · Date · Confirm</span></div>
+    <div class="wire-block hero" style="min-height:60px"><span>07 · Footer — ink-900 dark, 4-col</span><span class="kind">Mark · Visit · Hours · Follow</span></div>
+  </div>
+
+  <h2>Layout rules</h2>
+  <ul>
+    <li><b>Max content width:</b> 1280 px for marketing sections; 820 px for the menu reading column.</li>
+    <li><b>Gutters:</b> 24 px mobile, 48 px tablet+, 64+ px desktop centered.</li>
+    <li><b>Section rhythm:</b> 120 px vertical padding between sections on desktop, 64 px mobile.</li>
+    <li><b>Grid:</b> 8 px base. Every margin/padding is a multiple of 8.</li>
+    <li><b>Sticky header</b> blurs the content behind via <code>backdrop-filter: blur(14px)</code> over <code>rgba(251,246,239,0.82)</code>.</li>
+  </ul>
+
+  <h2>Responsive breakpoints</h2>
+  <table class="tokens">
+    <tr><th>Label</th><th>Range</th><th>Change</th></tr>
+    <tr><td>Mobile</td><td class="v">&lt; 640 px</td><td>Single column; hide nav behind hamburger; stack signature image over text.</td></tr>
+    <tr><td>Tablet</td><td class="v">640–1024 px</td><td>Signature section stacks; menu keeps 2-column.</td></tr>
+    <tr><td>Desktop</td><td class="v">≥ 1024 px</td><td>Full layout per wireframe.</td></tr>
+  </table>
+
+  <div class="pg-foot"><span>ALMAS · INDIAN CUISINE</span><span>06</span></div>
+</section>
+
+<!-- ============================================================
+     PAGE 7 · MOTION, SHADOWS, SHAPE
+============================================================ -->
+<section class="page">
+  <div class="pg-head">
+    <div class="brand"><img src="assets/almas-mark.png"/><span class="wm">ALMAS</span></div>
+    <div class="meta">06 · Motion &amp; Shape</div>
+  </div>
+
+  <span class="eye">◆ Foundations</span>
+  <h1>Motion &amp; Shape</h1>
+
+  <h2>Spacing · 8 px base</h2>
+  <table class="tokens">
+    <tr><th>Token</th><th>Value</th><th>Typical use</th></tr>
+    <tr><td class="n">--s-2</td><td class="v">8 px</td><td>Inline gaps, icon + label</td></tr>
+    <tr><td class="n">--s-4</td><td class="v">16 px</td><td>Card padding (compact)</td></tr>
+    <tr><td class="n">--s-5</td><td class="v">24 px</td><td>Between stacked fields</td></tr>
+    <tr><td class="n">--s-6</td><td class="v">32 px</td><td>Card padding (default)</td></tr>
+    <tr><td class="n">--s-8</td><td class="v">64 px</td><td>Section inner padding (mobile)</td></tr>
+    <tr><td class="n">--s-9</td><td class="v">96 px</td><td>Between sections (tablet)</td></tr>
+    <tr><td class="n">--s-10</td><td class="v">128 px</td><td>Between sections (desktop)</td></tr>
+  </table>
+
+  <h2>Corners — rectangles, not pills</h2>
+  <table class="tokens">
+    <tr><th>Token</th><th>Value</th><th>Used for</th></tr>
+    <tr><td class="n">--r-sm</td><td class="v">2 px</td><td>Badges</td></tr>
+    <tr><td class="n">--r-md</td><td class="v">4 px</td><td>Buttons, inputs</td></tr>
+    <tr><td class="n">--r-lg</td><td class="v">8 px</td><td>Small images</td></tr>
+    <tr><td class="n">--r-xl</td><td class="v">14 px</td><td>Cards</td></tr>
+    <tr><td class="n">--r-2xl</td><td class="v">24 px</td><td>Hero / feature imagery</td></tr>
+  </table>
+  <p class="note"><b>Never use fully-rounded pills.</b> Almas is not a delivery app.</p>
+
+  <h2>Shadows — warm, not black</h2>
+  <table class="tokens">
+    <tr><th>Token</th><th>Value</th></tr>
+    <tr><td class="n">--shadow-sm</td><td class="v">0 1px 2px rgba(61,26,16,0.08)</td></tr>
+    <tr><td class="n">--shadow-md</td><td class="v">0 4px 14px rgba(61,26,16,0.10), 0 1px 3px rgba(61,26,16,0.06)</td></tr>
+    <tr><td class="n">--shadow-lg</td><td class="v">0 18px 40px rgba(61,26,16,0.14), 0 4px 10px rgba(61,26,16,0.08)</td></tr>
+    <tr><td class="n">--shadow-xl</td><td class="v">0 28px 70px rgba(61,26,16,0.22)</td></tr>
+    <tr><td class="n">inset-frame</td><td class="v">inset 0 0 0 1 px #D9B273, inset 0 0 0 6 px #FBF6EF</td></tr>
+  </table>
+  <p class="note">All shadows are tinted with the ink color (61,26,16), never pure black.</p>
+
+  <h2>Motion</h2>
+  <table class="tokens">
+    <tr><th>Token</th><th>Value</th><th>When</th></tr>
+    <tr><td class="n">--t-fast</td><td class="v">160 ms</td><td>Color / opacity swaps</td></tr>
+    <tr><td class="n">--t-base</td><td class="v">280 ms</td><td>Default for most UI</td></tr>
+    <tr><td class="n">--t-slow</td><td class="v">520 ms</td><td>Hero reveals, scroll-triggered fades</td></tr>
+    <tr><td class="n">--ease-out</td><td class="v">cubic-bezier(0.22, 1, 0.36, 1)</td><td>Default ease</td></tr>
+    <tr><td class="n">--ease-serve</td><td class="v">cubic-bezier(0.6, 0.05, 0.3, 1)</td><td>Hero / editorial moments</td></tr>
+  </table>
+  <p class="note"><b>Forbidden:</b> bounce, elastic, spring, spin, typewriter, marquee, hover scale. Motion is culinary — slow, confident, no juggling.</p>
+
+  <div class="pg-foot"><span>ALMAS · INDIAN CUISINE</span><span>07</span></div>
+</section>
+
+<!-- ============================================================
+     PAGE 8 · CONTENT VOICE
+============================================================ -->
+<section class="page">
+  <div class="pg-head">
+    <div class="brand"><img src="assets/almas-mark.png"/><span class="wm">ALMAS</span></div>
+    <div class="meta">07 · Voice</div>
+  </div>
+
+  <span class="eye">◆ Content</span>
+  <h1>Voice &amp; Copy</h1>
+  <p class="lede">Almas speaks like a host welcoming you in, not a vendor selling to you. Warm, generous, unhurried, proud of process. No exclamation points. No emoji.</p>
+
+  <h2>Rules</h2>
+  <ul>
+    <li><b>"We" for the house, "you" for the guest.</b> "We marinate for ten hours so you taste every layer."</li>
+    <li><b>Sentence case in paragraphs.</b> UPPERCASE only for buttons, section headers, eyebrows.</li>
+    <li><b>No emoji. No exclamation points.</b> Use the diamond <code>◆</code> for celebration.</li>
+    <li><b>Numerals under ten spelled out</b> in prose. Prices always as numerals.</li>
+    <li><b>Arabic and Urdu words</b> welcome, italicized on first use — <i>mandi, dum, haleem, shawarma, kunafa, khubz</i>.</li>
+  </ul>
+
+  <div class="do-dont">
+    <div class="dd do">
+      <span class="lab">✓ Do — house voice</span>
+      Our biryani is cooked in sealed clay, one pot at a time. Order by six, we start your pot at seven.
+    </div>
+    <div class="dd dont">
+      <span class="lab">✗ Don't — generic</span>
+      Delicious authentic Indian food!! Click here to order now 🔥
+    </div>
+  </div>
+
+  <h2>Microcopy lexicon</h2>
+  <table class="tokens">
+    <tr><th>Use this</th><th>Not this</th></tr>
+    <tr><td>Reserve a table</td><td>Book now</td></tr>
+    <tr><td>View the menu</td><td>See our menu →</td></tr>
+    <tr><td>Our story</td><td>About us</td></tr>
+    <tr><td>Visit</td><td>Contact</td></tr>
+    <tr><td>Private dining</td><td>Events / catering</td></tr>
+    <tr><td>Hours</td><td>Opening times</td></tr>
+  </table>
+
+  <h2>Example hero copy</h2>
+  <div class="preview-box" style="text-align:center;">
+    <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.4em;color:var(--brand);margin-bottom:12px;">◆ &nbsp; EST. HYDERABAD &nbsp; ◆</div>
+    <div style="font-family:var(--font-script);font-size:80px;line-height:0.9;color:var(--almas-ink-800);">Almas</div>
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:20px;color:var(--almas-copper-700);margin:6px 0;">True taste of <em>Hyderabad</em></div>
+    <div style="font-family:'Amiri',serif;direction:rtl;font-size:14px;color:var(--fg3);">حيدرآباد كا اصل ذائقه</div>
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--fg3);max-width:80mm;margin:14px auto 0;">Slow fires. Old spices. A table set the way Hyderabad sets one — generous, unhurried, and passed by hand.</div>
+  </div>
+
+  <div class="pg-foot"><span>ALMAS · INDIAN CUISINE</span><span>08</span></div>
+</section>
+
+<!-- ============================================================
+     PAGE 9 · TECHNICAL NOTES
+============================================================ -->
+<section class="page">
+  <div class="pg-head">
+    <div class="brand"><img src="assets/almas-mark.png"/><span class="wm">ALMAS</span></div>
+    <div class="meta">08 · Engineering</div>
+  </div>
+
+  <span class="eye">◆ Engineering Notes</span>
+  <h1>Implementation</h1>
+
+  <h2>Stack suggestion (flexible)</h2>
+  <ul>
+    <li><b>Framework:</b> Next.js, Astro, or plain HTML — whatever your team prefers. Single page + small API route for the reservation form.</li>
+    <li><b>CSS:</b> Use <code>colors_and_type.css</code> as the token source. Author components with plain CSS or a utility layer on top — no Bootstrap, no Material, no Chakra.</li>
+    <li><b>Images:</b> serve WebP with JPG fallback. Cap hero at 1920 px. Lazy-load below the fold.</li>
+    <li><b>Fonts:</b> self-host Kultum Ramadhan; <code>&lt;link rel="preconnect"&gt;</code> Google Fonts for the rest. <code>font-display: swap</code> everywhere.</li>
+  </ul>
+
+  <h2>Must-have</h2>
+  <ul>
+    <li>Semantic HTML: <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;footer&gt;</code>, <code>&lt;nav&gt;</code>.</li>
+    <li>Open Graph + Twitter card meta tags (use the Charminar poster as default <code>og:image</code>).</li>
+    <li>JSON-LD structured data with <code>@type: Restaurant</code> including address, hours, phone, menu URL, cuisine types (<code>Indian, Hyderabadi, Middle Eastern</code>).</li>
+    <li>Accessible: all interactive elements keyboard-navigable; focus states visible (gold ring); labels on all form fields; <code>alt</code> on every image.</li>
+    <li><code>prefers-reduced-motion</code>: disable scroll animations and transitions.</li>
+    <li>Arabic content: set <code>dir="rtl"</code> on the Urdu/Arabic elements, <code>lang="ar"</code> attribute.</li>
+  </ul>
+
+  <h2>Reservation form</h2>
+  <p>V1 submits to email (e.g. <code>reservations@almas.co</code>) or a WhatsApp deep link. No backend DB required. Honeypot field for spam protection. Show confirmation toast (pistachio background), auto-dismiss at 3.2 s.</p>
+
+  <h2>Performance targets</h2>
+  <table class="tokens">
+    <tr><th>Metric</th><th>Target</th></tr>
+    <tr><td>LCP</td><td class="v">&lt; 2.5 s on 4G</td></tr>
+    <tr><td>CLS</td><td class="v">&lt; 0.1</td></tr>
+    <tr><td>Total JS</td><td class="v">&lt; 100 KB (gzipped)</td></tr>
+    <tr><td>Lighthouse</td><td class="v">95+ on all four categories</td></tr>
+  </table>
+
+  <h2>Open items for you</h2>
+  <ul>
+    <li><b>Food photography</b> — to be supplied by the client. Six photos minimum (Whole Grill, biryani, mandi, kunafa, mezze spread, a hands-in shot).</li>
+    <li><b>Final menu content</b> — dish names, descriptions, prices, category order.</li>
+    <li><b>Domain + hosting</b> — confirm with the client.</li>
+    <li><b>Analytics</b> — confirm if Plausible, GA4, or nothing.</li>
+    <li><b>Icons</b> — this spec uses Phosphor Regular as a placeholder. Swap if you prefer Lucide or custom.</li>
+  </ul>
+
+  <div class="pg-foot"><span>ALMAS · INDIAN CUISINE · HANDOFF v1.0</span><span>09</span></div>
+</section>
+
+<!-- ============================================================
+     PAGE 10 · CONTACT / SIGN-OFF
+============================================================ -->
+<section class="page" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
+  <img src="assets/almas-mark.png" style="height:160px;margin-bottom:10px"/>
+  <div style="font-family:var(--font-script);font-size:110px;color:var(--almas-ink-800);line-height:0.9;">Almas</div>
+  <div style="font-family:'Cinzel',serif;font-size:12px;letter-spacing:0.4em;color:var(--almas-ink-700);margin-top:6px;">INDIAN CUISINE · MANDI, BIRYANI &amp; GRILLS</div>
+  <div style="width:80px;height:1px;background:var(--almas-gold);margin:24px auto;"></div>
+  <div class="orn">◆ &nbsp; ◆ &nbsp; ◆</div>
+  <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:var(--fg3);max-width:110mm;margin:10px auto 0;">
+    Questions, clarifications, missing assets — reach out. Design iteration is expected. Build warmly.
+  </p>
+  <p style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.24em;color:var(--fg4);margin-top:60mm;">VERSION 1.0 · APRIL 2026</p>
+
+  <div class="pg-foot"><span>ALMAS · INDIAN CUISINE</span><span>10</span></div>
+</section>
+
+<script>
+  (async () => {
+    try { await document.fonts.ready; } catch(e) {}
+    setTimeout(() => window.print(), 800);
+  })();
+</script>
+</body>
+</html>

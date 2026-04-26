@@ -16,22 +16,26 @@
     <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center h-28 md:h-24">
       <div class="flex items-center">
         <a href="/" class="flex items-center">
-          <img src="/logo.jpg" alt="ALMAS INDIAN CUISINE" class="h-20 md:h-16 w-auto object-contain">
+          <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-20 md:h-16 w-auto object-contain">
         </a>
       </div>
       <div class="hidden md:flex items-center space-x-12">
         <a href="/" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Home</a>
-        <a href="/about.html" class="text-sm uppercase tracking-widest font-semibold text-primary border-b border-primary">About</a>
-        <a href="/services.html" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Services</a>
+        <a href="/about.html" class="text-sm uppercase tracking-widest font-semibold text-primary border-b border-primary">About Us</a>
         <a href="/menu.html" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Menu</a>
+        <a href="/services.html" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Catering</a>
         <a href="/contact.html" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Contact</a>
-        <a href="/contact.html" class="btn-premium py-3 px-8 text-xs">Order Online</a>
+        <a href="/order.html" class="btn-premium py-3 px-8 text-xs">Order Now</a>
       </div>
-      <button id="menu-btn" class="md:hidden text-primary focus:outline-none p-2 -mr-2">
-        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
+      <!-- Mobile Controls -->
+      <div class="md:hidden flex items-center space-x-4">
+        <a href="/order.html" class="btn-premium py-2 px-5 text-[10px]">Order Now</a>
+        <button id="menu-btn" class="text-primary focus:outline-none p-2 -mr-2">
+          <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -44,19 +48,26 @@
       <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
     </button>
     <div class="mb-10">
-      <img src="/logo.jpg" alt="ALMAS" class="h-14 w-auto object-contain opacity-80">
+      <img src="/logo.png" alt="ALMAS" class="h-14 w-auto object-contain opacity-80">
     </div>
     <nav class="flex flex-col space-y-6 text-white text-lg font-semibold uppercase tracking-widest">
       <a href="/" class="hover:text-primary transition-colors">Home</a>
-      <a href="/about.html" class="hover:text-primary transition-colors">About</a>
-      <a href="/services.html" class="hover:text-primary transition-colors">Services</a>
+      <a href="/about.html" class="hover:text-primary transition-colors">About Us</a>
       <a href="/menu.html" class="hover:text-primary transition-colors">Menu</a>
+      <a href="/services.html" class="hover:text-primary transition-colors">Catering</a>
       <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
     </nav>
-    <a href="/contact.html" class="mt-10 btn-premium text-sm px-8 py-3">Order Now</a>
+    <a href="/order.html" class="mt-10 btn-premium text-sm px-8 py-3">Order Now</a>
     <div class="mt-10 pt-8 border-t border-white/10 w-full">
-      <p class="text-white/30 text-[10px] uppercase tracking-widest">209 Ellesmere Rd, Unit 6</p>
-      <p class="text-white/30 text-[10px] uppercase tracking-widest">Scarborough, ON</p>
+      <p class="text-white/30 text-[10px] uppercase tracking-widest mb-6">209 Ellesmere Rd, Unit 6, Scarborough, ON</p>
+      <div class="flex space-x-4">
+        <a href="#" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 transition-all">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+        </a>
+        <a href="#" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 transition-all">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        </a>
+      </div>
     </div>
   </div>
   </div>
@@ -73,47 +84,100 @@
     </div>
   </section>
 
-  <!-- The Legacy -->
+  <!-- Introduction -->
   <section class="py-32">
     <div class="max-w-5xl mx-auto px-6 md:px-12 text-center">
       <div class="mb-24" data-aos="fade-up">
-        <h2 class="text-5xl font-heading mb-10">A Legacy of Taste</h2>
+        <span class="text-gold font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Refined Dining</span>
+        <h2 class="text-5xl font-heading mb-10 leading-tight">ALMAS INDIAN CUISINE</h2>
         <div class="w-24 h-px bg-gold mx-auto mb-10"></div>
-        <p class="text-text-secondary text-2xl font-light leading-relaxed italic">
-          "At Almas, we don't just serve food; we preserve memories of a golden era."
+        <p class="text-text-secondary text-2xl font-light leading-relaxed italic max-w-4xl mx-auto">
+          "A refined culinary destination where the timeless richness of Indian heritage meets the vibrant elegance of Lebanese cuisine."
         </p>
       </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-20 text-left">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-20 text-left items-center">
         <div data-aos="fade-right">
+          <h3 class="text-3xl font-heading mb-8">Our Beginning</h3>
           <p class="text-text-secondary text-lg leading-relaxed font-light mb-8">
-            Our story begins in the royal kitchens of Hyderabad, where culinary art was perfected over centuries. We carry this torch forward in Scarborough, bringing the same meticulous attention to detail and passion for authenticity to every guest.
+            Born from a deep appreciation for authentic culinary traditions, ALMAS INDIAN CUISINE marks the beginning of a journey dedicated to excellence. As a newly opened establishment, we bring with us a commitment to preserving heritage recipes while presenting them with a modern, elevated touch.
           </p>
         </div>
         <div data-aos="fade-left">
           <p class="text-text-secondary text-lg leading-relaxed font-light mb-8">
-            Every ingredient is selected for its purity, every spice blend is roasted to perfection in-house, and every dish is a labor of love. We believe in the power of traditional methods, slow-cooking, and the warmth of genuine hospitality.
+            Every element of our offering is thoughtfully curated to deliver not just a meal, but a memorable experience rooted in culture and craftsmanship. Inspired by the royal kitchens of Hyderabad, we present an experience that celebrates tradition, flavor, and sophistication in every detail.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Vision & Mission (Staggered) -->
+  <!-- Vision & Mission -->
   <section class="py-32 bg-white">
     <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
       <div class="card-premium" data-aos="fade-right">
         <h3 class="text-3xl font-heading mb-8 text-primary">Our Vision</h3>
         <p class="text-text-secondary text-lg font-light leading-relaxed">
-          To be the global benchmark for authentic Hyderabadi and Middle Eastern dining, where tradition and innovation coexist in perfect harmony.
+          To be a distinguished destination where the timeless depth of Indian heritage and the freshness of Lebanese cuisine come together to create an unforgettable culinary journey.
         </p>
       </div>
       <div class="card-premium lg:mt-24" data-aos="fade-left">
         <h3 class="text-3xl font-heading mb-8 text-secondary">Our Mission</h3>
         <p class="text-text-secondary text-lg font-light leading-relaxed">
-          To provide an unparalleled culinary experience that celebrates cultural heritage through exceptional quality, service, and ambiance.
+          To honor the legacy of Indian cuisine through authentic Hyderabadi slow-cooked traditions, enriched with the vibrant nuances of Lebanese flavors, crafting a refined and memorable dining experience.
         </p>
       </div>
+    </div>
+  </section>
+
+  <!-- What Sets Us Apart -->
+  <section class="py-32">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="section-title">
+        <span class="text-gold font-bold tracking-widest uppercase text-xs mb-4 block">The Almas Edge</span>
+        <h2>What Sets Us Apart</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="p-10 bg-white shadow-sm border border-gold/10 rounded-2xl" data-aos="fade-up" data-aos-delay="100">
+          <h4 class="text-xl font-bold mb-4 text-primary">Hyderabadi Legacy</h4>
+          <p class="text-text-secondary font-light leading-relaxed">Signature slow-cooked delicacies rooted in centuries of royal tradition.</p>
+        </div>
+        <div class="p-10 bg-white shadow-sm border border-gold/10 rounded-2xl" data-aos="fade-up" data-aos-delay="200">
+          <h4 class="text-xl font-bold mb-4 text-primary">Harmonious Fusion</h4>
+          <p class="text-text-secondary font-light leading-relaxed">A perfect blend of rich Indian heritage and vibrant Lebanese freshness.</p>
+        </div>
+        <div class="p-10 bg-white shadow-sm border border-gold/10 rounded-2xl" data-aos="fade-up" data-aos-delay="300">
+          <h4 class="text-xl font-bold mb-4 text-primary">Uncompromising Quality</h4>
+          <p class="text-text-secondary font-light leading-relaxed">Premium ingredients selected with the highest standards of purity.</p>
+        </div>
+        <div class="p-10 bg-white shadow-sm border border-gold/10 rounded-2xl" data-aos="fade-up" data-aos-delay="400">
+          <h4 class="text-xl font-bold mb-4 text-primary">Elegant Ambiance</h4>
+          <p class="text-text-secondary font-light leading-relaxed">An atmosphere thoughtfully designed for warmth, elegance, and comfort.</p>
+        </div>
+        <div class="p-10 bg-white shadow-sm border border-gold/10 rounded-2xl" data-aos="fade-up" data-aos-delay="500">
+          <h4 class="text-xl font-bold mb-4 text-primary">Curated Experiences</h4>
+          <p class="text-text-secondary font-light leading-relaxed">Designed for everything from intimate moments to grand celebrations.</p>
+        </div>
+        <div class="p-10 bg-white shadow-sm border border-gold/10 rounded-2xl" data-aos="fade-up" data-aos-delay="600">
+          <h4 class="text-xl font-bold mb-4 text-primary">Master Craftsmanship</h4>
+          <p class="text-text-secondary font-light leading-relaxed">Time-honored techniques resulting in dishes with character and soul.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Culinary Philosophy -->
+  <section class="py-32 bg-primary-deep text-white relative">
+    <div class="absolute inset-0 opacity-10">
+      <img src="https://www.transparenttextures.com/patterns/black-paper.png" class="w-full h-full object-cover">
+    </div>
+    <div class="max-w-4xl mx-auto px-6 md:px-12 text-center relative z-10">
+      <span class="text-secondary font-bold tracking-[0.4em] uppercase text-xs mb-8 block" data-aos="fade-up">Mastering the Art</span>
+      <h2 class="text-4xl md:text-5xl font-heading mb-10" data-aos="fade-up">Our Culinary Philosophy</h2>
+      <p class="text-white/70 text-xl font-light leading-loose mb-12" data-aos="fade-up" data-aos-delay="100">
+        At ALMAS INDIAN CUISINE, we believe that exceptional food is an art of patience and precision. Our approach is guided by time-honored techniques, carefully balanced spices, and a dedication to authenticity—resulting in dishes that are rich in character, depth, and soul.
+      </p>
     </div>
   </section>
 
@@ -125,22 +189,60 @@
         <h2>Core Values</h2>
         <div class="divider"></div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
         <div class="text-center" data-aos="fade-up" data-aos-delay="100">
-          <div class="w-16 h-16 rounded-full bg-primary/5 mx-auto mb-8 flex items-center justify-center text-primary text-xl font-bold italic">A</div>
-          <h4 class="text-xl font-bold mb-4">Authenticity</h4>
-          <p class="text-text-secondary font-light">Honoring traditional recipes without compromise.</p>
+          <div class="w-16 h-16 rounded-full bg-primary/5 mx-auto mb-6 flex items-center justify-center text-primary text-xl font-bold italic border border-primary/10">A</div>
+          <h4 class="text-xl font-bold mb-3">Authenticity</h4>
+          <p class="text-text-secondary font-light text-sm">Staying true to our cultural and culinary roots.</p>
         </div>
         <div class="text-center" data-aos="fade-up" data-aos-delay="200">
-          <div class="w-16 h-16 rounded-full bg-secondary/5 mx-auto mb-8 flex items-center justify-center text-secondary text-xl font-bold italic">Q</div>
-          <h4 class="text-xl font-bold mb-4">Quality</h4>
-          <p class="text-text-secondary font-light">Only the finest ingredients touch our kitchen.</p>
+          <div class="w-16 h-16 rounded-full bg-primary/5 mx-auto mb-6 flex items-center justify-center text-primary text-xl font-bold italic border border-primary/10">E</div>
+          <h4 class="text-xl font-bold mb-3">Excellence</h4>
+          <p class="text-text-secondary font-light text-sm">A relentless commitment to the highest standards.</p>
         </div>
         <div class="text-center" data-aos="fade-up" data-aos-delay="300">
-          <div class="w-16 h-16 rounded-full bg-accent/5 mx-auto mb-8 flex items-center justify-center text-accent text-xl font-bold italic">H</div>
-          <h4 class="text-xl font-bold mb-4">Hospitality</h4>
-          <p class="text-text-secondary font-light">Treating every guest like royalty.</p>
+          <div class="w-16 h-16 rounded-full bg-primary/5 mx-auto mb-6 flex items-center justify-center text-primary text-xl font-bold italic border border-primary/10">G</div>
+          <h4 class="text-xl font-bold mb-3">Guest Experience</h4>
+          <p class="text-text-secondary font-light text-sm">Because every detail matters in your journey.</p>
         </div>
+        <div class="text-center" data-aos="fade-up" data-aos-delay="400">
+          <div class="w-16 h-16 rounded-full bg-primary/5 mx-auto mb-6 flex items-center justify-center text-primary text-xl font-bold italic border border-primary/10">C</div>
+          <h4 class="text-xl font-bold mb-3">Consistency</h4>
+          <p class="text-text-secondary font-light text-sm">Ensuring quality you can rely on every single time.</p>
+        </div>
+        <div class="text-center" data-aos="fade-up" data-aos-delay="500">
+          <div class="w-16 h-16 rounded-full bg-primary/5 mx-auto mb-6 flex items-center justify-center text-primary text-xl font-bold italic border border-primary/10">H</div>
+          <h4 class="text-xl font-bold mb-3">Hygiene & Care</h4>
+          <p class="text-text-secondary font-light text-sm">Clean, safe, and responsible practices in everything we do.</p>
+        </div>
+        <div class="text-center" data-aos="fade-up" data-aos-delay="600">
+          <div class="w-16 h-16 rounded-full bg-primary/5 mx-auto mb-6 flex items-center justify-center text-primary text-xl font-bold italic border border-primary/10">C</div>
+          <h4 class="text-xl font-bold mb-3">Culture & Community</h4>
+          <p class="text-text-secondary font-light text-sm">Celebrating diversity through the universal language of food.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Experience & Visit Us -->
+  <section class="py-32 bg-white relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+      <div data-aos="fade-right">
+        <h2 class="text-5xl font-heading mb-10 leading-tight">The <span class="text-primary italic">Experience.</span></h2>
+        <p class="text-text-secondary text-lg font-light leading-relaxed mb-8">
+          From the moment you step in, you are welcomed into a space designed to evoke comfort and elegance. Whether it’s a casual meal, a family gathering, or a special celebration, we ensure an experience defined by warm hospitality and exceptional flavors.
+        </p>
+        <p class="text-text-secondary text-lg font-light leading-relaxed mb-12">
+          We invite you to discover a new standard of dining in Scarborough—where tradition meets refinement, and every visit becomes a lasting memory.
+        </p>
+        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+          <a href="/menu.html" class="btn-premium text-center">View Menu</a>
+          <a href="https://wa.me/TBD?text=I%20would%20like%20to%20reserve%20a%20table" class="btn-premium-outline-dark text-center">Reserve a Table</a>
+        </div>
+      </div>
+      <div class="relative" data-aos="fade-left">
+        <img src="/order_biryani_premium.png" alt="ALMAS Experience" class="rounded-2xl shadow-2xl relative z-10 w-full">
+        <div class="absolute -top-10 -right-10 w-40 h-40 border-2 border-gold/20 rounded-full"></div>
       </div>
     </div>
   </section>
@@ -150,7 +252,7 @@
     <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-20 mb-24">
       <div>
         <div class="mb-8">
-          <img src="/logo.jpg" alt="ALMAS INDIAN CUISINE" class="h-24 w-auto object-contain">
+          <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-24 w-auto object-contain">
         </div>
         <p class="text-white/40 leading-relaxed font-light">The premier destination for authentic Hyderabadi and Middle Eastern cuisine in Scarborough.</p>
       </div>
@@ -158,9 +260,9 @@
         <h4 class="text-xs uppercase tracking-[0.3em] font-bold mb-10 text-gold">Navigation</h4>
         <ul class="space-y-4 text-white/60 font-light text-sm uppercase tracking-widest">
           <li><a href="/" class="hover:text-primary transition-colors">Home</a></li>
-          <li><a href="/about.html" class="hover:text-primary transition-colors">About</a></li>
-          <li><a href="/services.html" class="hover:text-primary transition-colors">Services</a></li>
+          <li><a href="/about.html" class="hover:text-primary transition-colors">About Us</a></li>
           <li><a href="/menu.html" class="hover:text-primary transition-colors">Menu</a></li>
+          <li><a href="/services.html" class="hover:text-primary transition-colors">Catering</a></li>
           <li><a href="/contact.html" class="hover:text-primary transition-colors">Contact</a></li>
         </ul>
       </div>
@@ -183,16 +285,22 @@
     </div>
     <div class="border-t border-white/5 pt-16 flex flex-col md:flex-row justify-between items-center text-white/20 text-[10px] uppercase tracking-[0.4em]">
       <p>&copy; 2024 ALMAS INDIAN CUISINE. Crafted with Excellence.</p>
-      <div class="flex space-x-8 mt-6 md:mt-0">
-        <a href="#" class="hover:text-white transition-colors">Instagram</a>
-        <a href="#" class="hover:text-white transition-colors">Facebook</a>
+      <div class="flex space-x-6 mt-6 md:mt-0">
+        <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/20 hover:border-white/30 transition-all text-white/50 hover:text-white" aria-label="Facebook">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+        </a>
+        <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/20 hover:border-white/30 transition-all text-white/50 hover:text-white" aria-label="Instagram">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        </a>
       </div>
     </div>
   </footer>
 
   <!-- Floating WhatsApp -->
-  <a href="https://wa.me/TBD" class="whatsapp-float group">
-    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.56 5.338-11.898 11.898-11.898 3.18 0 6.17 1.24 8.416 3.486 2.245 2.246 3.485 5.237 3.485 8.413 0 6.561-5.338 11.899-11.898 11.899-2.003 0-3.967-.504-5.713-1.46L0 24zm11.956-2.009c1.782 0 3.52-.48 5.034-1.388l.361-.214 3.75.983-.999-3.656.235-.374c.997-1.589 1.522-3.435 1.522-5.344 0-5.457-4.44-9.897-9.897-9.897-2.645 0-5.13 1.03-7.001 2.901-1.871 1.87-2.901 4.354-2.901 6.996 0 5.458 4.439 9.898 9.897 9.898zm5.419-7.422c-.298-.149-1.761-.869-2.034-.968-.273-.099-.472-.148-.671.148-.198.297-.768.968-.941 1.166-.173.199-.347.223-.645.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.149-.174.198-.298.298-.496.099-.198.05-.371-.025-.521-.075-.148-.671-1.611-.919-2.207-.242-.579-.487-.501-.671-.51l-.571-.01c-.198 0-.521.074-.794.371-.272.297-1.041 1.016-1.041 2.478 0 1.462 1.066 2.875 1.214 3.074.149.198 2.097 3.203 5.081 4.487.71.306 1.265.489 1.696.626.713.226 1.36.194 1.872.118.571-.085 1.761-.719 2.009-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+  <!-- Floating WhatsApp -->
+  <a href="https://wa.me/TBD" class="whatsapp-float group" target="_blank" rel="noopener noreferrer">
+    <span class="whatsapp-tooltip">Chat with us</span>
+    <svg class="w-9 h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
   </a>
 
   <script type="module" src="/src/main.js"></script>
