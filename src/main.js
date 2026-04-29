@@ -9,8 +9,40 @@ AOS.init({
   mirror: false,
 });
 
+// Splash Screen Logic
+function handleSplashScreen() {
+  const splash = document.getElementById('splash-screen');
+  if (!splash) return;
+
+  // Check if splash has already been shown in this session
+  if (sessionStorage.getItem('splash-shown')) {
+    splash.style.display = 'none';
+    splash.classList.add('hidden');
+    document.body.classList.remove('loading');
+    return;
+  }
+
+  // Prevent scrolling during splash
+  document.body.classList.add('loading');
+
+  // Set timeout to hide splash
+  setTimeout(() => {
+    splash.classList.add('hidden');
+    document.body.classList.remove('loading');
+    
+    // Mark as shown in session
+    sessionStorage.setItem('splash-shown', 'true');
+    
+    // Refresh AOS once splash is gone to ensure animations trigger correctly
+    setTimeout(() => {
+      AOS.refresh();
+    }, 400);
+  }, 2500); // 2.5 seconds as requested
+}
+
 // Mobile Menu Toggle
 document.addEventListener('DOMContentLoaded', () => {
+  handleSplashScreen();
   const menuBtn = document.getElementById('menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
   const closeBtn = document.getElementById('close-btn');

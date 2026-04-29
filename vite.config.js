@@ -14,6 +14,7 @@ export default defineConfig({
         services: resolve(__dirname, 'services.html'),
         menu: resolve(__dirname, 'menu.html'),
         contact: resolve(__dirname, 'contact.html'),
+        order: resolve(__dirname, 'order.html'),
       },
     },
   },

@@ -12,6 +12,24 @@
 
 </head>
 <body class="bg-background text-text-primary">
+  <script>
+    if (sessionStorage.getItem('splash-shown')) {
+      document.body.classList.add('splash-hidden');
+    }
+  </script>
+  <!-- Splash Screen -->
+  <div id="splash-screen">
+    <div class="splash-highlight"></div>
+    <div class="splash-content">
+      <div class="splash-logo-container">
+        <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="splash-logo">
+      </div>
+      <div class="splash-text-group">
+        <h1 class="splash-name">ALMAS</h1>
+        <p class="splash-tagline">Indian Cuisine</p>
+      </div>
+    </div>
+  </div>
 
   <!-- Navigation -->
   <nav class="glass-nav w-full z-50">
