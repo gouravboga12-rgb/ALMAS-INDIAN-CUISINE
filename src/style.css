@@ -224,6 +224,15 @@
   pointer-events: all;
 }
 
+/* Footer Adjustments */
+.footer-bottom-container {
+  @apply border-t border-white/5 pt-16 flex flex-col md:flex-row justify-between items-center text-white/20 text-[10px] uppercase tracking-[0.4em] px-6 md:px-12;
+}
+
+.footer-social-links {
+  @apply flex space-x-5 mt-10 transition-all duration-300;
+}
+
 /* Splash Screen */
 #splash-screen {
   position: fixed;
