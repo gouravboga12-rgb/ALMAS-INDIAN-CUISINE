@@ -19,10 +19,27 @@
 
 @layer base {
   body {
-    @apply bg-background text-text-primary font-body antialiased overflow-x-hidden;
-    background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+    @apply text-text-primary font-body antialiased overflow-x-hidden relative;
     background-color: #FFF9F0;
+    background-image: 
+      radial-gradient(circle at center, transparent 0%, rgba(26, 10, 0, 0.08) 100%),
+      url("https://www.transparenttextures.com/patterns/natural-paper.png");
+    /* Removed background-attachment: fixed */
   }
+  
+  /* Background Decorative Elements */
+  .bg-decor {
+    @apply absolute pointer-events-none -z-10 select-none;
+    opacity: 0.25;
+    filter: sepia(100%) hue-rotate(330deg) saturate(250%) brightness(0.7);
+    transition: opacity 0.5s ease;
+  }
+  .bg-decor-1 { top: 5%; left: -8%; width: 400px; transform: rotate(-15deg); }
+  .bg-decor-2 { top: 15%; right: -8%; width: 450px; transform: rotate(20deg); }
+  .bg-decor-3 { top: 25%; left: 10%; width: 350px; transform: rotate(45deg); opacity: 0.15; }
+  .bg-decor-4 { top: 45%; right: 5%; width: 300px; transform: rotate(-10deg); opacity: 0.2; }
+  .bg-decor-5 { top: 65%; left: -5%; width: 400px; transform: rotate(30deg); opacity: 0.15; }
+  .bg-decor-6 { top: 85%; right: 10%; width: 350px; transform: rotate(-45deg); opacity: 0.1; }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-bold tracking-tight;
   }
@@ -55,7 +72,7 @@
   }
   
   .card-premium {
-    @apply bg-white/60 backdrop-blur-sm p-10 rounded-2xl border border-white/40 shadow-soft hover:shadow-hover transition-all duration-500 hover:-translate-y-2;
+    @apply bg-white/60 backdrop-blur-sm p-10 rounded-2xl border border-white/40 shadow-soft hover:shadow-hover transition-all duration-500 hover:-translate-y-2 flex flex-col h-full;
   }
   
   .glass-nav {
@@ -392,4 +409,61 @@ body.splash-hidden #splash-screen {
 /* Ensure content is hidden during splash if needed */
 body.loading {
   overflow: hidden;
+}
+
+/* Menu Selection System */
+.menu-item {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.menu-item.selected {
+    background: rgba(197, 165, 114, 0.1); /* primary with transparency */
+    border-color: #c5a572 !important;
+}
+
+.add-btn {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-btn:hover {
+    transform: scale(1.1);
+}
+
+.add-btn.active {
+    background: #c5a572;
+    color: white;
+    transform: scale(0.9);
+}
+
+#order-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(197, 165, 114, 0.2);
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+}
+
+#order-bar.visible {
+    transform: translateY(0);
+}
+
+.order-count-badge {
+    background: #FFD700; /* secondary */
+    color: #1a1a1a;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }

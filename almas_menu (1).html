@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Almas – Mandi, Biryani & Grills</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8D5A3;
+    --gold-dark: #8B6914;
+    --cream: #FAF6EE;
+    --cream-dark: #F0E8D5;
+    --ink: #1A1208;
+    --ink-mid: #3D2E10;
+    --ink-light: #6B5230;
+    --red-accent: #8B2020;
+    --border: #D4B896;
+  }
+
+  body {
+    background-color: var(--cream);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--ink);
+    color: var(--cream);
+    text-align: center;
+    padding: 60px 40px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(201,168,76,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 100%, rgba(201,168,76,0.08) 0%, transparent 60%);
+  }
+
+  .hero-inner { position: relative; z-index: 1; }
+
+  .ornament {
+    color: var(--gold);
+    font-size: 22px;
+    letter-spacing: 16px;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .hero h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 48px;
+    font-weight: 600;
+    letter-spacing: 5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    line-height: 1.1;
+  }
+
+  .hero-dash {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 6px;
+    color: var(--gold-light);
+    margin: 10px 0 18px;
+    text-transform: uppercase;
+  }
+
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 19px;
+    color: rgba(250,246,238,0.75);
+    letter-spacing: 1px;
+  }
+
+  .hero-rule {
+    width: 160px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 22px auto 0;
+  }
+
+  /* LAYOUT */
+  .menu-body {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 30px 60px;
+  }
+
+  /* SECTION */
+  .section {
+    margin-top: 52px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--border), transparent);
+  }
+
+  .section-line.right {
+    background: linear-gradient(to left, var(--border), transparent);
+  }
+
+  .section-title-wrap {
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .section-icon {
+    font-size: 22px;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+  }
+
+  /* SUBSECTION */
+  .subsection {
+    margin-top: 28px;
+  }
+
+  .subsection-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--gold-dark);
+    border-bottom: 1px solid var(--cream-dark);
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+  }
+
+  /* ITEM */
+  .menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px dotted var(--border);
+  }
+
+  .menu-item:last-child {
+    border-bottom: none;
+  }
+
+  .item-left { flex: 1; }
+
+  .item-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .star-badge {
+    color: var(--gold);
+    font-size: 13px;
+  }
+
+  .item-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    color: var(--ink-light);
+    font-style: italic;
+    margin-top: 2px;
+    line-height: 1.45;
+  }
+
+  .item-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--red-accent);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* SPECIAL TAGS */
+  .tag-weekend {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: normal;
+    font-size: 10px;
+    font-weight: 400;
+    background: var(--gold);
+    color: var(--ink);
+    padding: 1px 6px;
+    border-radius: 2px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* NOTE BELOW SECTION */
+  .section-note {
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-light);
+    text-align: center;
+    margin-top: 12px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    text-align: center;
+    margin: 48px 0 0;
+    color: var(--gold);
+    font-size: 18px;
+    letter-spacing: 12px;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--ink);
+    color: rgba(250,246,238,0.5);
+    text-align: center;
+    padding: 32px 24px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-top: 60px;
+  }
+
+  .footer .footer-name {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* MANDI DUAL-PRICE */
+  .dual-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 13.5px;
+    color: var(--red-accent);
+    text-align: right;
+    white-space: nowrap;
+  }
+  .dual-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    color: var(--ink-light);
+    display: block;
+  }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 30px; }
+    .menu-body { padding: 0 16px 40px; }
+    .menu-item { flex-direction: column; gap: 2px; }
+    .item-price, .dual-price { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <span class="ornament">✦ ✦ ✦</span>
+    <h1>Almas</h1>
+    <div class="hero-dash">Mandi · Biryani · Grills</div>
+    <div class="hero-tagline">Hyderabadi & Lebanese Flavors with a Royal Touch</div>
+    <div class="hero-rule"></div>
+  </div>
+</div>
+
+<div class="menu-body">
+
+  <!-- SOUPS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line"></div>
+      <div class="section-title-wrap">
+        <span class="section-icon">🍲</span>
+        <div class="section-title">Soups</div>
+      </div>
+      <div class="section-line right"></div>
+    </div>
+
+    <div class="menu-item">
+      <div class="item-left">
+        <div class="item-name">Sweet Corn Soup</div>
+        <div class="item-desc">Velvety corn broth with mild seasoning — warm, light and comforting.</div>
+      </div>
+      <div class="item-price">$4.99</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-left">
+        <div class="item-name">Veg Manchow</div>
+        <div class="item-desc">Indo-Chinese spiced vegetable soup crowned with crispy fried noodles.</div>
+      </div>
+      <div class="item-price">$4.99</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-left">
+        <div class="item-name">Chicken Shorba</div>
+        <div class="item-desc">Aromatic Hyderabadi chicken broth slow-simmered with whole spices.</div>
+      </div>
+      <div class="item-price">$5.99</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-left">
+        <div class="item-name">Mutton Shorba</div>
+        <div class="item-desc">Rich slow-cooked mutton broth, deeply spiced and soul-warming.</div>
+      </div>
+      <div class="item-price">$6.99</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-left">
+        <div class="item-name">Mutton Paya</div>
+        <div class="item-desc">Traditional slow-simmered trotters soup with bold, hearty spicing.</div>
+      </div>
+      <div class="item-price">$6.99</div>
+    </div>
+    <div class="menu-item">
+      <div class="item-left">
+        <div class="item-name">Mutton Marag <span class="tag-weekend">Weekend Special</span></div>
+        <div class="item-desc">Royal Hyderabadi soup of tender mutton in a silky, cream-spiced broth.</div>
+      </div>
+      <div class="item-price">$7.99</div>
+    </div>
+  </div>
+
+  <!-- APPETIZERS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line"></div>
+      <div class="section-title-wrap">
+        <span class="section-icon">🍢</span>
+        <div class="section-title">Appetizers</div>
+      </div>
+      <div class="section-line right"></div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-label">Vegetarian</div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Veg Lollypop</div><div class="item-desc">Crispy vegetable fritters hand-shaped and golden fried to a perfect crunch.</div></div><div class="item-price">$15.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Chilli Paneer / Mushroom</div><div class="item-desc">Indo-Chinese style paneer or mushroom tossed in a fiery chilli garlic sauce.</div></div><div class="item-price">$15.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Bangla Paneer</div><div class="item-desc">Paneer prepared in robust Bengali-inspired spices with bold, layered flavors.</div></div><div class="item-price">$15.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Mushroom Duplex</div><div class="item-desc">Stuffed mushrooms enveloped in a crispy golden coating — elegant and earthy.</div></div><div class="item-price">$15.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Hara Bara Kabab</div><div class="item-desc">Spinach and green pea patties spiced with herbs and pan-fried to a crisp.</div></div><div class="item-price">$15.99</div></div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-label">Chicken</div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Chicken Pepper Fry</div><div class="item-desc">South Indian style chicken stir-fried with cracked black pepper and curry leaves.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Chilli Chicken Dry</div><div class="item-desc">Crispy fried chicken tossed in a tangy, sweet and spicy chilli sauce.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Coriander Chicken</div><div class="item-desc">Succulent chicken bathed in fresh green coriander marinade — bright and fragrant.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Chicken Lollypop</div><div class="item-desc">Juicy wingette drumettes coated in our signature spiced glaze and deep fried.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Bangla Chicken</div><div class="item-desc">Chicken steeped in bold Bengali-style aromatics for a deeply flavorful bite.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Pachimirchi Chicken 65</div><div class="item-desc">The Hyderabadi classic Chicken 65 given a fiery green chilli twist.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Chicken 555</div><div class="item-desc">Intensely spiced and crispy — a beloved Hyderabad street-style showstopper.</div></div><div class="item-price">$16.99</div></div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-label">Mutton</div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Mutton Pepper Fry</div><div class="item-desc">Tender mutton pieces tossed in an assertive black pepper and spice masala.</div></div><div class="item-price">$17.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Mutton Ghee Roast</div><div class="item-desc">Slow-roasted mutton in clarified butter with deep, aromatic spice layers.</div></div><div class="item-price">$17.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Pathar Ka Gosht</div><div class="item-desc">Authentic Hyderabadi mutton grilled on a stone for incomparable smoky flavor.</div></div><div class="item-price">$17.99</div></div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-label">Seafood</div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Shrimp — Loose / Chilli</div><div class="item-desc">Plump shrimp prepared classic style or tossed in a punchy chilli sauce.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Firecracker Shrimp</div><div class="item-desc">Crunchy shrimp glazed in a sweet-heat sauce that packs a bold punch.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Fish Chips</div><div class="item-desc">Golden battered fish fillets served alongside perfectly salted fries.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Masala Fish Strips</div><div class="item-desc">Spice-marinated fish strips coated in a crispy, seasoned crumb.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Crab Stuffed Shrimp</div><div class="item-desc">Jumbo shrimp filled with a savory spiced crab mixture — surf on surf.</div></div><div class="item-price">$17.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Full Fish Tawa Fry</div><div class="item-desc">Whole fish marinated in Hyderabadi spices and seared on a flat griddle.</div></div><div class="item-price">$18.99</div></div>
+    </div>
+  </div>
+
+  <!-- TANDOOR -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line"></div>
+      <div class="section-title-wrap">
+        <span class="section-icon">🔥</span>
+        <div class="section-title">Tandoor Treasures</div>
+      </div>
+      <div class="section-line right"></div>
+    </div>
+
+    <div class="menu-item"><div class="item-left"><div class="item-name">Paneer Tikka — Malai / Afghani / Tandoori / Hariyali</div><div class="item-desc">Marinated paneer cubes roasted in the clay oven — four bold flavor profiles.</div></div><div class="item-price">$17.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Malai Broccoli</div><div class="item-desc">Broccoli florets in a creamy malai marinade, charred beautifully in the tandoor.</div></div><div class="item-price">$17.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Kalmi Kebab</div><div class="item-desc">Juicy chicken leg pieces marinated in rich spiced cream and grilled to perfection.</div></div><div class="item-price">$17.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Chicken Wings</div><div class="item-desc">Smoky tandoori-spiced wings with a satisfying char and moist interior.</div></div><div class="item-price">$17.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Tandoori Chicken</div><div class="item-desc">The timeless whole chicken — yogurt-marinated and charcoal-kissed in the clay oven.</div></div><div class="item-price">$17.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Lemon Tangdi Kebab <em style="font-size:12px; color: var(--ink-light);">(5 pcs)</em></div><div class="item-desc">Zesty lemon-marinated drumsticks grilled until juicy with a citrus-spice crust.</div></div><div class="item-price">$17.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Chicken Tikka — Malai / Afghani / Tandoori</div><div class="item-desc">Boneless chicken chunks marinated your way and roasted in the traditional tandoor.</div></div><div class="item-price">$17.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Grill Chicken — Whole Bird</div><div class="item-desc">Charcoal-grilled whole chicken with bold seasoning, served half or whole.</div></div><div class="item-price">$18.99 / $29.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Tandoor Full Fish</div><div class="item-desc">Whole fish blanketed in spice paste and slow-roasted in the clay oven.</div></div><div class="item-price">$19.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Tandoor Family Platter</div><div class="item-desc">A grand assortment of our tandoor signatures — perfect for sharing and celebrating.</div></div><div class="item-price">Ask server</div></div>
+  </div>
+
+  <!-- MAINS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line"></div>
+      <div class="section-title-wrap">
+        <span class="section-icon">🍛</span>
+        <div class="section-title">Mains</div>
+      </div>
+      <div class="section-line right"></div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-label">Vegetarian</div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Lasooni Dal Tadka</div><div class="item-desc">Yellow lentils tempered with sizzling garlic, cumin and whole spices.</div></div><div class="item-price">$15.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Dal Makhani</div><div class="item-desc">Velvety black lentils slow-cooked overnight with butter and cream.</div></div><div class="item-price">$15.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Paneer Butter Masala</div><div class="item-desc">Soft paneer nestled in a rich, silky tomato-butter gravy — a timeless classic.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Paneer Tikka Masala</div><div class="item-desc">Tandoor-grilled paneer cubes simmered in a smoky, spiced masala curry.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Okra Double Double</div><div class="item-desc">Crispy bhindi cooked twice for texture, tossed in a robust masala base.</div></div><div class="item-price">$15.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Mix Veg Curry / Veg Kolhapuri</div><div class="item-desc">Seasonal vegetables in a vibrant Kolhapuri spice gravy — boldly fiery.</div></div><div class="item-price">$15.99</div></div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-label">Chicken</div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Butter Chicken</div><div class="item-desc">Tender chicken in the iconic creamy tomato-cashew gravy, mildly spiced.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Chicken Makhani</div><div class="item-desc">A rich buttery chicken preparation with warm, gentle spice notes throughout.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Kadai Chicken</div><div class="item-desc">Wok-cooked chicken with bell peppers, onion and a fragrant fresh masala.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Hyderabadi Chicken Curry</div><div class="item-desc">Traditional on-the-bone chicken curry with the signature heat of Hyderabad.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Dum Ka Murgh</div><div class="item-desc">Whole chicken slow-cooked sealed in a vessel to lock in deep, smoky flavor.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Almas Spl Chicken Curry (Laal Maas) <span class="star-badge">★</span></div><div class="item-desc">Our bold house signature — fiery red chilli curry with complex, layered spicing.</div></div><div class="item-price">$17.99</div></div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-label">Mutton</div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Hyderabadi Mutton Curry</div><div class="item-desc">Bone-in mutton simmered in the robust, spice-laden tradition of Hyderabad.</div></div><div class="item-price">$17.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Dum Ka Mutton</div><div class="item-desc">Mutton slow-cooked sealed under dough, infusing deep aromatic perfume into every bite.</div></div><div class="item-price">$17.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Mutton Kheema Masala</div><div class="item-desc">Minced mutton cooked down with onion, tomato and bold whole spices.</div></div><div class="item-price">$17.99</div></div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-label">Seafood</div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Fish Pulusu</div><div class="item-desc">Tangy tamarind fish curry in the classic Andhra style — sour, spicy, addictive.</div></div><div class="item-price">$17.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Almas Spl Fish Curry</div><div class="item-desc">Our house fish curry — a rich, aromatic gravy built on our secret spice blend.</div></div><div class="item-price">$17.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Shrimp Goan Curry</div><div class="item-desc">Plump shrimp in a coconut milk and tamarind coastal curry, lightly spiced.</div></div><div class="item-price">$17.99</div></div>
+    </div>
+  </div>
+
+  <!-- BIRYANI -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line"></div>
+      <div class="section-title-wrap">
+        <span class="section-icon">🍚</span>
+        <div class="section-title">Biryani</div>
+      </div>
+      <div class="section-line right"></div>
+    </div>
+    <p class="section-note">Fragrant basmati rice slow-cooked with spices and layered in traditional dum style</p>
+    <div style="margin-top: 20px;">
+      <div class="menu-item"><div class="item-left"><div class="item-name">Veg Cocktail Biryani</div><div class="item-desc">A colorful medley of seasonal vegetables layered with aromatic saffron rice.</div></div><div class="item-price">$14.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Paneer Biryani — 65 / Pachimirchi</div><div class="item-desc">Bold-flavored paneer layered with spiced basmati in classic dum style.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Chicken Dum Biryani</div><div class="item-desc">The Hyderabadi icon — tender chicken sealed with saffron-perfumed basmati.</div></div><div class="item-price">$14.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Chicken Fry Piece Biryani</div><div class="item-desc">Crispy fried chicken pieces nestled in fragrant, layered biryani rice.</div></div><div class="item-price">$15.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Almas Spl Chicken Biryani <span class="star-badge">★</span></div><div class="item-desc">Our house special — elevated spicing and richer flavors for the true connoisseur.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Mutton Dum Biryani</div><div class="item-desc">Slow-cooked mutton sealed in the pot with aromatic basmati in true dum style.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Mutton Ghee Roast Biryani</div><div class="item-desc">Ghee-roasted mutton at its richest, layered through fragrant biryani rice.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Mutton Fry Piece Biryani</div><div class="item-desc">Spice-fried mutton pieces nestled through flavorful saffron basmati.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Mutton Kheema Biryani</div><div class="item-desc">Spiced minced mutton folded into fragrant biryani rice — hearty and bold.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Lamb Shank Biryani <span class="star-badge">★</span></div><div class="item-desc">A whole slow-braised lamb shank crowning a bed of rich, aromatic biryani rice.</div></div><div class="item-price">$20.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Almas Spl Mutton Biryani <span class="star-badge">★</span></div><div class="item-desc">Signature mutton biryani with royal spicing — our proudest dum creation.</div></div><div class="item-price">$18.99</div></div>
+    </div>
+  </div>
+
+  <!-- MANDI -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line"></div>
+      <div class="section-title-wrap">
+        <span class="section-icon">🍖</span>
+        <div class="section-title">Mandi — Almas Signature</div>
+      </div>
+      <div class="section-line right"></div>
+    </div>
+    <p class="section-note">Authentic Arabian rice slow-cooked with smoky flavors · Prices: Single / Full</p>
+
+    <div class="subsection">
+      <div class="subsection-label">Vegetarian</div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Malai Kofta Mandi</div><div class="item-desc">Soft cream-filled kofta dumplings resting over fragrant Arabian mandi rice.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$15.99 / $23.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Soya Chaap Mandi</div><div class="item-desc">Marinated soya chaap with mild spicing served alongside smoky mandi rice.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$15.99 / $23.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Egg Plant Mandi</div><div class="item-desc">Smoky charred eggplant paired with aromatic, slow-cooked Arabian rice.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$15.99 / $23.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Paneer Tikka Mandi — Malai / Tandoori / Hariyali</div><div class="item-desc">Tandoor-kissed paneer served over rich mandi rice with your choice of marinade.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$15.99 / $23.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Egg Roast Mandi</div><div class="item-desc">Spiced egg roast in a masala base served atop flavorful mandi rice.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$15.99 / $23.99</div></div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-label">Chicken</div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Chicken Alfaham Mandi <span class="star-badge">★</span></div><div class="item-desc">Our bestseller — charcoal-grilled Alfaham chicken on fragrant smoky mandi rice.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$16.99 / $24.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Chicken Fry Piece Mandi</div><div class="item-desc">Crispy spiced fried chicken pieces served over aromatic Arabian-style rice.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$16.99 / $24.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Chicken Broaster Mandi</div><div class="item-desc">Crunchy pressure-fried broasted chicken atop warm, herb-infused mandi rice.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$16.99 / $24.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Chicken Tandoori Mandi</div><div class="item-desc">Clay-oven roasted chicken combined with the smoky depth of Arabian mandi.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$16.99 / $24.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Grill Chicken Mandi</div><div class="item-desc">Half or whole charcoal-grilled chicken served on a bed of rich mandi rice.</div></div><div class="dual-price"><span class="dual-label">Half / Full</span>$19.99 / $36.99</div></div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-label">Mutton</div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Mutton Juicy Mandi</div><div class="item-desc">Fork-tender mutton slow-cooked to juicy perfection over fragrant mandi rice.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$17.99 / $26.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Mutton Fry Piece Mandi</div><div class="item-desc">Spice-fried mutton pieces paired with the smoky warmth of Arabian rice.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$17.99 / $26.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Mutton Ghee Roast Mandi</div><div class="item-desc">Ghee-roasted mutton with deep caramelized spicing served over mandi rice.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$17.99 / $26.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Lamb Shank Mandi <span class="star-badge">★</span></div><div class="item-desc">A premium slow-braised whole lamb shank resting on saffron mandi rice.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$21.99 / $39.99</div></div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-label">Seafood</div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Full Fish Tawa Fry Mandi</div><div class="item-desc">Whole spice-marinated fish pan-seared on the tawa, served with mandi rice.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$18.99 / $30.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Fish Broaster Mandi</div><div class="item-desc">Golden crispy broasted fish fillet paired with aromatic Arabian rice.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$16.99 / $25.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Shrimp Tawa Fry Mandi</div><div class="item-desc">Sizzling tawa-spiced shrimp tossed and served over fragrant mandi rice.</div></div><div class="dual-price"><span class="dual-label">Single / Full</span>$16.99 / $25.99</div></div>
+    </div>
+  </div>
+
+  <!-- PULAO -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line"></div>
+      <div class="section-title-wrap">
+        <span class="section-icon">🍲</span>
+        <div class="section-title">Pulao</div>
+      </div>
+      <div class="section-line right"></div>
+    </div>
+    <p class="section-note">Lightly spiced rice dishes gently cooked with herbs and choice protein</p>
+    <div style="margin-top: 20px;">
+      <div class="menu-item"><div class="item-left"><div class="item-name">Cashew Paneer Pulao</div><div class="item-desc">Paneer and roasted cashews through aromatic basmati — rich and satisfying.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Mushroom Pulao</div><div class="item-desc">Earthy mushrooms cooked gently into fragrant, herbed basmati rice.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Baigan Pulao</div><div class="item-desc">Smoky eggplant folded through subtly spiced basmati with fresh herbs.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Chicken Ghee Roast Pulao</div><div class="item-desc">Ghee-roasted chicken pieces stirred through fragrant herbed rice.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Telangana Kura Kodi Pulao</div><div class="item-desc">A regional Telangana chicken curry-style pulao — homestyle and aromatic.</div></div><div class="item-price">$16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Mutton Sukka Pulao</div><div class="item-desc">Dry-roasted mutton with a bold spice crust mixed into fragrant basmati.</div></div><div class="item-price">$17.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Mutton Roast Pulao</div><div class="item-desc">Oven-roasted mutton layered through rice for a hearty, rustic preparation.</div></div><div class="item-price">$17.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Chepa Pulao</div><div class="item-desc">Fish-based pulao with coastal Andhra spices and a gentle tamarind note.</div></div><div class="item-price">$17.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Royyala Vepudu Pulao</div><div class="item-desc">Andhra-style spicy stir-fried shrimp pulao with vibrant, fiery seasoning.</div></div><div class="item-price">$17.99</div></div>
+    </div>
+  </div>
+
+  <!-- CHINESE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line"></div>
+      <div class="section-title-wrap">
+        <span class="section-icon">🍜</span>
+        <div class="section-title">Chinese</div>
+      </div>
+      <div class="section-line right"></div>
+    </div>
+    <p class="section-note">Indo-Chinese favorites — wok-tossed with bold, spicy flavors</p>
+    <div style="margin-top: 20px;">
+      <div class="menu-item"><div class="item-left"><div class="item-name">Fried Rice — Veg / Chicken / Shrimp</div><div class="item-desc">Wok-tossed rice with vegetables and your choice of protein in savory soy sauce.</div></div><div class="item-price">$13.99 – $15.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Schezwan Fried Rice — Veg / Chicken / Shrimp</div><div class="item-desc">Fried rice amped up with fiery Schezwan chilli paste and aromatics.</div></div><div class="item-price">$14.99 – $16.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Hakka Noodles — Veg / Chicken / Shrimp</div><div class="item-desc">Stir-fried egg noodles with vegetables and sauce in classic Indo-Chinese style.</div></div><div class="item-price">$13.99 – $15.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Schezwan Hakka Noodles — Veg / Chicken / Shrimp</div><div class="item-desc">Noodles tossed in Schezwan sauce for an extra punch of spicy bold heat.</div></div><div class="item-price">$14.99 – $16.99</div></div>
+    </div>
+  </div>
+
+  <!-- BREADS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line"></div>
+      <div class="section-title-wrap">
+        <span class="section-icon">🫓</span>
+        <div class="section-title">Breads</div>
+      </div>
+      <div class="section-line right"></div>
+    </div>
+    <p class="section-note">Freshly baked to order in our clay tandoor</p>
+    <div style="margin-top: 20px;">
+      <div class="menu-item"><div class="item-left"><div class="item-name">Naan — Plain / Butter / Garlic / Bullet</div><div class="item-desc">Soft, pillowy tandoor-baked naan in your preferred style — plain to fiery.</div></div><div class="item-price">$2.99 – $4.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Tandoori Roti — Plain / Butter</div><div class="item-desc">Whole wheat flatbread baked directly on the clay oven wall, lightly charred.</div></div><div class="item-price">$2.99 – $3.99</div></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name">Bread Basket</div><div class="item-desc">A curated selection of fresh-baked tandoor breads — ideal for the whole table.</div></div><div class="item-price">$14.99</div></div>
+    </div>
+  </div>
+
+  <!-- KIDS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line"></div>
+      <div class="section-title-wrap">
+        <span class="section-icon">🧒</span>
+        <div class="section-title">Kids Menu</div>
+      </div>
+      <div class="section-line right"></div>
+    </div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Stuffed Naan — Cheese / Chicken Tikka</div><div class="item-desc">Soft naan filled with gooey mozzarella or tender chicken tikka — kids love it.</div></div><div class="item-price">$6.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Chicken Tenders with Fries</div><div class="item-desc">Crispy breaded chicken strips served with golden salted fries.</div></div><div class="item-price">$11.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Fish & Chips</div><div class="item-desc">Golden battered fish with a crispy fry on the side — a classic crowd-pleaser.</div></div><div class="item-price">$11.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Fries</div><div class="item-desc">Classic salted potato fries, hot and crispy.</div></div><div class="item-price">$4.99</div></div>
+  </div>
+
+  <!-- BEVERAGES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line"></div>
+      <div class="section-title-wrap">
+        <span class="section-icon">🥤</span>
+        <div class="section-title">Beverages</div>
+      </div>
+      <div class="section-line right"></div>
+    </div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Soft Drinks</div><div class="item-desc">Classic chilled sodas to refresh between bites.</div></div><div class="item-price">$1.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Lassi — Mango / Sweet / Salt</div><div class="item-desc">Thick yogurt-based drink blended with your choice of mango, sweet or salted.</div></div><div class="item-price">$5.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Fresh Lime Soda — Sweet / Salt</div><div class="item-desc">Freshly squeezed lime with sparkling water — sweet or salted, endlessly refreshing.</div></div><div class="item-price">$5.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Butter Milk</div><div class="item-desc">Light, chilled spiced yogurt drink — the perfect cooling companion to spicy food.</div></div><div class="item-price">$3.99</div></div>
+  </div>
+
+  <!-- TEA -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line"></div>
+      <div class="section-title-wrap">
+        <span class="section-icon">☕</span>
+        <div class="section-title">Tea & Specials</div>
+      </div>
+      <div class="section-line right"></div>
+    </div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Irani Chai <span class="star-badge">★</span></div><div class="item-desc">Hyderabad's beloved slow-brewed milky tea — creamy, sweet and utterly comforting.</div></div><div class="item-price">$1.99 / $2.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Bun Maska <span class="star-badge">★</span></div><div class="item-desc">Pillowy soft bun slathered in butter — the perfect companion to a cup of chai.</div></div><div class="item-price">$4.99</div></div>
+  </div>
+
+  <!-- DESSERTS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-line"></div>
+      <div class="section-title-wrap">
+        <span class="section-icon">🍰</span>
+        <div class="section-title">Desserts</div>
+      </div>
+      <div class="section-line right"></div>
+    </div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Tres Leches</div><div class="item-desc">Airy sponge cake soaked in three milks — sweet, moist and delicately rich.</div></div><div class="item-price">$7.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Sizzling Brownie with Ice Cream</div><div class="item-desc">Warm fudgy brownie served sizzling on a cast iron plate with vanilla ice cream.</div></div><div class="item-price">$7.99</div></div>
+    <div class="menu-item"><div class="item-left"><div class="item-name">Death by Chocolate</div><div class="item-desc">A decadent layered chocolate dessert — intense, indulgent and unapologetic.</div></div><div class="item-price">$8.99</div></div>
+  </div>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span class="footer-name">ALMAS</span>
+  Mandi · Biryani · Grills &nbsp;|&nbsp; Hyderabadi & Lebanese Flavors
+  <br><br>
+  ★ House Signature &nbsp;·&nbsp; Prices subject to change &nbsp;·&nbsp; Please inform your server of any allergies
+</div>
+
+</body>
+</html>

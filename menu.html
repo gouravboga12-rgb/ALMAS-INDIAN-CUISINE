@@ -1,20 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Menu | ALMAS Indian Cuisine</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="/src/style.css">
 </head>
+
 <body class="bg-background text-text-primary">
   <script>
     if (sessionStorage.getItem('splash-shown')) {
       document.body.classList.add('splash-hidden');
     }
   </script>
+
+  <!-- Background Decorative Elements -->
+  <img src="/spice_decor.png" class="bg-decor bg-decor-1" alt="">
+  <img src="/spice_decor.png" class="bg-decor bg-decor-2" alt="">
+  <img src="/spice_decor.png" class="bg-decor bg-decor-3" alt="">
+  <img src="/spice_decor.png" class="bg-decor bg-decor-4" alt="">
+  <img src="/spice_decor.png" class="bg-decor bg-decor-5" alt="">
+  <img src="/spice_decor.png" class="bg-decor bg-decor-6" alt="">
   <!-- Splash Screen -->
   <div id="splash-screen">
     <div class="splash-highlight"></div>
@@ -38,11 +50,16 @@
         </a>
       </div>
       <div class="hidden md:flex items-center space-x-12">
-        <a href="/" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Home</a>
-        <a href="/about.html" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">About Us</a>
-        <a href="/menu.html" class="text-sm uppercase tracking-widest font-semibold text-primary border-b border-primary">Menu</a>
-        <a href="/services.html" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Catering</a>
-        <a href="/contact.html" class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Contact</a>
+        <a href="/"
+          class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Home</a>
+        <a href="/about.html"
+          class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">About Us</a>
+        <a href="/menu.html"
+          class="text-sm uppercase tracking-widest font-semibold text-primary border-b border-primary">Menu</a>
+        <a href="/services.html"
+          class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Catering</a>
+        <a href="/contact.html"
+          class="text-sm uppercase tracking-widest font-semibold hover:text-primary transition-colors">Contact</a>
         <a href="/order.html" class="btn-premium py-3 px-8 text-xs">Order Now</a>
       </div>
       <!-- Mobile Controls -->
@@ -63,7 +80,9 @@
   <!-- Mobile Menu Half-Panel -->
   <div id="mobile-menu">
     <button id="close-btn" class="absolute top-6 right-6 text-white/60 hover:text-white transition-colors">
-      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
     </button>
     <div class="mb-10">
       <img src="/logo.png" alt="ALMAS" class="h-14 w-auto object-contain opacity-80">
@@ -71,7 +90,7 @@
     <nav class="flex flex-col space-y-6 text-white text-lg font-semibold uppercase tracking-widest">
       <a href="/" class="hover:text-primary transition-colors">Home</a>
       <a href="/about.html" class="hover:text-primary transition-colors">About Us</a>
-      <a href="/menu.html" class="hover:text-primary transition-colors">Menu</a>
+      <a href="/menu.html" class="hover:text-primary transition-colors text-primary">Menu</a>
       <a href="/services.html" class="hover:text-primary transition-colors">Catering</a>
       <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
     </nav>
@@ -79,91 +98,1174 @@
     <div class="mt-10 pt-8 border-t border-white/10 w-full">
       <p class="text-white/30 text-[10px] uppercase tracking-widest mb-6">209 Ellesmere Rd, Unit 6, Scarborough, ON</p>
       <div class="flex space-x-4">
-        <a href="#" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 transition-all">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+        <a href="https://www.facebook.com/share/12AVoRkQWbe/?mibextid=wwXIfr" target="_blank"
+          class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 transition-all">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+          </svg>
         </a>
-        <a href="#" class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 transition-all">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        <a href="https://www.instagram.com/almas_toronto?igsh=MWhyOHVvaXV5dnI3OQ==" target="_blank"
+          class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 transition-all">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>
+        <a href="https://www.tiktok.com/@almas_indian_cuisine?_t=ZS-8tW2D9Zc9PZ&_r=1" target="_blank"
+          class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 transition-all">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.04-.1z" />
+          </svg>
         </a>
       </div>
     </div>
   </div>
-  </div>
 
+  <!-- Category Quick Nav (Sticky) -->
+  <div
+    class="sticky top-28 md:top-24 bg-white/80 backdrop-blur-md z-40 border-b border-primary/10 overflow-x-auto whitespace-nowrap hide-scrollbar py-4 px-6">
+    <div class="max-w-7xl mx-auto flex space-x-8 text-[10px] uppercase tracking-widest font-bold">
+      <a href="#soups" class="hover:text-primary transition-colors">Soups</a>
+      <a href="#appetizers" class="hover:text-primary transition-colors">Appetizers</a>
+      <a href="#tandoor" class="hover:text-primary transition-colors">Tandoor</a>
+      <a href="#mains" class="hover:text-primary transition-colors">Mains</a>
+      <a href="#biryani" class="hover:text-primary transition-colors">Biryani</a>
+      <a href="#mandi" class="hover:text-primary transition-colors">Mandi</a>
+      <a href="#pulao" class="hover:text-primary transition-colors">Pulao</a>
+      <a href="#chinese" class="hover:text-primary transition-colors">Chinese</a>
+      <a href="#breads" class="hover:text-primary transition-colors">Breads</a>
+      <a href="#desserts" class="hover:text-primary transition-colors">Desserts</a>
+    </div>
+  </div>
 
   <!-- Hero -->
-  <section class="bg-primary-deep py-40 text-white text-center">
-    <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-      <span class="text-secondary font-bold tracking-[0.4em] uppercase text-[10px] md:text-sm mb-6 block" data-aos="fade-up">A Symphony of Spices</span>
-      <h1 class="text-4xl sm:text-6xl md:text-8xl font-black mb-8" data-aos="fade-up" data-aos-delay="100">The <span class="italic text-secondary">Menu.</span></h1>
+  <section class="relative h-[60vh] flex items-center justify-center text-white text-center overflow-hidden">
+    <div class="absolute inset-0 bg-black/40 z-10"></div>
+    <img src="/mutton_dum_biryani_premium.png" alt="Royal Menu" class="absolute inset-0 w-full h-full object-cover">
+    <div class="relative z-20 max-w-4xl px-6">
+      <span class="text-secondary font-bold tracking-[0.4em] uppercase text-xs md:text-sm mb-6 block"
+        data-aos="fade-up">A Legacy of Taste</span>
+      <h1 class="text-5xl md:text-8xl font-black mb-8" data-aos="fade-up" data-aos-delay="100">The <span
+          class="italic text-secondary">Menu.</span></h1>
     </div>
   </section>
 
-  <!-- Menu Content -->
-  <section class="py-32">
-    <div class="max-w-4xl mx-auto px-6 md:px-12">
-      
-      <!-- Category 1 -->
-      <div class="mb-32" data-aos="fade-up">
-        <div class="text-center mb-16">
-          <h2 class="text-4xl font-heading mb-4 italic">Hyderabadi Biryani & Mandi</h2>
-          <div class="w-12 h-px bg-gold mx-auto"></div>
+  <!-- Menu Body -->
+  <div class="max-w-7xl mx-auto px-6 md:px-12 py-32 space-y-40">
+
+    <!-- Soups Section -->
+    <section id="soups" class="scroll-mt-40" data-aos="fade-up">
+      <div class="flex items-center gap-10 mb-16">
+        <div class="flex-1 h-px bg-primary/10"></div>
+        <div class="text-center">
+          <span class="text-gold text-2xl mb-2 block">🍲</span>
+          <h2 class="text-4xl font-heading">Soups</h2>
         </div>
-        <div class="space-y-12">
-          <div class="group flex justify-between items-end border-b border-primary/10 pb-4">
-            <div class="max-w-xl">
-              <h4 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Special Mutton Biryani</h4>
-              <p class="text-text-secondary font-light text-sm italic">Slow-cooked premium mutton nestled in fragrant, long-grain basmati rice.</p>
-            </div>
-            <span class="text-gold font-bold text-lg">$22.99</span>
+        <div class="flex-1 h-px bg-primary/10"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <!-- Featured Soup -->
+        <div class="card-premium flex flex-col md:flex-row gap-8 overflow-hidden group">
+          <div class="w-full md:w-1/2 aspect-square overflow-hidden rounded-xl">
+            <img src="/image copy 13.png"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              alt="Mutton Marag">
           </div>
-          <div class="group flex justify-between items-end border-b border-primary/10 pb-4">
-            <div class="max-w-xl">
-              <h4 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Chicken Dum Biryani</h4>
-              <p class="text-text-secondary font-light text-sm italic">Traditional Hyderabadi spice blend, served with Mirchi ka Salan and Raita.</p>
-            </div>
-            <span class="text-gold font-bold text-lg">$18.99</span>
+          <div class="w-full md:w-1/2 flex flex-col justify-center">
+            <span class="text-gold font-bold text-[10px] uppercase tracking-widest mb-2">Weekend Special</span>
+            <h3 class="text-2xl font-bold mb-4">Mutton Marag</h3>
+            <p class="text-text-secondary text-sm italic mb-6">Royal Hyderabadi soup of tender mutton in a silky,
+              cream-spiced broth.</p>
+            <span class="text-primary font-bold text-xl">$7.99</span>
           </div>
-          <div class="group flex justify-between items-end border-b border-primary/10 pb-4">
-            <div class="max-w-xl">
-              <h4 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Chicken Mandi Platter</h4>
-              <p class="text-text-secondary font-light text-sm italic">Roasted whole chicken on a bed of spiced Yemeni Mandi rice with dried fruits.</p>
+        </div>
+
+        <!-- Soup List -->
+        <div class="space-y-4">
+          <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+            <div class="flex gap-4 items-center">
+              <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                <img src="/image copy 8.png" alt="Sweet Corn Soup" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div>
+                <h4 class="font-bold">Sweet Corn Soup</h4>
+                <p class="text-xs text-text-secondary italic">Velvety corn broth with mild seasoning.</p>
+              </div>
             </div>
-            <span class="text-gold font-bold text-lg">$20.99</span>
+            <span class="text-gold font-bold">$4.99</span>
+          </div>
+          <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+            <div class="flex gap-4 items-center">
+              <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                <img src="/image copy 9.png" alt="Veg Manchow" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div>
+                <h4 class="font-bold">Veg Manchow</h4>
+                <p class="text-xs text-text-secondary italic">Crowned with crispy fried noodles.</p>
+              </div>
+            </div>
+            <span class="text-gold font-bold">$4.99</span>
+          </div>
+          <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+            <div class="flex gap-4 items-center">
+              <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                <img src="/image copy 10.png" alt="Chicken Shorba" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div>
+                <h4 class="font-bold">Chicken Shorba</h4>
+                <p class="text-xs text-text-secondary italic">Aromatic Hyderabadi chicken broth.</p>
+              </div>
+            </div>
+            <span class="text-gold font-bold">$5.99</span>
+          </div>
+          <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+            <div class="flex gap-4 items-center">
+              <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                <img src="/image copy 11.png" alt="Mutton Shorba" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div>
+                <h4 class="font-bold">Mutton Shorba</h4>
+                <p class="text-xs text-text-secondary italic">Rich slow-cooked mutton broth.</p>
+              </div>
+            </div>
+            <span class="text-gold font-bold">$6.99</span>
+          </div>
+          <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+            <div class="flex gap-4 items-center">
+              <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                <img src="/image copy 12.png" alt="Mutton Paya" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div>
+                <h4 class="font-bold">Mutton Paya</h4>
+                <p class="text-xs text-text-secondary italic">Traditional slow-simmered trotters soup.</p>
+              </div>
+            </div>
+            <span class="text-gold font-bold">$6.99</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Appetizers Section -->
+    <section id="appetizers" class="scroll-mt-40" data-aos="fade-up">
+      <div class="flex items-center gap-10 mb-16">
+        <div class="flex-1 h-px bg-primary/10"></div>
+        <div class="text-center">
+          <span class="text-gold text-2xl mb-2 block">🍢</span>
+          <h2 class="text-4xl font-heading">Appetizers</h2>
+        </div>
+        <div class="flex-1 h-px bg-primary/10"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Featured App -->
+        <div class="card-premium h-fit group">
+          <div class="aspect-video rounded-xl overflow-hidden mb-6">
+            <img src="/chicken_65_appetizer.png" alt="Chicken 65"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+          </div>
+          <h3 class="text-2xl font-bold mb-2">Chicken 65</h3>
+          <p class="text-text-secondary text-sm italic mb-4">The Hyderabadi classic given a fiery twist with green
+            chillies.</p>
+          <div class="mt-auto">
+            <span class="text-primary font-bold">$16.99</span>
+          </div>
+        </div>
+
+        <!-- App Lists by Category -->
+        <div class="space-y-10 lg:col-span-2">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div>
+              <h5 class="text-gold uppercase tracking-widest text-[10px] font-bold mb-6 border-b border-gold/20 pb-2">
+                Vegetarian</h5>
+              <div class="space-y-4">
+                <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                  <div class="flex gap-4 items-center">
+                    <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                      <img src="/veg_lollypop_appetizer.png" alt="Veg Lollypop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div>
+                      <h6 class="text-sm font-semibold">Veg Lollypop</h6>
+                      <p class="text-[10px] text-text-secondary italic">Crispy vegetable orbs in spicy fusion sauce.</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold">$15.99</span>
+                </div>
+                <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                  <div class="flex gap-4 items-center">
+                    <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                      <img src="/chilli_paneer_appetizer.png" alt="Chilli Paneer" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div>
+                      <h6 class="text-sm font-semibold">Chilli Paneer</h6>
+                      <p class="text-[10px] text-text-secondary italic">Soft paneer tossed with peppers and dark soy.</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold">$15.99</span>
+                </div>
+                <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                  <div class="flex gap-4 items-center">
+                    <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                      <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?q=80&w=1974&auto=format&fit=crop" alt="Bangla Paneer" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div>
+                      <h6 class="text-sm font-semibold">Bangla Paneer</h6>
+                      <p class="text-[10px] text-text-secondary italic">Soft paneer in a signature mustard-spiced gravy.</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold">$15.99</span>
+                </div>
+                <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                  <div class="flex gap-4 items-center">
+                    <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                      <img src="/image copy 16.png" alt="Mushroom Duplex" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div>
+                      <h6 class="text-sm font-semibold">Mushroom Duplex</h6>
+                      <p class="text-[10px] text-text-secondary italic">Cheese-stuffed mushrooms, crispy and golden.</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold">$15.99</span>
+                </div>
+                <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                  <div class="flex gap-4 items-center">
+                    <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                      <img src="/image copy 17.png" alt="Hara Bara Kabab" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div>
+                      <h6 class="text-sm font-semibold">Hara Bara Kabab</h6>
+                      <p class="text-[10px] text-text-secondary italic">Nutritious green patty of spinach and green peas.</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold">$15.99</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h5 class="text-gold uppercase tracking-widest text-[10px] font-bold mb-6 border-b border-gold/20 pb-2">
+                Chicken</h5>
+              <div class="space-y-4">
+                <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                  <div class="flex gap-4 items-center">
+                    <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                      <img src="/image copy 14.png" alt="Pepper Fry" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div>
+                      <h6 class="text-sm font-semibold">Pepper Fry</h6>
+                      <p class="text-[10px] text-text-secondary italic">Tender chicken tossed with crushed peppercorns.</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold">$16.99</span>
+                </div>
+                <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                  <div class="flex gap-4 items-center">
+                    <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                      <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?q=80&w=2070&auto=format&fit=crop" alt="Coriander Chicken" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div>
+                      <h6 class="text-sm font-semibold">Coriander Chicken</h6>
+                      <p class="text-[10px] text-text-secondary italic">Green herb marinade with a punch of lime.</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold">$16.99</span>
+                </div>
+                <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                  <div class="flex gap-4 items-center">
+                    <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                      <img src="https://images.unsplash.com/photo-1527477396000-e27163b481c2?q=80&w=1906&auto=format&fit=crop" alt="Chicken Lollypop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div>
+                      <h6 class="text-sm font-semibold">Chicken Lollypop</h6>
+                      <p class="text-[10px] text-text-secondary italic">The Indo-Chinese street classic.</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold">$16.99</span>
+                </div>
+                <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                  <div class="flex gap-4 items-center">
+                    <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                      <img src="/image copy 15.png" alt="Chicken 555" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div>
+                      <h6 class="text-sm font-semibold">Chicken 555</h6>
+                      <p class="text-[10px] text-text-secondary italic">Crispy fried strips in a tangy sauce.</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold">$16.99</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h5 class="text-gold uppercase tracking-widest text-[10px] font-bold mb-6 border-b border-gold/20 pb-2">
+                Mutton & Seafood</h5>
+              <div class="space-y-4">
+                <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                  <div class="flex gap-4 items-center">
+                    <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                      <img src="/mutton_ghee_roast_appetizer.png" alt="Mutton Ghee Roast" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div>
+                      <h6 class="text-sm font-semibold">Mutton Ghee Roast</h6>
+                      <p class="text-[10px] text-text-secondary italic">Slow-cooked in rich masala and clarified butter.</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold">$17.99</span>
+                </div>
+                <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                  <div class="flex gap-4 items-center">
+                    <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                      <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=2069&auto=format&fit=crop" alt="Pathar Ka Gosht" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div>
+                      <h6 class="text-sm font-semibold">Pathar Ka Gosht</h6>
+                      <p class="text-[10px] text-text-secondary italic">Hyderabadi delicacy, stone-grilled to perfection.</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold">$17.99</span>
+                </div>
+                <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                  <div class="flex gap-4 items-center">
+                    <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                      <img src="https://images.unsplash.com/photo-1559742811-822873691df8?q=80&w=1974&auto=format&fit=crop" alt="Firecracker Shrimp" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div>
+                      <h6 class="text-sm font-semibold">Firecracker Shrimp</h6>
+                      <p class="text-[10px] text-text-secondary italic">Crispy shrimp in a spicy, explosive sauce.</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold">$17.99</span>
+                </div>
+                <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                  <div class="flex gap-4 items-center">
+                    <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                      <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=2070&auto=format&fit=crop" alt="Masala Fish Strips" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div>
+                      <h6 class="text-sm font-semibold">Masala Fish Strips</h6>
+                      <p class="text-[10px] text-text-secondary italic">Spiced batter-fried fish fillets.</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold">$17.99</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tandoor Section -->
+    <section id="tandoor" class="scroll-mt-40" data-aos="fade-up">
+      <div class="flex items-center gap-10 mb-16">
+        <div class="flex-1 h-px bg-primary/10"></div>
+        <div class="text-center">
+          <span class="text-gold text-2xl mb-2 block">🔥</span>
+          <h2 class="text-4xl font-heading">Tandoor Treasures</h2>
+        </div>
+        <div class="flex-1 h-px bg-primary/10"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div class="order-2 md:order-1 space-y-4">
+          <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+            <div class="flex gap-4 items-center">
+              <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?q=80&w=2070&auto=format&fit=crop" alt="Tandoori Chicken" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div>
+                <h4 class="font-bold">Tandoori Chicken</h4>
+                <p class="text-[10px] text-text-secondary italic">Classic clay-oven roasted chicken.</p>
+              </div>
+            </div>
+            <span class="text-gold font-bold">$16.99 / $24.99</span>
+          </div>
+          <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+            <div class="flex gap-4 items-center">
+              <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                <img src="/image copy 18.png" alt="Chicken Tikka" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div>
+                <h4 class="font-bold">Chicken Tikka Kabab</h4>
+                <p class="text-[10px] text-text-secondary italic">Boneless chunks in red spice marinade.</p>
+              </div>
+            </div>
+            <span class="text-gold font-bold">$16.99</span>
+          </div>
+          <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+            <div class="flex gap-4 items-center">
+              <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                <img src="/image copy 21.png" alt="Malai Tikka" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div>
+                <h4 class="font-bold">Malai Tikka Kabab</h4>
+                <p class="text-[10px] text-text-secondary italic">Creamy, melt-in-mouth chicken chunks.</p>
+              </div>
+            </div>
+            <span class="text-gold font-bold">$16.99</span>
+          </div>
+          <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+            <div class="flex gap-4 items-center">
+              <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                <img src="/image copy 22.png" alt="Kalmi Kebab" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div>
+                <h4 class="font-bold">Kalmi Kebab</h4>
+                <p class="text-[10px] text-text-secondary italic">Leg pieces in rich spiced cream.</p>
+              </div>
+            </div>
+            <span class="text-gold font-bold">$17.99</span>
+          </div>
+          <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+            <div class="flex gap-4 items-center">
+              <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                <img src="/image copy 23.png" alt="Lemon Tangdi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div>
+                <h4 class="font-bold">Lemon Tangdi Kebab</h4>
+                <p class="text-[10px] text-text-secondary italic">Zesty lemon-marinated drumsticks (5 pcs).</p>
+              </div>
+            </div>
+            <span class="text-gold font-bold">$17.99</span>
+          </div>
+          <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+            <div class="flex gap-4 items-center">
+              <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                <img src="/image copy 24.png" alt="Tandoor Full Fish" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div>
+                <h4 class="font-bold">Tandoor Full Fish</h4>
+                <p class="text-[10px] text-text-secondary italic">Slow-roasted in the clay oven.</p>
+              </div>
+            </div>
+            <span class="text-gold font-bold">$19.99</span>
+          </div>
+        </div>
+        <div class="order-1 md:order-2 group">
+          <div class="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/5]">
+            <img src="/tandoori_platter_premium.png" alt="Tandoori Platter"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
+            <div class="absolute bottom-8 left-8 text-white z-20">
+              <span class="text-[10px] uppercase tracking-widest font-bold mb-2 block">The Grand Selection</span>
+              <h4 class="text-3xl font-heading italic">Mixed Tandoori Platter</h4>
+              <p class="text-white/80 text-xs mt-2">$44.99</p>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mains Section -->
+    <section id="mains" class="scroll-mt-40" data-aos="fade-up">
+      <div class="flex items-center gap-10 mb-16">
+        <div class="flex-1 h-px bg-primary/10"></div>
+        <div class="text-center">
+          <span class="text-gold text-2xl mb-2 block">🍛</span>
+          <h2 class="text-4xl font-heading">The Main Cuisines</h2>
+        </div>
+        <div class="flex-1 h-px bg-primary/10"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-16">
+        <div>
+          <h5 class="text-gold uppercase tracking-widest text-[10px] font-bold mb-8 border-b border-gold/20 pb-2">
+            Vegetarian Delights</h5>
+          <div class="space-y-6">
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?q=80&w=1974&auto=format&fit=crop" alt="Paneer Butter Masala" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div>
+                  <h4 class="font-bold">Paneer Butter Masala</h4>
+                  <p class="text-xs text-text-secondary italic">Soft paneer in a silky tomato-butter gravy.</p>
+                </div>
+              </div>
+              <span class="text-gold font-bold">$16.99</span>
+            </div>
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=1974&auto=format&fit=crop" alt="Dal Makhani" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div>
+                  <h4 class="font-bold">Dal Makhani</h4>
+                  <p class="text-xs text-text-secondary italic">Black lentils slow-cooked overnight with butter.</p>
+                </div>
+              </div>
+              <span class="text-gold font-bold">$15.99</span>
+            </div>
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?q=80&w=1974&auto=format&fit=crop" alt="Lasooni Dal Tadka" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div>
+                  <h4 class="font-bold">Lasooni Dal Tadka</h4>
+                  <p class="text-xs text-text-secondary italic">Yellow lentils tempered with burnt garlic.</p>
+                </div>
+              </div>
+              <span class="text-gold font-bold">$14.99</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h5 class="text-gold uppercase tracking-widest text-[10px] font-bold mb-8 border-b border-gold/20 pb-2">
+            Chicken Specialties</h5>
+          <div class="space-y-6">
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1603894584202-93325d779703?q=80&w=2070&auto=format&fit=crop" alt="Butter Chicken" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div>
+                  <h4 class="font-bold">Butter Chicken</h4>
+                  <p class="text-xs text-text-secondary italic">Iconic creamy tomato-cashew gravy.</p>
+                </div>
+              </div>
+              <span class="text-gold font-bold">$16.99</span>
+            </div>
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?q=80&w=1931&auto=format&fit=crop" alt="Almas Spl Chicken Curry" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div>
+                  <h4 class="font-bold">Almas Spl Chicken Curry</h4>
+                  <p class="text-xs text-text-secondary italic">Chef's secret recipe, rich and aromatic.</p>
+                </div>
+              </div>
+              <span class="text-gold font-bold">$16.99</span>
+            </div>
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?q=80&w=1974&auto=format&fit=crop" alt="Dum Ka Murgh" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div>
+                  <h4 class="font-bold">Dum Ka Murgh</h4>
+                  <p class="text-xs text-text-secondary italic">Slow-cooked chicken in a nut-based gravy.</p>
+                </div>
+              </div>
+              <span class="text-gold font-bold">$16.99</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h5 class="text-gold uppercase tracking-widest text-[10px] font-bold mb-8 border-b border-gold/20 pb-2">Mutton
+            Harvest</h5>
+          <div class="space-y-6">
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?q=80&w=1921&auto=format&fit=crop" alt="Dum Ka Mutton" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div>
+                  <h4 class="font-bold">Dum Ka Mutton</h4>
+                  <p class="text-xs text-text-secondary italic">Rich, slow-cooked mutton in a thick gravy.</p>
+                </div>
+              </div>
+              <span class="text-gold font-bold">$17.99</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h5 class="text-gold uppercase tracking-widest text-[10px] font-bold mb-8 border-b border-gold/20 pb-2">
+            Coastal Seafood</h5>
+          <div class="space-y-6">
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="/fish_pulusu_mains.png" alt="Fish Pulusu" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div>
+                  <h4 class="font-bold">Fish Pulusu</h4>
+                  <p class="text-xs text-text-secondary italic">Tangy tamarind fish curry, Andhra style.</p>
+                </div>
+              </div>
+              <span class="text-gold font-bold">$17.99</span>
+            </div>
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1567184109191-3783e756f37d?q=80&w=2070&auto=format&fit=crop" alt="Shrimp Goan Curry" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div>
+                  <h4 class="font-bold">Shrimp Goan Curry</h4>
+                  <p class="text-xs text-text-secondary italic">Coastal curry with coconut milk and tamarind.</p>
+                </div>
+              </div>
+              <span class="text-gold font-bold">$17.99</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Biryani Section -->
+    <section id="biryani" class="scroll-mt-40" data-aos="fade-up">
+      <div class="flex items-center gap-10 mb-16">
+        <div class="flex-1 h-px bg-primary/10"></div>
+        <div class="text-center">
+          <span class="text-gold text-2xl mb-2 block">🍚</span>
+          <h2 class="text-4xl font-heading">The Biryani Heritage</h2>
+        </div>
+        <div class="flex-1 h-px bg-primary/10"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="card-premium group">
+          <div class="aspect-video rounded-xl overflow-hidden mb-6">
+            <img src="/mutton_dum_biryani_premium.png" alt="Mutton Dum Biryani"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+          </div>
+          <span class="text-primary font-bold text-[10px] uppercase tracking-widest mb-2 block">House Signature ★</span>
+          <h3 class="text-2xl font-bold mb-2">Mutton Dum Biryani</h3>
+          <p class="text-text-secondary text-sm italic mb-4">Slow-cooked mutton pot-sealed with aromatic basmati.</p>
+          <div class="mt-auto">
+            <span class="text-gold font-bold">$16.99</span>
+          </div>
+        </div>
+
+        <div class="card-premium group">
+          <div class="aspect-video rounded-xl overflow-hidden mb-6">
+            <img src="/chicken_dum_biryani_premium.png" alt="Chicken Dum Biryani"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+          </div>
+          <h3 class="text-2xl font-bold mb-2">Chicken Dum Biryani</h3>
+          <p class="text-text-secondary text-sm italic mb-4">The Hyderabadi icon with saffron-perfumed rice.</p>
+          <div class="mt-auto">
+            <span class="text-gold font-bold">$14.99</span>
+          </div>
+        </div>
+
+        <div class="card-premium group">
+          <div class="aspect-video rounded-xl overflow-hidden mb-6">
+            <img src="/lamb_shank_biryani_premium.png" alt="Lamb Shank Biryani"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+          </div>
+          <span class="text-primary font-bold text-[10px] uppercase tracking-widest mb-2 block">Royal Feast ★</span>
+          <h3 class="text-2xl font-bold mb-2">Lamb Shank Biryani</h3>
+          <p class="text-text-secondary text-sm italic mb-4">Whole slow-braised shank crowning aromatic rice.</p>
+          <div class="mt-auto">
+            <span class="text-gold font-bold">$20.99</span>
           </div>
         </div>
       </div>
 
-      <!-- Category 2 -->
-      <div class="mb-32" data-aos="fade-up">
-        <div class="text-center mb-16">
-          <h2 class="text-4xl font-heading mb-4 italic">Lebanese Grills</h2>
-          <div class="w-12 h-px bg-gold mx-auto"></div>
-        </div>
-        <div class="space-y-12">
-          <div class="group flex justify-between items-end border-b border-primary/10 pb-4">
-            <div class="max-w-xl">
-              <h4 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Shish Tawook</h4>
-              <p class="text-text-secondary font-light text-sm italic">Marinated chicken skewers, grilled on charcoal, served with garlic toum.</p>
+      <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-6">
+        <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?q=80&w=2020&auto=format&fit=crop" alt="Veg Cocktail Biryani" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
             </div>
-            <span class="text-gold font-bold text-lg">$17.99</span>
+            <div>
+              <h4 class="font-bold">Veg Cocktail Biryani</h4>
+              <p class="text-[10px] text-text-secondary italic">Garden fresh vegetables with aromatic spices.</p>
+            </div>
           </div>
-          <div class="group flex justify-between items-end border-b border-primary/10 pb-4">
-            <div class="max-w-xl">
-              <h4 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Mixed Grill Platter</h4>
-              <p class="text-text-secondary font-light text-sm italic">A selection of Kofta, Tawook, and Lamb Kebabs. A feast for the senses.</p>
+          <span class="text-gold font-bold">$14.99</span>
+        </div>
+        <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?q=80&w=2020&auto=format&fit=crop" alt="Paneer Biryani" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
             </div>
-            <span class="text-gold font-bold text-lg">$28.99</span>
+            <div>
+              <h4 class="font-bold">Paneer Biryani (65/Pachimirchi)</h4>
+              <p class="text-[10px] text-text-secondary italic">Soft paneer cubes layered with saffron rice.</p>
+            </div>
+          </div>
+          <span class="text-gold font-bold">$16.99</span>
+        </div>
+        <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?q=80&w=1974&auto=format&fit=crop" alt="Chicken Biryani" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <div>
+              <h4 class="font-bold">Chicken Fry Piece Biryani</h4>
+              <p class="text-[10px] text-text-secondary italic">Crispy fried chicken atop aromatic rice.</p>
+            </div>
+          </div>
+          <span class="text-gold font-bold">$16.99</span>
+        </div>
+        <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=2070&auto=format&fit=crop" alt="Fish Dum Biryani" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <div>
+              <h4 class="font-bold">Fish Dum Biryani</h4>
+              <p class="text-[10px] text-text-secondary italic">Spiced fish fillets layered with long-grain rice.</p>
+            </div>
+          </div>
+          <span class="text-gold font-bold">$17.99</span>
+        </div>
+        <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1559742811-822873691df8?q=80&w=1974&auto=format&fit=crop" alt="Shrimp Dum Biryani" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <div>
+              <h4 class="font-bold">Shrimp Dum Biryani</h4>
+              <p class="text-[10px] text-text-secondary italic">Succulent shrimp dum-cooked with fragrant spices.</p>
+            </div>
+          </div>
+          <span class="text-gold font-bold">$17.99</span>
+        </div>
+        <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?q=80&w=1931&auto=format&fit=crop" alt="Almas Special Biryani" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <div>
+              <h4 class="font-bold">Almas Special Chicken Biryani</h4>
+              <p class="text-[10px] text-text-secondary italic">Chef's specialty biryani with unique spice blend.</p>
+            </div>
+          </div>
+          <span class="text-gold font-bold">$17.99</span>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <!-- Mandi Section -->
+    <section id="mandi" class="scroll-mt-40" data-aos="fade-up">
+      <div class="flex items-center gap-10 mb-16">
+        <div class="flex-1 h-px bg-primary/10"></div>
+        <div class="text-center">
+          <span class="text-gold text-2xl mb-2 block">🍖</span>
+          <h2 class="text-4xl font-heading">Almas Signature Mandi</h2>
+        </div>
+        <div class="flex-1 h-px bg-primary/10"></div>
+      </div>
+
+      <div class="relative rounded-3xl overflow-hidden h-[500px] mb-16 group shadow-2xl is-banner">
+        <img src="/chicken_mandi_signature.png" alt="Signature Mandi"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2000ms]">
+        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10"></div>
+        <div class="absolute inset-0 flex items-center z-20 px-12">
+          <div class="max-w-md text-white">
+            <span class="text-secondary font-bold tracking-widest text-xs uppercase mb-4 block">Our Bestseller</span>
+            <h3 class="text-4xl md:text-5xl font-heading italic mb-6">Chicken Alfaham Mandi</h3>
+            <p class="text-white/80 font-light leading-relaxed mb-8">Charcoal-grilled Alfaham chicken rested on
+              fragrant, smoky Arabian mandi rice.</p>
+            <div class="text-3xl font-bold text-secondary">$16.99 <span class="text-sm font-normal text-white/60 ml-2">/
+                $24.99 Full</span></div>
           </div>
         </div>
       </div>
 
-      <!-- More sections can be added... -->
-       <div class="text-center pt-20">
-          <a href="/order.html" class="btn-premium px-20">Order for Pickup</a>
-       </div>
-    </div>
-  </section>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div>
+          <h5 class="text-gold uppercase tracking-widest text-[10px] font-bold mb-6 border-b border-gold/20 pb-2">
+            Chicken Mandi</h5>
+          <div class="space-y-6">
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1633945274405-b6c8069047b0?q=80&w=2070&auto=format&fit=crop" alt="Mandi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <h6 class="text-sm font-semibold">Fry Piece Mandi</h6>
+              </div>
+              <span class="text-xs font-bold">$16.99 / $24.99</span>
+            </div>
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1633945274405-b6c8069047b0?q=80&w=2070&auto=format&fit=crop" alt="Mandi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <h6 class="text-sm font-semibold">Broaster Mandi</h6>
+              </div>
+              <span class="text-xs font-bold">$16.99 / $24.99</span>
+            </div>
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?q=80&w=2070&auto=format&fit=crop" alt="Tandoori Mandi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <h6 class="text-sm font-semibold">Tandoori Mandi</h6>
+              </div>
+              <span class="text-xs font-bold">$16.99 / $24.99</span>
+            </div>
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1594221708779-948211442050?q=80&w=2071&auto=format&fit=crop" alt="Grill Chicken Mandi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <h6 class="text-sm font-semibold">Grill Chicken Mandi</h6>
+              </div>
+              <span class="text-xs font-bold">$19.99 / $36.99</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h5 class="text-gold uppercase tracking-widest text-[10px] font-bold mb-6 border-b border-gold/20 pb-2">Mutton
+            Mandi</h5>
+          <div class="space-y-6">
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1633945274405-b6c8069047b0?q=80&w=2070&auto=format&fit=crop" alt="Mutton Juicy Mandi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <h6 class="text-sm font-semibold">Mutton Juicy Mandi</h6>
+              </div>
+              <span class="text-xs font-bold">$20.99 / $34.99</span>
+            </div>
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=2069&auto=format&fit=crop" alt="Mutton Fry Piece Mandi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <h6 class="text-sm font-semibold">Mutton Fry Piece</h6>
+              </div>
+              <span class="text-xs font-bold">$20.99 / $34.99</span>
+            </div>
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?q=80&w=1931&auto=format&fit=crop" alt="Mutton Ghee Roast Mandi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <h6 class="text-sm font-semibold">Mutton Ghee Roast</h6>
+              </div>
+              <span class="text-xs font-bold">$20.99 / $34.99</span>
+            </div>
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?q=80&w=1921&auto=format&fit=crop" alt="Lamb Shank Mandi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <h6 class="text-sm font-semibold">Lamb Shank Mandi</h6>
+              </div>
+              <span class="text-xs font-bold">$24.99 / $44.99</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h5 class="text-gold uppercase tracking-widest text-[10px] font-bold mb-6 border-b border-gold/20 pb-2">
+            Vegetarian Mandi</h5>
+          <div class="space-y-6">
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?q=80&w=1974&auto=format&fit=crop" alt="Malai Kofta Mandi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <h6 class="text-sm font-semibold">Malai Kofta Mandi</h6>
+              </div>
+              <span class="text-xs font-bold">$16.99 / $24.99</span>
+            </div>
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?q=80&w=1974&auto=format&fit=crop" alt="Soya Chaap Mandi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <h6 class="text-sm font-semibold">Soya Chaap Mandi</h6>
+              </div>
+              <span class="text-xs font-bold">$16.99 / $24.99</span>
+            </div>
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1567184109191-3783e756f37d?q=80&w=2070&auto=format&fit=crop" alt="Paneer Tikka Mandi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <h6 class="text-sm font-semibold">Paneer Tikka Mandi</h6>
+              </div>
+              <span class="text-xs font-bold">$16.99 / $24.99</span>
+            </div>
+            <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+              <div class="flex gap-4 items-center">
+                <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                  <img src="https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?q=80&w=1974&auto=format&fit=crop" alt="Egg Plant Mandi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <h6 class="text-sm font-semibold">Egg Plant Mandi</h6>
+              </div>
+              <span class="text-xs font-bold">$16.99 / $24.99</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pulao Section -->
+    <section id="pulao" class="scroll-mt-40" data-aos="fade-up">
+      <div class="flex items-center gap-10 mb-16">
+        <div class="flex-1 h-px bg-primary/10"></div>
+        <div class="text-center">
+          <span class="text-gold text-2xl mb-2 block">🍲</span>
+          <h2 class="text-4xl font-heading">Fragrant Pulao</h2>
+        </div>
+        <div class="flex-1 h-px bg-primary/10"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-6 mb-20">
+        <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1645177623570-07d079360877?q=80&w=2071&auto=format&fit=crop" alt="Cashew Paneer Pulao" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <div>
+              <h4 class="font-bold">Cashew Paneer Pulao</h4>
+              <p class="text-[10px] text-text-secondary italic">Rich pulao with toasted cashews and paneer.</p>
+            </div>
+          </div>
+          <span class="text-gold font-bold">$14.99</span>
+        </div>
+        <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?q=80&w=1931&auto=format&fit=crop" alt="Chicken Ghee Roast Pulao" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <div>
+              <h4 class="font-bold">Chicken Ghee Roast Pulao</h4>
+              <p class="text-[10px] text-text-secondary italic">Spicy ghee roast chicken mixed with pulao rice.</p>
+            </div>
+          </div>
+          <span class="text-gold font-bold">$15.99</span>
+        </div>
+        <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1633945274405-b6c8069047b0?q=80&w=2070&auto=format&fit=crop" alt="Mutton Sukka Pulao" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <div>
+              <h4 class="font-bold">Mutton Sukka Pulao</h4>
+              <p class="text-[10px] text-text-secondary italic">Dry roasted mutton tossed with fragrant pulao.</p>
+            </div>
+          </div>
+          <span class="text-gold font-bold">$16.99</span>
+        </div>
+        <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1565689157206-0fddef7589a2?q=80&w=2070&auto=format&fit=crop" alt="Royyala Vepudu Pulao" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <div>
+              <h4 class="font-bold">Royyala Vepudu Pulao</h4>
+              <p class="text-[10px] text-text-secondary italic">Andhra style shrimp fry pulao.</p>
+            </div>
+          </div>
+          <span class="text-gold font-bold">$16.99</span>
+        </div>
+      </div>     </div>
+      </div>
+    </section>
+
+    <!-- Chinese Section -->
+    <section id="chinese" class="scroll-mt-40" data-aos="fade-up">
+      <div class="flex items-center gap-10 mb-16">
+        <div class="flex-1 h-px bg-primary/10"></div>
+        <div class="text-center">
+          <span class="text-gold text-2xl mb-2 block">🍜</span>
+          <h2 class="text-4xl font-heading">Indo-Chinese</h2>
+        </div>
+        <div class="flex-1 h-px bg-primary/10"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-8">
+        <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?q=80&w=1925&auto=format&fit=crop" alt="Fried Rice" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <div>
+              <h4 class="font-bold">Fried Rice (Veg/Chicken/Shrimp)</h4>
+              <p class="text-xs text-text-secondary italic">Wok-tossed with savory soy sauce.</p>
+            </div>
+          </div>
+          <span class="text-gold font-bold">$13.99 - $15.99</span>
+        </div>
+        <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=1984&auto=format&fit=crop" alt="Hakka Noodles" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <div>
+              <h4 class="font-bold">Hakka Noodles (Veg/Chicken/Shrimp)</h4>
+              <p class="text-xs text-text-secondary italic">Classic Indo-Chinese style stir-fry.</p>
+            </div>
+          </div>
+          <span class="text-gold font-bold">$13.99 - $15.99</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Breads Section -->
+    <section id="breads" class="scroll-mt-40" data-aos="fade-up">
+      <div class="flex items-center gap-10 mb-16">
+        <div class="flex-1 h-px bg-primary/10"></div>
+        <div class="text-center">
+          <span class="text-gold text-2xl mb-2 block">🫓</span>
+          <h2 class="text-4xl font-heading">Tandoor Breads</h2>
+        </div>
+        <div class="flex-1 h-px bg-primary/10"></div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="p-4 border border-primary/10 rounded-2xl hover:bg-primary/5 transition-all flex justify-between items-center group">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1601050633647-81a35d377a66?q=80&w=2024&auto=format&fit=crop" alt="Butter Naan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <div>
+              <h4 class="font-bold mb-1">Butter Naan</h4>
+              <span class="text-gold font-bold">$3.99</span>
+            </div>
+          </div>
+        </div>
+        <div class="p-4 border border-primary/10 rounded-2xl hover:bg-primary/5 transition-all flex justify-between items-center group">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1573140401552-3fab0b24306f?q=80&w=2070&auto=format&fit=crop" alt="Garlic Naan" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <div>
+              <h4 class="font-bold mb-1">Garlic Naan</h4>
+              <span class="text-gold font-bold">$4.99</span>
+            </div>
+          </div>
+        </div>
+        <div class="p-4 border border-primary/10 rounded-2xl hover:bg-primary/5 transition-all flex justify-between items-center group">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1596797038530-2c39bb9ed0b1?q=80&w=1920&auto=format&fit=crop" alt="Tandoori Roti" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <div>
+              <h4 class="font-bold mb-1">Tandoori Roti</h4>
+              <span class="text-gold font-bold">$2.99</span>
+            </div>
+          </div>
+        </div>
+        <div class="p-4 border border-primary/10 rounded-2xl hover:bg-primary/5 transition-all flex justify-between items-center group">
+          <div class="flex gap-4 items-center">
+            <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+              <img src="https://images.unsplash.com/photo-1601050633647-81a35d377a66?q=80&w=2024&auto=format&fit=crop" alt="Bread Basket" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <div>
+          <h4 class="font-bold mb-1">Bread Basket</h4>
+              <span class="text-gold font-bold">$14.99</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Desserts & Beverages -->
+    <section id="desserts" class="scroll-mt-40" data-aos="fade-up">
+      <div class="flex items-center gap-10 mb-16">
+        <div class="flex-1 h-px bg-primary/10"></div>
+        <div class="text-center">
+          <span class="text-gold text-2xl mb-2 block">🍰</span>
+          <h2 class="text-4xl font-heading">Sweet Endings</h2>
+        </div>
+        <div class="flex-1 h-px bg-primary/10"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div class="card-premium flex gap-8 items-center group">
+          <div class="w-1/3 aspect-square rounded-full overflow-hidden border-4 border-gold/20 p-2">
+            <img src="/tres_leches_dessert_premium.png" alt="Tres Leches"
+              class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform">
+          </div>
+          <div class="w-2/3">
+            <h4 class="text-2xl font-bold mb-2">Tres Leches</h4>
+            <p class="text-text-secondary text-sm italic mb-4">Airy sponge cake soaked in three milks — sweet, moist and
+              delicately rich.</p>
+            <div class="mt-auto">
+              <span class="text-primary font-bold">$7.99</span>
+            </div>
+          </div>
+        </div>
+        <div class="space-y-6">
+          <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+            <div class="flex gap-4 items-center">
+              <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                <img src="/image copy 28.png" alt="Gulab Jamun" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div>
+                <h4 class="font-bold">Gulab Jamun (2 Pcs)</h4>
+                <p class="text-xs text-text-secondary italic">Milk-solid balls dipped in rose-cardamom syrup.</p>
+              </div>
+            </div>
+            <span class="text-gold font-bold">$4.99</span>
+          </div>
+          
+          <div class="pt-8">
+            <h5 class="text-gold uppercase tracking-widest text-[10px] font-bold mb-6">Signature Beverages</h5>
+            <div class="space-y-4">
+              <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                <div class="flex gap-4 items-center">
+                  <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                    <img src="/image copy 25.png" alt="Irani Chai" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                  </div>
+                  <div>
+                    <h4 class="font-bold">Irani Chai ★</h4>
+                    <p class="text-xs text-text-secondary italic">Hyderabad's beloved slow-brewed tea.</p>
+                  </div>
+                </div>
+                <span class="text-gold font-bold">$1.99 / $2.99</span>
+              </div>
+              <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                <div class="flex gap-4 items-center">
+                  <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                    <img src="/image copy 27.png" alt="Mango Lassi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                  </div>
+                  <div>
+                    <h4 class="font-bold">Mango Lassi</h4>
+                    <p class="text-xs text-text-secondary italic">Thick yogurt-based mango blend.</p>
+                  </div>
+                </div>
+                <span class="text-gold font-bold">$5.99</span>
+              </div>
+              <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                <div class="flex gap-4 items-center">
+                  <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                    <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=1974&auto=format&fit=crop" alt="Fresh Lime Soda" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                  </div>
+                  <div>
+                    <h4 class="font-bold">Fresh Lime Soda</h4>
+                    <p class="text-xs text-text-secondary italic">Sparkling water with sweet or salt lime.</p>
+                  </div>
+                </div>
+                <span class="text-gold font-bold">$5.99</span>
+              </div>
+              <div class="flex justify-between items-center group p-3 hover:bg-primary/5 rounded-xl transition-all border-b border-primary/5">
+                <div class="flex gap-4 items-center">
+                  <div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-primary/10">
+                    <img src="/image copy 26.png" alt="Soda" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                  </div>
+                  <div>
+                    <h4 class="font-bold">Chilled Soda</h4>
+                    <p class="text-xs text-text-secondary italic">Assorted refreshing soft drinks.</p>
+                  </div>
+                </div>
+                <span class="text-gold font-bold">$2.99</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="text-center py-20 bg-primary-deep rounded-3xl text-white shadow-2xl relative overflow-hidden">
+      <div class="absolute inset-0 opacity-10">
+        <img src="/spice_decor.png" alt="" class="w-full h-full object-cover">
+      </div>
+      <div class="relative z-10">
+        <h2 class="text-4xl md:text-5xl font-heading mb-8 italic">Ready to Experience Royalty?</h2>
+        <p class="text-white/70 max-w-2xl mx-auto mb-12 font-light leading-relaxed">Whether it's a quick lunch or a
+          grand family dinner, Almas brings the authentic flavors of Hyderabad and the Middle East to your table.</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-6">
+          <a href="/order.html" class="btn-premium px-12 py-4">Order for Delivery</a>
+          <a href="/contact.html"
+            class="border border-white/20 hover:bg-white/10 px-12 py-4 rounded-full transition-all uppercase tracking-widest text-[10px] font-bold flex items-center justify-center">Reserve
+            a Table</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
 
   <!-- Footer -->
   <footer class="bg-black text-white pt-24 pb-12 md:pt-32 md:pb-16">
@@ -172,10 +1274,17 @@
         <div class="mb-8">
           <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-24 w-auto object-contain">
         </div>
-        <p class="text-white/40 leading-relaxed font-light">The premier destination for authentic Hyderabadi and Middle Eastern cuisine in Scarborough.</p>
+        <p class="text-white/40 leading-relaxed font-light">The premier destination for authentic Hyderabadi and Middle
+          Eastern cuisine in Scarborough.</p>
         <div class="footer-social-links">
-          <a href="https://www.instagram.com/almas_toronto?igsh=MWhyOHVvaXV5dnI3OQ==" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 group" aria-label="Instagram">
-            <svg class="w-5 h-5 text-white/40 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          <a href="https://www.instagram.com/almas_toronto?igsh=MWhyOHVvaXV5dnI3OQ==" target="_blank"
+            class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 group"
+            aria-label="Instagram">
+            <svg class="w-5 h-5 text-white/40 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+            </svg>
+          </a>
         </div>
       </div>
       <div>
@@ -213,9 +1322,164 @@
   <!-- Floating WhatsApp -->
   <a href="https://wa.me/TBD" class="whatsapp-float group" target="_blank" rel="noopener noreferrer">
     <span class="whatsapp-tooltip">Chat with us</span>
-    <svg class="w-9 h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.298-.149-1.758-.867-2.034-.968-.273-.099-.472-.148-.671.148-.198.297-.768.968-.941 1.166-.173.199-.347.223-.645.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.149-.174.198-.298.298-.496.099-.198.05-.371-.025-.521-.075-.148-.671-1.611-.919-2.207-.242-.579-.487-.501-.671-.51l-.571-.01c-.198 0-.521.074-.794.371-.272.297-1.041 1.016-1.041 2.478 0 1.462 1.066 2.875 1.214 3.074.149.198 2.097 3.203 5.081 4.487.71.306 1.265.489 1.696.626.713.226 1.36.194 1.872.118.571-.085 1.761-.719 2.009-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    <svg class="w-9 h-9" fill="currentColor" viewBox="0 0 24 24">
+      <path
+        d="M17.472 14.382c-.298-.149-1.758-.867-2.034-.968-.273-.099-.472-.148-.671.148-.198.297-.768.968-.941 1.166-.173.199-.347.223-.645.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.149-.174.198-.298.298-.496.099-.198.05-.371-.025-.521-.075-.148-.671-1.611-.919-2.207-.242-.579-.487-.501-.671-.51l-.571-.01c-.198 0-.521.074-.794.371-.272.297-1.041 1.016-1.041 2.478 0 1.462 1.066 2.875 1.214 3.074.149.198 2.097 3.203 5.081 4.487.71.306 1.265.489 1.696.626.713.226 1.36.194 1.872.118.571-.085 1.761-.719 2.009-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+    </svg>
   </a>
 
+  <!-- Order Summary Bar -->
+  <div id="order-bar">
+    <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
+      <div class="flex items-center gap-6">
+        <div class="relative">
+          <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center text-primary">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div id="order-count" class="order-count-badge">0</div>
+        </div>
+        <div class="hidden sm:block">
+          <p class="text-white/40 text-[10px] uppercase tracking-widest mb-1">Estimated Total</p>
+          <p class="text-xl font-bold text-white">$<span id="order-total">0.00</span></p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <button onclick="clearSelection()"
+          class="text-white/40 hover:text-white text-[10px] uppercase tracking-widest font-bold transition-colors px-4">Clear</button>
+        <button onclick="submitOrder()" class="btn-premium py-4 px-8 text-[10px]">
+          Submit Order via WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const selectedItems = new Map();
+      const orderBar = document.getElementById('order-bar');
+      const orderCountLabel = document.getElementById('order-count');
+      const orderTotalLabel = document.getElementById('order-total');
+
+      // Robust selector to find all menu items across different layouts
+      const items = Array.from(document.querySelectorAll('section div')).filter(el => {
+        const hasPrice = el.innerText.includes('$');
+        const isFlex = el.classList.contains('flex') && el.classList.contains('justify-between');
+        const isCard = el.classList.contains('card-premium');
+        const isBanner = el.classList.contains('is-banner');
+        const notInExclusion = !el.closest('nav') && !el.closest('footer') && !el.closest('#order-bar');
+        return (isFlex || isCard || isBanner) && notInExclusion && el.querySelector('h3, h4, h6') && hasPrice;
+      });
+
+      items.forEach((item, index) => {
+        item.classList.add('menu-item');
+
+        let name, price;
+        if (item.classList.contains('card-premium') || item.classList.contains('is-banner')) {
+          name = item.querySelector('h3')?.innerText;
+          const priceEl = Array.from(item.querySelectorAll('.text-gold, .text-primary, .text-secondary')).find(el => el.innerText.includes('$'));
+          price = priceEl?.innerText.replace('$', '').split(' ')[0];
+        } else {
+          name = item.querySelector('h4, h6')?.innerText;
+          const priceMatch = item.innerText.match(/\$\d+\.\d+/);
+          price = priceMatch ? priceMatch[0].replace('$', '') : null;
+        }
+
+        if (name && price) {
+          const itemId = `item-${index}`;
+          item.setAttribute('data-id', itemId);
+          item.setAttribute('data-name', name);
+          item.setAttribute('data-price', price);
+
+          // Create selection button
+          const btn = document.createElement('button');
+          if (item.classList.contains('card-premium') || item.classList.contains('is-banner')) {
+            const priceEl = Array.from(item.querySelectorAll('.text-gold, .text-primary, .text-secondary')).find(el => el.innerText.includes('$'));
+            if (priceEl) {
+              btn.className = 'btn-premium py-2 px-6 text-[10px] mt-4 w-full';
+              btn.innerText = 'Add to Order';
+              priceEl.parentNode.insertBefore(btn, priceEl.nextSibling);
+            }
+          } else {
+            btn.className = 'add-btn ml-4 w-8 h-8 rounded-full border border-primary/30 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shrink-0';
+            btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="2.5" stroke-linecap="round"/></svg>`;
+            item.appendChild(btn);
+          }
+
+          btn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleItem(itemId, name, price, item);
+          };
+        }
+      });
+
+      function toggleItem(id, name, price, element) {
+        if (selectedItems.has(id)) {
+          selectedItems.delete(id);
+          element.classList.remove('selected');
+          const btn = element.querySelector('.add-btn, .btn-premium');
+          if (btn && !element.classList.contains('card-premium')) btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="2.5" stroke-linecap="round"/></svg>`;
+          if (btn && element.classList.contains('card-premium')) btn.innerText = 'Add to Order';
+        } else {
+          selectedItems.set(id, { name, price: parseFloat(price) });
+          element.classList.add('selected');
+          const btn = element.querySelector('.add-btn, .btn-premium');
+          if (btn && !element.classList.contains('card-premium')) btn.innerHTML = `<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-width="2.5" stroke-linecap="round"/></svg>`;
+          if (btn && element.classList.contains('card-premium')) btn.innerText = 'Added ✓';
+        }
+        updateUI();
+      }
+
+      function updateUI() {
+        let total = 0;
+        selectedItems.forEach(item => total += item.price);
+
+        orderCountLabel.innerText = selectedItems.size;
+        orderTotalLabel.innerText = total.toFixed(2);
+
+        if (selectedItems.size > 0) {
+          orderBar.classList.add('visible');
+        } else {
+          orderBar.classList.remove('visible');
+        }
+      }
+
+      window.clearSelection = () => {
+        selectedItems.clear();
+        document.querySelectorAll('.menu-item').forEach(el => {
+          el.classList.remove('selected');
+          const btn = el.querySelector('.add-btn, .btn-premium');
+          if (btn && !el.classList.contains('card-premium')) btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="2.5" stroke-linecap="round"/></svg>`;
+          if (btn && el.classList.contains('card-premium')) btn.innerText = 'Add to Order';
+        });
+        updateUI();
+      };
+
+      window.submitOrder = () => {
+        let msg = "*Royal Order from Almas Menu*\n\n";
+        const itemsArray = [];
+        selectedItems.forEach(item => {
+          msg += `• ${item.name} - $${item.price.toFixed(2)}\n`;
+          itemsArray.push(item);
+        });
+        msg += `\n*Total: $${orderTotalLabel.innerText}*`;
+
+        localStorage.setItem('pendingOrder', JSON.stringify({
+          items: itemsArray,
+          total: orderTotalLabel.innerText,
+          timestamp: new Date().toISOString()
+        }));
+
+        const whatsappUrl = `https://wa.me/TBD?text=${encodeURIComponent(msg)}`;
+        window.location.href = whatsappUrl;
+      };
+    });
+  </script>
   <script type="module" src="/src/main.js"></script>
 </body>
+
 </html>
