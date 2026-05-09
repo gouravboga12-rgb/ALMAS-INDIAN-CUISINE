@@ -17,6 +17,10 @@
   --radius-lg: 1.5rem;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 @layer base {
   body {
     @apply text-text-primary font-body antialiased overflow-x-hidden relative;
@@ -454,4 +458,12 @@ body.loading {
     font-size: 12px;
     font-weight: bold;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
