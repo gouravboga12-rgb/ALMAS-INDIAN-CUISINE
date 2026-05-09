@@ -24,22 +24,10 @@
     background-image: 
       radial-gradient(circle at center, transparent 0%, rgba(26, 10, 0, 0.08) 100%),
       url("https://www.transparenttextures.com/patterns/natural-paper.png");
-    /* Removed background-attachment: fixed */
   }
   
   /* Background Decorative Elements */
-  .bg-decor {
-    @apply absolute pointer-events-none -z-10 select-none;
-    opacity: 0.25;
-    filter: sepia(100%) hue-rotate(330deg) saturate(250%) brightness(0.7);
-    transition: opacity 0.5s ease;
-  }
-  .bg-decor-1 { top: 5%; left: -8%; width: 400px; transform: rotate(-15deg); }
-  .bg-decor-2 { top: 15%; right: -8%; width: 450px; transform: rotate(20deg); }
-  .bg-decor-3 { top: 25%; left: 10%; width: 350px; transform: rotate(45deg); opacity: 0.15; }
-  .bg-decor-4 { top: 45%; right: 5%; width: 300px; transform: rotate(-10deg); opacity: 0.2; }
-  .bg-decor-5 { top: 65%; left: -5%; width: 400px; transform: rotate(30deg); opacity: 0.15; }
-  .bg-decor-6 { top: 85%; right: 10%; width: 350px; transform: rotate(-45deg); opacity: 0.1; }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-bold tracking-tight;
   }
@@ -72,7 +60,7 @@
   }
   
   .card-premium {
-    @apply bg-white/60 backdrop-blur-sm p-10 rounded-2xl border border-white/40 shadow-soft hover:shadow-hover transition-all duration-500 hover:-translate-y-2 flex flex-col h-full;
+    @apply bg-[#FFFAF3] p-6 md:p-8 rounded-[2rem] border border-primary/5 shadow-[0_10px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-1 flex flex-col h-full;
   }
   
   .glass-nav {
