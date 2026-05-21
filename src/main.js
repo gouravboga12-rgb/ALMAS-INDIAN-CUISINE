@@ -99,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         alert('Geolocation is not supported by your browser.');
       }
+    });
   }
 
   // Mobile Search Bar Toggle & Input handling
