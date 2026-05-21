@@ -41,7 +41,7 @@
           <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-24 md:h-20 w-auto object-contain">
         </a>
       </div>
-      <div class="hidden md:flex items-center space-x-10">
+      <div class="hidden lg:flex items-center space-x-10">
         <a href="/" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Home</a>
         <a href="/about.html" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">About Us</a>
         <a href="/products.html" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Products</a>
@@ -66,7 +66,7 @@
         <a href="/order" class="btn-premium py-3 px-8 text-xs">Order Now</a>
       </div>
       <!-- Mobile Controls (visible on mobile, hidden on desktop) -->
-      <div class="md:hidden flex items-center space-x-3">
+      <div class="lg:hidden flex items-center space-x-3">
         <!-- Mobile Search Button -->
         <button id="mobile-search-btn" title="Search">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -120,7 +120,9 @@
       <a href="/products.html" class="hover:text-primary transition-colors">Products</a>
       <a href="/services.html" class="hover:text-primary transition-colors">Catering</a>
       <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
-      <a href="/account" class="hover:text-primary transition-colors">My Account</a>
+      <div id="mobile-auth-group" class="flex flex-col space-y-6">
+        <a href="/account.html" class="hover:text-primary transition-colors">My Account</a>
+      </div>
       <button class="nav-cart-btn text-left hover:text-primary transition-colors flex items-center w-full border-none p-0 bg-transparent uppercase tracking-widest font-heading font-semibold">
         View Cart
       </button>

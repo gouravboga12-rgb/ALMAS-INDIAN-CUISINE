@@ -45,6 +45,24 @@ function handleSplashScreen() {
 // Mobile Menu Toggle
 document.addEventListener('DOMContentLoaded', () => {
   handleSplashScreen();
+
+  // Dynamic mobile menu authentication links (Login / Sign Up or My Account)
+  const authGroup = document.getElementById('mobile-auth-group');
+  if (authGroup) {
+    const saved = JSON.parse(localStorage.getItem('almas_account'));
+    if (saved && saved.name) {
+      const isAccountPage = window.location.pathname.includes('account.html') || window.location.pathname.endsWith('/account');
+      authGroup.innerHTML = `
+        <a href="/account.html" class="${isAccountPage ? 'text-primary' : 'hover:text-primary'} transition-colors" style="color: #D4AF37;">My Account</a>
+      `;
+    } else {
+      authGroup.innerHTML = `
+        <a href="/account.html?tab=login" class="hover:text-primary transition-colors">Login</a>
+        <a href="/account.html?tab=signup" class="hover:text-primary transition-colors" style="color: #D4AF37;">Sign Up</a>
+      `;
+    }
+  }
+
   const menuBtn = document.getElementById('menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
   const closeBtn = document.getElementById('close-btn');

@@ -244,7 +244,7 @@
       </div>
 
       <!-- Desktop Menu -->
-      <div class="hidden md:flex items-center space-x-10">
+      <div class="hidden lg:flex items-center space-x-10">
         <a href="/" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Home</a>
         <a href="/about.html" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">About Us</a>
         <a href="/products.html" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Products</a>
@@ -270,7 +270,7 @@
       </div>
 
       <!-- Mobile Controls (visible on mobile, hidden on desktop) -->
-      <div class="md:hidden flex items-center space-x-3">
+      <div class="lg:hidden flex items-center space-x-3">
         <!-- Mobile Search Button -->
         <button id="mobile-search-btn" title="Search">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -324,7 +324,9 @@
       <a href="/products.html" class="hover:text-primary transition-colors">Products</a>
       <a href="/services.html" class="hover:text-primary transition-colors">Catering</a>
       <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
-      <a href="/account" class="hover:text-primary transition-colors">My Account</a>
+      <div id="mobile-auth-group" class="flex flex-col space-y-6">
+        <a href="/account.html" class="hover:text-primary transition-colors">My Account</a>
+      </div>
       <button class="nav-cart-btn text-left hover:text-primary transition-colors flex items-center w-full border-none p-0 bg-transparent uppercase tracking-widest font-heading font-semibold">
         View Cart
       </button>
@@ -337,7 +339,7 @@
   </div>
 
   <!-- Category Secondary Nav -->
-  <div class="bg-background border-b border-black/5 sticky top-[112px] md:top-[96px] z-40 overflow-x-auto whitespace-nowrap hide-scrollbar">
+  <div class="bg-background border-b border-black/5 sticky top-[112px] lg:top-[96px] z-40 overflow-x-auto whitespace-nowrap hide-scrollbar">
     <div class="max-w-7xl mx-auto px-6 md:px-12 flex items-center h-14 space-x-8">
       <a href="#soups" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Soups</a>
       <a href="#appetizers" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Appetizers</a>

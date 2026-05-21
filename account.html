@@ -52,32 +52,69 @@
       align-items: start;
     }
     @media (max-width: 768px) {
-      .account-layout { grid-template-columns: 1fr; }
+      .account-layout {
+        display: flex;
+        flex-direction: column;
+        padding: 2rem 1.25rem 4rem;
+        gap: 3rem;
+      }
     }
 
     /* ---- Auth Card (Left) ---- */
-    .account-sidebar { position: sticky; top: 110px; }
+    @media (min-width: 769px) {
+      .account-sidebar {
+        position: sticky;
+        top: 110px;
+      }
+    }
 
     /* ---- Feature Highlights (right panel pre-login) ---- */
     .signin-feature {
-      display: flex; align-items: flex-start; gap: 1rem;
-      padding: 1.1rem 1.25rem;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      padding: 1.25rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 1rem;
       margin-bottom: 0.75rem;
-      transition: border-color 0.2s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .signin-feature:hover { border-color: rgba(204,85,0,0.25); }
+    .signin-feature:hover {
+      border-color: rgba(212, 175, 55, 0.2);
+      background: rgba(212, 175, 55, 0.03);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
     .signin-feature-icon {
-      width: 42px; height: 42px; border-radius: 50%;
-      background: rgba(204,85,0,0.12);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; flex-shrink: 0;
-      border: 1px solid rgba(204,85,0,0.2);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      transition: all 0.3s ease;
     }
-    .signin-feature-title { color: white; font-weight: 700; font-size: 0.88rem; margin-bottom: 0.2rem; }
-    .signin-feature-desc { color: rgba(255,255,255,0.4); font-size: 0.75rem; line-height: 1.5; }
+    .signin-feature:hover .signin-feature-icon {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: rgba(212, 175, 55, 0.3);
+      transform: scale(1.05);
+    }
+    .signin-feature-title {
+      color: white;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+    .signin-feature-desc {
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
 
     /* ---- Main Content (Right) ---- */
     .account-main {}
@@ -219,31 +256,65 @@
 
     /* ---- Auth form inputs ---- */
     .auth-input-group { margin-bottom: 1.25rem; }
+    .form-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 0.5rem;
+      transition: color 0.25s ease;
+    }
+    .auth-input-group:focus-within .form-label {
+      color: #D4AF37;
+    }
     .auth-input {
       width: 100%;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 0.85rem;
-      padding: 0.9rem 1rem;
+      padding: 0.9rem 1.1rem;
       color: white;
       font-size: 0.9rem;
       font-family: var(--font-body);
-      transition: border-color 0.2s;
+      transition: all 0.25s ease;
       box-sizing: border-box;
     }
-    .auth-input:focus { outline: none; border-color: rgba(204,85,0,0.6); }
-    .auth-input::placeholder { color: rgba(255,255,255,0.2); }
+    .auth-input:focus {
+      outline: none;
+      border-color: rgba(212, 175, 55, 0.4);
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+    }
+    .auth-input::placeholder { color: rgba(255, 255, 255, 0.2); }
     .auth-submit-btn {
-      width: 100%; padding: 1rem; background: #CC5500; color: white;
-      border: none; border-radius: 999px; font-weight: 700; font-size: 0.85rem;
-      text-transform: uppercase; letter-spacing: 0.12em; cursor: pointer;
-      transition: all 0.3s; box-shadow: 0 6px 20px rgba(204,85,0,0.3);
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #CC5500 0%, #a34400 100%);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 6px 20px rgba(204, 85, 0, 0.35);
       margin-top: 0.5rem;
     }
-    .auth-submit-btn:hover { background: #b34a00; transform: translateY(-1px); box-shadow: 0 10px 30px rgba(204,85,0,0.4); }
-    .auth-divider { text-align: center; color: rgba(255,255,255,0.2); font-size: 0.7rem; margin: 1rem 0; position: relative; }
+    .auth-submit-btn:hover {
+      background: linear-gradient(135deg, #e65f00 0%, #cc5500 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(204, 85, 0, 0.5);
+    }
+    .auth-submit-btn:active {
+      transform: translateY(-0.5px);
+    }
+    .auth-divider { text-align: center; color: rgba(255, 255, 255, 0.2); font-size: 0.72rem; margin: 1.25rem 0; position: relative; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
     .auth-divider::before, .auth-divider::after {
-      content: ''; position: absolute; top: 50%; width: 35%; height: 1px;
+      content: ''; position: absolute; top: 50%; width: 38%; height: 1px;
       background: rgba(255,255,255,0.08);
     }
     .auth-divider::before { left: 0; }
@@ -255,13 +326,168 @@
 
     /* ---- Dismiss alert ---- */
     .demo-notice {
-      background: rgba(212,175,55,0.08);
-      border: 1px solid rgba(212,175,55,0.2);
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px solid rgba(212, 175, 55, 0.2);
       border-radius: 0.75rem;
-      padding: 0.75rem 1rem;
-      color: rgba(212,175,55,0.8);
-      font-size: 0.72rem;
+      padding: 0.85rem 1rem;
+      color: rgba(212, 175, 55, 0.9);
+      font-size: 0.75rem;
       font-weight: 600;
+      line-height: 1.45;
+    }
+
+    /* ---- Auth Card ---- */
+    .auth-card {
+      background: rgba(26, 10, 0, 0.7);
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      border-radius: 1.5rem;
+      padding: 2.25rem 2rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .auth-card:hover {
+      border-color: rgba(212, 175, 55, 0.25);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.05);
+    }
+
+    /* ---- Tab Bar ---- */
+    .auth-tab-bar {
+      display: flex;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 1.75rem;
+      margin-top: 1.25rem;
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 0.8rem 1rem;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.5);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .auth-tab.active {
+      background: linear-gradient(135deg, #CC5500 0%, #b34a00 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(204, 85, 0, 0.3);
+    }
+    .auth-tab:hover:not(.active) {
+      color: white;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    @media (max-width: 480px) {
+      .auth-card {
+        padding: 1.75rem 1.25rem;
+      }
+      .auth-tab-bar {
+        margin-bottom: 1.5rem;
+      }
+      .auth-tab {
+        padding: 0.7rem 0.5rem;
+        font-size: 0.75rem;
+      }
+    }
+
+    /* ---- Guest Benefits Prompt ---- */
+    #account-guest-prompt {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    
+    .guest-prompt-header {
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 768px) {
+      .guest-prompt-header {
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+    }
+    
+    .guest-prompt-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.35em;
+      color: #D4AF37;
+      margin-bottom: 0.6rem;
+      display: block;
+    }
+    
+    .guest-prompt-title {
+      font-family: var(--font-heading);
+      color: white;
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      line-height: 1.25;
+    }
+    .guest-prompt-title span {
+      color: #CC5500;
+    }
+    @media (max-width: 768px) {
+      .guest-prompt-title {
+        font-size: 1.5rem;
+      }
+    }
+    
+    .guest-prompt-desc {
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      max-width: 600px;
+    }
+    @media (max-width: 768px) {
+      .guest-prompt-desc {
+        margin: 0 auto;
+      }
+    }
+    
+    .guest-prompt-notice {
+      margin-top: 1.5rem;
+      padding: 1rem 1.25rem;
+      background: rgba(212, 175, 55, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.12);
+      border-radius: 0.85rem;
+      color: rgba(212, 175, 55, 0.8);
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1.6;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: all 0.3s ease;
+    }
+    .guest-prompt-notice:hover {
+      background: rgba(212, 175, 55, 0.08);
+      border-color: rgba(212, 175, 55, 0.2);
+    }
+    .guest-prompt-notice-icon {
+      font-size: 1rem;
+      color: #D4AF37;
+      flex-shrink: 0;
+    }
+
+    .profile-avatar {
+      border-radius: 50%;
+      background: linear-gradient(135deg, #CC5500, #8B3A00);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700;
+      border: 2px solid rgba(212,175,55,0.25);
+      box-shadow: 0 4px 15px rgba(204, 85, 0, 0.2);
     }
 
     /* Fix header controls visibility on dark page */
@@ -290,7 +516,7 @@
       </div>
 
       <!-- Desktop Menu -->
-      <div class="hidden md:flex items-center space-x-10">
+      <div class="hidden lg:flex items-center space-x-10">
         <a href="/" class="text-sm uppercase tracking-widest font-heading font-semibold text-white/70 hover:text-primary transition-colors">Home</a>
         <a href="/about.html" class="text-sm uppercase tracking-widest font-heading font-semibold text-white/70 hover:text-primary transition-colors">About Us</a>
         <a href="/products.html" class="text-sm uppercase tracking-widest font-heading font-semibold text-white/70 hover:text-primary transition-colors">Products</a>
@@ -316,7 +542,7 @@
       </div>
 
       <!-- Mobile Controls (visible on mobile, hidden on desktop) -->
-      <div class="md:hidden flex items-center space-x-3">
+      <div class="lg:hidden flex items-center space-x-3">
         <!-- Mobile Search Button -->
         <button id="mobile-search-btn" title="Search">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -370,7 +596,9 @@
       <a href="/products.html" class="hover:text-primary transition-colors">Products</a>
       <a href="/services.html" class="hover:text-primary transition-colors">Catering</a>
       <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
-      <a href="/account" class="text-primary transition-colors">My Account</a>
+      <div id="mobile-auth-group" class="flex flex-col space-y-6">
+        <a href="/account.html" class="text-primary transition-colors">My Account</a>
+      </div>
       <button class="nav-cart-btn text-left hover:text-primary transition-colors flex items-center w-full border-none p-0 bg-transparent uppercase tracking-widest font-heading font-semibold">
         View Cart
       </button>
@@ -504,10 +732,10 @@
     <!-- RIGHT: Prompt to sign in -->
     <div id="account-guest-prompt">
       <!-- Top label -->
-      <div style="margin-bottom:2rem;">
-        <div style="font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:0.35em; color:#D4AF37; margin-bottom:0.6rem;">Your Benefits</div>
-        <div style="font-family:var(--font-heading); color:white; font-size:1.6rem; font-weight:800; margin-bottom:0.5rem;">Sign in to unlock<br>your dining hub</div>
-        <p style="color:rgba(255,255,255,0.4); font-size:0.85rem; line-height:1.6;">Track every order, review your dining history, and manage your Almas experience in one place.</p>
+      <div class="guest-prompt-header">
+        <span class="guest-prompt-label">Your Benefits</span>
+        <h2 class="guest-prompt-title">Sign in to unlock<br>your <span>dining hub</span></h2>
+        <p class="guest-prompt-desc">Track every order, review your dining history, and manage your Almas experience in one place.</p>
       </div>
 
       <!-- Feature highlights -->
@@ -541,8 +769,9 @@
       </div>
 
       <!-- CTA hint -->
-      <div style="margin-top:1.5rem; padding:1rem 1.25rem; background:rgba(212,175,55,0.06); border:1px solid rgba(212,175,55,0.15); border-radius:0.85rem; color:rgba(212,175,55,0.8); font-size:0.75rem; font-weight:600; line-height:1.6;">
-        ← Use the Sign In form to get started. Any email works in demo mode.
+      <div class="guest-prompt-notice">
+        <span class="guest-prompt-notice-icon">★</span>
+        <span>Use the form to get started. Any email works in demo mode.</span>
       </div>
     </div>
 
@@ -745,7 +974,7 @@
       document.getElementById('auth-card-view').style.display = 'block';
       document.getElementById('logged-in-view').style.display = 'none';
       document.getElementById('account-main-content').style.display = 'none';
-      document.getElementById('account-guest-prompt').style.display = 'flex';
+      document.getElementById('account-guest-prompt').style.display = 'block';
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -765,6 +994,17 @@
           document.getElementById('auth-panel-signup').style.display = which === 'signup' ? 'block' : 'none';
         });
       });
+
+      // Check query parameter for active auth tab
+      const urlParams = new URLSearchParams(window.location.search);
+      const authTab = urlParams.get('tab');
+      if (authTab === 'signup') {
+        const signupTab = document.querySelector('[data-tab="signup"]');
+        if (signupTab) signupTab.click();
+      } else if (authTab === 'login') {
+        const loginTab = document.querySelector('[data-tab="login"]');
+        if (loginTab) loginTab.click();
+      }
 
       // Login
       document.getElementById('btn-login').addEventListener('click', () => {

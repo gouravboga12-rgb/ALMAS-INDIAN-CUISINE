@@ -44,7 +44,7 @@
       </div>
 
       <!-- Desktop Menu -->
-      <div class="hidden md:flex items-center space-x-10">
+      <div class="hidden lg:flex items-center space-x-10">
         <a href="/" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Home</a>
         <a href="/about.html" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">About Us</a>
         <a href="/products.html" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Products</a>
@@ -70,7 +70,7 @@
       </div>
 
       <!-- Mobile Controls (visible on mobile, hidden on desktop) -->
-      <div class="md:hidden flex items-center space-x-3">
+      <div class="lg:hidden flex items-center space-x-3">
         <!-- Mobile Search Button -->
         <button id="mobile-search-btn" title="Search">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,7 +124,9 @@
       <a href="/products.html" class="hover:text-primary transition-colors">Products</a>
       <a href="/services.html" class="hover:text-primary transition-colors">Catering</a>
       <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
-      <a href="/account" class="hover:text-primary transition-colors">My Account</a>
+      <div id="mobile-auth-group" class="flex flex-col space-y-6">
+        <a href="/account.html" class="hover:text-primary transition-colors">My Account</a>
+      </div>
       <button class="nav-cart-btn text-left hover:text-primary transition-colors flex items-center w-full border-none p-0 bg-transparent uppercase tracking-widest font-heading font-semibold">
         View Cart
       </button>
@@ -348,7 +350,7 @@
         <h2 class="text-4xl md:text-6xl">Our Services</h2>
         <div class="divider"></div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-24">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-24">
         <div class="card-premium text-center" data-aos="fade-up" data-aos-delay="100">
           <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop" class="rounded-2xl mb-8 w-full h-56 object-cover" alt="Dine-In">
           <h4 class="text-xl font-bold mb-4">Dine-In Experience</h4>

@@ -194,34 +194,283 @@ html {
   @apply bg-primary/40 rounded-full hover:bg-primary/60;
 }
 
-/* Mobile Menu — Half-panel slide-in */
+/* Mobile Menu — Full screen top-down slide-in */
 #mobile-menu {
   position: fixed;
   top: 0;
-  right: 0;
-  width: 75vw;
-  max-width: 360px;
-  height: 100vh;
-  background: #1a0a00;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #2c1200 0%, #0d0400 100%);
+  border-top: 5px solid var(--color-gold);
   z-index: 100;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   padding: 3rem 2.5rem;
-  transform: translateX(100%);
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(-100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+}
+
+#mobile-menu::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+  opacity: 0.06;
+  pointer-events: none;
 }
 
 #mobile-menu.open {
-  transform: translateX(0);
+  transform: translateY(0);
+}
+
+/* Hide WhatsApp float button when menu is open for cleaner layout */
+#mobile-menu.open ~ .whatsapp-float {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Close Button styling */
+#close-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(212, 175, 55, 0.2) !important;
+  background: rgba(212, 175, 55, 0.05) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+#close-btn:hover {
+  border-color: var(--color-gold) !important;
+  background: rgba(212, 175, 55, 0.15) !important;
+  color: var(--color-gold) !important;
+  transform: rotate(90deg) scale(1.05) !important;
+}
+
+/* Ensure contents inside the full-screen mobile menu are centered */
+#mobile-menu nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+#mobile-menu nav a,
+#mobile-menu nav button {
+  position: relative;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.85);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+}
+
+#mobile-menu nav a:hover,
+#mobile-menu nav button:hover {
+  color: var(--color-gold) !important;
+  transform: translateY(-2px);
+  letter-spacing: 0.2em;
+}
+
+#mobile-menu nav a::after,
+#mobile-menu nav button::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background: var(--color-gold);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+#mobile-menu nav a:hover::after,
+#mobile-menu nav button:hover::after {
+  width: 40px;
+}
+
+#mobile-menu nav .nav-cart-btn {
+  justify-content: center;
+  text-align: center;
+}
+
+/* Order button custom styles */
+#mobile-menu a.btn-premium {
+  margin-top: 2rem !important;
+  width: 100%;
+  max-width: 280px;
+  box-shadow: 0 10px 25px rgba(204, 85, 0, 0.25), 0 0 0 1px rgba(212, 175, 55, 0.1);
+  transition: all 0.3s ease;
+}
+#mobile-menu a.btn-premium:hover {
+  box-shadow: 0 15px 35px rgba(204, 85, 0, 0.4), 0 0 0 2px var(--color-gold);
+  transform: translateY(-3px) scale(1.03);
+}
+
+/* Address and Social details styling */
+#mobile-menu p {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  line-height: 1.6;
+}
+
+#mobile-menu .border-t {
+  border-top-color: rgba(255, 255, 255, 0.08) !important;
+  text-align: center;
+}
+
+#mobile-menu .flex.space-x-4 {
+  justify-content: center;
+  margin-top: 1rem;
+}
+#mobile-menu .flex.space-x-4 a {
+  transition: all 0.3s ease;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+#mobile-menu .flex.space-x-4 a:hover {
+  border-color: var(--color-gold) !important;
+  color: var(--color-gold) !important;
+  background: rgba(212, 175, 55, 0.1);
+  transform: translateY(-3px);
+}
+
+/* Custom Spacing Overrides for nav items */
+#mobile-menu nav > * + * {
+  margin-top: 1.25rem !important;
+}
+
+@media (max-width: 380px) {
+  #mobile-menu nav a,
+  #mobile-menu nav button {
+    font-size: 1.15rem !important;
+  }
+  #mobile-menu nav > * + * {
+    margin-top: 0.95rem !important;
+  }
+  #mobile-menu a.btn-premium {
+    margin-top: 1.5rem !important;
+    padding: 0.75rem 1.5rem !important;
+  }
+}
+
+/* Tablet & Landscape Grid Split View (768px - 1023px) */
+@media (min-width: 768px) {
+  #mobile-menu {
+    display: grid !important;
+    grid-template-columns: 1.1fr 0.9fr;
+    grid-template-rows: auto 1fr auto;
+    padding: 5rem 6rem 4rem 6rem;
+    gap: 2rem 5rem;
+    align-content: center;
+    align-items: center;
+  }
+
+  /* Logo container - Span rows 1 & 2 in Left Col */
+  #mobile-menu > div.mb-10 {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 0 !important;
+  }
+
+  /* Inject brand information text below logo in tablet split view */
+  #mobile-menu > div.mb-10::after {
+    content: 'ALMAS INDIAN CUISINE\n\nExperience the pinnacle of Hyderabadi hospitality and rich Middle Eastern flavors crafted for the royal dining experience.';
+    display: block;
+    white-space: pre-line;
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    max-width: 300px;
+    margin-top: 2rem;
+    line-height: 1.7;
+    letter-spacing: 0.06em;
+    font-weight: 300;
+  }
+
+  #mobile-menu > div.mb-10 img {
+    height: 110px !important;
+    filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.25));
+  }
+
+  /* Navigation Link List - Span rows 1 & 2 in Right Col */
+  #mobile-menu > nav {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+    justify-self: center;
+    align-items: flex-start !important;
+    text-align: left !important;
+    border-left: 1px solid rgba(212, 175, 55, 0.15);
+    padding-left: 3.5rem;
+    width: 100%;
+  }
+
+  #mobile-menu nav a,
+  #mobile-menu nav button {
+    font-size: 1.5rem !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  #mobile-menu nav a::after,
+  #mobile-menu nav button::after {
+    left: 0;
+    transform: none;
+  }
+
+  #mobile-menu nav > * + * {
+    margin-top: 1.5rem !important;
+  }
+
+  /* Order Button - Bottom Row Right Col */
+  #mobile-menu a.btn-premium {
+    grid-column: 2;
+    grid-row: 3;
+    margin-top: 0 !important;
+    justify-self: start;
+    margin-left: 3.5rem;
+    width: calc(100% - 3.5rem);
+    max-width: 280px;
+  }
+
+  /* Address details - Bottom Row Left Col */
+  #mobile-menu > div:not(.mb-10) {
+    grid-column: 1;
+    grid-row: 3;
+    margin-top: 0 !important;
+    padding-top: 1.5rem !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    text-align: center;
+    max-width: 320px;
+    justify-self: center;
+    width: 100%;
+  }
 }
 
 /* Dark backdrop overlay */
 #menu-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 99;
   opacity: 0;
   pointer-events: none;
@@ -1308,7 +1557,7 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 640px) {
   .payment-method-grid {
     grid-template-columns: 1fr;
     gap: 0.85rem;
@@ -1324,5 +1573,81 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   }
   .checkout-steps::before {
     top: 15px;
+  }
+}
+
+/* =============================================
+   PRINT MEDIA STYLES
+   ============================================= */
+@media print {
+  /* Hide interactive web elements */
+  nav,
+  footer,
+  .whatsapp-float,
+  #splash-screen,
+  #menu-overlay,
+  #mobile-menu,
+  #mobile-search-bar,
+  .checkout-steps,
+  .ecom-tabs,
+  button,
+  .btn-premium,
+  .btn-premium-outline,
+  .btn-premium-outline-dark,
+  a[href^="https://wa.me"] {
+    display: none !important;
+  }
+
+  /* Reset body and background styles for printing */
+  body {
+    background: #FFFFFF !important;
+    background-image: none !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide other wizard panels on the checkout page so only the active panel/invoice prints */
+  main > *:not(#panel-invoice),
+  .ecom-tab-panel:not(#panel-invoice) {
+    display: none !important;
+  }
+
+  /* Style the active invoice panel specifically */
+  #panel-invoice {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    background: transparent !important;
+  }
+
+  /* Clean up the invoice container for paper printing */
+  .invoice-container {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 2rem !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  .invoice-container::before {
+    display: none !important; /* Hide decorative color bar */
+  }
+
+  /* Ensure text color and alignment looks perfect on paper */
+  .invoice-row {
+    border-bottom-color: rgba(0,0,0,0.1) !important;
+    color: #000000 !important;
+  }
+
+  .invoice-row.total {
+    border-top-color: #000000 !important;
+    color: #CC5500 !important;
   }
 }
