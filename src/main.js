@@ -1,5 +1,7 @@
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import './ecommerce.js';
+
 
 // Initialize AOS
 AOS.init({
@@ -97,6 +99,77 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         alert('Geolocation is not supported by your browser.');
       }
+  }
+
+  // Mobile Search Bar Toggle & Input handling
+  const mobileSearchBtn = document.getElementById('mobile-search-btn');
+  const mobileSearchBar = document.getElementById('mobile-search-bar');
+  const mobileSearchInput = document.getElementById('mobile-search-input');
+  const mobileSearchClear = document.getElementById('mobile-search-clear');
+
+  if (mobileSearchBtn && mobileSearchBar && mobileSearchInput) {
+    mobileSearchBtn.addEventListener('click', () => {
+      mobileSearchBar.classList.toggle('hidden');
+      if (!mobileSearchBar.classList.contains('hidden')) {
+        mobileSearchInput.focus();
+      }
     });
+
+    if (mobileSearchClear) {
+      mobileSearchClear.addEventListener('click', () => {
+        mobileSearchInput.value = '';
+        mobileSearchInput.focus();
+        mobileSearchInput.dispatchEvent(new Event('input'));
+      });
+    }
+
+    // Connect to page-level search if present
+    mobileSearchInput.addEventListener('input', (e) => {
+      const value = e.target.value;
+      
+      const productSearch = document.getElementById('product-search');
+      const menuSearch = document.getElementById('menu-search-input');
+      
+      if (productSearch) {
+        productSearch.value = value;
+        productSearch.dispatchEvent(new Event('input'));
+      } else if (menuSearch) {
+        menuSearch.value = value;
+        menuSearch.dispatchEvent(new Event('input'));
+      }
+    });
+
+    // Handle enter key (submit search)
+    mobileSearchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const value = mobileSearchInput.value.trim();
+        const isProductPage = !!document.getElementById('product-search');
+        const isMenuPage = !!document.getElementById('menu-search-input');
+        
+        if (!isProductPage && !isMenuPage && value) {
+          window.location.href = `/products.html?search=${encodeURIComponent(value)}`;
+        }
+      }
+    });
+  }
+
+  // Check URL query parameters for search on page load
+  const urlParams = new URLSearchParams(window.location.search);
+  const searchQueryParams = urlParams.get('search');
+  if (searchQueryParams) {
+    const cleanSearch = decodeURIComponent(searchQueryParams).trim();
+    setTimeout(() => {
+      const productSearch = document.getElementById('product-search');
+      const menuSearch = document.getElementById('menu-search-input');
+      if (productSearch) {
+        productSearch.value = cleanSearch;
+        productSearch.dispatchEvent(new Event('input'));
+        productSearch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else if (menuSearch) {
+        menuSearch.value = cleanSearch;
+        menuSearch.dispatchEvent(new Event('input'));
+        menuSearch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 200);
   }
 });
