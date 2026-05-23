@@ -1990,6 +1990,19 @@
             <div class="flex items-center justify-between mt-auto"><span class="text-primary font-bold text-xl">$8.99</span></div>
           </div>
         </div>
+
+        <!-- Dish: Irani Chai & Bun Maska -->
+        <div class="card-premium flex flex-col md:flex-row gap-6 group">
+          <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
+            <img src="/main page images/hf_20260501_203943_1e3e3da0-c173-475f-a6a0-95621b230874.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Irani Chai & Bun Maska">
+          </div>
+          <div class="w-full md:w-3/5 flex flex-col justify-center">
+            <span class="text-gold font-bold text-[10px] uppercase tracking-widest mb-2">Signature Classic</span>
+            <h3 class="text-xl font-bold mb-3">Irani Chai & Bun Maska</h3>
+            <p class="text-text-secondary text-xs italic mb-6 leading-relaxed">Soft Irani bun slathered with creamy butter, served alongside our slow-brewed sweet milky tea.</p>
+            <div class="flex items-center justify-between mt-auto"><span class="text-primary font-bold text-xl">$9.99</span></div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -2084,6 +2097,7 @@
         if (!titleEl) return;
         const name = titleEl.textContent.trim();
         const id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        card.id = id;
         const imgEl = card.querySelector('img');
         const image = imgEl ? imgEl.getAttribute('src') : '';
         const descEl = card.querySelector('p');
@@ -2330,6 +2344,67 @@
           }
         });
       });
+
+      // Handle URL hash on load or hash change
+      const handleHashRedirect = () => {
+        const hash = window.location.hash;
+        if (hash) {
+          const targetId = hash.substring(1);
+          const targetCard = document.getElementById(targetId);
+          if (targetCard) {
+            // Reset filters to show all products so the target is visible
+            currentSearch = '';
+            currentDiet = 'all';
+            currentCategory = 'all';
+
+            // Reset Search UI
+            const searchInput = document.getElementById('product-search');
+            if (searchInput) searchInput.value = '';
+
+            // Reset Diet UI
+            const dietBtns = document.querySelectorAll('.diet-btn');
+            dietBtns.forEach(btn => {
+              if (btn.dataset.diet === 'all') {
+                btn.classList.add('active', 'text-white', 'bg-primary');
+                btn.classList.remove('border-primary/20', 'text-text-primary');
+              } else {
+                btn.classList.remove('active', 'text-white', 'bg-primary');
+                btn.classList.add('border-primary/20', 'text-text-primary');
+              }
+            });
+
+            // Reset Category UI
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            categoryBtns.forEach(btn => {
+              if (btn.dataset.category === 'all') {
+                btn.classList.add('text-primary', 'border-b-2', 'border-primary', 'active');
+                btn.classList.remove('text-text-primary');
+              } else {
+                btn.classList.remove('text-primary', 'border-b-2', 'border-primary', 'active');
+                btn.classList.add('text-text-primary');
+              }
+            });
+
+            // Re-apply visibility filtering
+            filterProducts();
+
+            // Scroll to targeted element smoothly
+            setTimeout(() => {
+              targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              
+              // Apply premium highlight effect
+              targetCard.classList.add('highlight-premium');
+              setTimeout(() => {
+                targetCard.classList.remove('highlight-premium');
+              }, 2500);
+            }, 300);
+          }
+        }
+      };
+
+      // Run on initial load and listen for hash changes
+      setTimeout(handleHashRedirect, 350);
+      window.addEventListener('hashchange', handleHashRedirect);
     });
   </script>
   <script type="module" src="/src/main.js"></script>

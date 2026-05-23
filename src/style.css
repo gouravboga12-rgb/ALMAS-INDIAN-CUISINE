@@ -1651,3 +1651,26 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
     color: #CC5500 !important;
   }
 }
+
+/* Premium Highlight for Targeted Card */
+@keyframes highlight-glow {
+  0% {
+    box-shadow: 0 0 0 0px rgba(204, 85, 0, 0.4), 0 20px 60px rgba(0, 0, 0, 0.08);
+    background-color: rgba(204, 85, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 0 15px rgba(204, 85, 0, 0), 0 20px 60px rgba(204, 85, 0, 0.15);
+    background-color: rgba(204, 85, 0, 0.05);
+    border-color: rgba(204, 85, 0, 0.5) !important;
+  }
+  100% {
+    box-shadow: 0 0 0 0px rgba(204, 85, 0, 0), 0 20px 60px rgba(0, 0, 0, 0.08);
+    background-color: #FFFAF3;
+  }
+}
+
+.highlight-premium {
+  animation: highlight-glow 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  border-color: #CC5500 !important;
+}
+
