@@ -50,6 +50,15 @@
       grid-template-columns: 320px 1fr;
       gap: 2.5rem;
       align-items: start;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .account-layout.logged-out {
+      max-width: 480px;
+      grid-template-columns: 1fr;
+      display: block;
+    }
+    .account-layout.logged-out .account-sidebar {
+      width: 100%;
     }
     @media (max-width: 768px) {
       .account-layout {
@@ -57,6 +66,10 @@
         flex-direction: column;
         padding: 2rem 1.25rem 4rem;
         gap: 3rem;
+      }
+      .account-layout.logged-out {
+        display: block;
+        padding: 2rem 1.25rem 4rem;
       }
     }
 
@@ -502,6 +515,473 @@
       background: rgba(212, 175, 55, 0.12) !important;
       box-shadow: 0 0 18px rgba(212, 175, 55, 0.2), 0 4px 12px rgba(0, 0, 0, 0.08) !important;
     }
+
+    /* ---- Social Login ---- */
+    .social-login-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .social-login-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      width: 100%;
+      padding: 0.85rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: var(--font-body);
+      box-sizing: border-box;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .social-login-btn.google {
+      background: white;
+      color: #1a0a00;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .social-login-btn.google:hover {
+      background: #f5f5f5;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(255, 255, 255, 0.08);
+    }
+    .social-login-btn.apple {
+      background: #111;
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .social-login-btn.apple:hover {
+      background: #222;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+    .social-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ---- Password Toggle Box ---- */
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .password-toggle {
+      position: absolute;
+      right: 1.1rem;
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.25s ease;
+    }
+    .password-toggle:hover {
+      color: #D4AF37;
+    }
+    .password-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+    .auth-input.password-input {
+      padding-right: 3rem;
+    }
+
+    /* ---- Auth alert ---- */
+    .auth-alert {
+      background: rgba(239, 83, 80, 0.1);
+      border: 1px solid rgba(239, 83, 80, 0.3);
+      border-radius: 0.85rem;
+      padding: 0.85rem 1rem;
+      color: #ef5350;
+      font-size: 0.78rem;
+      font-weight: 600;
+      line-height: 1.45;
+      margin-bottom: 1.25rem;
+      display: none;
+      align-items: center;
+      gap: 0.6rem;
+      animation: slideInDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .auth-alert.success {
+      background: rgba(76, 175, 80, 0.12);
+      border: 1px solid rgba(76, 175, 80, 0.3);
+      color: #4caf50;
+    }
+    @keyframes slideInDown {
+      from { transform: translateY(-10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* ---- Google selector modal ---- */
+    .google-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .google-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .google-modal-card {
+      background: white;
+      color: #202124;
+      width: 100%;
+      max-width: 380px;
+      border-radius: 8px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      transform: scale(0.9);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+    }
+    .google-modal-overlay.active .google-modal-card {
+      transform: scale(1);
+    }
+    .google-modal-header {
+      padding: 28px 24px 16px;
+      text-align: center;
+    }
+    .google-modal-logo {
+      height: 24px;
+      margin: 0 auto 16px;
+      display: block;
+    }
+    .google-modal-title {
+      font-size: 1.35rem;
+      font-weight: 500;
+      margin: 0 0 6px 0;
+      color: #202124;
+    }
+    .google-modal-subtitle {
+      font-size: 0.85rem;
+      color: #5f6368;
+      margin: 0 0 16px 0;
+    }
+    .google-accounts-list {
+      max-height: 240px;
+      overflow-y: auto;
+      border-top: 1px solid #dadce0;
+      border-bottom: 1px solid #dadce0;
+    }
+    .google-account-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 24px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+    }
+    .google-account-item:hover {
+      background-color: #f8f9fa;
+    }
+    .google-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4285F4, #34A853);
+      color: white;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+    .google-account-details {
+      flex: 1;
+    }
+    .google-account-name {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #3c4043;
+      margin: 0;
+    }
+    .google-account-email {
+      font-size: 0.78rem;
+      color: #5f6368;
+      margin: 2px 0 0 0;
+    }
+    .google-modal-footer {
+      padding: 16px 24px;
+      font-size: 0.72rem;
+      color: #5f6368;
+      line-height: 1.4;
+      text-align: center;
+      background: #f8f9fa;
+    }
+    .google-modal-footer a {
+      color: #1a73e8;
+      text-decoration: none;
+    }
+    .google-modal-footer a:hover {
+      text-decoration: underline;
+    }
+    .google-modal-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: #70757a;
+      line-height: 1;
+      padding: 4px;
+    }
+    .google-modal-close:hover {
+      color: #202124;
+    }
+
+    /* ---- New Auth Headers & Prompts ---- */
+    .auth-header {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+    .auth-card-title {
+      font-family: var(--font-heading);
+      color: white;
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin: 0 0 0.4rem 0;
+      line-height: 1.2;
+    }
+    .auth-card-subtitle {
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 0.85rem;
+      margin: 0;
+      line-height: 1.5;
+    }
+    .auth-extra-links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: -0.25rem;
+      margin-bottom: 1.5rem;
+      gap: 1rem;
+    }
+    .auth-link {
+      color: #D4AF37;
+      font-size: 0.76rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .auth-link:hover {
+      color: #CC5500;
+      text-decoration: underline;
+    }
+    .auth-switch-prompt {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.8rem;
+      margin-top: 1.25rem;
+      font-weight: 500;
+    }
+    .auth-switch-link {
+      background: transparent;
+      border: none;
+      color: #D4AF37;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      padding: 0;
+      margin-left: 0.2rem;
+      transition: all 0.25s ease;
+    }
+    .auth-switch-link:hover {
+      color: #CC5500;
+      text-decoration: underline;
+    }
+
+    /* ---- Light Auth Card (Reference Image Style) ---- */
+    .auth-card-light {
+      background: #ffffff !important;
+      border: 1px solid #e0e0e0 !important;
+      color: #202124 !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .auth-card-light .auth-card-title {
+      color: #202124 !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 1.8rem !important;
+      font-weight: 700 !important;
+      text-align: center !important;
+      margin-bottom: 0.5rem !important;
+    }
+    
+    .auth-card-light .auth-card-subtitle {
+      color: #5f6368 !important;
+      font-size: 0.85rem !important;
+      text-align: center !important;
+      margin-bottom: 1.5rem !important;
+    }
+    
+    .auth-card-light .auth-header {
+      text-align: center !important;
+    }
+    
+    .auth-card-light .auth-input {
+      background: #ffffff !important;
+      border: 1px solid #dadce0 !important;
+      color: #202124 !important;
+      border-radius: 8px !important;
+      padding: 0.85rem 1rem !important;
+      font-size: 0.95rem !important;
+    }
+    
+    .auth-card-light .auth-input:focus {
+      border-color: #FFA426 !important;
+      box-shadow: 0 0 0 2px rgba(255, 164, 38, 0.2) !important;
+      outline: none !important;
+    }
+    
+    .auth-card-light .auth-input::placeholder {
+      color: #70757a !important;
+    }
+    
+    .auth-card-light .password-toggle {
+      color: #5f6368 !important;
+    }
+    
+    .auth-card-light .password-toggle:hover {
+      color: #202124 !important;
+    }
+    
+    .auth-card-light .auth-extra-links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem !important;
+      margin-bottom: 1.5rem !important;
+    }
+    
+    .auth-card-light .auth-link {
+      font-size: 0.8rem !important;
+      font-weight: 500 !important;
+      text-decoration: none !important;
+    }
+    
+    .auth-card-light #link-forgot-password {
+      color: #1a73e8 !important; /* blue link in image */
+    }
+    
+    .auth-card-light #link-forgot-password:hover {
+      text-decoration: underline !important;
+    }
+    
+    .auth-card-light .auth-link:not(#link-forgot-password) {
+      color: #5f6368 !important; /* Having trouble logging in? grey text */
+    }
+    
+    .auth-card-light .auth-link:not(#link-forgot-password):hover {
+      color: #202124 !important;
+      text-decoration: underline !important;
+    }
+    
+    .auth-card-light .auth-submit-btn {
+      background: #FFA426 !important; /* solid orange in image */
+      color: #ffffff !important;
+      border-radius: 8px !important;
+      padding: 0.9rem !important;
+      font-size: 0.95rem !important;
+      font-weight: 600 !important;
+      text-transform: none !important; /* "Login" is not uppercase in image */
+      letter-spacing: normal !important;
+      box-shadow: none !important;
+      margin-top: 0.5rem !important;
+    }
+    
+    .auth-card-light .auth-submit-btn:hover {
+      background: #e69320 !important;
+      transform: none !important;
+    }
+    
+    .auth-card-light .auth-switch-prompt {
+      color: #5f6368 !important;
+      font-size: 0.85rem !important;
+      font-weight: 500 !important;
+      margin-top: 1.25rem !important;
+    }
+    
+    .auth-card-light .auth-switch-link {
+      color: #1a73e8 !important; /* Blue Sign UP in image */
+      font-weight: 700 !important;
+      font-size: 0.85rem !important;
+      margin-left: 0.25rem !important;
+      text-decoration: none !important;
+    }
+    
+    .auth-card-light .auth-switch-link:hover {
+      text-decoration: underline !important;
+      color: #1557b0 !important;
+    }
+    
+    .auth-card-light .auth-divider {
+      color: #5f6368 !important;
+      font-size: 0.8rem !important;
+      margin: 1.5rem 0 !important;
+    }
+    
+    .auth-card-light .auth-divider::before,
+    .auth-card-light .auth-divider::after {
+      background: #dadce0 !important;
+    }
+    
+    .auth-card-light .social-login-btn {
+      border-radius: 8px !important;
+      padding: 0.85rem 1rem !important;
+      font-size: 0.85rem !important;
+      font-weight: 600 !important;
+      text-transform: none !important;
+      letter-spacing: normal !important;
+      box-shadow: none !important;
+    }
+    
+    .auth-card-light .social-login-btn.google {
+      background: #ffffff !important;
+      color: #3c4043 !important;
+      border: 1px solid #dadce0 !important;
+    }
+    
+    .auth-card-light .social-login-btn.google:hover {
+      background: #f8f9fa !important;
+      transform: none !important;
+    }
+    
+    .auth-card-light .social-login-btn.apple {
+      background: #000000 !important;
+      color: #ffffff !important;
+      border: none !important;
+    }
+    
+    .auth-card-light .social-login-btn.apple:hover {
+      background: #1a1a1a !important;
+      transform: none !important;
+    }
   </style>
 </head>
 <body>
@@ -613,59 +1093,91 @@
   </div>
 
   <!-- Main Layout -->
-  <div class="account-layout">
+  <div class="account-layout logged-out">
 
     <!-- LEFT SIDEBAR: Auth Card -->
     <div class="account-sidebar">
 
       <!-- AUTH CARD (shown when logged out) -->
-      <div id="auth-card-view" class="auth-card">
-        <div class="demo-notice">
-          ★ Demo Mode — Enter any name & email to experience the guest account flow.
-        </div>
+      <div id="auth-card-view" class="auth-card auth-card-light">
+        <!-- Auth Notification Alert -->
+        <div id="auth-alert" class="auth-alert"></div>
 
-        <!-- Tab Bar -->
-        <div class="auth-tab-bar" id="auth-tab-bar">
-          <button class="auth-tab active" data-tab="login">Sign In</button>
-          <button class="auth-tab" data-tab="signup">Create Account</button>
+        <!-- Headers (Toggled in JS instead of Tabs) -->
+        <div id="auth-header-login" class="auth-header">
+          <h2 class="auth-card-title">Welcome back!</h2>
+          <p class="auth-card-subtitle">Login to manage your dining hub & orders</p>
+        </div>
+        <div id="auth-header-signup" class="auth-header" style="display:none;">
+          <h2 class="auth-card-title">Create Account</h2>
+          <p class="auth-card-subtitle">Join us to experience exclusive benefits</p>
         </div>
 
         <!-- Login Form -->
         <div id="auth-panel-login">
           <div class="auth-input-group">
-            <label class="form-label">Email Address</label>
-            <input type="email" id="login-email" class="auth-input" placeholder="you@example.com">
+            <input type="text" id="login-email" class="auth-input" placeholder="Email or Phone">
           </div>
-          <div class="auth-input-group">
-            <label class="form-label">Password</label>
-            <input type="password" id="login-password" class="auth-input" placeholder="••••••••">
+          <div class="auth-input-group" style="margin-bottom:0.75rem;">
+            <div class="input-wrapper">
+              <input type="password" id="login-password" class="auth-input password-input" placeholder="Password">
+              <button type="button" class="password-toggle" id="btn-toggle-login-password" title="Show Password">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </button>
+            </div>
           </div>
-          <button class="auth-submit-btn" id="btn-login">Sign In to Account</button>
-          <div class="auth-divider" style="margin-top:1.25rem;">or</div>
-          <button class="auth-submit-btn" id="btn-guest" style="background:transparent; border:1.5px solid rgba(204,85,0,0.4); color:#CC5500; box-shadow:none; margin-top:0.5rem;">
-            Continue as Guest
-          </button>
+          
+          <div class="auth-extra-links">
+            <a href="#" id="link-forgot-password" class="auth-link">Forgot password?</a>
+            <a href="mailto:almasindiancuisine@gmail.com" class="auth-link">Having trouble logging in?</a>
+          </div>
+
+          <button class="auth-submit-btn" id="btn-login">Login</button>
+
+          <div class="auth-switch-prompt">
+            Need to create an account?<button type="button" class="auth-switch-link" id="switch-to-signup">Sign UP</button>
+          </div>
+          
+          <div class="auth-divider" style="margin-top:1.5rem;">OR</div>
+          
+          <div class="social-login-group" style="margin-bottom:0.5rem;">
+            <button class="social-login-btn google" id="btn-google-login">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" class="social-icon">
+              Log in using Google
+            </button>
+          </div>
         </div>
 
         <!-- Sign Up Form -->
         <div id="auth-panel-signup" style="display:none;">
           <div class="auth-input-group">
-            <label class="form-label">Full Name</label>
-            <input type="text" id="signup-name" class="auth-input" placeholder="Your full name">
+            <input type="text" id="signup-name" class="auth-input" placeholder="Full Name">
           </div>
           <div class="auth-input-group">
-            <label class="form-label">Email Address</label>
-            <input type="email" id="signup-email" class="auth-input" placeholder="you@example.com">
+            <input type="email" id="signup-email" class="auth-input" placeholder="Email Address">
           </div>
           <div class="auth-input-group">
-            <label class="form-label">Phone</label>
-            <input type="tel" id="signup-phone" class="auth-input" placeholder="+1 (416) 000-0000">
+            <input type="tel" id="signup-phone" class="auth-input" placeholder="Phone Number">
           </div>
           <div class="auth-input-group">
-            <label class="form-label">Password</label>
-            <input type="password" id="signup-password" class="auth-input" placeholder="Create a password">
+            <div class="input-wrapper">
+              <input type="password" id="signup-password" class="auth-input password-input" placeholder="Password">
+              <button type="button" class="password-toggle" id="btn-toggle-signup-password" title="Show Password">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </button>
+            </div>
           </div>
           <button class="auth-submit-btn" id="btn-signup">Create My Account</button>
+          
+          <div class="auth-switch-prompt" style="margin-top:1.5rem;">
+            Already have an account?<button type="button" class="auth-switch-link" id="switch-to-login">Log In</button>
+          </div>
         </div>
       </div>
 
@@ -729,51 +1241,7 @@
       </div>
     </div>
 
-    <!-- RIGHT: Prompt to sign in -->
-    <div id="account-guest-prompt">
-      <!-- Top label -->
-      <div class="guest-prompt-header">
-        <span class="guest-prompt-label">Your Benefits</span>
-        <h2 class="guest-prompt-title">Sign in to unlock<br>your <span>dining hub</span></h2>
-        <p class="guest-prompt-desc">Track every order, review your dining history, and manage your Almas experience in one place.</p>
-      </div>
-
-      <!-- Feature highlights -->
-      <div class="signin-feature">
-        <div class="signin-feature-icon">📋</div>
-        <div>
-          <div class="signin-feature-title">Order History</div>
-          <div class="signin-feature-desc">Every takeout and catering booking stored and accessible in one place.</div>
-        </div>
-      </div>
-      <div class="signin-feature">
-        <div class="signin-feature-icon">🔥</div>
-        <div>
-          <div class="signin-feature-title">Live Kitchen Tracker</div>
-          <div class="signin-feature-desc">Watch your order move from received → kitchen → ready for pickup in real time.</div>
-        </div>
-      </div>
-      <div class="signin-feature">
-        <div class="signin-feature-icon">🎁</div>
-        <div>
-          <div class="signin-feature-title">Personalized Experience</div>
-          <div class="signin-feature-desc">Save your spice preferences and favourite dishes for faster reordering.</div>
-        </div>
-      </div>
-      <div class="signin-feature">
-        <div class="signin-feature-icon">🧾</div>
-        <div>
-          <div class="signin-feature-title">Digital Invoices</div>
-          <div class="signin-feature-desc">Printable receipts and order summaries available for every transaction.</div>
-        </div>
-      </div>
-
-      <!-- CTA hint -->
-      <div class="guest-prompt-notice">
-        <span class="guest-prompt-notice-icon">★</span>
-        <span>Use the form to get started. Any email works in demo mode.</span>
-      </div>
-    </div>
+    <!-- RIGHT: Prompt to sign in (Removed in favor of centered card) -->
 
   </div>
 
@@ -962,19 +1430,127 @@
       document.getElementById('main-name').textContent = name;
       document.getElementById('main-email').textContent = email;
 
-      // Show main content, hide prompt
+      // Update layout state to logged in (enable grid sidebar/dashboard)
+      const layout = document.querySelector('.account-layout');
+      if (layout) {
+        layout.classList.remove('logged-out');
+      }
+
+      // Show main content
       document.getElementById('account-main-content').style.display = 'block';
-      document.getElementById('account-guest-prompt').style.display = 'none';
 
       loadOrders();
     }
 
     function handleLogout() {
       localStorage.removeItem('almas_account');
+      
+      // Update layout state to logged out (center the auth card)
+      const layout = document.querySelector('.account-layout');
+      if (layout) {
+        layout.classList.add('logged-out');
+      }
+
       document.getElementById('auth-card-view').style.display = 'block';
       document.getElementById('logged-in-view').style.display = 'none';
       document.getElementById('account-main-content').style.display = 'none';
-      document.getElementById('account-guest-prompt').style.display = 'block';
+    }
+
+    // ============================================================
+    // SIMULATED DATABASE & AUTHENTICATION HELPERS
+    // ============================================================
+    const DB_KEY = 'almas_registered_users';
+    
+    // Seed database with a few default users for demo purposes if empty
+    function initializeDemoDatabase() {
+      if (!localStorage.getItem(DB_KEY)) {
+        const initialUsers = [
+          { name: 'Gourav Boga', email: 'gouravboga12@gmail.com', phone: '+1 (416) 123-4567', password: 'password123' },
+          { name: 'Demo User', email: 'demo@gmail.com', phone: '+1 (416) 999-9999', password: 'password123' }
+        ];
+        localStorage.setItem(DB_KEY, JSON.stringify(initialUsers));
+      }
+    }
+    initializeDemoDatabase();
+
+    function getUsers() {
+      return JSON.parse(localStorage.getItem(DB_KEY)) || [];
+    }
+
+    function registerUser(name, email, phone, password) {
+      const users = getUsers();
+      if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+        return { success: false, message: 'Email address is already registered.' };
+      }
+      users.push({ name, email, phone, password });
+      localStorage.setItem(DB_KEY, JSON.stringify(users));
+      return { success: true };
+    }
+
+    function authenticateUser(email, password) {
+      const users = getUsers();
+      const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+      if (!user) {
+        return { success: false, message: 'No account found with this email. Please register.' };
+      }
+      if (user.password !== password) {
+        return { success: false, message: 'Incorrect password. Please try again.' };
+      }
+      return { success: true, user };
+    }
+
+    // Toast alerts inside the login card
+    function showAuthAlert(message, type = 'error') {
+      const alertEl = document.getElementById('auth-alert');
+      if (!alertEl) return;
+      alertEl.textContent = message;
+      alertEl.className = 'auth-alert ' + type;
+      alertEl.style.display = 'flex';
+      
+      // Auto scroll to make it visible
+      alertEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function clearAuthAlert() {
+      const alertEl = document.getElementById('auth-alert');
+      if (alertEl) {
+        alertEl.style.display = 'none';
+      }
+    }
+
+    // Toggle password fields helper
+    function setupPasswordToggle(inputId, toggleId) {
+      const input = document.getElementById(inputId);
+      const toggle = document.getElementById(toggleId);
+      if (!input || !toggle) return;
+
+      const eyeIcon = `
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+      `;
+      const eyeSlashIcon = `
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+        </svg>
+      `;
+
+      // Set initial SVG
+      toggle.innerHTML = eyeIcon;
+
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (input.type === 'password') {
+          input.type = 'text';
+          toggle.innerHTML = eyeSlashIcon;
+          toggle.title = 'Hide Password';
+        } else {
+          input.type = 'password';
+          toggle.innerHTML = eyeIcon;
+          toggle.title = 'Show Password';
+        }
+      });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -984,59 +1560,243 @@
         showLoggedIn(saved.name, saved.email);
       }
 
-      // Auth tab switching
-      document.querySelectorAll('.auth-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-          document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-          const which = tab.dataset.tab;
-          document.getElementById('auth-panel-login').style.display = which === 'login' ? 'block' : 'none';
-          document.getElementById('auth-panel-signup').style.display = which === 'signup' ? 'block' : 'none';
+      // Password visibility toggles
+      setupPasswordToggle('login-password', 'btn-toggle-login-password');
+      setupPasswordToggle('signup-password', 'btn-toggle-signup-password');
+
+      // Auth panel switching helpers
+      function showSignupPanel() {
+        clearAuthAlert();
+        document.getElementById('auth-panel-login').style.display = 'none';
+        document.getElementById('auth-panel-signup').style.display = 'block';
+        document.getElementById('auth-header-login').style.display = 'none';
+        document.getElementById('auth-header-signup').style.display = 'block';
+      }
+
+      function showLoginPanel() {
+        clearAuthAlert();
+        document.getElementById('auth-panel-login').style.display = 'block';
+        document.getElementById('auth-panel-signup').style.display = 'none';
+        document.getElementById('auth-header-login').style.display = 'block';
+        document.getElementById('auth-header-signup').style.display = 'none';
+      }
+
+      const btnSwitchToSignup = document.getElementById('switch-to-signup');
+      if (btnSwitchToSignup) {
+        btnSwitchToSignup.addEventListener('click', (e) => {
+          e.preventDefault();
+          showSignupPanel();
         });
-      });
+      }
+
+      const btnSwitchToLogin = document.getElementById('switch-to-login');
+      if (btnSwitchToLogin) {
+        btnSwitchToLogin.addEventListener('click', (e) => {
+          e.preventDefault();
+          showLoginPanel();
+        });
+      }
+
+      // Simulated forgot password alert
+      const linkForgotPass = document.getElementById('link-forgot-password');
+      if (linkForgotPass) {
+        linkForgotPass.addEventListener('click', (e) => {
+          e.preventDefault();
+          showAuthAlert('Password reset link has been simulated! Use password123 to log in.', 'success');
+        });
+      }
 
       // Check query parameter for active auth tab
       const urlParams = new URLSearchParams(window.location.search);
       const authTab = urlParams.get('tab');
       if (authTab === 'signup') {
-        const signupTab = document.querySelector('[data-tab="signup"]');
-        if (signupTab) signupTab.click();
-      } else if (authTab === 'login') {
-        const loginTab = document.querySelector('[data-tab="login"]');
-        if (loginTab) loginTab.click();
+        showSignupPanel();
+      } else {
+        showLoginPanel();
       }
 
-      // Login
+      // Email/Password Login
       document.getElementById('btn-login').addEventListener('click', () => {
+        clearAuthAlert();
         const email = document.getElementById('login-email').value.trim();
         const pass  = document.getElementById('login-password').value.trim();
-        if (!email) { alert('Please enter your email address.'); return; }
-        const name = email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-        const account = { name, email };
-        localStorage.setItem('almas_account', JSON.stringify(account));
-        showLoggedIn(name, email);
+        
+        if (!email) {
+          showAuthAlert('Please enter your email or phone number.');
+          return;
+        }
+        if (!pass) {
+          showAuthAlert('Please enter your password.');
+          return;
+        }
+        
+        const authResult = authenticateUser(email, pass);
+        if (authResult.success) {
+          const account = { name: authResult.user.name, email: authResult.user.email };
+          localStorage.setItem('almas_account', JSON.stringify(account));
+          showLoggedIn(account.name, account.email);
+        } else {
+          showAuthAlert(authResult.message);
+        }
       });
 
-      // Guest
-      document.getElementById('btn-guest').addEventListener('click', () => {
-        const account = { name: 'Guest', email: 'guest@almas.ca' };
-        localStorage.setItem('almas_account', JSON.stringify(account));
-        showLoggedIn('Guest', 'guest@almas.ca');
-      });
-
-      // Sign Up
+      // Sign Up Registration
       document.getElementById('btn-signup').addEventListener('click', () => {
+        clearAuthAlert();
         const name  = document.getElementById('signup-name').value.trim();
         const email = document.getElementById('signup-email').value.trim();
-        if (!name || !email) { alert('Please fill out your name and email to create an account.'); return; }
-        const account = { name, email };
-        localStorage.setItem('almas_account', JSON.stringify(account));
-        showLoggedIn(name, email);
+        const phone = document.getElementById('signup-phone').value.trim();
+        const pass  = document.getElementById('signup-password').value.trim();
+        
+        if (!name) {
+          showAuthAlert('Please enter your full name.');
+          return;
+        }
+        if (!email) {
+          showAuthAlert('Please enter your email address.');
+          return;
+        }
+        if (!pass) {
+          showAuthAlert('Please create a password.');
+          return;
+        }
+        
+        const registerResult = registerUser(name, email, phone, pass);
+        if (registerResult.success) {
+          const account = { name, email };
+          localStorage.setItem('almas_account', JSON.stringify(account));
+          showLoggedIn(name, email);
+        } else {
+          showAuthAlert(registerResult.message);
+        }
       });
+
+      // ============================================================
+      // GOOGLE SIGN-IN MOCK MODAL FLOW
+      // ============================================================
+      const googleModal = document.getElementById('google-signin-modal');
+      const googleAccountsList = document.getElementById('google-accounts-list');
+      const googleCloseBtn = document.getElementById('google-modal-close-btn');
+
+      const mockGoogleAccounts = [
+        { name: 'Gourav Boga', email: 'gouravboga12@gmail.com', avatar: 'G' },
+        { name: 'Almas Guest', email: 'guest.almas@gmail.com', avatar: 'A' },
+        { name: 'Demo User', email: 'demo.user@gmail.com', avatar: 'D' }
+      ];
+
+      function renderGoogleAccounts() {
+        if (!googleAccountsList) return;
+        googleAccountsList.innerHTML = mockGoogleAccounts.map((acc, index) => `
+          <button class="google-account-item" data-index="${index}">
+            <div class="google-avatar">${acc.avatar}</div>
+            <div class="google-account-details">
+              <p class="google-account-name">${acc.name}</p>
+              <p class="google-account-email">${acc.email}</p>
+            </div>
+          </button>
+        `).join('') + `
+          <button class="google-account-item" id="google-use-another">
+            <div class="google-avatar" style="background:#f1f3f4; color:#5f6368; font-size:1.2rem;">👤</div>
+            <div class="google-account-details">
+              <p class="google-account-name" style="color:#1a73e8; font-weight:500;">Use another account</p>
+            </div>
+          </button>
+        `;
+
+        // Add event listeners to accounts
+        googleAccountsList.querySelectorAll('.google-account-item').forEach(item => {
+          item.addEventListener('click', () => {
+            if (item.id === 'google-use-another') {
+              const emailInput = prompt('Enter your Google email:');
+              if (!emailInput) return;
+              if (!emailInput.includes('@')) {
+                alert('Please enter a valid email address.');
+                return;
+              }
+              const nameFromEmail = emailInput.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+              handleGoogleAccountSelect({ name: nameFromEmail, email: emailInput });
+            } else {
+              const idx = item.dataset.index;
+              handleGoogleAccountSelect(mockGoogleAccounts[idx]);
+            }
+          });
+        });
+      }
+
+      function handleGoogleAccountSelect(account) {
+        googleAccountsList.innerHTML = `
+          <div style="padding:40px 24px; text-align:center;">
+            <div class="loading-spinner" style="border: 3px solid #f3f3f3; border-top: 3px solid #1a73e8; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin:0 auto 16px;"></div>
+            <p style="font-size:0.9rem; color:#5f6368;">Signing in with Google...</p>
+          </div>
+          <style>
+            @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+          </style>
+        `;
+
+        setTimeout(() => {
+          // Check if user is registered, if not auto-register them
+          const users = getUsers();
+          let user = users.find(u => u.email.toLowerCase() === account.email.toLowerCase());
+          if (!user) {
+            registerUser(account.name, account.email, '', 'google_provider_oauth');
+          }
+          
+          // Log them in
+          const savedAccount = { name: account.name, email: account.email };
+          localStorage.setItem('almas_account', JSON.stringify(savedAccount));
+          googleModal.classList.remove('active');
+          showLoggedIn(account.name, account.email);
+        }, 1200); // 1.2s delay to simulate authentic Google Login redirect/validation
+      }
+
+      if (document.getElementById('btn-google-login')) {
+        document.getElementById('btn-google-login').addEventListener('click', () => {
+          clearAuthAlert();
+          renderGoogleAccounts();
+          googleModal.classList.add('active');
+        });
+      }
+
+      if (googleCloseBtn) {
+        googleCloseBtn.addEventListener('click', () => {
+          googleModal.classList.remove('active');
+        });
+      }
+
+      if (googleModal) {
+        googleModal.addEventListener('click', (e) => {
+          if (e.target === googleModal) {
+            googleModal.classList.remove('active');
+          }
+        });
+      }
+
+      // ============================================================
+      // APPLE SIGN-IN MOCK FLOW
+      // ============================================================
+      // Apple Sign-In removed per user request
 
       // Logout
       document.getElementById('btn-logout').addEventListener('click', handleLogout);
     });
   </script>
+  <!-- Google Sign-In Mock Modal -->
+  <div class="google-modal-overlay" id="google-signin-modal">
+    <div class="google-modal-card">
+      <button class="google-modal-close" id="google-modal-close-btn">&times;</button>
+      <div class="google-modal-header">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" class="google-modal-logo">
+        <h3 class="google-modal-title">Sign in with Google</h3>
+        <p class="google-modal-subtitle">to continue to ALMAS Indian Cuisine</p>
+      </div>
+      <div class="google-accounts-list" id="google-accounts-list">
+        <!-- Accounts populated dynamically -->
+      </div>
+      <div class="google-modal-footer">
+        To continue, Google will share your name, email address, language preference, and profile picture with ALMAS Indian Cuisine. See their <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>.
+      </div>
+    </div>
+  </div>
 </body>
 </html>
