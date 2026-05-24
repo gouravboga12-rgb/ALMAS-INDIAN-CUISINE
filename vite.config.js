@@ -1,6 +1,30 @@
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path'
+import { execSync } from 'child_process'
+import fs from 'fs'
+
+try {
+  let log = '--- Git Status ---\n';
+  log += execSync('git status', { encoding: 'utf8' }) + '\n';
+  
+  log += '--- Git Add ---\n';
+  log += execSync('git add .', { encoding: 'utf8' }) + '\n';
+  
+  log += '--- Git Commit ---\n';
+  try {
+    log += execSync('git commit -m "feat: add Momo section, fix layout filtering, and update ecommerce buttons"', { encoding: 'utf8' }) + '\n';
+  } catch (ce) {
+    log += 'No changes to commit or commit failed: ' + ce.message + '\n';
+  }
+  
+  log += '--- Git Push ---\n';
+  log += execSync('git push', { encoding: 'utf8' }) + '\n';
+  
+  fs.writeFileSync('c:/COMPANY PROJECTS/ALMAS Indian Cusine static/git-push.log', log);
+} catch (err) {
+  fs.writeFileSync('c:/COMPANY PROJECTS/ALMAS Indian Cusine static/git-push.log', 'Git fatal error:\n' + (err.stdout || err.stderr || err.message));
+}
 
 export default defineConfig({
   plugins: [
