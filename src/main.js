@@ -63,6 +63,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Dynamic desktop menu authentication links
+  const desktopAuthGroup = document.getElementById('desktop-auth-group');
+  if (desktopAuthGroup) {
+    const saved = JSON.parse(localStorage.getItem('almas_account'));
+    if (saved && saved.name) {
+      const initial = saved.name.charAt(0).toUpperCase();
+      desktopAuthGroup.innerHTML = `
+        <a href="/account.html" class="nav-signin-btn" title="My Account">
+          <div class="nav-signin-avatar">${initial}</div>
+          <span>Account</span>
+        </a>
+      `;
+    } else {
+      desktopAuthGroup.innerHTML = `
+        <a href="/account.html?tab=login" class="nav-signin-btn" title="Sign In">
+          <div class="nav-signin-avatar" style="background:#4A4A4A;">
+            <svg class="nav-signin-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 12c2.667 0 8 1.333 8 4v2H4v-2c0-2.667 5.333-4 8-4zm0-2a4 4 0 110-8 4 4 0 010 8z"/>
+            </svg>
+          </div>
+          <span>Sign In</span>
+        </a>
+      `;
+    }
+  }
+
   const menuBtn = document.getElementById('menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
   const closeBtn = document.getElementById('close-btn');
@@ -190,5 +216,48 @@ document.addEventListener('DOMContentLoaded', () => {
         menuSearch.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }, 200);
+  }
+
+  // Desktop Search Input Handling
+  const desktopSearchInput = document.getElementById('desktop-search-input');
+  if (desktopSearchInput) {
+    desktopSearchInput.addEventListener('input', (e) => {
+      const value = e.target.value;
+      const productSearch = document.getElementById('product-search');
+      const menuSearch = document.getElementById('menu-search-input');
+      
+      if (productSearch) {
+        productSearch.value = value;
+        productSearch.dispatchEvent(new Event('input'));
+      } else if (menuSearch) {
+        menuSearch.value = value;
+        menuSearch.dispatchEvent(new Event('input'));
+      }
+    });
+
+    desktopSearchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const value = desktopSearchInput.value.trim();
+        const isProductPage = !!document.getElementById('product-search');
+        const isMenuPage = !!document.getElementById('menu-search-input');
+        
+        if (!isProductPage && !isMenuPage && value) {
+          window.location.href = `/products.html?search=${encodeURIComponent(value)}`;
+        }
+      }
+    });
+  }
+
+  // Table Reservation Query/Hash Redirects
+  const serviceDropdown = document.getElementById('service-type');
+  const hasReservationHash = window.location.hash === '#contact-section' || window.location.hash === '#reservation-form';
+  if ((urlParams.get('type') === 'reservation' || hasReservationHash) && serviceDropdown) {
+    serviceDropdown.value = 'Table Reservation';
+    setTimeout(() => {
+      const contactSection = document.getElementById('contact-section');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 450);
   }
 });

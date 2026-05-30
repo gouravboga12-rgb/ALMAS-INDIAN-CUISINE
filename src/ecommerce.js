@@ -15,10 +15,42 @@ function injectCartUI() {
   toast.id = 'notification-toast';
   toast.className = 'notification-toast';
   toast.innerHTML = `
-    <span style="color:#FFBF00;">★</span>
-    <span id="notification-text">Item added to cart!</span>
+    <button class="notification-toast-close" id="notification-toast-close" aria-label="Close">✕</button>
+    <div class="notification-toast-content">
+      <div class="notification-toast-image-container" id="notification-toast-img-container">
+        <img id="notification-toast-img" src="" alt="Product Image">
+      </div>
+      <div class="notification-toast-details">
+        <div class="notification-toast-status" id="notification-toast-status">
+          <span class="status-check-icon">✓</span> SUCCESS
+        </div>
+        <div id="notification-text" class="notification-toast-product">Item added to cart!</div>
+        <div class="notification-toast-action" id="notification-toast-action-container">
+          <span class="added-text">ADDED TO CART</span>
+          <span class="action-separator">·</span>
+          <button class="view-cart-link" id="notification-view-cart">VIEW CART</button>
+        </div>
+      </div>
+    </div>
   `;
   document.body.appendChild(toast);
+
+  // Close and view cart event listeners
+  const closeBtn = toast.querySelector('#notification-toast-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      toast.classList.remove('show');
+    });
+  }
+
+  const viewCartLink = toast.querySelector('#notification-view-cart');
+  if (viewCartLink) {
+    viewCartLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      toast.classList.remove('show');
+      openCartDrawer();
+    });
+  }
 
   // 2. Cart Drawer Overlay & Container
   const drawerOverlay = document.createElement('div');
@@ -33,7 +65,6 @@ function injectCartUI() {
       <button id="close-cart-btn" style="background:transparent; border:none; color:rgba(255,255,255,0.5); cursor:pointer; font-size:1.5rem; transition:color 0.2s;">✕</button>
     </div>
     <div class="cart-drawer-items" id="cart-drawer-items-list">
-      <!-- Dynamic Items -->
     </div>
     <div class="cart-drawer-footer">
       <div class="cart-total-row">
@@ -239,16 +270,6 @@ function setupModalListeners() {
 
     addToCart(activeModalItem, activeModalQty, activeModalSpice, note);
     closeModal();
-    
-    // Ask user to proceed to checkout/pay
-    setTimeout(() => {
-      injectCheckoutPromptUI();
-      updateCheckoutPromptContent();
-      const promptOverlay = document.getElementById('checkout-prompt-overlay');
-      if (promptOverlay) {
-        promptOverlay.classList.add('open');
-      }
-    }, 300);
   });
 }
 
@@ -295,6 +316,7 @@ export function addToCart(item, qty = 1, spice = 'Mild', note = '') {
 
   saveCart();
   updateCartBadge();
+  showToast(item.name, true, item.image);
 }
 
 // Update Quantity
@@ -328,14 +350,63 @@ export function getCart() {
 }
 
 // Show Alert Toast
-export function showToast(message) {
+export function showToast(message, isProduct = false, image = '') {
   injectCartUI();
   const toast = document.getElementById('notification-toast');
-  document.getElementById('notification-text').textContent = message;
-  toast.classList.add('show');
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 3000);
+  const imgContainer = document.getElementById('notification-toast-img-container');
+  const imgEl = document.getElementById('notification-toast-img');
+  const statusEl = document.getElementById('notification-toast-status');
+  const textEl = document.getElementById('notification-text');
+  const actionContainer = document.getElementById('notification-toast-action-container');
+  
+  if (toast && textEl) {
+    if (isProduct) {
+      if (image && imgEl && imgContainer) {
+        imgEl.src = image;
+        imgContainer.style.display = 'block';
+      } else if (imgContainer) {
+        imgContainer.style.display = 'none';
+      }
+      if (statusEl) {
+        statusEl.innerHTML = `<span class="status-dot"></span> SUCCESS`;
+        statusEl.style.display = 'flex';
+      }
+      textEl.textContent = message;
+      if (actionContainer) {
+        actionContainer.style.display = 'flex';
+      }
+    } else {
+      if (imgContainer) imgContainer.style.display = 'none';
+      if (statusEl) {
+        statusEl.innerHTML = `Notification 🔔`;
+        statusEl.style.display = 'block';
+      }
+      textEl.textContent = message;
+      if (actionContainer) actionContainer.style.display = 'none';
+    }
+    
+    toast.classList.add('show');
+    
+    if (toast.timeoutId) {
+      clearTimeout(toast.timeoutId);
+    }
+    
+    toast.timeoutId = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 4000);
+  }
+}
+
+// Open Cart Drawer
+export function openCartDrawer() {
+  injectCartUI();
+  const overlay = document.getElementById('cart-drawer-overlay');
+  const drawer = document.getElementById('cart-drawer');
+  if (overlay && drawer) {
+    overlay.classList.add('open');
+    drawer.classList.add('open');
+    renderCart();
+  }
 }
 
 // Calculate Cart Totals
@@ -398,8 +469,6 @@ export function renderCart() {
       <img src="${item.image}" alt="${item.name}" class="cart-item-img">
       <div class="cart-item-info">
         <div class="cart-item-name">${item.name}</div>
-        <div class="cart-item-spice">Spice: ${item.spice}</div>
-        ${item.note ? `<div class="cart-item-note">"${item.note}"</div>` : ''}
         <div class="cart-qty-controls">
           <button class="cart-qty-btn dec-qty" data-idx="${idx}">-</button>
           <span class="cart-qty-num">${item.qty}</span>

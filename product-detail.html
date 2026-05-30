@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | ALMAS Indian Cuisine</title>
+  <meta name="description" content="Savor the finest Indian and Arabian delicacies at ALMAS. View ingredients, customize your spice level, and order online.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+  
+  <style>
+    /* Premium Detail Page specific overrides */
+    .glass-card {
+      background: rgba(255, 250, 243, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(204, 85, 0, 0.08);
+      box-shadow: 0 20px 50px rgba(26, 10, 0, 0.04);
+    }
+    
+    .rating-star-btn {
+      color: rgba(26, 10, 0, 0.15);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .rating-star-btn.active, .rating-star-btn:hover {
+      color: #FFBF00;
+      transform: scale(1.15);
+    }
+    
+    .review-bubble {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(204, 85, 0, 0.04);
+      transition: all 0.3s ease;
+    }
+    
+    .review-bubble:hover {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(204, 85, 0, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(26, 10, 0, 0.03);
+    }
+
+    .spice-detail-btn {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .spice-detail-btn.active {
+      background-color: #CC5500;
+      color: white;
+      border-color: #CC5500;
+      box-shadow: 0 4px 15px rgba(204, 85, 0, 0.3);
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+
+<body class="bg-background text-text-primary min-h-screen flex flex-col justify-between">
+  <!-- Navigation -->
+  <nav class="glass-nav w-full z-50">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center h-28 md:h-24">
+      <!-- Left: Logo & Search Bar -->
+      <div class="flex items-center gap-6 flex-1">
+        <a href="/" class="flex items-center">
+          <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-20 md:h-16 w-auto object-contain">
+        </a>
+        
+        <!-- Desktop Search Bar -->
+        <div class="hidden lg:block desktop-search-container">
+          <span class="desktop-search-icon">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </span>
+          <input type="text" id="desktop-search-input" placeholder="Search delicious dishes..." class="desktop-search-input">
+        </div>
+      </div>
+
+      <!-- Desktop Navigation & Actions -->
+      <div class="hidden lg:flex items-center space-x-8">
+        <a href="/" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Home</a>
+        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Products</a>
+        <a href="/services.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Catering</a>
+        <a href="/about.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">About</a>
+        <a href="/contact.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Contact</a>
+
+        <!-- Sign In & Cart Group -->
+        <div class="flex items-center space-x-6 pl-6 border-l border-gray-200">
+          <div id="desktop-auth-group">
+            <!-- Dynamically populated by main.js -->
+          </div>
+
+          <!-- Add to Cart (Desktop) -->
+          <button class="nav-cart-btn" title="View Cart">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+            <span class="cart-count-badge">0</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Mobile Controls -->
+      <div class="lg:hidden flex items-center space-x-3">
+        <!-- Mobile Search Button -->
+        <button id="mobile-search-btn" title="Search">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"></path>
+          </svg>
+        </button>
+
+        <!-- Mobile Cart Button -->
+        <button class="nav-cart-btn" title="View Cart">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+          <span class="cart-count-badge">0</span>
+        </button>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-btn" title="Menu">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Search Dropdown -->
+    <div id="mobile-search-bar" class="hidden border-t border-primary/10 bg-background/95 backdrop-blur-md px-6 py-4 transition-all duration-300">
+      <div class="relative max-w-3xl mx-auto">
+        <input type="text" id="mobile-search-input" placeholder="Search delicious dishes..." class="w-full bg-[#FFFAF3] border border-primary/20 rounded-full py-2.5 pl-10 pr-10 text-sm focus:outline-none focus:border-primary/50 text-text-primary">
+        <span class="absolute left-3.5 top-3 text-text-secondary/50">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </span>
+        <button id="mobile-search-clear" class="absolute right-3.5 top-2.5 text-text-secondary/50 hover:text-primary text-sm p-1">✕</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Half-Panel & Overlay -->
+  <div id="menu-overlay"></div>
+  <div id="mobile-menu">
+    <button id="close-btn" class="absolute top-6 right-6 text-white/60 hover:text-white transition-colors">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+    <div class="mb-10">
+      <img src="/logo.png" alt="ALMAS" class="h-14 w-auto object-contain opacity-80">
+    </div>
+    <nav class="flex flex-col space-y-6 text-white text-lg font-heading font-semibold uppercase tracking-widest">
+      <a href="/" class="hover:text-primary transition-colors">Home</a>
+      <a href="/about.html" class="hover:text-primary transition-colors">About Us</a>
+      <a href="/products.html" class="hover:text-primary transition-colors">Products</a>
+      <a href="/services.html" class="hover:text-primary transition-colors">Catering</a>
+      <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
+      <div id="mobile-auth-group" class="flex flex-col space-y-6">
+        <a href="/account.html" class="hover:text-primary transition-colors">My Account</a>
+      </div>
+      <button class="nav-cart-btn text-left hover:text-primary transition-colors flex items-center w-full border-none p-0 bg-transparent uppercase tracking-widest font-heading font-semibold">
+        View Cart
+      </button>
+    </nav>
+    <a href="/order.html" class="mt-10 btn-premium text-sm px-8 py-3">Order Now</a>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div class="max-w-7xl mx-auto px-6 md:px-12 w-full pt-10 pb-4 text-xs uppercase tracking-widest font-semibold flex items-center gap-2 text-text-secondary/70">
+    <a href="/" class="hover:text-primary transition-colors">Home</a>
+    <span>/</span>
+    <a href="/products.html" class="hover:text-primary transition-colors">Menu</a>
+    <span>/</span>
+    <span id="breadcrumb-current" class="text-primary font-bold">Product Details</span>
+  </div>
+
+  <!-- Product Detail Core Layout -->
+  <main class="max-w-7xl mx-auto px-6 md:px-12 py-10 w-full flex-grow">
+    
+    <!-- Loading State -->
+    <div id="loading-state" class="flex flex-col items-center justify-center py-20">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
+      <p class="text-text-secondary italic text-sm">Preparing gourmet details...</p>
+    </div>
+
+    <!-- Error State (Hidden by default) -->
+    <div id="error-state" class="hidden flex-col items-center justify-center py-20 text-center max-w-md mx-auto">
+      <span class="text-5xl mb-4">🍽️</span>
+      <h2 class="text-2xl font-heading text-primary-deep mb-3">Dish Not Found</h2>
+      <p class="text-text-secondary text-sm mb-8">We couldn't load the details for this selection. It might have been updated or seasoned differently in our latest menu.</p>
+      <a href="/products.html" class="btn-premium py-3 px-8 text-xs">Back to Products Menu</a>
+    </div>
+
+    <!-- Main Detail Section (Populated dynamically) -->
+    <div id="product-detail-container" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      
+      <!-- Left Column: Premium Image Showcase -->
+      <div class="lg:col-span-6 space-y-6">
+        <div class="relative aspect-square overflow-hidden rounded-[2.5rem] border border-primary/10 shadow-2xl glass-card">
+          <img id="detail-image" src="" alt="Dish Image" class="w-full h-full object-cover">
+          <span id="detail-badge" class="absolute top-6 left-6 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider text-white bg-primary shadow-lg">Badge</span>
+        </div>
+      </div>
+
+      <!-- Right Column: Product Customization Panel -->
+      <div class="lg:col-span-6 space-y-8 glass-card rounded-[2.5rem] p-8 md:p-10 border border-primary/5">
+        <div>
+          <span id="detail-diet" class="font-bold text-[10px] uppercase tracking-widest border px-3 py-1 rounded-full inline-block mb-3">Diet Type</span>
+          <h1 id="detail-name" class="text-3xl md:text-5xl font-heading text-text-primary leading-[1.1] mb-4">Dish Title</h1>
+          <span id="detail-price" class="text-primary font-bold text-3xl block">$0.00</span>
+        </div>
+
+        <div class="h-px bg-primary/10"></div>
+
+        <div>
+          <h3 class="text-xs uppercase tracking-widest text-text-secondary/70 font-semibold mb-3">Chef's Description</h3>
+          <p id="detail-description" class="text-text-secondary text-sm md:text-base leading-relaxed italic">Description...</p>
+        </div>
+
+        <!-- Quantity & Size portion options (if multi-price exists) -->
+        <div id="size-selector-block" class="hidden">
+          <h3 class="text-xs uppercase tracking-widest text-text-secondary/70 font-semibold mb-3">Portion Size</h3>
+          <select id="detail-size-select" class="w-full bg-[#FFFAF3] border border-primary/20 rounded-full px-4 py-3 text-sm font-bold text-text-primary focus:outline-none focus:border-primary cursor-pointer">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+
+        <!-- Customizations Form -->
+        <div class="space-y-6 pt-4">
+          <!-- Step Stepper & Order Buttons -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6">
+            <div>
+              <span class="text-xs uppercase tracking-widest text-text-secondary/70 font-semibold block mb-2">Quantity</span>
+              <div class="flex items-center border border-primary/20 rounded-full w-fit bg-[#FFFAF3] px-2 py-1">
+                <button id="qty-dec" class="w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold text-text-secondary hover:text-primary transition-colors cursor-pointer">-</button>
+                <span id="qty-val" class="w-10 text-center font-bold text-sm text-text-primary">1</span>
+                <button id="qty-inc" class="w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold text-text-secondary hover:text-primary transition-colors cursor-pointer">+</button>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 flex-grow sm:flex-grow-0 pt-2 sm:pt-0">
+              <button id="btn-add-cart" class="btn-premium px-8 py-3.5 text-xs font-bold w-full sm:w-auto">Add to Order</button>
+              <button id="btn-buy-now" class="btn-premium-outline-dark px-8 py-3.5 text-xs font-bold w-full sm:w-auto bg-[#CC5500] hover:bg-[#8B3A00] border-none text-white shadow-lg">Buy Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Review & Rating System Section -->
+    <section id="reviews-section" class="hidden mt-20 pt-16 border-t border-primary/10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        
+        <!-- Ratings Breakdown -->
+        <div class="lg:col-span-4 space-y-6">
+          <h2 class="text-3xl font-heading text-text-primary">Guest Reviews</h2>
+          <div class="bg-[#FFFAF3] rounded-3xl p-6 border border-primary/5 shadow-sm flex items-center justify-between gap-6">
+            <div>
+              <span id="avg-rating-num" class="text-5xl font-heading font-black text-primary block mb-1">4.8</span>
+              <div id="avg-stars" class="flex text-lg text-secondary mb-1">
+                <!-- Stars rendered by script -->
+              </div>
+              <span id="total-reviews-count" class="text-xs text-text-secondary font-semibold uppercase tracking-wider block">Based on 12 reviews</span>
+            </div>
+            <div class="flex-grow space-y-1 max-w-[180px]">
+              <!-- Star bar charts -->
+              <div class="flex items-center gap-2 text-[10px]">
+                <span class="w-3 text-right">5</span>
+                <span class="text-secondary text-[8px]">★</span>
+                <div class="flex-grow h-2 bg-black/5 rounded-full overflow-hidden">
+                  <div id="bar-5" class="h-full bg-secondary rounded-full" style="width: 85%"></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-[10px]">
+                <span class="w-3 text-right">4</span>
+                <span class="text-secondary text-[8px]">★</span>
+                <div class="flex-grow h-2 bg-black/5 rounded-full overflow-hidden">
+                  <div id="bar-4" class="h-full bg-secondary rounded-full" style="width: 10%"></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-[10px]">
+                <span class="w-3 text-right">3</span>
+                <span class="text-secondary text-[8px]">★</span>
+                <div class="flex-grow h-2 bg-black/5 rounded-full overflow-hidden">
+                  <div id="bar-3" class="h-full bg-secondary rounded-full" style="width: 5%"></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-[10px]">
+                <span class="w-3 text-right">2</span>
+                <span class="text-secondary text-[8px]">★</span>
+                <div class="flex-grow h-2 bg-black/5 rounded-full overflow-hidden">
+                  <div id="bar-2" class="h-full bg-secondary rounded-full" style="width: 0%"></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-[10px]">
+                <span class="w-3 text-right">1</span>
+                <span class="text-secondary text-[8px]">★</span>
+                <div class="flex-grow h-2 bg-black/5 rounded-full overflow-hidden">
+                  <div id="bar-1" class="h-full bg-[#dc2626] rounded-full" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Review Form -->
+          <div class="bg-[#FFFAF3] rounded-3xl p-6 md:p-8 border border-primary/5 shadow-sm space-y-5">
+            <h3 class="text-lg font-bold text-text-primary">Leave a Review</h3>
+            <form id="review-form" class="space-y-4">
+              <div>
+                <label class="block text-xs uppercase tracking-widest text-text-secondary/80 font-bold mb-2">Your Rating</label>
+                <div id="star-picker" class="flex items-center gap-1.5 text-2xl">
+                  <span class="rating-star-btn active" data-value="1">★</span>
+                  <span class="rating-star-btn active" data-value="2">★</span>
+                  <span class="rating-star-btn active" data-value="3">★</span>
+                  <span class="rating-star-btn active" data-value="4">★</span>
+                  <span class="rating-star-btn active" data-value="5">★</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs uppercase tracking-widest text-text-secondary/80 font-bold mb-2">Your Name</label>
+                <input type="text" id="reviewer-name" required placeholder="E.g., Saffron Lover" class="w-full bg-white border border-primary/10 rounded-full px-4 py-3 text-sm text-text-primary focus:outline-none focus:border-primary transition-all">
+              </div>
+
+              <div>
+                <label class="block text-xs uppercase tracking-widest text-text-secondary/80 font-bold mb-2">Review Details</label>
+                <textarea id="reviewer-text" required rows="3" placeholder="Tell us about the flavor, portion, spice blend..." class="w-full bg-white border border-primary/10 rounded-2xl p-4 text-sm text-text-primary focus:outline-none focus:border-primary transition-all"></textarea>
+              </div>
+
+              <button type="submit" id="submit-review-btn" class="btn-premium py-3 w-full text-xs font-bold uppercase tracking-widest shadow-md">Post Review</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Review Lists -->
+        <div class="lg:col-span-8 space-y-6">
+          <h3 class="text-xl font-heading font-bold text-text-primary flex items-center justify-between pb-3 border-b border-primary/10">
+            <span>Customer Opinions</span>
+            <span id="review-list-count" class="text-xs font-bold text-primary px-3 py-1 bg-primary/10 rounded-full">3 reviews</span>
+          </h3>
+          <div id="reviews-list-container" class="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+            <!-- Populated dynamically by script -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-[#0D0B0A] border-t border-white/5 py-20 relative overflow-hidden mt-16 text-white/60">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16">
+      <div class="space-y-6">
+        <div>
+          <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-24 w-auto object-contain">
+        </div>
+        <p class="text-white/40 leading-relaxed font-light text-sm">The premier destination for authentic Hyderabadi and Middle Eastern cuisine in Scarborough.</p>
+      </div>
+      <div>
+        <h4 class="text-xs uppercase tracking-[0.3em] font-bold mb-8 text-gold">Navigation</h4>
+        <ul class="space-y-4 font-light text-xs uppercase tracking-widest">
+          <li><a href="/" class="hover:text-primary transition-colors">Home</a></li>
+          <li><a href="/about.html" class="hover:text-primary transition-colors">About Us</a></li>
+          <li><a href="/products.html" class="hover:text-primary transition-colors">Products Menu</a></li>
+          <li><a href="/services.html" class="hover:text-primary transition-colors">Catering</a></li>
+          <li><a href="/contact.html" class="hover:text-primary transition-colors">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs uppercase tracking-[0.3em] font-bold mb-8 text-gold">Contact</h4>
+        <ul class="space-y-4 font-light text-sm">
+          <li class="leading-relaxed text-xs">209 Ellesmere Rd, Unit 6, Scarborough, ON, M1R 4E2</li>
+          <li class="text-xs">almasindiancuisine@gmail.com</li>
+          <li class="text-primary font-bold tracking-widest text-xs">WHATSAPP: TBD</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xs uppercase tracking-[0.3em] font-bold mb-8 text-gold">Hours</h4>
+        <ul class="space-y-4 font-light text-xs uppercase tracking-widest">
+          <li class="flex justify-between"><span>Mon - Thu</span> <span>11AM - 10PM</span></li>
+          <li class="flex justify-between"><span>Fri - Sat</span> <span>11AM - 11PM</span></li>
+          <li class="flex justify-between text-primary"><span>Sunday</span> <span>12PM - 10PM</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-6 md:px-12 mt-12 pt-8 border-t border-white/5 text-center text-xs font-light tracking-wider text-white/30">
+      <p>&copy; 2024 ALMAS INDIAN CUISINE. Crafted with Excellence.</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { products } from '/src/products-data.js';
+    import { openCustomizationModal, addToCart, getCart } from '/src/ecommerce.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Setup dynamic auth badge & nav cart badge count initially
+      updateCartBadgeCount();
+
+      // Read Product ID from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id');
+
+      if (!productId) {
+        showError();
+        return;
+      }
+
+      loadProductDetails(productId);
+    });
+
+    // Update cart badge from localState
+    function updateCartBadgeCount() {
+      const cart = JSON.parse(localStorage.getItem('almas_cart')) || [];
+      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+      document.querySelectorAll('.cart-count-badge').forEach(badge => {
+        if (totalItems > 0) {
+          badge.textContent = totalItems;
+          badge.classList.add('visible');
+        } else {
+          badge.classList.remove('visible');
+        }
+      });
+    }
+
+    function showError() {
+      document.getElementById('loading-state').classList.add('hidden');
+      document.getElementById('error-state').classList.remove('hidden');
+      document.getElementById('product-detail-container').classList.add('hidden');
+      document.getElementById('reviews-section').classList.add('hidden');
+    }
+
+    async function loadProductDetails(id) {
+      // 1. Try to find the product in the local products-data.js array
+      let product = products.find(p => p.id === id);
+
+      // 2. Fallback: parse from products.html at runtime if not in static list
+      if (!product) {
+        try {
+          const response = await fetch('/products.html');
+          const htmlText = await response.text();
+          const doc = new DOMParser().parseFromString(htmlText, 'text/html');
+          
+          const cards = doc.querySelectorAll('.card-premium');
+          for (const card of cards) {
+            const titleEl = card.querySelector('h3');
+            if (!titleEl) continue;
+            
+            const name = titleEl.textContent.trim();
+            const rawId = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            
+            // Map common layout differences
+            const idMap = {
+              'chilli-paneer-mushroom': 'chilli-paneer',
+              'shrimp-loose-chilli': 'shrimp-loose',
+              'zaatar-laymoun-tangdi-5-pcs': 'zaatar-laymoun-tangdi',
+              'grill-chicken-whole-bird': 'grill-chicken',
+              'almas-spl-chicken-laal-maas': 'almas-spl-chicken',
+            };
+            const computedId = idMap[rawId] || rawId;
+
+            if (computedId === id) {
+              const imgEl = card.querySelector('img');
+              const image = imgEl ? imgEl.getAttribute('src') : '';
+              
+              const descEl = card.querySelector('p');
+              const desc = descEl ? descEl.textContent.trim() : '';
+              
+              const priceContainer = card.querySelector('.flex.items-center.justify-between.mt-auto') || 
+                                     card.querySelector('.mt-auto') || card;
+              const priceTextEl = priceContainer.querySelector('.text-primary') || priceContainer.querySelector('.font-bold') || priceContainer;
+              const priceText = priceTextEl ? priceTextEl.textContent.trim() : '$15.99';
+              
+              const badgeEl = card.querySelector('span');
+              const badge = badgeEl ? badgeEl.textContent.trim() : '';
+
+              let diet = 'NON-VEG';
+              if (badge.toUpperCase() === 'VEG' || badge.toUpperCase() === 'VEG ONLY') {
+                diet = 'VEG';
+              } else if (badge.toUpperCase().includes('SEAFOOD') || name.toUpperCase().includes('FISH') || name.toUpperCase().includes('SHRIMP')) {
+                diet = 'SEAFOOD';
+              }
+              
+              const dietColor = diet === 'VEG' ? '#16a34a' : (diet === 'SEAFOOD' ? '#2563eb' : '#dc2626');
+              
+              product = {
+                id: id,
+                name: name,
+                price: priceText,
+                image: image,
+                desc: desc,
+                category: 'Mains',
+                diet: diet,
+                badge: badge || diet,
+                dietColor: dietColor,
+                spiceDefault: 'Medium'
+              };
+              break;
+            }
+          }
+        } catch (err) {
+          console.error("Self-healing parser encountered an issue:", err);
+        }
+      }
+
+      if (!product) {
+        showError();
+        return;
+      }
+
+      renderProductPage(product);
+    }
+
+    function renderProductPage(product) {
+      document.getElementById('loading-state').classList.add('hidden');
+      document.getElementById('product-detail-container').classList.remove('hidden');
+      document.getElementById('reviews-section').classList.remove('hidden');
+
+      // Update page title & breadcrumbs
+      document.title = `${product.name} | ALMAS Indian Cuisine`;
+      document.getElementById('breadcrumb-current').textContent = product.name;
+
+      // Update core elements
+      document.getElementById('detail-name').textContent = product.name;
+      document.getElementById('detail-image').src = product.image;
+      document.getElementById('detail-image').alt = product.name;
+      document.getElementById('detail-description').textContent = product.desc;
+      
+      const badgeEl = document.getElementById('detail-badge');
+      badgeEl.textContent = product.badge;
+      if (product.badge === 'SIGNATURE' || product.badge === 'Signature') {
+        badgeEl.className = "absolute top-6 left-6 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider text-white bg-[#D4AF37] shadow-lg";
+      } else {
+        badgeEl.className = "absolute top-6 left-6 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider text-white bg-[#CC5500] shadow-lg";
+      }
+
+      const dietEl = document.getElementById('detail-diet');
+      dietEl.textContent = product.diet || 'NON-VEG';
+      dietEl.style.borderColor = product.dietColor || '#dc2626';
+      dietEl.style.color = product.dietColor || '#dc2626';
+
+      // Parse price portions
+      let prices = [15.99];
+      const priceString = product.price || '$15.99';
+      
+      const priceMatches = priceString.match(/([0-9]+\.[0-9]+)/g);
+      if (priceMatches) {
+        prices = priceMatches.map(p => parseFloat(p));
+      }
+
+      const priceDisplay = document.getElementById('detail-price');
+      const sizeSelectorBlock = document.getElementById('size-selector-block');
+      const sizeSelect = document.getElementById('detail-size-select');
+
+      if (prices.length > 1) {
+        priceDisplay.textContent = `$${prices[0].toFixed(2)}`;
+        sizeSelectorBlock.classList.remove('hidden');
+        sizeSelect.innerHTML = '';
+        
+        const isHalfWhole = product.desc.toLowerCase().includes('half') || product.name.toLowerCase().includes('half');
+        
+        prices.forEach((price, idx) => {
+          let label = `Portion ${idx + 1}`;
+          if (prices.length === 2) {
+            label = idx === 0 ? (isHalfWhole ? 'Half' : 'Single') : (isHalfWhole ? 'Whole' : 'Family');
+          } else if (prices.length === 3) {
+            label = idx === 0 ? 'Single Portion' : (idx === 1 ? '2 People Portion' : '3 People Feast');
+          }
+          const opt = document.createElement('option');
+          opt.value = price;
+          opt.textContent = `${label} — $${price.toFixed(2)}`;
+          opt.dataset.label = label;
+          sizeSelect.appendChild(opt);
+        });
+
+        sizeSelect.addEventListener('change', (e) => {
+          priceDisplay.textContent = `$${parseFloat(e.target.value).toFixed(2)}`;
+        });
+      } else {
+        priceDisplay.textContent = `$${prices[0].toFixed(2)}`;
+        sizeSelectorBlock.classList.add('hidden');
+      }
+      // Quantity selector controls
+      let quantity = 1;
+      const qtyVal = document.getElementById('qty-val');
+      document.getElementById('qty-dec').onclick = () => {
+        if (quantity > 1) {
+          quantity--;
+          qtyVal.textContent = quantity;
+        }
+      };
+      document.getElementById('qty-inc').onclick = () => {
+        quantity++;
+        qtyVal.textContent = quantity;
+      };
+
+      // Cart integration helper
+      const getItemObject = () => {
+        let finalPrice = prices[0];
+        let suffix = '';
+        if (prices.length > 1) {
+          finalPrice = parseFloat(sizeSelect.value);
+          const opt = sizeSelect.options[sizeSelect.selectedIndex];
+          suffix = ` (${opt.dataset.label})`;
+        }
+        
+        return {
+          id: product.id + (suffix ? '-' + suffix.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-') : ''),
+          name: product.name + suffix,
+          price: finalPrice,
+          image: product.image
+        };
+      };
+
+      document.getElementById('btn-add-cart').onclick = () => {
+        const item = getItemObject();
+        addToCart(item, quantity, 'Mild', '');
+        updateCartBadgeCount();
+      };
+
+      document.getElementById('btn-buy-now').onclick = () => {
+        const item = getItemObject();
+        addToCart(item, quantity, 'Mild', '');
+        window.location.href = '/order.html';
+      };
+
+      // Initialize Ratings and Reviews
+      initReviews(product.id, product.name);
+    }
+
+    // Interactive review star picker
+    let chosenStarsReview = 5;
+    const starPickerSpans = document.querySelectorAll('#star-picker span');
+    starPickerSpans.forEach(star => {
+      star.addEventListener('click', () => {
+        chosenStarsReview = parseInt(star.dataset.value);
+        starPickerSpans.forEach(s => {
+          if (parseInt(s.dataset.value) <= chosenStarsReview) {
+            s.classList.add('active');
+          } else {
+            s.classList.remove('active');
+          }
+        });
+      });
+    });
+
+    function initReviews(id, name) {
+      const storageKey = `almas_reviews_${id}`;
+      
+      // Default Seeded Reviews based on category/name
+      const defaultReviewsMap = [
+        { name: "Gourmet Traveler", rating: 5, date: "2 days ago", comment: "Absolutely delightful! The blend of spices is spot-on, and the presentation feels incredibly premium. This has become my favorite dish at ALMAS." },
+        { name: "Fatima K.", rating: 5, date: "1 week ago", comment: "Reminds me of home! The meat is extremely tender and cooked to perfection. Highly recommend choosing 'Medium' spice level for the perfect balance." },
+        { name: "Rajesh S.", rating: 4, date: "3 weeks ago", comment: "Excellent flavor profile and generous portions. The aroma was rich and saffron-forward. Will order again!" }
+      ];
+
+      let reviewsList = JSON.parse(localStorage.getItem(storageKey));
+      if (!reviewsList || reviewsList.length === 0) {
+        reviewsList = defaultReviewsMap;
+        localStorage.setItem(storageKey, JSON.stringify(reviewsList));
+      }
+
+      renderReviewsUI(reviewsList);
+
+      // Handle Review Submission
+      const reviewForm = document.getElementById('review-form');
+      reviewForm.onsubmit = (e) => {
+        e.preventDefault();
+        
+        const reviewerNameInput = document.getElementById('reviewer-name');
+        const reviewerTextInput = document.getElementById('reviewer-text');
+        
+        const reviewerName = reviewerNameInput.value.trim();
+        const reviewerText = reviewerTextInput.value.trim();
+
+        if (!reviewerName || !reviewerText) return;
+
+        // Check for duplicate reviews to be professional
+        const hasReviewed = reviewsList.some(r => r.name.toLowerCase() === reviewerName.toLowerCase() && r.comment.toLowerCase() === reviewerText.toLowerCase());
+        if (hasReviewed) {
+          alert("This review has already been submitted.");
+          return;
+        }
+
+        const newReviewObj = {
+          name: reviewerName,
+          rating: chosenStarsReview,
+          date: "Just now",
+          comment: reviewerText
+        };
+
+        reviewsList.unshift(newReviewObj);
+        localStorage.setItem(storageKey, JSON.stringify(reviewsList));
+
+        // Reset Form
+        reviewerNameInput.value = '';
+        reviewerTextInput.value = '';
+        
+        // Dynamic Update
+        renderReviewsUI(reviewsList);
+
+        // Success Alert using professional text styling
+        const submitBtn = document.getElementById('submit-review-btn');
+        submitBtn.textContent = "Review Submitted ✓";
+        submitBtn.style.backgroundColor = "#2E7D32";
+        submitBtn.style.borderColor = "#2E7D32";
+        submitBtn.disabled = true;
+
+        setTimeout(() => {
+          submitBtn.textContent = "Post Review";
+          submitBtn.style.backgroundColor = "";
+          submitBtn.style.borderColor = "";
+          submitBtn.disabled = false;
+        }, 3000);
+      };
+    }
+
+    function renderReviewsUI(reviews) {
+      const container = document.getElementById('reviews-list-container');
+      const ratingNumEl = document.getElementById('avg-rating-num');
+      const starDisplayEl = document.getElementById('avg-stars');
+      const reviewsCountEl = document.getElementById('total-reviews-count');
+      const listCountEl = document.getElementById('review-list-count');
+
+      if (reviews.length === 0) {
+        container.innerHTML = `<p class="text-text-secondary italic text-sm py-6">Be the first to share your culinary experience!</p>`;
+        ratingNumEl.textContent = "N/A";
+        starDisplayEl.innerHTML = '';
+        reviewsCountEl.textContent = "No guest reviews yet";
+        listCountEl.textContent = "0 reviews";
+        return;
+      }
+
+      // Calculate Averages
+      const sum = reviews.reduce((acc, r) => acc + r.rating, 0);
+      const avg = sum / reviews.length;
+
+      ratingNumEl.textContent = avg.toFixed(1);
+      reviewsCountEl.textContent = `Based on ${reviews.length} review${reviews.length > 1 ? 's' : ''}`;
+      listCountEl.textContent = `${reviews.length} review${reviews.length > 1 ? 's' : ''}`;
+
+      // Star display
+      let starHtml = '';
+      const fullStars = Math.floor(avg);
+      const halfStar = avg - fullStars >= 0.5;
+      for (let i = 1; i <= 5; i++) {
+        if (i <= fullStars) {
+          starHtml += '★';
+        } else if (i === fullStars + 1 && halfStar) {
+          starHtml += '★'; // simple full star fallback or half symbol
+        } else {
+          starHtml += '☆';
+        }
+      }
+      starDisplayEl.textContent = starHtml;
+
+      // Calculate bar width metrics
+      const ratingsBreakdown = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+      reviews.forEach(r => { ratingsBreakdown[r.rating]++; });
+      
+      for (let i = 1; i <= 5; i++) {
+        const percent = (ratingsBreakdown[i] / reviews.length) * 100;
+        document.getElementById(`bar-${i}`).style.width = `${percent}%`;
+      }
+
+      // Render reviews HTML
+      container.innerHTML = reviews.map(r => {
+        let stars = '';
+        for (let j = 1; j <= 5; j++) {
+          stars += j <= r.rating ? '★' : '☆';
+        }
+        return `
+          <div class="review-bubble p-5 rounded-2xl space-y-2 border border-primary/5 transition-all duration-300">
+            <div class="flex items-center justify-between">
+              <div>
+                <strong class="text-sm font-bold text-text-primary block">${escapeHTML(r.name)}</strong>
+                <div class="text-[10px] text-secondary tracking-widest">${stars}</div>
+              </div>
+              <span class="text-[10px] text-text-secondary/50 font-bold uppercase tracking-wider">${r.date}</span>
+            </div>
+            <p class="text-text-secondary text-xs md:text-sm leading-relaxed italic">${escapeHTML(r.comment)}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, 
+        tag => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          "'": '&#39;',
+          '"': '&quot;'
+        }[tag] || tag)
+      );
+    }
+  </script>
+
+  <!-- Script setup to handle responsive search and hamburgers from main.js -->
+  <script>
+    // Handle Mobile Menu Toggles
+    const menuBtn = document.getElementById('menu-btn');
+    const closeBtn = document.getElementById('close-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuOverlay = document.getElementById('menu-overlay');
+
+    if (menuBtn && mobileMenu && menuOverlay) {
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.add('open');
+        menuOverlay.classList.add('open');
+      });
+    }
+
+    const closeHandler = () => {
+      mobileMenu.classList.remove('open');
+      menuOverlay.classList.remove('open');
+    };
+
+    if (closeBtn) closeBtn.addEventListener('click', closeHandler);
+    if (menuOverlay) menuOverlay.addEventListener('click', closeHandler);
+
+    // Handle Mobile Search Toggle
+    const mobileSearchBtn = document.getElementById('mobile-search-btn');
+    const mobileSearchBar = document.getElementById('mobile-search-bar');
+    const mobileSearchClear = document.getElementById('mobile-search-clear');
+    const mobileSearchInput = document.getElementById('mobile-search-input');
+
+    if (mobileSearchBtn && mobileSearchBar) {
+      mobileSearchBtn.addEventListener('click', () => {
+        mobileSearchBar.classList.toggle('hidden');
+        if (!mobileSearchBar.classList.contains('hidden')) {
+          mobileSearchInput.focus();
+        }
+      });
+    }
+
+    if (mobileSearchClear && mobileSearchInput) {
+      mobileSearchClear.addEventListener('click', () => {
+        mobileSearchInput.value = '';
+      });
+    }
+
+    if (mobileSearchInput) {
+      mobileSearchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          window.location.href = `/products.html?search=${encodeURIComponent(mobileSearchInput.value)}`;
+        }
+      });
+    }
+
+    const desktopSearchInput = document.getElementById('desktop-search-input');
+    if (desktopSearchInput) {
+      desktopSearchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          window.location.href = `/products.html?search=${encodeURIComponent(desktopSearchInput.value)}`;
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>

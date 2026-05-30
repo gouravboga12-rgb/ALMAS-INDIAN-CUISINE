@@ -7,6 +7,7 @@
     { "source": "/account",     "destination": "/account.html" },
     { "source": "/about",       "destination": "/about.html" },
     { "source": "/services",    "destination": "/services.html" },
-    { "source": "/contact",     "destination": "/contact.html" }
+    { "source": "/contact",     "destination": "/contact.html" },
+    { "source": "/product-detail", "destination": "/product-detail.html" }
   ]
 }

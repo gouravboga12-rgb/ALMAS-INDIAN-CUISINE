@@ -39,25 +39,39 @@
   <!-- Navigation -->
   <nav class="glass-nav w-full z-50">
     <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center h-28 md:h-24">
-      <div class="flex items-center">
+      <!-- Left: Logo & Search Bar -->
+      <div class="flex items-center gap-6 flex-1">
         <a href="/" class="flex items-center">
           <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-20 md:h-16 w-auto object-contain">
         </a>
-      </div>
-      <div class="hidden lg:flex items-center space-x-10">
-        <a href="/" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Home</a>
-        <a href="/about.html" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">About Us</a>
-        <a href="/products.html" class="text-sm uppercase tracking-widest font-heading font-semibold text-primary border-b border-primary">Products</a>
-        <a href="/services.html" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Catering</a>
-        <a href="/contact.html" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Contact</a>
         
-        <!-- Cart & Account Controls -->
-        <div class="flex items-center space-x-3 pl-4 border-l border-primary/20">
-          <a href="/account.html" class="nav-icon-link" title="My Account">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+        <!-- Desktop Search Bar -->
+        <div class="hidden lg:block desktop-search-container">
+          <span class="desktop-search-icon">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
-          </a>
+          </span>
+          <input type="text" id="desktop-search-input" placeholder="Search delicious dishes..." class="desktop-search-input">
+        </div>
+      </div>
+
+      <!-- Desktop Navigation & Actions -->
+      <div class="hidden lg:flex items-center space-x-8">
+        <a href="/" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Home</a>
+        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-bold text-primary border-b-2 border-primary pb-0.5">Products</a>
+        <a href="/services.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Catering</a>
+        <a href="/about.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">About</a>
+        <a href="/contact.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Contact</a>
+
+        <!-- Sign In & Cart Group -->
+        <div class="flex items-center space-x-6 pl-6 border-l border-gray-200">
+          <!-- Dynamic Sign In (Desktop) -->
+          <div id="desktop-auth-group">
+            <!-- Dynamically populated by main.js -->
+          </div>
+
+          <!-- Add to Cart (Desktop) -->
           <button class="nav-cart-btn" title="View Cart">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
@@ -65,8 +79,6 @@
             <span class="cart-count-badge">0</span>
           </button>
         </div>
-
-        <a href="/order.html" class="btn-premium py-3 px-8 text-xs">Order Now</a>
       </div>
       <!-- Mobile Controls (visible on mobile, hidden on desktop) -->
       <div class="lg:hidden flex items-center space-x-3">
@@ -161,9 +173,9 @@
     </div>
   </div>
 
-  <!-- Category Quick Nav (Sticky) -->
+  <!-- Category Quick Nav (Sticky on Mobile, Hidden on Desktop) -->
   <div
-    class="sticky top-28 lg:top-24 bg-white/80 backdrop-blur-md z-40 border-b border-primary/10 overflow-x-auto whitespace-nowrap hide-scrollbar py-4 px-6">
+    class="lg:hidden sticky top-28 lg:top-24 bg-white/80 backdrop-blur-md z-40 border-b border-primary/10 overflow-x-auto whitespace-nowrap hide-scrollbar py-4 px-6">
     <div class="max-w-7xl mx-auto flex items-center space-x-8 text-[10px] uppercase tracking-widest font-bold">
       <a href="#all" class="category-btn text-primary border-b-2 border-primary pb-1 active" data-category="all">All</a>
       <a href="#soups" class="category-btn pb-1 hover:text-primary transition-colors text-text-primary" data-category="soups">Soups</a>
@@ -180,17 +192,7 @@
     </div>
   </div>
 
-  <!-- Hero -->
-  <section class="relative h-[60vh] flex items-center justify-center text-white text-center overflow-hidden">
-    <div class="absolute inset-0 bg-black/40 z-10"></div>
-    <img src="/mutton_dum_biryani_premium.png" alt="Royal Menu" class="absolute inset-0 w-full h-full object-cover">
-    <div class="relative z-20 max-w-4xl px-6">
-      <span class="text-secondary font-bold tracking-[0.4em] uppercase text-xs md:text-sm mb-6 block"
-        data-aos="fade-up">A Legacy of Taste</span>
-      <h1 class="text-5xl md:text-8xl font-black mb-8" data-aos="fade-up" data-aos-delay="100">Our <span
-          class="italic text-secondary">Products.</span></h1>
-    </div>
-  </section>
+
 
   <!-- Filter & Sort Panel -->
   <section class="bg-background/90 backdrop-blur-md border-b border-primary/10 py-6 px-6 relative z-30">
@@ -226,7 +228,69 @@
   </section>
 
   <!-- Menu Body -->
-  <div class="max-w-7xl mx-auto px-6 md:px-12 py-32 space-y-40">
+  <div class="max-w-7xl mx-auto px-6 md:px-12 py-16 grid grid-cols-1 lg:grid-cols-4 gap-10">
+    
+    <!-- Left Side: Category Sidebar (Sticky on Desktop, Hidden on Mobile) -->
+    <aside class="hidden lg:block lg:col-span-1 lg:sticky lg:top-28 self-start">
+      <div class="category-sidebar">
+        <h3 class="category-sidebar-title">
+          <span>📂</span> Categories
+        </h3>
+        <div class="space-y-2">
+          <button class="category-sidebar-btn category-btn active" data-category="all">
+            <div class="category-sidebar-thumb"><span>🍽️</span></div>
+            <span>All Products</span>
+          </button>
+          <button class="category-sidebar-btn category-btn" data-category="soups">
+            <div class="category-sidebar-thumb"><img src="/image copy 13.png" alt="Soups"></div>
+            <span>Soups</span>
+          </button>
+          <button class="category-sidebar-btn category-btn" data-category="appetizers">
+            <div class="category-sidebar-thumb"><img src="/chicken_65_appetizer.png" alt="Appetizers"></div>
+            <span>Appetizers</span>
+          </button>
+          <button class="category-sidebar-btn category-btn" data-category="tandoor">
+            <div class="category-sidebar-thumb"><img src="/image copy 24.png" alt="Tandoor"></div>
+            <span>Tandoor</span>
+          </button>
+          <button class="category-sidebar-btn category-btn" data-category="mains">
+            <div class="category-sidebar-thumb"><img src="/signature_pathar_la_gosh.png" alt="Mains"></div>
+            <span>Mains</span>
+          </button>
+          <button class="category-sidebar-btn category-btn" data-category="biryani">
+            <div class="category-sidebar-thumb"><img src="/mutton_dum_biryani_premium.png" alt="Biryani"></div>
+            <span>Biryani</span>
+          </button>
+          <button class="category-sidebar-btn category-btn" data-category="mandi">
+            <div class="category-sidebar-thumb"><img src="/order_biryani_premium.png" alt="Mandi"></div>
+            <span>Mandi</span>
+          </button>
+          <button class="category-sidebar-btn category-btn" data-category="pulao">
+            <div class="category-sidebar-thumb"><img src="/mutton_dum_biryani_premium.png" alt="Pulao"></div>
+            <span>Pulao</span>
+          </button>
+          <button class="category-sidebar-btn category-btn" data-category="chinese">
+            <div class="category-sidebar-thumb"><img src="/image copy 8.png" alt="Chinese"></div>
+            <span>Chinese</span>
+          </button>
+          <button class="category-sidebar-btn category-btn" data-category="momo">
+            <div class="category-sidebar-thumb"><img src="/image copy 15.png" alt="Momo"></div>
+            <span>Momo</span>
+          </button>
+          <button class="category-sidebar-btn category-btn" data-category="breads">
+            <div class="category-sidebar-thumb"><img src="/image copy 11.png" alt="Breads"></div>
+            <span>Breads</span>
+          </button>
+          <button class="category-sidebar-btn category-btn" data-category="desserts">
+            <div class="category-sidebar-thumb"><img src="/image copy 31.png" alt="Desserts"></div>
+            <span>Desserts</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Side: Product Sections (Columns 2-4) -->
+    <main class="lg:col-span-3 space-y-24">
 
     <!-- Soups Section -->
     <section id="soups" class="scroll-mt-40" data-aos="fade-up">
@@ -482,7 +546,7 @@
           <!-- Dish: Bangla Chicken -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="/image copy 19.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Bangla Chicken">
+              <img src="/Bangla%20Chicken.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Bangla Chicken">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-red-600 font-bold text-[10px] uppercase tracking-widest mb-2">Chicken</span>
@@ -587,7 +651,7 @@
           <!-- Dish: Shrimp Loose / Chilli -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="/image.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Shrimp Loose / Chilli">
+              <img src="/Shrimp%20Loose%20.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Shrimp Loose / Chilli">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-blue-600 font-bold text-[10px] uppercase tracking-widest mb-2">Seafood</span>
@@ -613,7 +677,7 @@
           <!-- Dish: Fish Chips -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?q=80&w=2071&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Fish Chips">
+              <img src="/Fish%20chips.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Fish Chips">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-blue-600 font-bold text-[10px] uppercase tracking-widest mb-2">Seafood</span>
@@ -626,7 +690,7 @@
           <!-- Dish: Masala Fish Strips -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="/image copy 8.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Masala Fish Strips">
+              <img src="/Masala%20Fish%20Strips.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Masala Fish Strips">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-blue-600 font-bold text-[10px] uppercase tracking-widest mb-2">Seafood</span>
@@ -774,7 +838,7 @@
           <!-- Dish: Chicken Shish Tawook -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c175f0?q=80&w=2030&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Chicken Shish Tawook">
+              <img src="/image%20copy%2044.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Chicken Shish Tawook">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-red-600 font-bold text-[10px] uppercase tracking-widest mb-2">NON-VEG</span>
@@ -831,7 +895,7 @@
           <!-- Dish: Tandoor Family Platter -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-1/2 aspect-video overflow-hidden rounded-2xl">
-              <img src="/tandoori_platter_premium.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Tandoor Family Platter">
+              <img src="/image%20copy%2045.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Tandoor Family Platter">
             </div>
             <div class="w-full md:w-1/2 flex flex-col justify-center p-6">
               <span class="text-secondary font-bold text-[10px] uppercase tracking-widest mb-2">SERVES 4+</span>
@@ -933,7 +997,7 @@
           <!-- Dish: Mix Veg / Veg Kolhapuri -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1585932231552-29877e5f5ce6?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Mix Veg / Veg Kolhapuri">
+              <img src="/image%20copy%2047.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Mix Veg / Veg Kolhapuri">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-green-600 font-bold text-[10px] uppercase tracking-widest mb-2">VEG</span>
@@ -955,7 +1019,7 @@
           <!-- Dish: Butter Chicken -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1603894584202-93325d779703?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Butter Chicken">
+              <img src="/image%20copy%2046.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Butter Chicken">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-red-600 font-bold text-[10px] uppercase tracking-widest mb-2">CLASSIC</span>
@@ -981,7 +1045,7 @@
           <!-- Dish: Kadai Chicken -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1541014741259-df529411b96a?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Kadai Chicken">
+              <img src="/image%20copy%2048.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Kadai Chicken">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-red-600 font-bold text-[10px] uppercase tracking-widest mb-2">NON-VEG</span>
@@ -994,7 +1058,7 @@
           <!-- Dish: Hyderabadi Chicken Curry -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1626777552726-4a6b52c67ebf?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Hyderabadi Chicken Curry">
+              <img src="/image%20copy%2050.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Hyderabadi Chicken Curry">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-red-600 font-bold text-[10px] uppercase tracking-widest mb-2">HOT & SPICY</span>
@@ -1020,7 +1084,7 @@
           <!-- Dish: Almas Spl Chicken (Laal Maas) -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?q=80&w=1921&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Almas Spl Chicken">
+              <img src="/image%20copy%2049.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Almas Spl Chicken">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-gold font-bold text-[10px] uppercase tracking-widest mb-2">SIGNATURE</span>
@@ -1055,7 +1119,7 @@
           <!-- Dish: Dum ka Mutton -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="/dum_ka_mutton.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Dum ka Mutton">
+              <img src="/image%20copy%2052.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Dum ka Mutton">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-red-600 font-bold text-[10px] uppercase tracking-widest mb-2">MUTTON</span>
@@ -1068,7 +1132,7 @@
           <!-- Dish: Mutton Kheema Masala -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="/mutton_kheema.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Mutton Kheema Masala">
+              <img src="/image%20copy%2051.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Mutton Kheema Masala">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-red-600 font-bold text-[10px] uppercase tracking-widest mb-2">MUTTON</span>
@@ -1103,7 +1167,7 @@
           <!-- Dish: Almas Spl Fish Curry -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1589187151003-0dd3006323bc?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Almas Spl Fish Curry">
+              <img src="/image%20copy%2053.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Almas Spl Fish Curry">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-gold font-bold text-[10px] uppercase tracking-widest mb-2">SIGNATURE</span>
@@ -1116,7 +1180,7 @@
           <!-- Dish: Shrimp Goan Curry -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Shrimp Goan Curry">
+              <img src="/image%20copy%2054.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Shrimp Goan Curry">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-blue-600 font-bold text-[10px] uppercase tracking-widest mb-2">SEAFOOD</span>
@@ -1151,7 +1215,7 @@
           <!-- Dish: Veg Cocktail Biryani -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?q=80&w=2020&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Veg Cocktail Biryani">
+              <img src="/image%20copy%2058.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Veg Cocktail Biryani">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-green-600 font-bold text-[10px] uppercase tracking-widest mb-2">VEG</span>
@@ -1164,7 +1228,7 @@
           <!-- Dish: Paneer Biryani -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Paneer Biryani">
+              <img src="/image%20copy%2057.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Paneer Biryani">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-green-600 font-bold text-[10px] uppercase tracking-widest mb-2">VEG</span>
@@ -1199,7 +1263,7 @@
           <!-- Dish: Chicken Fry Piece Biryani -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1626777552726-4a6b52c67ebf?q=80&w=1931&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Chicken Fry Piece Biryani">
+              <img src="/image%20copy%2055.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Chicken Fry Piece Biryani">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-red-600 font-bold text-[10px] uppercase tracking-widest mb-2">NON-VEG</span>
@@ -1238,7 +1302,7 @@
           <!-- Dish: Mutton Ghee Roast Biryani -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?q=80&w=1921&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Mutton Ghee Roast Biryani">
+              <img src="/image%20copy%2059.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Mutton Ghee Roast Biryani">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-gold font-bold text-[10px] uppercase tracking-widest mb-2">SIGNATURE</span>
@@ -1264,7 +1328,7 @@
           <!-- Dish: Mutton Kheema Biryani -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1631515233158-b6360c70e30d?q=80&w=1921&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Mutton Kheema Biryani">
+              <img src="/image%20copy%2060.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Mutton Kheema Biryani">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-red-600 font-bold text-[10px] uppercase tracking-widest mb-2">NON-VEG</span>
@@ -1297,6 +1361,8 @@
               <h3 class="text-xl font-bold mb-3">Almas Spl Mutton Biryani</h3>
               <p class="text-text-secondary text-xs italic mb-6 leading-relaxed">The pinnacle of our biryani menu — mutton in a chef-exclusive masala, slow and perfected.</p>
               <div class="flex items-center justify-between mt-auto"><span class="text-primary font-bold text-xl">$18.99</span></div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1325,7 +1391,7 @@
           <!-- Dish: Malai Kofta Mandi -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Malai Kofta Mandi">
+              <img src="/image%20copy%2063.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Malai Kofta Mandi">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-green-600 font-bold text-[10px] uppercase tracking-widest mb-2">VEG</span>
@@ -1338,7 +1404,7 @@
           <!-- Dish: Soya Chaap Mandi -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1541014741259-df529411b96a?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Soya Chaap Mandi">
+              <img src="/image%20copy%2067.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Soya Chaap Mandi">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-green-600 font-bold text-[10px] uppercase tracking-widest mb-2">VEG</span>
@@ -1364,7 +1430,7 @@
           <!-- Dish: Paneer Tikka Mandi -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Paneer Tikka Mandi">
+              <img src="/image%20copy%2062.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Paneer Tikka Mandi">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-green-600 font-bold text-[10px] uppercase tracking-widest mb-2">VEG</span>
@@ -1377,7 +1443,7 @@
           <!-- Dish: Egg Roast Mandi -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1585932231552-29877e5f5ce6?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Egg Roast Mandi">
+              <img src="/image%20copy%2064.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Egg Roast Mandi">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-red-600 font-bold text-[10px] uppercase tracking-widest mb-2">NON-VEG</span>
@@ -1412,7 +1478,7 @@
           <!-- Dish: Chicken Fry Piece Mandi -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1626777552726-4a6b52c67ebf?q=80&w=1931&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Chicken Fry Piece Mandi">
+              <img src="/image%20copy%2065.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Chicken Fry Piece Mandi">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-red-600 font-bold text-[10px] uppercase tracking-widest mb-2">NON-VEG</span>
@@ -1425,7 +1491,7 @@
           <!-- Dish: Chicken Broaster Mandi -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1626777552726-4a6b52c67ebf?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Chicken Broaster Mandi">
+              <img src="/image%20copy%2066.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Chicken Broaster Mandi">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-red-600 font-bold text-[10px] uppercase tracking-widest mb-2">CRISPY</span>
@@ -1585,11 +1651,13 @@
             <div class="w-full md:w-1/3 aspect-square rounded-2xl overflow-hidden">
               <img src="/order_biryani_premium.png" alt="Mixed Mandi Full" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
             </div>
-            <div class="flex-1">
+            <div class="flex-1 flex flex-col justify-center h-full">
               <span class="text-gold font-bold text-[10px] uppercase tracking-widest mb-2">SIGNATURE</span>
               <h3 class="text-2xl font-bold mb-2">Mixed Mandi Full</h3>
               <p class="text-sm text-text-secondary italic mb-4 leading-relaxed">A curated combination of our best Mandi proteins over fragrant rice — the perfect mixed feast for two.</p>
-              <span class="text-primary font-bold text-2xl">$29.99</span>
+              <div class="flex items-center justify-between mt-auto">
+                <span class="text-primary font-bold text-2xl">$29.99</span>
+              </div>
             </div>
           </div>
 
@@ -1598,11 +1666,13 @@
             <div class="w-full md:w-1/3 aspect-square rounded-2xl overflow-hidden">
               <img src="/mutton_dum_biryani_premium.png" alt="Sultan's Mandi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
             </div>
-            <div class="flex-1">
+            <div class="flex-1 flex flex-col justify-center h-full">
               <span class="text-gold font-bold text-[10px] uppercase tracking-widest mb-2">SERVES 4-5</span>
               <h3 class="text-2xl font-bold mb-2">Sultan's Mandi</h3>
               <p class="text-sm text-text-secondary italic mb-4 leading-relaxed">Lamb Shank, Tawa Fish Fry, Al-Faham Chicken, and Chicken Fry over Mandi rice. A royal spread.</p>
-              <span class="text-primary font-bold text-2xl">$89.99</span>
+              <div class="flex items-center justify-between mt-auto">
+                <span class="text-primary font-bold text-2xl">$89.99</span>
+              </div>
             </div>
           </div>
 
@@ -1611,11 +1681,13 @@
             <div class="w-full md:w-1/3 aspect-square rounded-2xl overflow-hidden">
               <img src="/tandoori_platter_premium.png" alt="Almas Majilis Mandi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
             </div>
-            <div class="flex-1">
+            <div class="flex-1 flex flex-col justify-center h-full">
               <span class="text-gold font-bold text-[10px] uppercase tracking-widest mb-2">SERVES 7-8</span>
               <h3 class="text-2xl font-bold mb-2">Almas Majilis Mandi</h3>
               <p class="text-sm text-text-secondary italic mb-4 leading-relaxed">2 Mutton, 2 Fish, 4 Chicken over unlimited Mandi rice — the ultimate communal feast.</p>
-              <span class="text-primary font-bold text-2xl">$159.99</span>
+              <div class="flex items-center justify-between mt-auto">
+                <span class="text-primary font-bold text-2xl">$159.99</span>
+              </div>
             </div>
           </div>
         </div>
@@ -1657,7 +1729,7 @@
           <!-- Dish: Mushroom Pulao -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1541014741259-df529411b96a?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Mushroom Pulao">
+              <img src="/image%20copy%2072.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Mushroom Pulao">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-green-600 font-bold text-[10px] uppercase tracking-widest mb-2">VEG</span>
@@ -1705,7 +1777,7 @@
           <!-- Dish: Telangana Kura Kodi Pulao -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="/signature_coriander_chicken.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Telangana Kura Kodi Pulao">
+              <img src="/image%20copy%2075.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Telangana Kura Kodi Pulao">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-gold font-bold text-[10px] uppercase tracking-widest mb-2">SIGNATURE</span>
@@ -1766,7 +1838,7 @@
           <!-- Dish: Royyala Vepudu Pulao -->
           <div class="card-premium flex flex-col md:flex-row gap-6 group">
             <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-              <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Royyala Vepudu Pulao">
+              <img src="/image%20copy%2073.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Royyala Vepudu Pulao">
             </div>
             <div class="w-full md:w-3/5 flex flex-col justify-center">
               <span class="text-blue-600 font-bold text-[10px] uppercase tracking-widest mb-2">SEAFOOD</span>
@@ -1918,7 +1990,7 @@
         <!-- Dish: Butter Naan -->
         <div class="card-premium flex flex-col gap-4 group">
           <div class="aspect-video rounded-xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1601050633647-81a35d377a66?q=80&w=2024&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Butter Naan">
+            <img src="/image%20copy%2069.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Butter Naan">
           </div>
           <div class="flex flex-col flex-1">
             <h3 class="text-lg font-bold mb-2">Butter Naan</h3>
@@ -1946,7 +2018,7 @@
         <!-- Dish: Bullet Naan -->
         <div class="card-premium flex flex-col gap-4 group">
           <div class="aspect-video rounded-xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1601050633647-81a35d377a66?q=80&w=2024&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Bullet Naan">
+            <img src="/image%20copy%2070.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Bullet Naan">
           </div>
           <div class="flex flex-col flex-1">
             <h3 class="text-lg font-bold mb-2">Bullet Naan</h3>
@@ -1960,7 +2032,7 @@
         <!-- Dish: Tandoori Roti -->
         <div class="card-premium flex flex-col gap-4 group">
           <div class="aspect-video rounded-xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1601050633647-81a35d377a66?q=80&w=2024&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Tandoori Roti">
+            <img src="/image%20copy%2071.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Tandoori Roti">
           </div>
           <div class="flex flex-col flex-1">
             <h3 class="text-lg font-bold mb-2">Tandoori Roti</h3>
@@ -1988,7 +2060,7 @@
         <!-- Dish: Qubani Ka Meetha -->
         <div class="card-premium flex flex-col md:flex-row gap-6 group">
           <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-            <img src="https://images.unsplash.com/photo-1589119908995-c6837fa14848?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Qubani Ka Meetha">
+            <img src="/image%20copy%2074.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Qubani Ka Meetha">
           </div>
           <div class="w-full md:w-3/5 flex flex-col justify-center">
             <span class="text-gold font-bold text-[10px] uppercase tracking-widest mb-2">Hyderabadi Classic</span>
@@ -2001,7 +2073,7 @@
         <!-- Dish: Apricot Delight -->
         <div class="card-premium flex flex-col md:flex-row gap-6 group">
           <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-            <img src="https://images.unsplash.com/photo-1589119908995-c6837fa14848?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Apricot Delight">
+            <img src="/image%20copy%2076.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Apricot Delight">
           </div>
           <div class="w-full md:w-3/5 flex flex-col justify-center">
             <span class="text-gold font-bold text-[10px] uppercase tracking-widest mb-2">Signature</span>
@@ -2027,7 +2099,7 @@
         <!-- Dish: Almas Special Falooda -->
         <div class="card-premium flex flex-col md:flex-row gap-6 group">
           <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
-            <img src="https://images.unsplash.com/photo-1589119908995-c6837fa14848?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Falooda">
+            <img src="/image%20copy%2077.png" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Almas Special Falooda">
           </div>
           <div class="w-full md:w-3/5 flex flex-col justify-center">
             <span class="text-gold font-bold text-[10px] uppercase tracking-widest mb-2">House Special</span>
@@ -2066,7 +2138,7 @@
             a Table</a>
         </div>
       </div>
-    </section>
+    </main>
   </div>
 
 
@@ -2205,6 +2277,13 @@
     import AOS from 'aos';
 
     document.addEventListener('DOMContentLoaded', () => {
+      let isScrolling = false;
+
+      // 1. Restructure section grids to use modern 3-column layout
+      document.querySelectorAll('section .grid').forEach(grid => {
+        grid.className = "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6";
+      });
+
       const cards = document.querySelectorAll('.card-premium');
       
       // Parse card data and inject buttons
@@ -2214,6 +2293,59 @@
         const name = titleEl.textContent.trim();
         const id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         card.id = id;
+
+        // 2. Restructure card layout classes from horizontal to vertical
+        card.className = "card-premium flex flex-col group justify-between h-full bg-white border border-gray-100 shadow-sm rounded-2xl p-4 transition-all duration-300";
+        
+        const imgCol = card.querySelector('.aspect-square') || card.firstElementChild;
+        if (imgCol) {
+          imgCol.className = "relative w-full aspect-square overflow-hidden rounded-xl mb-4 shrink-0 cursor-pointer";
+          const img = imgCol.querySelector('img');
+          if (img) img.className = "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500";
+          
+          // Make image clickable to detail page
+          imgCol.addEventListener('click', () => {
+            window.location.href = `/product-detail.html?id=${id}`;
+          });
+        }
+        
+        const textCol = card.querySelector('.flex-col.justify-center') || card.querySelector('.w-full.md\\:w-3\\/5') || card.lastElementChild;
+        if (textCol) {
+          textCol.className = "flex flex-col flex-grow";
+          
+          if (titleEl) {
+            titleEl.className = "text-base font-bold text-text-primary mb-1.5 line-clamp-1 cursor-pointer hover:text-primary transition-colors";
+            titleEl.addEventListener('click', () => {
+              window.location.href = `/product-detail.html?id=${id}`;
+            });
+            
+            // Inject "View Details" link for desktop & mobile view (always visible)
+            let detailsLink = textCol.querySelector('.view-details-link');
+            if (!detailsLink) {
+              detailsLink = document.createElement('a');
+              detailsLink.href = `/product-detail.html?id=${id}`;
+              detailsLink.className = 'view-details-link text-[10px] text-[#CC5500] font-bold uppercase tracking-wider hover:underline mt-1.5 block';
+              detailsLink.textContent = 'View Details';
+              if (titleEl.nextSibling) {
+                titleEl.parentNode.insertBefore(detailsLink, titleEl.nextSibling);
+              } else {
+                titleEl.parentNode.appendChild(detailsLink);
+              }
+            } else {
+              detailsLink.href = `/product-detail.html?id=${id}`;
+              detailsLink.className = 'view-details-link text-[10px] text-[#CC5500] font-bold uppercase tracking-wider hover:underline mt-1.5 block';
+            }
+          }
+          
+          const descEl = textCol.querySelector('p');
+          if (descEl) descEl.className = "text-text-secondary text-xs italic leading-relaxed line-clamp-2 mb-4";
+          
+          const priceRow = textCol.querySelector('.flex.items-center.justify-between.mt-auto') || textCol.querySelector('.mt-auto');
+          if (priceRow) {
+            priceRow.className = "flex items-center justify-between mt-auto pt-2 border-t border-gray-100";
+          }
+        }
+
         const imgEl = card.querySelector('img');
         const image = imgEl ? imgEl.getAttribute('src') : '';
         const descEl = card.querySelector('p');
@@ -2390,7 +2522,7 @@
 
         if (addToCartBtn) {
           addToCartBtn.addEventListener('click', () => {
-            openCustomizationModal(getItem());
+            addToCart(getItem(), 1, 'Mild', '');
           });
         }
 
@@ -2413,9 +2545,7 @@
         const sections = document.querySelectorAll('section.scroll-mt-40');
         
         sections.forEach(section => {
-          const categoryId = section.id;
           let sectionHasVisibleCards = false;
-          const matchesCategory = (currentCategory === 'all' || currentCategory === categoryId);
 
           const cards = section.querySelectorAll('.card-premium');
           cards.forEach(card => {
@@ -2426,7 +2556,7 @@
             const matchesSearch = name.includes(currentSearch) || desc.includes(currentSearch);
             const matchesDiet = (currentDiet === 'all' || diet === currentDiet);
 
-            if (matchesCategory && matchesSearch && matchesDiet) {
+            if (matchesSearch && matchesDiet) {
               card.style.display = '';
               sectionHasVisibleCards = true;
             } else {
@@ -2444,7 +2574,7 @@
           }
 
           // Toggle the main section visibility
-          section.style.display = (matchesCategory && sectionHasVisibleCards) ? '' : 'none';
+          section.style.display = sectionHasVisibleCards ? '' : 'none';
         });
 
         // Refresh AOS animations after layout changes
@@ -2545,12 +2675,25 @@
       categoryBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
+          const targetCategory = btn.dataset.category;
+
+          // Sync active classes on both mobile horizontal quick-nav and desktop vertical sidebar
           categoryBtns.forEach(b => {
-            b.classList.remove('text-primary', 'border-b-2', 'border-primary', 'active');
-            b.classList.add('text-text-primary');
+            if (b.dataset.category === targetCategory) {
+              b.classList.add('active');
+              if (b.classList.contains('category-sidebar-btn')) {
+                b.classList.add('text-primary');
+              } else {
+                b.classList.add('text-primary', 'border-b-2', 'border-primary');
+                b.classList.remove('text-text-primary');
+              }
+            } else {
+              b.classList.remove('active', 'text-primary', 'border-b-2', 'border-primary');
+              if (!b.classList.contains('category-sidebar-btn')) {
+                b.classList.add('text-text-primary');
+              }
+            }
           });
-          btn.classList.add('text-primary', 'border-b-2', 'border-primary', 'active');
-          btn.classList.remove('text-text-primary');
 
           // Reset search inputs when switching categories
           const sInput = document.getElementById('product-search');
@@ -2559,25 +2702,78 @@
           if (mobSInput) mobSInput.value = '';
           currentSearch = '';
 
-          currentCategory = btn.dataset.category;
+          // Reset diet filter to all so the target category shows all its products
+          currentDiet = 'all';
+          dietBtns.forEach(b => {
+            b.classList.remove('active', 'text-white', 'bg-primary');
+            b.classList.add('border-primary/20', 'text-text-primary');
+            if (b.dataset.diet === 'all') {
+              b.classList.add('active', 'text-white', 'bg-primary');
+              b.classList.remove('border-primary/20', 'text-text-primary');
+            }
+          });
+
           filterProducts();
 
-          const targetSection = document.getElementById(currentCategory);
-          if (targetSection) {
-            const yOffset = -180; // offset to account for sticky headers
-            const y = targetSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
-            window.scrollTo({ top: y, behavior: 'smooth' });
+          isScrolling = true;
+          if (targetCategory === 'all') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           } else {
-            // Scroll to top of menu body
-            const menuBody = document.querySelector('div.space-y-40');
-            if (menuBody) {
+            const targetSection = document.getElementById(targetCategory);
+            if (targetSection) {
               const yOffset = -180; // offset to account for sticky headers
-              const y = menuBody.getBoundingClientRect().top + window.pageYOffset + yOffset;
+              const y = targetSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
               window.scrollTo({ top: y, behavior: 'smooth' });
             }
           }
+          setTimeout(() => { isScrolling = false; }, 1000);
         });
       });
+
+      // Category Scroll Spy
+      const scrollSpy = () => {
+        if (isScrolling) return;
+        const sections = document.querySelectorAll('section.scroll-mt-40');
+        let activeSectionId = 'all';
+        const scrollPosition = window.scrollY + 220; // offset for sticky headers
+
+        sections.forEach(section => {
+          if (section.style.display === 'none') return;
+          const top = section.offsetTop;
+          const height = section.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            activeSectionId = section.id;
+          }
+        });
+
+        if (activeSectionId && currentCategory !== activeSectionId) {
+          currentCategory = activeSectionId;
+          const categoryBtns = document.querySelectorAll('.category-btn');
+          categoryBtns.forEach(b => {
+            if (b.dataset.category === activeSectionId) {
+              b.classList.add('active');
+              if (b.classList.contains('category-sidebar-btn')) {
+                b.classList.add('text-primary');
+              } else {
+                b.classList.add('text-primary', 'border-b-2', 'border-primary');
+                b.classList.remove('text-text-primary');
+              }
+              
+              // Smooth scroll mobile quick nav to center active item
+              if (b.classList.contains('pb-1')) {
+                b.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+              }
+            } else {
+              b.classList.remove('active', 'text-primary', 'border-b-2', 'border-primary');
+              if (!b.classList.contains('category-sidebar-btn')) {
+                b.classList.add('text-text-primary');
+              }
+            }
+          });
+        }
+      };
+
+      window.addEventListener('scroll', scrollSpy);
 
       // Handle URL hash on load or hash change
       const handleHashRedirect = () => {

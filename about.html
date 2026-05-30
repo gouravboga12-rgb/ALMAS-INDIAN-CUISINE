@@ -35,25 +35,39 @@
   <!-- Navigation -->
   <nav class="glass-nav w-full z-50">
     <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center h-28 md:h-24">
-      <div class="flex items-center">
+      <!-- Left: Logo & Search Bar -->
+      <div class="flex items-center gap-6 flex-1">
         <a href="/" class="flex items-center">
-          <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-24 md:h-20 w-auto object-contain">
+          <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-20 md:h-16 w-auto object-contain">
         </a>
-      </div>
-      <div class="hidden lg:flex items-center space-x-10">
-        <a href="/" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Home</a>
-        <a href="/about.html" class="text-sm uppercase tracking-widest font-heading font-semibold text-primary border-b border-primary">About Us</a>
-        <a href="/products.html" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Products</a>
-        <a href="/services.html" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Catering</a>
-        <a href="/contact.html" class="text-sm uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Contact</a>
         
-        <!-- Cart & Account Controls -->
-        <div class="flex items-center space-x-6 pl-4 border-l border-primary/20">
-          <a href="/account" class="nav-icon-link" title="My Account">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+        <!-- Desktop Search Bar -->
+        <div class="hidden lg:block desktop-search-container">
+          <span class="desktop-search-icon">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
-          </a>
+          </span>
+          <input type="text" id="desktop-search-input" placeholder="Search delicious dishes..." class="desktop-search-input">
+        </div>
+      </div>
+
+      <!-- Desktop Navigation & Actions -->
+      <div class="hidden lg:flex items-center space-x-8">
+        <a href="/" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Home</a>
+        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Products</a>
+        <a href="/services.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Catering</a>
+        <a href="/about.html" class="text-xs uppercase tracking-widest font-heading font-bold text-primary border-b-2 border-primary pb-0.5">About</a>
+        <a href="/contact.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Contact</a>
+
+        <!-- Sign In & Cart Group -->
+        <div class="flex items-center space-x-6 pl-6 border-l border-gray-200">
+          <!-- Dynamic Sign In (Desktop) -->
+          <div id="desktop-auth-group">
+            <!-- Dynamically populated by main.js -->
+          </div>
+
+          <!-- Add to Cart (Desktop) -->
           <button class="nav-cart-btn" title="View Cart">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
@@ -61,8 +75,6 @@
             <span class="cart-count-badge">0</span>
           </button>
         </div>
-
-        <a href="/order" class="btn-premium py-3 px-8 text-xs">Order Now</a>
       </div>
       <!-- Mobile Controls (visible on mobile, hidden on desktop) -->
       <div class="lg:hidden flex items-center space-x-3">
@@ -306,7 +318,7 @@
         </p>
         <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
           <a href="/products.html" class="btn-premium text-center">View Products</a>
-          <a href="https://wa.me/TBD?text=I%20would%20like%20to%20reserve%20a%20table" class="btn-premium-outline-dark text-center">Reserve a Table</a>
+          <a href="/contact.html?type=reservation#contact-section" class="btn-premium-outline-dark text-center">Reserve a Table</a>
         </div>
       </div>
       <div class="relative" data-aos="fade-left">

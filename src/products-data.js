@@ -1,0 +1,451 @@
+/**
+ * ALMAS Indian Cuisine — Shared Product Catalog
+ * Used by product-detail.html and products.html for detail page links.
+ */
+
+export const products = [
+  // ─── SOUPS ────────────────────────────────────────────────────────
+  {
+    id: 'mutton-marag', name: 'Mutton Marag', price: '$7.99',
+    image: '/image%20copy%2013.png', category: 'Soups', diet: 'NON-VEG',
+    badge: 'Weekend Special', dietColor: '#dc2626',
+    desc: 'A prized Hyderabadi delicacy — tender ribs stewed overnight in a milky spice-laced broth. Rich in collagen and slow-cooked with whole spices for a deeply warming bowl of heritage.',
+    spiceDefault: 'Mild',
+  },
+  {
+    id: 'sweet-corn-soup', name: 'Sweet Corn Soup', price: '$4.99',
+    image: '/image%20copy%208.png', category: 'Soups', diet: 'VEG',
+    badge: 'VEG', dietColor: '#16a34a',
+    desc: 'Silky cream-style corn soup with a gentle hint of pepper — light, soothing, and satisfying. A restaurant classic that warms the soul without overwhelming the palate.',
+    spiceDefault: 'Mild',
+  },
+  {
+    id: 'veg-manchow', name: 'Veg Manchow', price: '$4.99',
+    image: '/image%20copy%209.png', category: 'Soups', diet: 'VEG',
+    badge: 'SOUPS', dietColor: '#16a34a',
+    desc: 'A tangy Indo-Chinese broth packed with crispy noodles, fresh vegetables, and a spicy punch. Every spoonful delivers a satisfying crunch.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'chicken-shorba', name: 'Chicken Shorba', price: '$5.99',
+    image: '/image%20copy%2010.png', category: 'Soups', diet: 'NON-VEG',
+    badge: 'NON-VEG', dietColor: '#dc2626',
+    desc: 'Aromatic slow-cooked chicken broth infused with whole spices, ginger, and fresh coriander. A Mughal-inspired soup that heals and delights.',
+    spiceDefault: 'Mild',
+  },
+  {
+    id: 'mutton-shorba', name: 'Mutton Shorba', price: '$6.99',
+    image: '/image%20copy%2011.png', category: 'Soups', diet: 'NON-VEG',
+    badge: 'NON-VEG', dietColor: '#dc2626',
+    desc: 'Rich bone-simmered mutton broth fragrant with cardamom and mace — a warming Mughal classic. Deeply nourishing and full of authentic character.',
+    spiceDefault: 'Mild',
+  },
+  {
+    id: 'mutton-paya', name: 'Mutton Paya', price: '$6.99',
+    image: '/image%20copy%2012.png', category: 'Soups', diet: 'NON-VEG',
+    badge: 'NON-VEG', dietColor: '#dc2626',
+    desc: 'Traditional slow-cooked trotters in a deeply spiced collagen-rich broth, best with fresh naan. A beloved Hyderabadi breakfast classic, served all day.',
+    spiceDefault: 'Medium',
+  },
+
+  // ─── APPETIZERS – VEG ─────────────────────────────────────────────
+  {
+    id: 'veg-lollypop', name: 'Veg Lollypop', price: '$15.99',
+    image: '/veg_lollypop_appetizer.png', category: 'Appetizers', diet: 'VEG',
+    badge: 'VEG', dietColor: '#16a34a',
+    desc: 'Crispy mixed-vegetable fritters on sticks, tossed in a tangy chili-garlic glaze. A plant-based party starter with bold Indo-Chinese flavors.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'chilli-paneer', name: 'Chilli Paneer / Mushroom', price: '$15.99',
+    image: '/chilli_paneer_appetizer.png', category: 'Appetizers', diet: 'VEG',
+    badge: 'VEG', dietColor: '#16a34a',
+    desc: 'Wok-tossed with bell peppers and onions in a fiery Indo-Chinese soy-chili sauce. Available with paneer or mushroom — both equally irresistible.',
+    spiceDefault: 'Hot',
+  },
+  {
+    id: 'baby-corn-fritters', name: 'Baby Corn Fritters', price: '$15.99',
+    image: '/baby_corn_fritters.png', category: 'Appetizers', diet: 'VEG',
+    badge: 'VEG', dietColor: '#16a34a',
+    desc: 'Lightly battered whole baby corn fried golden, served with a zesty dipping sauce. A crowd-pleasing appetizer with a satisfying crunch.',
+    spiceDefault: 'Mild',
+  },
+  {
+    id: 'bangla-paneer', name: 'Bangla Paneer', price: '$15.99',
+    image: '/image%20copy%2020.png', category: 'Appetizers', diet: 'VEG',
+    badge: 'VEG', dietColor: '#16a34a',
+    desc: 'Cottage cheese tossed in a fragrant Bengali-spiced masala with mustard and green chili. A unique regional take on the beloved paneer starter.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'mushroom-duplex', name: 'Mushroom Duplex', price: '$15.99',
+    image: '/image%20copy%2016.png', category: 'Appetizers', diet: 'VEG',
+    badge: 'VEG', dietColor: '#16a34a',
+    desc: 'Crispy fried mushrooms layered with two distinct spice profiles — a delightful textural contrast. A must-try for mushroom lovers who crave bold flavors.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'hara-bara-kabab', name: 'Hara Bara Kabab', price: '$15.99',
+    image: '/image%20copy%2017.png', category: 'Appetizers', diet: 'VEG',
+    badge: 'VEG', dietColor: '#16a34a',
+    desc: 'Pan-seared spinach and pea patties with herbs and paneer — vibrant, light, and satisfying. A North Indian classic with a gorgeous green exterior.',
+    spiceDefault: 'Mild',
+  },
+
+  // ─── APPETIZERS – CHICKEN ─────────────────────────────────────────
+  {
+    id: 'chicken-pepper-fry', name: 'Chicken Pepper Fry', price: '$16.99',
+    image: '/image%20copy%2014.png', category: 'Appetizers', diet: 'NON-VEG',
+    badge: 'Chicken', dietColor: '#dc2626',
+    desc: 'Bone-in chicken stir-fried with cracked pepper, curry leaves, and caramelized onions. A South Indian staple with intense, peppery heat.',
+    spiceDefault: 'Hot',
+  },
+  {
+    id: 'chilli-chicken-dry', name: 'Chilli Chicken Dry', price: '$16.99',
+    image: '/image%20copy%2015.png', category: 'Appetizers', diet: 'NON-VEG',
+    badge: 'Chicken', dietColor: '#dc2626',
+    desc: 'Crispy battered chicken tossed in a bold Indo-Chinese chili-soy reduction with spring onions. The perfect shareable starter for spice lovers.',
+    spiceDefault: 'Hot',
+  },
+  {
+    id: 'coriander-chicken', name: 'Coriander Chicken', price: '$16.99',
+    image: '/signature_coriander_chicken.png', category: 'Appetizers', diet: 'NON-VEG',
+    badge: 'Chicken', dietColor: '#dc2626',
+    desc: 'Tender chicken coated in a fresh green coriander marinade, pan-seared to perfection. Herbaceous, aromatic, and utterly distinctive in every bite.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'chicken-lollypop', name: 'Chicken Lollypop', price: '$16.99',
+    image: '/image%20copy%2023.png', category: 'Appetizers', diet: 'NON-VEG',
+    badge: 'Chicken', dietColor: '#dc2626',
+    desc: 'Frenched drumettes fried crisp and glazed in a sweet-spicy chili sauce — a crowd favorite. Great for sharing, impossible to stop eating.',
+    spiceDefault: 'Hot',
+  },
+  {
+    id: 'bangla-chicken', name: 'Bangla Chicken', price: '$16.99',
+    image: '/Bangla%20Chicken.png', category: 'Appetizers', diet: 'NON-VEG',
+    badge: 'Chicken', dietColor: '#dc2626',
+    desc: 'Bold Bengali-style chicken tossed with mustard seeds, panch phoron, and green chilies. A regional specialty with a complex, layered flavor profile.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'pachimirchi-chicken-65', name: 'Pachimirchi Chicken 65', price: '$16.99',
+    image: '/chicken_65_appetizer.png', category: 'Appetizers', diet: 'NON-VEG',
+    badge: 'Signature', dietColor: '#b45309',
+    desc: 'The Hyderabadi classic — fried chicken bites marinated in green chili paste and yogurt. Crispy, fiery, and packed with heritage flavors from the royal kitchens.',
+    spiceDefault: 'Hot',
+  },
+  {
+    id: 'chicken-555', name: 'Chicken 555', price: '$16.99',
+    image: '/chicken_555.png', category: 'Appetizers', diet: 'NON-VEG',
+    badge: 'Signature', dietColor: '#b45309',
+    desc: 'A Chettinad-inspired fiery dry fry with five-spice masala — bold heat, deep flavor. Named for its legendary combination of five signature spices.',
+    spiceDefault: 'Extra Hot',
+  },
+
+  // ─── APPETIZERS – MUTTON ─────────────────────────────────────────
+  {
+    id: 'mutton-pepper-fry', name: 'Mutton Pepper Fry', price: '$17.99',
+    image: '/mutton_pepper_fry.png', category: 'Appetizers', diet: 'NON-VEG',
+    badge: 'Mutton', dietColor: '#dc2626',
+    desc: 'Slow-cooked mutton pieces stir-fried with whole black pepper and aromatic curry leaves. A Chettinad specialty that pairs perfectly with parotta.',
+    spiceDefault: 'Hot',
+  },
+  {
+    id: 'mutton-ghee-roast', name: 'Mutton Ghee Roast', price: '$17.99',
+    image: '/mutton_ghee_roast_appetizer.png', category: 'Appetizers', diet: 'NON-VEG',
+    badge: 'SIGNATURE', dietColor: '#b45309',
+    desc: 'Mangalorean-style mutton slow-roasted in clarified butter with tangy tamarind-spice masala. A rich, indulgent dish with a cult following.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'pathar-ka-gosht', name: 'Pathar Ka Gosht', price: '$17.99',
+    image: '/signature_pathar_la_gosh.png', category: 'Appetizers', diet: 'NON-VEG',
+    badge: 'SIGNATURE', dietColor: '#dc2626',
+    desc: 'Hyderabadi tenderized lamb seared on a stone griddle with raw papaya marinade and spices. A royal Nizami delicacy cooked using an ancient technique for unparalleled tenderness.',
+    spiceDefault: 'Medium',
+  },
+
+  // ─── APPETIZERS – SEAFOOD ─────────────────────────────────────────
+  {
+    id: 'shrimp-loose', name: 'Shrimp Loose / Chilli', price: '$16.99',
+    image: '/Shrimp%20Loose%20.png', category: 'Appetizers', diet: 'NON-VEG',
+    badge: 'Seafood', dietColor: '#2563eb',
+    desc: 'Jumbo shrimp fried plain or tossed in a zesty chili-garlic sauce — your pick. Fresh, plump, and packed with coastal flavor.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'firecracker-shrimp', name: 'Firecracker Shrimp', price: '$16.99',
+    image: '/firecracker_shrimp.png', category: 'Appetizers', diet: 'NON-VEG',
+    badge: 'Seafood', dietColor: '#2563eb',
+    desc: 'Crispy shrimp in a bold sriracha-mayo glaze — explosive heat with a creamy finish. One of our most-ordered seafood starters.',
+    spiceDefault: 'Hot',
+  },
+  {
+    id: 'crab-stuffed-shrimp', name: 'Crab Stuffed Shrimp', price: '$17.99',
+    image: '/crab_stuffed_shrimp_v2.png', category: 'Appetizers', diet: 'NON-VEG',
+    badge: 'SIGNATURE', dietColor: '#b45309',
+    desc: 'Butterflied shrimp filled with spiced crab meat, lightly breaded and pan-seared golden. A luxurious seafood appetizer that combines two ocean favorites in one stunning bite.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'full-fish-tawa-fry', name: 'Full Fish Tawa Fry', price: '$18.99',
+    image: '/image%20copy%2024.png', category: 'Appetizers', diet: 'NON-VEG',
+    badge: 'SIGNATURE', dietColor: '#b45309',
+    desc: 'Whole fish marinated in coastal masala and seared on a cast-iron griddle to flaky perfection. A showstopper appetizer for true seafood enthusiasts.',
+    spiceDefault: 'Medium',
+  },
+
+  // ─── TANDOOR – VEG ────────────────────────────────────────────────
+  {
+    id: 'paneer-tikka', name: 'Paneer Tikka', price: '$17.99',
+    image: '/image%20copy%2062.png', category: 'Tandoor', diet: 'VEG',
+    badge: 'VEG', dietColor: '#16a34a',
+    desc: 'Charred cottage cheese in your choice of Malai, Afghani, Tandoori, or Hariyali marinade. Four distinct flavor journeys from our clay oven.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'malai-broccoli', name: 'Malai Broccoli', price: '$17.99',
+    image: '/malai_broccoli.png', category: 'Tandoor', diet: 'VEG',
+    badge: 'VEG', dietColor: '#16a34a',
+    desc: 'Tender broccoli florets marinated in cream and mild spices, gently roasted in the tandoor. A light, elegant option that elevates humble broccoli to something extraordinary.',
+    spiceDefault: 'Mild',
+  },
+
+  // ─── TANDOOR – CHICKEN & FISH ─────────────────────────────────────
+  {
+    id: 'kalmi-kebab', name: 'Kalmi Kebab', price: '$17.99',
+    image: '/image%20copy%2022.png', category: 'Tandoor', diet: 'NON-VEG',
+    badge: 'NON-VEG', dietColor: '#dc2626',
+    desc: 'Juicy whole chicken legs marinated in a cream-yogurt spice blend and slow-roasted in clay. Falling-off-the-bone tender with a gorgeous charred exterior.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'habibi-hara-wings', name: 'Habibi Hara Wings', price: '$17.99',
+    image: '/tandoori_wings.png', category: 'Tandoor', diet: 'NON-VEG',
+    badge: 'Signature', dietColor: '#b45309',
+    desc: 'Tandoor-roasted wings in a vibrant green herb-chili marinade — aromatic, smoky, and addictive. A Middle Eastern–inspired creation exclusive to ALMAS.',
+    spiceDefault: 'Hot',
+  },
+  {
+    id: 'tandoori-chicken', name: 'Tandoori Chicken', price: '$17.99',
+    image: '/menu%20list%20images/image%20copy%202.png', category: 'Tandoor', diet: 'NON-VEG',
+    badge: 'NON-VEG', dietColor: '#dc2626',
+    desc: 'The timeless classic — chicken on bone in a red chili-yogurt marinade, charred in a clay oven. Every bite carries the smoky soul of traditional Indian cooking.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'zaatar-laymoun-tangdi', name: 'Zaatar Laymoun Tangdi (5 pcs)', price: '$17.99',
+    image: '/lemon_tangdi.png', category: 'Tandoor', diet: 'NON-VEG',
+    badge: 'Signature', dietColor: '#b45309',
+    desc: 'Lebanese za\'atar and lemon drumsticks roasted golden in the tandoor — bright and herbaceous. A beautiful East-meets-West fusion from our ALMAS kitchen.',
+    spiceDefault: 'Mild',
+  },
+  {
+    id: 'chicken-shish-tawook', name: 'Chicken Shish Tawook', price: '$17.99',
+    image: '/image%20copy%2044.png', category: 'Tandoor', diet: 'NON-VEG',
+    badge: 'NON-VEG', dietColor: '#dc2626',
+    desc: 'Lebanese-style boneless chicken skewers in Malai, Afghani, or Tandoori marinade — smoky and succulent. A classic Lebanese preparation perfected in our clay oven.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'grill-chicken', name: 'Grill Chicken (Whole Bird)', price: '$18.99 / $29.99',
+    image: '/grill_chicken_whole.png', category: 'Tandoor', diet: 'NON-VEG',
+    badge: 'SIGNATURE', dietColor: '#b45309',
+    desc: 'A whole chicken split and slow-grilled over open flame — a showstopper for the table. Available as half or full bird, marinated in our signature spice blend. The undisputed star of our grill section.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'tandoor-full-fish', name: 'Tandoor Full Fish', price: '$19.99',
+    image: '/signature_tandoori_fish.jpg', category: 'Tandoor', diet: 'NON-VEG',
+    badge: 'Signature', dietColor: '#b45309',
+    desc: 'Whole fish marinated in a coastal spice blend and roasted in the clay oven to smoky perfection. Each fish is hand-scored and infused with our proprietary tandoor masala for maximum flavor penetration.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'tandoor-family-platter', name: 'Tandoor Family Platter', price: '$49.99',
+    image: '/image%20copy%2045.png', category: 'Tandoor', diet: 'NON-VEG',
+    badge: 'SERVES 4+', dietColor: '#7c3aed',
+    desc: '4 Tangdi Kebab, 2 Tandoori Chicken, 3 Afghani & Chicken Tikka, 1 Full Fish — a feast from the clay oven. The ultimate sharing platter for family gatherings and celebrations.',
+    spiceDefault: 'Medium',
+  },
+
+  // ─── SIGNATURE MAINS – VEG ────────────────────────────────────────
+  {
+    id: 'lasooni-dal-tadka', name: 'Lasooni Dal Tadka', price: '$15.99',
+    image: '/lasooni_dal_tadka.png', category: 'Mains', diet: 'VEG',
+    badge: 'VEG', dietColor: '#16a34a',
+    desc: 'Yellow lentils finished with a sizzling garlic-infused tarka and smoky chili butter. A comforting Indian staple elevated to restaurant quality.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'dal-makhani', name: 'Dal Makhani', price: '$15.99',
+    image: '/image%20copy%2047.png', category: 'Mains', diet: 'VEG',
+    badge: 'VEG', dietColor: '#16a34a',
+    desc: 'Black lentils slow-cooked overnight with butter and cream — rich, smoky, deeply comforting. A Punjab classic that has earned its place on every great Indian menu.',
+    spiceDefault: 'Mild',
+  },
+  {
+    id: 'paneer-butter-masala', name: 'Paneer Butter Masala', price: '$16.99',
+    image: '/image%20copy%2062.png', category: 'Mains', diet: 'VEG',
+    badge: 'VEG', dietColor: '#16a34a',
+    desc: 'Soft cottage cheese in a velvety tomato-butter sauce — mildly spiced and utterly indulgent. A universal favorite that never disappoints.',
+    spiceDefault: 'Mild',
+  },
+  {
+    id: 'okra-double-double', name: 'Okra Double Double', price: '$15.99',
+    image: '/okra_double_double.png', category: 'Mains', diet: 'VEG',
+    badge: 'VEG', dietColor: '#16a34a',
+    desc: 'Crispy-fried okra tossed in a tangy onion-tomato masala with a double hit of spice. A uniquely satisfying vegetarian dish with great texture and bold flavor.',
+    spiceDefault: 'Hot',
+  },
+
+  // ─── SIGNATURE MAINS – CHICKEN ────────────────────────────────────
+  {
+    id: 'butter-chicken', name: 'Butter Chicken', price: '$16.99',
+    image: '/image%20copy%2046.png', category: 'Mains', diet: 'NON-VEG',
+    badge: 'CLASSIC', dietColor: '#dc2626',
+    desc: 'Tandoori chicken in a silky fenugreek-tomato cream sauce — the beloved Indian classic. Rich, buttery, and perfectly balanced between heat and sweetness.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'chicken-makhani', name: 'Chicken Makhani', price: '$16.99',
+    image: '/chicken_makhani.png', category: 'Mains', diet: 'NON-VEG',
+    badge: 'PREMIUM', dietColor: '#dc2626',
+    desc: 'A richer, spice-forward take on butter chicken with a deeper tomato-butter base. For those who prefer a bolder, more intensely flavored version of the classic.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'dum-ka-murgh', name: 'Dum ka Murgh', price: '$16.99',
+    image: '/dum_ka_murgh.png', category: 'Mains', diet: 'NON-VEG',
+    badge: 'NON-VEG', dietColor: '#dc2626',
+    desc: 'Chicken slow-sealed in a pot to trap all aromatics — tender, fragrant, and deeply flavorful. An ancient Hyderabadi technique that produces extraordinarily tender results.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'almas-spl-chicken', name: 'Almas Spl Chicken (Laal Maas)', price: '$17.99',
+    image: '/image%20copy%2049.png', category: 'Mains', diet: 'NON-VEG',
+    badge: 'SIGNATURE', dietColor: '#b45309',
+    desc: 'A royal Rajasthani red-chili chicken curry, fiery and rich with whole dried chilies and ghee. One of the most requested specials on our menu — not for the faint-hearted.',
+    spiceDefault: 'Extra Hot',
+  },
+
+  // ─── SIGNATURE MAINS – MUTTON ─────────────────────────────────────
+  {
+    id: 'hyderabadi-mutton-curry', name: 'Hyderabadi Mutton Curry', price: '$17.99',
+    image: '/image%20copy%2050.png', category: 'Mains', diet: 'NON-VEG',
+    badge: 'MUTTON', dietColor: '#dc2626',
+    desc: 'Bone-in mutton in a rustic spiced Hyderabadi gravy — bold, hearty, and full of depth. A recipe passed down through generations of Hyderabadi cooks.',
+    spiceDefault: 'Hot',
+  },
+  {
+    id: 'dum-ka-mutton', name: 'Dum ka Mutton', price: '$17.99',
+    image: '/image%20copy%2052.png', category: 'Mains', diet: 'NON-VEG',
+    badge: 'MUTTON', dietColor: '#dc2626',
+    desc: 'Slow-sealed mutton with aromatic whole spices — cooked in its own steam for tenderness. A patience-rewarding slow-cook that produces melt-in-the-mouth results.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'mutton-kheema-masala', name: 'Mutton Kheema Masala', price: '$17.99',
+    image: '/image%20copy%2051.png', category: 'Mains', diet: 'NON-VEG',
+    badge: 'MUTTON', dietColor: '#dc2626',
+    desc: 'Spiced minced mutton cooked with peas, tomatoes, and garam masala — rustic and hearty. A comforting everyday preparation elevated with premium quality mutton.',
+    spiceDefault: 'Medium',
+  },
+
+  // ─── SIGNATURE MAINS – SEAFOOD ────────────────────────────────────
+  {
+    id: 'fish-pulusu', name: 'Fish Pulusu', price: '$17.99',
+    image: '/fish_pulusu_mains.png', category: 'Mains', diet: 'NON-VEG',
+    badge: 'SEAFOOD', dietColor: '#2563eb',
+    desc: 'Andhra-style fish curry in a tamarind and raw mango broth — tangy, spicy, and comforting. A fiery coastal classic that pairs beautifully with steamed rice.',
+    spiceDefault: 'Hot',
+  },
+  {
+    id: 'almas-spl-fish-curry', name: 'Almas Spl Fish Curry', price: '$17.99',
+    image: '/image%20copy%2053.png', category: 'Mains', diet: 'NON-VEG',
+    badge: 'SIGNATURE', dietColor: '#b45309',
+    desc: 'Chef\'s special fish curry — a rich coastal masala with secret spice blends. Our most closely guarded recipe, developed over years of culinary refinement.',
+    spiceDefault: 'Medium',
+  },
+
+  // ─── ROYAL BIRYANI ────────────────────────────────────────────────
+  {
+    id: 'chicken-dum-biryani', name: 'Chicken Dum Biryani', price: '$14.99',
+    image: '/chicken_dum_biryani_premium.png', category: 'Biryani', diet: 'NON-VEG',
+    badge: 'CLASSIC', dietColor: '#dc2626',
+    desc: 'Classic bone-in chicken sealed in dum with saffron basmati, rose water, and caramelized onions. Every grain of rice tells the story of slow, patient cooking.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'almas-spl-chicken-biryani', name: 'Almas Spl Chicken Biryani', price: '$16.99',
+    image: '/hero_biryani_premium_1776972575156.png', category: 'Biryani', diet: 'NON-VEG',
+    badge: 'SIGNATURE', dietColor: '#b45309',
+    desc: 'Chef\'s secret masala blend that has made this biryani legendary among our regulars. The most-ordered item on our menu — a must-try for every first-time visitor.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'mutton-dum-biryani', name: 'Mutton Dum Biryani', price: '$16.99',
+    image: '/mutton_dum_biryani_premium.png', category: 'Biryani', diet: 'NON-VEG',
+    badge: 'CLASSIC', dietColor: '#dc2626',
+    desc: 'Tender mutton slow-sealed with aromatic whole spices and saffron-infused long-grain rice. A Hyderabadi classic prepared with the same reverence as it was in the Nizam\'s court.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'lamb-shank-biryani', name: 'Lamb Shank Biryani', price: '$20.99',
+    image: '/lamb_shank_biryani_premium.png', category: 'Biryani', diet: 'NON-VEG',
+    badge: 'SIGNATURE', dietColor: '#b45309',
+    desc: 'A crown jewel — a slow-braised whole lamb shank resting atop a bed of premium saffron biryani. Our most dramatic presentation, reserved for those who demand the very best.',
+    spiceDefault: 'Medium',
+  },
+
+  // ─── MANDI ────────────────────────────────────────────────────────
+  {
+    id: 'chicken-alfaham-mandi', name: 'Chicken Alfaham Mandi', price: '$16.99 / $24.99 / $32.99',
+    image: '/chicken_mandi_signature.png', category: 'Mandi', diet: 'NON-VEG',
+    badge: 'SIGNATURE', dietColor: '#b45309',
+    desc: 'Arabic charcoal-grilled chicken slow-roasted over Mandi rice — a Middle Eastern showpiece. Available for 1, 2, or 3 people. The crown jewel of our Arabian-inspired Mandi menu.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'grill-chicken-mandi', name: 'Grill Chicken Mandi', price: '$19.99 / $36.99 / $53.99',
+    image: '/signature_grill_chicken.jpg', category: 'Mandi', diet: 'NON-VEG',
+    badge: 'FEAST', dietColor: '#dc2626',
+    desc: 'Half or whole open-flame grilled chicken over fragrant Mandi rice — a feast for the table. Served for 1, 2, or 3 people with traditional Mandi accompaniments.',
+    spiceDefault: 'Medium',
+  },
+  {
+    id: 'lamb-shank-mandi', name: 'Lamb Shank Mandi', price: '$21.99 / $39.99 / $57.99',
+    image: '/lamb_shank_biryani_premium.png', category: 'Mandi', diet: 'NON-VEG',
+    badge: 'SIGNATURE', dietColor: '#b45309',
+    desc: 'A whole slow-roasted lamb shank, meltingly tender, presented over a generous Mandi rice bed. The most impressive sharing dish on our menu — ideal for celebrations.',
+    spiceDefault: 'Medium',
+  },
+
+  // ─── BEVERAGES ────────────────────────────────────────────────────
+  {
+    id: 'irani-chai-bun-maska', name: 'Irani Chai & Bun Maska', price: '$9.99',
+    image: '/signature_irani_chai.png', category: 'Beverages', diet: 'VEG',
+    badge: 'VEG', dietColor: '#16a34a',
+    desc: 'The iconic Hyderabadi café pairing — a cup of creamy Irani chai with a buttered bun. A beloved ritual in every Hyderabadi\'s life, now available at ALMAS. Simple, timeless, perfect.',
+    spiceDefault: 'Mild',
+  },
+];
+
+/**
+ * Get a product by its ID.
+ * @param {string} id - The product ID slug.
+ * @returns {object|undefined} The product object or undefined if not found.
+ */
+export function getProductById(id) {
+  return products.find(p => p.id === id);
+}
+
+/**
+ * Get all products in a given category.
+ * @param {string} category - The category name.
+ * @returns {object[]} Array of products.
+ */
+export function getProductsByCategory(category) {
+  return products.filter(p => p.category === category);
+}

@@ -1674,3 +1674,660 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   border-color: #CC5500 !important;
 }
 
+/* =============================================
+   NEW PREMIUM HEADER SYSTEM & CARD LAYOUT
+   ============================================= */
+
+/* Glass Nav Premium Theme Overrides */
+.glass-nav {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.18) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03) !important;
+  transition: all 0.3s ease;
+}
+
+.glass-nav a, .glass-nav button {
+  color: #1A1A1A !important;
+}
+
+.glass-nav a:hover, .glass-nav button:hover {
+  color: #CC5500 !important;
+}
+
+/* Desktop Search Bar */
+.desktop-search-container {
+  position: relative;
+  width: 240px;
+  margin-right: 0.5rem;
+}
+
+.desktop-search-input {
+  width: 100%;
+  background: #FFFDF9;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 9999px;
+  padding: 0.5rem 1rem 0.5rem 2.25rem;
+  font-size: 0.75rem;
+  color: #1A1A1A;
+  transition: all 0.3s ease;
+}
+
+.desktop-search-input:focus {
+  outline: none;
+  border-color: #CC5500;
+  background: #FFFFFF;
+  box-shadow: 0 0 10px rgba(204, 85, 0, 0.1);
+}
+
+.desktop-search-icon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(26, 10, 0, 0.4);
+  pointer-events: none;
+}
+
+/* Sign In Avatar Button */
+.nav-signin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #1A1A1A;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.nav-signin-btn:hover {
+  color: #CC5500 !important;
+  transform: translateY(-1px);
+}
+
+.nav-signin-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #CC5500;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.75rem;
+  box-shadow: 0 2px 8px rgba(204, 85, 0, 0.2);
+}
+
+/* SVG icon inside sign‑in avatar */
+.nav-signin-icon {
+  width: 1rem;
+  height: 1rem;
+  color: #FFFFFF;
+}
+
+/* Premium Top-Right Toast Notification — matches reference */
+@keyframes pulseRing {
+  0% { box-shadow: 0 0 0 0 rgba(6, 193, 103, 0.45); }
+  70% { box-shadow: 0 0 0 6px rgba(6, 193, 103, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(6, 193, 103, 0); }
+}
+
+.notification-toast {
+  position: fixed;
+  top: 5.75rem; /* Floating gracefully under the navbar */
+  right: 1.75rem;
+  z-index: 10000;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 12px 28px rgba(0, 0, 0, 0.10);
+  padding: 1rem 1.1rem;
+  border-radius: 12px;
+  min-width: 300px;
+  max-width: 360px;
+  opacity: 0;
+  transform: translateY(-16px) scale(0.97);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.notification-toast.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.notification-toast-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.65rem;
+  background: transparent;
+  border: none;
+  color: #B0B0B0;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0.2rem 0.3rem;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+  line-height: 1;
+}
+
+.notification-toast-close:hover {
+  color: #1A1A1A;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.notification-toast-content {
+  display: flex;
+  gap: 0.85rem;
+  align-items: center;
+}
+
+.notification-toast-image-container {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  background: #F5F5F5;
+}
+
+.notification-toast-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.notification-toast-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex-grow: 1;
+  min-width: 0; /* Allow text truncation */
+  padding-right: 1.25rem;
+}
+
+.notification-toast-status {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 0.7rem;
+  color: #06C167;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-transform: uppercase;
+}
+
+/* Filled green checkmark circle — matches reference exactly */
+.notification-toast-status .status-check-icon {
+  width: 16px;
+  height: 16px;
+  background-color: #06C167;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 900;
+  color: #FFFFFF;
+  flex-shrink: 0;
+  animation: pulseRing 2s ease-out 1; /* One pulse on appear */
+}
+
+/* Legacy fallback — keep in case old status-dot markup exists */
+.notification-toast-status .status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #06C167;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.notification-toast-product {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #1A1A1A;
+  line-height: 1.3;
+  /* Truncate long product names like in reference */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.notification-toast-action {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  margin-top: 0.1rem;
+  letter-spacing: 0.02em;
+}
+
+.notification-toast-action .added-text {
+  color: #A0A0A0;
+}
+
+.notification-toast-action .action-separator {
+  color: #C8C8C8;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.notification-toast-action .view-cart-link {
+  color: #1A1A1A; /* Dark ink matching reference */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  text-decoration: underline;
+  text-decoration-color: rgba(26, 26, 26, 0.35);
+  text-underline-offset: 2px;
+  transition: color 0.15s, text-decoration-color 0.15s;
+}
+
+.notification-toast-action .view-cart-link:hover {
+  color: #CC5500;
+  text-decoration-color: rgba(204, 85, 0, 0.5);
+}
+
+/* Vertical Premium Product Card Restyling */
+.card-premium.flex-col {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(212, 175, 55, 0.12) !important;
+  border-radius: 1.25rem !important;
+  padding: 1rem !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.card-premium.flex-col:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 20px 40px rgba(26, 10, 0, 0.06) !important;
+  border-color: rgba(204, 85, 0, 0.3) !important;
+}
+
+/* Categories Sidebar layout */
+.category-sidebar {
+  background: #FFFFFF;
+  border: 1.5px solid rgba(212, 175, 55, 0.15);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.02);
+  /* Premium separate scrolling expanded to bottom of the page */
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
+  scrollbar-width: none; /* Hide scrollbar by default in Firefox */
+  transition: all 0.3s ease;
+}
+
+/* Scrollbar styling for a premium look */
+.category-sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+.category-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.category-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(204, 85, 0, 0); /* Hidden by default */
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+.category-sidebar:hover::-webkit-scrollbar-thumb {
+  background: rgba(204, 85, 0, 0.25); /* Sleek copper color on hover */
+}
+.category-sidebar:hover {
+  scrollbar-width: thin; /* Show thin scrollbar on hover in Firefox */
+}
+
+.category-sidebar-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #1A1A1A;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1.5px solid rgba(212, 175, 55, 0.15);
+}
+
+.category-sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.75rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #4A4A4A;
+  transition: all 0.2s ease;
+  text-align: left;
+  cursor: pointer;
+  border: 1.5px solid transparent; /* Prevent layout shift when active */
+}
+
+.category-sidebar-btn:hover {
+  background: rgba(204, 85, 0, 0.05);
+  color: #CC5500;
+  padding-left: 1.1rem;
+}
+
+.category-sidebar-btn.active {
+  background: linear-gradient(135deg, #FFF2E6 0%, #FFEBE0 100%) !important;
+  color: #CC5500 !important;
+  border: 1.5px solid #CC5500 !important;
+  box-shadow: 0 4px 12px rgba(204, 85, 0, 0.08) !important;
+}
+
+.category-sidebar-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFF8E7;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  flex-shrink: 0;
+}
+
+.category-sidebar-thumb img,
+.category-sidebar-thumb span {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* ===================================================
+   MOBILE PRODUCTS PAGE — 2-Column Compact Card Grid
+   =================================================== */
+
+@media (max-width: 1023px) {
+
+  /* Override section grids to 2-column on mobile */
+  #soups .grid,
+  #appetizers .grid,
+  #tandoor .grid,
+  #mains .grid,
+  #biryani .grid,
+  #mandi .grid,
+  #pulao .grid,
+  #chinese .grid,
+  #momo .grid,
+  #breads .grid,
+  #desserts .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.65rem !important;
+  }
+
+  /* Compact card on mobile */
+  .card-premium {
+    padding: 0 !important;
+    border-radius: 0.875rem !important;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(212, 175, 55, 0.18) !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04) !important;
+    overflow: hidden !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+  }
+
+  /* Image: square top section */
+  .card-premium > div:first-child {
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Text block: tight padding */
+  .card-premium > div:nth-child(2) {
+    width: 100% !important;
+    padding: 0.5rem 0.55rem 0.6rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important;
+  }
+
+  /* Badge label */
+  .card-premium span[class*="uppercase tracking-widest"],
+  .card-premium span[class*="text-[10px]"] {
+    font-size: 0.5rem !important;
+    margin-bottom: 0.1rem !important;
+    letter-spacing: 0.05em;
+  }
+
+  /* Product name */
+  .card-premium h3 {
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 0 !important;
+    line-height: 1.25 !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Hide description on mobile */
+  .card-premium p {
+    display: none !important;
+  }
+
+  /* Show View Details link on mobile */
+  .card-premium .view-details-link {
+    display: inline-block !important;
+  }
+
+  /* Price + button row container on mobile */
+  .card-premium div[class*="mt-auto"] {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0.4rem !important;
+    padding-top: 0.4rem !important;
+    margin-top: auto !important;
+    border-top: 1px solid rgba(212, 175, 55, 0.08) !important;
+    width: 100% !important;
+  }
+
+  /* Price column */
+  .card-premium div[class*="mt-auto"] > div:first-child {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .card-premium .card-price-display {
+    font-size: 0.85rem !important;
+    font-weight: 800 !important;
+    color: #CC5500 !important;
+  }
+
+  /* Size Selector on mobile */
+  .card-premium .size-selector-container {
+    margin-top: 0.1rem !important;
+    font-size: 0.65rem !important;
+    gap: 0.15rem !important;
+  }
+
+  .card-premium .price-size-select {
+    font-size: 0.65rem !important;
+    padding: 0 0.15rem !important;
+    height: 1.1rem !important;
+  }
+
+  /* Buttons column (only ADD to Cart will be shown) */
+  .card-premium div[class*="mt-auto"] > div:nth-child(2) {
+    display: flex !important;
+    align-items: center !important;
+    margin-top: 0 !important;
+    gap: 0.25rem !important;
+  }
+
+  /* Hide Buy Now on mobile */
+  .card-premium .buy-now-btn {
+    display: none !important;
+  }
+
+  /* ADD+ button */
+  .card-premium .add-to-cart-btn,
+  .card-premium button.add-to-cart-btn {
+    font-size: 0.65rem !important;
+    padding: 0.25rem 0.55rem !important;
+    border-radius: 999px !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+    min-width: auto !important;
+    border: 1.5px solid #CC5500 !important;
+    color: #CC5500 !important;
+    background: transparent !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.02em !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+  }
+
+  .card-premium .add-to-cart-btn:hover,
+  .card-premium button.add-to-cart-btn:hover {
+    background: #CC5500 !important;
+    color: #FFFFFF !important;
+  }
+
+  /* Section heading margin */
+  #soups .flex.items-center.gap-10,
+  #appetizers .flex.items-center.gap-10,
+  #tandoor .flex.items-center.gap-10,
+  #mains .flex.items-center.gap-10,
+  #biryani .flex.items-center.gap-10,
+  #mandi .flex.items-center.gap-10,
+  #pulao .flex.items-center.gap-10,
+  #chinese .flex.items-center.gap-10,
+  #momo .flex.items-center.gap-10,
+  #breads .flex.items-center.gap-10,
+  #desserts .flex.items-center.gap-10 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  /* Section heading size */
+  #soups h2, #appetizers h2, #tandoor h2, #mains h2,
+  #biryani h2, #mandi h2, #pulao h2, #chinese h2,
+  #momo h2, #breads h2, #desserts h2 {
+    font-size: 1.35rem !important;
+  }
+
+  /* Sub-category headings */
+  .mb-24 > .flex.items-center.gap-6 {
+    margin-bottom: 0.65rem !important;
+  }
+  .mb-24 > .flex.items-center.gap-6 h3 {
+    font-size: 0.85rem !important;
+  }
+  .mb-24 {
+    margin-bottom: 1.25rem !important;
+  }
+
+  /* Reduce section spacing */
+  main.lg\:col-span-3 {
+    gap: 1.5rem !important;
+  }
+
+  /* Tighten body padding on mobile */
+  .max-w-7xl.mx-auto.px-6.md\:px-12.py-16.grid {
+    padding-top: 1rem !important;
+    padding-bottom: 1.5rem !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+}
+
+
+/* ===================================================
+   PREMIUM E-COMMERCE DESIGN UPGRADES
+   =================================================== */
+
+/* Luxury Gold/Orange Hover Glow for Premium Cards (Desktop Only to keep mobile simple) */
+@media (min-width: 1024px) {
+  .card-premium {
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+  }
+
+  .card-premium:hover {
+    transform: translateY(-6px) !important;
+    border-color: rgba(204, 85, 0, 0.35) !important;
+    box-shadow: 0 20px 45px rgba(204, 85, 0, 0.07), 
+                0 1px 3px rgba(204, 85, 0, 0.03) !important;
+  }
+
+  /* Subtle glow outline overlay */
+  .card-premium::after {
+    content: '';
+    position: absolute;
+    inset: -1.5px;
+    border-radius: inherit;
+    border: 1.5px solid transparent;
+    background: linear-gradient(135deg, rgba(204, 85, 0, 0.35), rgba(212, 175, 55, 0.05)) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 2;
+  }
+
+  .card-premium:hover::after {
+    opacity: 1;
+  }
+}
+
+/* Spring-bounce Cart Badge Animation */
+@keyframes cartBump {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.4) translateY(-3px); }
+  50% { transform: scale(0.85) translateY(1px); }
+  70% { transform: scale(1.1) translateY(-0.5px); }
+  100% { transform: scale(1); }
+}
+
+.cart-count-badge.bump {
+  animation: cartBump 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) both !important;
+}
+
+/* Mobile Responsive Optimization for Premium Toast */
+@media (max-width: 480px) {
+  .notification-toast {
+    top: 5.5rem !important;
+    right: 1rem !important;
+    left: 1rem !important;
+    min-width: auto !important;
+    max-width: none !important;
+    padding: 1rem !important;
+  }
+}
