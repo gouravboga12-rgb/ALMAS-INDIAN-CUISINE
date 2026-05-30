@@ -2331,3 +2331,92 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
     padding: 1rem !important;
   }
 }
+
+/* ===================================================
+   PRODUCT CARD & GRID CUSTOMIZATIONS
+   =================================================== */
+
+/* Hide Buy Now button on products page cards */
+.card-premium .buy-now-btn {
+  display: none !important;
+}
+
+/* Image Hover Overlay for Eye Icon */
+.img-hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  pointer-events: none; /* Let click pass through to parent image container */
+}
+
+/* On hover/active of the image container (which has class .relative), show overlay */
+.card-premium .relative:hover .img-hover-overlay,
+.card-premium .relative:active .img-hover-overlay {
+  opacity: 1;
+}
+
+.img-hover-overlay-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transform: scale(0.8);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-premium .relative:hover .img-hover-overlay-circle {
+  transform: scale(1);
+}
+
+.img-hover-overlay-icon {
+  width: 20px;
+  height: 20px;
+  color: #CC5500;
+}
+
+@media (min-width: 1024px) {
+  /* Force 3 columns on product sections in products page */
+  main.lg:col-span-3 section .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Make card-premium vertical on desktop */
+  .card-premium {
+    flex-direction: column !important;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(212, 175, 55, 0.12) !important;
+    border-radius: 1.25rem !important;
+    padding: 1.25rem !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+    gap: 1.25rem !important;
+  }
+
+  .card-premium > div:first-child {
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 1rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  .card-premium > div:nth-child(2) {
+    width: 100% !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important;
+  }
+}
