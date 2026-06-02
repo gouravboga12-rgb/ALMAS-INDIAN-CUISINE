@@ -2584,3 +2584,219 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
     flex-grow: 1 !important;
   }
 }
+
+/* =============================================
+   MOBILE VIEW HEADER & FLOATING CART IMPROVEMENTS
+   ============================================= */
+
+/* Top Announcement Scrolling Bar */
+.top-announcement-bar {
+  background: linear-gradient(90deg, #0d0d0d, #26160c);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  color: #D4AF37;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  z-index: 100;
+}
+
+.announcement-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-marquee 28s linear infinite;
+}
+
+.announcement-content {
+  display: flex;
+  white-space: nowrap;
+}
+
+.announcement-content span {
+  padding-right: 3rem;
+  display: inline-block;
+}
+
+@keyframes scroll-marquee {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+/* Mobile Auth Header Button */
+#mobile-auth-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(204, 85, 0, 0.2);
+  background: rgba(204, 85, 0, 0.04);
+  color: #1a1a1a;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  text-decoration: none;
+}
+
+#mobile-auth-btn:hover {
+  background: rgba(204, 85, 0, 0.1);
+  border-color: rgba(204, 85, 0, 0.7);
+  color: #CC5500;
+  box-shadow: 0 0 18px rgba(204, 85, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px) scale(1.05);
+}
+
+#mobile-auth-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+#mobile-auth-btn svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+  stroke-width: 1.75;
+}
+
+#mobile-auth-btn:hover svg {
+  transform: scale(1.1);
+}
+
+#mobile-auth-btn.logged-in {
+  background: linear-gradient(135deg, #CC5500, #FF7A1A) !important;
+  border-color: transparent !important;
+  color: white !important;
+}
+
+.mobile-auth-avatar-text {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+/* Mobile Floating Cart Button */
+.mobile-floating-cart {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1rem;
+  width: calc(100% - 2rem);
+  max-width: 280px;
+  height: 50px;
+  background: linear-gradient(135deg, #1b4332, #2d6a4f); /* Deep forest green gradient */
+  border-radius: 999px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  color: white;
+  z-index: 999;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translateY(100px);
+  opacity: 0;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.mobile-floating-cart.visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-floating-cart:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(27, 67, 50, 0.4);
+  filter: brightness(1.1);
+}
+
+.mobile-floating-cart:active {
+  transform: translateY(0);
+}
+
+.floating-cart-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-family: var(--font-body);
+}
+
+.floating-cart-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.floating-cart-icon {
+  font-size: 1.15rem;
+}
+
+.floating-cart-count {
+  background: #E63946;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 800;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-cart-text {
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+.floating-cart-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.floating-cart-total {
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.floating-cart-plus {
+  font-weight: 700;
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  /* Reduce header height on mobile viewports */
+  .glass-nav > div {
+    height: 4.5rem !important; /* Shrunk from h-28/h-24 */
+  }
+  
+  /* Scale down header logo to fit */
+  .glass-nav a img {
+    height: 3.2rem !important;
+  }
+  
+  /* Hide the default mobile cart button in header */
+  .glass-nav .lg\:hidden .nav-cart-btn {
+    display: none !important;
+  }
+
+  /* WhatsApp Float Position alignment on mobile side-by-side with cart */
+  .whatsapp-float {
+    bottom: 1.5rem !important;
+    right: 1.5rem !important;
+    width: 50px !important;
+    height: 50px !important;
+  }
+}

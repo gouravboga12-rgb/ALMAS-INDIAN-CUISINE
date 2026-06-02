@@ -128,6 +128,33 @@ function injectCartUI() {
   `;
   document.body.appendChild(modalOverlay);
 
+  // 4. Mobile Floating Cart Button
+  if (!document.getElementById('mobile-floating-cart')) {
+    const floatingCart = document.createElement('div');
+    floatingCart.id = 'mobile-floating-cart';
+    floatingCart.className = 'mobile-floating-cart';
+    floatingCart.innerHTML = `
+      <div class="floating-cart-content">
+        <div class="floating-cart-left">
+          <span class="floating-cart-icon">🛒</span>
+          <span class="floating-cart-count">0</span>
+          <span class="floating-cart-text">VIEW CART</span>
+        </div>
+        <div class="floating-cart-right">
+          <span class="floating-cart-total">$0.00</span>
+          <span class="floating-cart-plus">+</span>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(floatingCart);
+
+    // Click handler to open cart drawer
+    floatingCart.addEventListener('click', (e) => {
+      e.preventDefault();
+      openCartDrawer();
+    });
+  }
+
   // Setup UI Event Listeners
   setupDrawerListeners();
   setupModalListeners();
@@ -434,6 +461,23 @@ export function updateCartBadge(shouldBump = true) {
       badge.classList.remove('bump');
     }
   });
+
+  // Update floating cart widget on mobile
+  const floatingCart = document.getElementById('mobile-floating-cart');
+  if (floatingCart) {
+    const isCheckoutPage = window.location.pathname.includes('order.html') || window.location.pathname.endsWith('/order');
+    if (totalItems > 0 && !isCheckoutPage) {
+      floatingCart.classList.add('visible');
+      const countEl = floatingCart.querySelector('.floating-cart-count');
+      if (countEl) countEl.textContent = totalItems;
+
+      const { subtotal } = getCartTotals();
+      const totalEl = floatingCart.querySelector('.floating-cart-total');
+      if (totalEl) totalEl.textContent = `$${subtotal.toFixed(2)}`;
+    } else {
+      floatingCart.classList.remove('visible');
+    }
+  }
 }
 
 // Render Cart Drawer
@@ -500,8 +544,77 @@ export function renderCart() {
   document.getElementById('cart-grand-total').textContent = `$${total.toFixed(2)}`;
 }
 
-// Auto Initialize badges on import
-document.addEventListener('DOMContentLoaded', () => {
+// Dynamic Scrolling Announcement Bar
+export function injectAnnouncementBar() {
+  if (document.getElementById('top-announcement-bar')) return;
+
+  const bar = document.createElement('div');
+  bar.id = 'top-announcement-bar';
+  bar.className = 'top-announcement-bar';
+  bar.innerHTML = `
+    <div class="announcement-track">
+      <div class="announcement-content">
+        <span>✨ 100% NATURAL & FRESH INGREDIENTS ALWAYS · </span>
+        <span>🔥 FREE DELIVERY ON ORDERS OVER $50 · </span>
+        <span>💎 EXPERIENCE THE ROYAL TASTE OF ALMAS · </span>
+        <span>✨ 100% NATURAL & FRESH INGREDIENTS ALWAYS · </span>
+        <span>🔥 FREE DELIVERY ON ORDERS OVER $50 · </span>
+        <span>💎 EXPERIENCE THE ROYAL TASTE OF ALMAS · </span>
+      </div>
+    </div>
+  `;
+
+  const nav = document.querySelector('.glass-nav');
+  if (nav) {
+    nav.parentNode.insertBefore(bar, nav);
+  } else {
+    document.body.insertBefore(bar, document.body.firstChild);
+  }
+}
+
+// Dynamic Mobile Auth Button in Header
+export function injectMobileAuthBtn() {
+  const mobileControls = document.querySelector('.glass-nav .lg\\:hidden');
+  if (mobileControls && !document.getElementById('mobile-auth-btn')) {
+    const menuBtn = document.getElementById('menu-btn');
+    if (!menuBtn) return;
+    
+    const authBtn = document.createElement('a');
+    authBtn.id = 'mobile-auth-btn';
+    authBtn.className = 'mobile-auth-btn';
+    
+    mobileControls.insertBefore(authBtn, menuBtn);
+    
+    const saved = JSON.parse(localStorage.getItem('almas_account'));
+    if (saved && saved.name) {
+      const initial = saved.name.charAt(0).toUpperCase();
+      authBtn.href = "/account.html";
+      authBtn.title = "My Account";
+      authBtn.innerHTML = `<span class="mobile-auth-avatar-text">${initial}</span>`;
+      authBtn.classList.add('logged-in');
+    } else {
+      authBtn.href = "/account.html?tab=login";
+      authBtn.title = "Sign In / Sign Up";
+      authBtn.innerHTML = `
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+        </svg>
+      `;
+      authBtn.classList.remove('logged-in');
+    }
+  }
+}
+
+// Auto Initialize badges and elements on import
+function initEcommerceSystem() {
   injectCartUI();
+  injectAnnouncementBar();
+  injectMobileAuthBtn();
   updateCartBadge(false);
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initEcommerceSystem);
+} else {
+  initEcommerceSystem();
+}
