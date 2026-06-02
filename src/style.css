@@ -187,7 +187,7 @@ html {
   box-shadow: 0 10px 30px rgba(11, 68, 41, 0.4), 0 4px 12px rgba(0, 0, 0, 0.15);
   border-radius: 999px;
   padding: 0 1.25rem;
-  display: flex;
+  display: none !important; /* Hidden on desktop view by default */
   align-items: center;
   justify-content: space-between;
   min-width: 210px;
@@ -203,9 +203,13 @@ html {
   opacity: 1;
   pointer-events: auto;
 }
-/* Hide floating cart on all pages by default, except products page and home page */
-body:not(.products-page):not(.home-page) #mobile-floating-cart {
-  display: none !important;
+
+@media (max-width: 768px) {
+  /* Restore display flex only for mobile viewports on products and home pages */
+  body.products-page #mobile-floating-cart,
+  body.home-page #mobile-floating-cart {
+    display: flex !important;
+  }
 }
 .mobile-floating-cart:hover {
   transform: translateY(-2px) scale(1.03);
