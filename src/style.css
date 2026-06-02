@@ -2800,3 +2800,45 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
     height: 50px !important;
   }
 }
+
+/* Premium styling for Proceed to Checkout button in Cart Drawer */
+.checkout-drawer-btn {
+  width: 100%;
+  margin-top: 1.25rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #CC5500, #FF7A1A); /* Brand orange gradient */
+  color: white !important;
+  border: none;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 6px 22px rgba(204, 85, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.checkout-drawer-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(204, 85, 0, 0.45);
+  background: linear-gradient(135deg, #FF7A1A, #CC5500);
+}
+
+.checkout-drawer-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(204, 85, 0, 0.2);
+}
+
+/* Hide floating cart pill when cart drawer is active/open */
+#cart-drawer.open ~ #mobile-floating-cart,
+#cart-drawer-overlay.open ~ #mobile-floating-cart {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(100px) !important;
+}

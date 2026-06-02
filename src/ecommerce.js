@@ -79,7 +79,7 @@ function injectCartUI() {
         <span>Grand Total</span>
         <span id="cart-grand-total">$0.00</span>
       </div>
-      <button id="checkout-drawer-btn" style="width:100%; margin-top:1.25rem; padding:0.9rem; background:#CC5500; color:white; border:none; border-radius:999px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; cursor:pointer; transition:all 0.3s; box-shadow:0 6px 20px rgba(204,85,0,0.3);" onclick="window.location.href='/order'">
+      <button id="checkout-drawer-btn" class="checkout-drawer-btn" onclick="window.location.href='order.html'">
         Proceed to Checkout
       </button>
     </div>
@@ -554,12 +554,12 @@ export function injectAnnouncementBar() {
   bar.innerHTML = `
     <div class="announcement-track">
       <div class="announcement-content">
-        <span>✨ 100% NATURAL & FRESH INGREDIENTS ALWAYS · </span>
-        <span>🔥 FREE DELIVERY ON ORDERS OVER $50 · </span>
-        <span>💎 EXPERIENCE THE ROYAL TASTE OF ALMAS · </span>
-        <span>✨ 100% NATURAL & FRESH INGREDIENTS ALWAYS · </span>
-        <span>🔥 FREE DELIVERY ON ORDERS OVER $50 · </span>
-        <span>💎 EXPERIENCE THE ROYAL TASTE OF ALMAS · </span>
+        <span>100% NATURAL & FRESH INGREDIENTS ALWAYS · </span>
+        <span>FREE DELIVERY ON ORDERS OVER $50 · </span>
+        <span>EXPERIENCE THE ROYAL TASTE OF ALMAS · </span>
+        <span>100% NATURAL & FRESH INGREDIENTS ALWAYS · </span>
+        <span>FREE DELIVERY ON ORDERS OVER $50 · </span>
+        <span>EXPERIENCE THE ROYAL TASTE OF ALMAS · </span>
       </div>
     </div>
   `;
