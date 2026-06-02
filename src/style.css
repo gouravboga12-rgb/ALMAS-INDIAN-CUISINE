@@ -2085,7 +2085,7 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   }
 
   /* Compact card on mobile */
-  .card-premium {
+  .products-container .card-premium {
     padding: 0 !important;
     border-radius: 0.875rem !important;
     background: #FFFFFF !important;
@@ -2097,7 +2097,7 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   }
 
   /* Image: square top section */
-  .card-premium > div:first-child {
+  .products-container .card-premium > div:first-child {
     width: 100% !important;
     aspect-ratio: 1 / 1 !important;
     border-radius: 0 !important;
@@ -2105,7 +2105,7 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   }
 
   /* Text block: tight padding */
-  .card-premium > div:nth-child(2) {
+  .products-container .card-premium > div:nth-child(2) {
     width: 100% !important;
     padding: 0.5rem 0.55rem 0.6rem !important;
     display: flex !important;
@@ -2114,15 +2114,15 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   }
 
   /* Badge label */
-  .card-premium span[class*="uppercase tracking-widest"],
-  .card-premium span[class*="text-[10px]"] {
+  .products-container .card-premium span[class*="uppercase tracking-widest"],
+  .products-container .card-premium span[class*="text-[10px]"] {
     font-size: 0.5rem !important;
     margin-bottom: 0.1rem !important;
     letter-spacing: 0.05em;
   }
 
   /* Product name */
-  .card-premium h3 {
+  .products-container .card-premium h3 {
     font-size: 0.72rem !important;
     font-weight: 700 !important;
     margin-bottom: 0 !important;
@@ -2134,17 +2134,17 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   }
 
   /* Hide description on mobile */
-  .card-premium p {
+  .products-container .card-premium p {
     display: none !important;
   }
 
   /* Show View Details link on mobile */
-  .card-premium .view-details-link {
+  .products-container .card-premium .view-details-link {
     display: inline-block !important;
   }
 
   /* Price + button row container on mobile */
-  .card-premium div[class*="mt-auto"] {
+  .products-container .card-premium div[class*="mt-auto"] {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
@@ -2157,33 +2157,33 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   }
 
   /* Price column */
-  .card-premium div[class*="mt-auto"] > div:first-child {
+  .products-container .card-premium div[class*="mt-auto"] > div:first-child {
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-start !important;
   }
 
-  .card-premium .card-price-display {
+  .products-container .card-premium .card-price-display {
     font-size: 0.85rem !important;
     font-weight: 800 !important;
     color: #CC5500 !important;
   }
 
   /* Size Selector on mobile */
-  .card-premium .size-selector-container {
+  .products-container .card-premium .size-selector-container {
     margin-top: 0.1rem !important;
     font-size: 0.65rem !important;
     gap: 0.15rem !important;
   }
 
-  .card-premium .price-size-select {
+  .products-container .card-premium .price-size-select {
     font-size: 0.65rem !important;
     padding: 0 0.15rem !important;
     height: 1.1rem !important;
   }
 
   /* Buttons column (only ADD to Cart will be shown) */
-  .card-premium div[class*="mt-auto"] > div:nth-child(2) {
+  .products-container .card-premium div[class*="mt-auto"] > div:nth-child(2) {
     display: flex !important;
     align-items: center !important;
     margin-top: 0 !important;
@@ -2191,13 +2191,13 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   }
 
   /* Hide Buy Now on mobile */
-  .card-premium .buy-now-btn {
+  .products-container .card-premium .buy-now-btn {
     display: none !important;
   }
 
   /* ADD+ button */
-  .card-premium .add-to-cart-btn,
-  .card-premium button.add-to-cart-btn {
+  .products-container .card-premium .add-to-cart-btn,
+  .products-container .card-premium button.add-to-cart-btn {
     font-size: 0.65rem !important;
     padding: 0.25rem 0.55rem !important;
     border-radius: 999px !important;
@@ -2213,8 +2213,8 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
     cursor: pointer !important;
   }
 
-  .card-premium .add-to-cart-btn:hover,
-  .card-premium button.add-to-cart-btn:hover {
+  .products-container .card-premium .add-to-cart-btn:hover,
+  .products-container .card-premium button.add-to-cart-btn:hover {
     background: #CC5500 !important;
     color: #FFFFFF !important;
   }
@@ -2389,7 +2389,7 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
 
 @media (min-width: 1024px) {
   /* Force 3 columns on product sections in products page */
-  main.lg:col-span-3 section .grid {
+  main.lg\:col-span-3 section .grid {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     gap: 1.5rem !important;
   }
