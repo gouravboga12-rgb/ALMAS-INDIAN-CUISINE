@@ -88,6 +88,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Inject dynamic mobile controls and announcement bar
+  // 1. Create and inject mobile/desktop announcement bar at the top of body
+  if (!document.querySelector('.announcement-bar')) {
+    const announcementBar = document.createElement('div');
+    announcementBar.className = 'announcement-bar';
+    announcementBar.innerHTML = `
+      <div class="marquee-wrapper">
+        <div class="marquee-content">
+          <span class="marquee-item">100% NATURAL AND FORM FRESH EVERY DAY • ALMAS THE QUALITY CHOICE • FREE DELIVERY ON ORDERS OVER $50 • GET 10% OFF ON YOUR FIRST ORDER USE CODE: ALMAS10 •</span>
+          <span class="marquee-item">100% NATURAL AND FORM FRESH EVERY DAY • ALMAS THE QUALITY CHOICE • FREE DELIVERY ON ORDERS OVER $50 • GET 10% OFF ON YOUR FIRST ORDER USE CODE: ALMAS10 •</span>
+        </div>
+      </div>
+    `;
+    document.body.insertBefore(announcementBar, document.body.firstChild);
+  }
+
+  // 2. Create and inject mobile header auth button dynamically
+  const mobileControls = document.querySelector('.glass-nav .lg\\:hidden');
+  if (mobileControls && !document.getElementById('mobile-auth-group-header')) {
+    const mobileAuthContainer = document.createElement('div');
+    mobileAuthContainer.id = 'mobile-auth-group-header';
+    
+    const saved = JSON.parse(localStorage.getItem('almas_account'));
+    if (saved && saved.name) {
+      const initial = saved.name.charAt(0).toUpperCase();
+      mobileAuthContainer.innerHTML = `
+        <a href="/account.html" class="nav-signin-btn" title="My Account" style="display: flex !important; justify-content: center !important; align-items: center !important; width: 44px !important; height: 44px !important;">
+          <div class="nav-signin-avatar" style="width: 32px !important; height: 32px !important; font-size: 0.85rem !important;">${initial}</div>
+        </a>
+      `;
+    } else {
+      mobileAuthContainer.innerHTML = `
+        <a href="/account.html?tab=login" class="nav-signin-btn" title="Sign In" style="display: flex !important; justify-content: center !important; align-items: center !important; width: 44px !important; height: 44px !important;">
+          <div class="nav-signin-avatar" style="background:#1A1A1A; width: 32px !important; height: 32px !important;">
+            <svg class="nav-signin-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width: 1.1rem; height: 1.1rem;">
+              <path d="M12 12c2.667 0 8 1.333 8 4v2H4v-2c0-2.667 5.333-4 8-4zm0-2a4 4 0 110-8 4 4 0 010 8z"/>
+            </svg>
+          </div>
+        </a>
+      `;
+    }
+    mobileControls.appendChild(mobileAuthContainer);
+  }
+
   const menuBtn = document.getElementById('menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
   const closeBtn = document.getElementById('close-btn');

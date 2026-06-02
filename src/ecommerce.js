@@ -79,11 +79,8 @@ function injectCartUI() {
         <span>Grand Total</span>
         <span id="cart-grand-total">$0.00</span>
       </div>
-      <button id="checkout-drawer-btn" class="checkout-drawer-btn" onclick="window.location.href='order.html'">
-        <span>Proceed to Pay</span>
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 16px; height: 16px; display: inline-block; stroke-width: 2.5;">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-        </svg>
+      <button id="checkout-drawer-btn" style="width:100%; margin-top:1.25rem; padding:0.9rem; background:#CC5500; color:white; border:none; border-radius:999px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; cursor:pointer; transition:all 0.3s; box-shadow:0 6px 20px rgba(204,85,0,0.3);" onclick="window.location.href='/order'">
+        Proceed to Checkout
       </button>
     </div>
   `;
@@ -131,32 +128,15 @@ function injectCartUI() {
   `;
   document.body.appendChild(modalOverlay);
 
-  // 4. Mobile Floating Cart Button
-  if (!document.getElementById('mobile-floating-cart')) {
-    const floatingCart = document.createElement('div');
-    floatingCart.id = 'mobile-floating-cart';
-    floatingCart.className = 'mobile-floating-cart';
-    floatingCart.innerHTML = `
-      <div class="floating-cart-content">
-        <div class="floating-cart-left">
-          <span class="floating-cart-icon">🛒</span>
-          <span class="floating-cart-count">0</span>
-          <span class="floating-cart-text">VIEW CART</span>
-        </div>
-        <div class="floating-cart-right">
-          <span class="floating-cart-total">$0.00</span>
-          <span class="floating-cart-plus">+</span>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(floatingCart);
-
-    // Click handler to open cart drawer
-    floatingCart.addEventListener('click', (e) => {
-      e.preventDefault();
-      openCartDrawer();
-    });
-  }
+  // 4. Mobile Floating Cart Bar Container
+  const floatingCart = document.createElement('div');
+  floatingCart.id = 'mobile-floating-cart';
+  floatingCart.className = 'mobile-floating-cart';
+  floatingCart.addEventListener('click', (e) => {
+    e.preventDefault();
+    openCartDrawer();
+  });
+  document.body.appendChild(floatingCart);
 
   // Setup UI Event Listeners
   setupDrawerListeners();
@@ -450,6 +430,8 @@ export function getCartTotals() {
 // Update Cart Badge count across the app
 export function updateCartBadge(shouldBump = true) {
   const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+  const { subtotal } = getCartTotals();
+
   document.querySelectorAll('.cart-count-badge').forEach(badge => {
     if (totalItems > 0) {
       badge.textContent = totalItems;
@@ -465,18 +447,23 @@ export function updateCartBadge(shouldBump = true) {
     }
   });
 
-  // Update floating cart widget on mobile
+  // Update mobile floating cart bar
   const floatingCart = document.getElementById('mobile-floating-cart');
   if (floatingCart) {
-    const isCheckoutPage = window.location.pathname.includes('order.html') || window.location.pathname.endsWith('/order');
-    if (totalItems > 0 && !isCheckoutPage) {
+    if (totalItems > 0) {
+      floatingCart.innerHTML = `
+        <div class="floating-cart-content">
+          <div class="floating-cart-icon-wrapper">
+            <svg class="floating-cart-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+            <span class="floating-cart-badge">${totalItems}</span>
+          </div>
+          <span class="floating-cart-text">VIEW CART</span>
+          <span class="floating-cart-price">$${subtotal.toFixed(2)}</span>
+        </div>
+      `;
       floatingCart.classList.add('visible');
-      const countEl = floatingCart.querySelector('.floating-cart-count');
-      if (countEl) countEl.textContent = totalItems;
-
-      const { subtotal } = getCartTotals();
-      const totalEl = floatingCart.querySelector('.floating-cart-total');
-      if (totalEl) totalEl.textContent = `$${subtotal.toFixed(2)}`;
     } else {
       floatingCart.classList.remove('visible');
     }
@@ -547,77 +534,8 @@ export function renderCart() {
   document.getElementById('cart-grand-total').textContent = `$${total.toFixed(2)}`;
 }
 
-// Dynamic Scrolling Announcement Bar
-export function injectAnnouncementBar() {
-  if (document.getElementById('top-announcement-bar')) return;
-
-  const bar = document.createElement('div');
-  bar.id = 'top-announcement-bar';
-  bar.className = 'top-announcement-bar';
-  bar.innerHTML = `
-    <div class="announcement-track">
-      <div class="announcement-content">
-        <span>100% NATURAL & FRESH INGREDIENTS ALWAYS · </span>
-        <span>FREE DELIVERY ON ORDERS OVER $50 · </span>
-        <span>EXPERIENCE THE ROYAL TASTE OF ALMAS · </span>
-        <span>100% NATURAL & FRESH INGREDIENTS ALWAYS · </span>
-        <span>FREE DELIVERY ON ORDERS OVER $50 · </span>
-        <span>EXPERIENCE THE ROYAL TASTE OF ALMAS · </span>
-      </div>
-    </div>
-  `;
-
-  const nav = document.querySelector('.glass-nav');
-  if (nav) {
-    nav.parentNode.insertBefore(bar, nav);
-  } else {
-    document.body.insertBefore(bar, document.body.firstChild);
-  }
-}
-
-// Dynamic Mobile Auth Button in Header
-export function injectMobileAuthBtn() {
-  const mobileControls = document.querySelector('.glass-nav .lg\\:hidden');
-  if (mobileControls && !document.getElementById('mobile-auth-btn')) {
-    const menuBtn = document.getElementById('menu-btn');
-    if (!menuBtn) return;
-    
-    const authBtn = document.createElement('a');
-    authBtn.id = 'mobile-auth-btn';
-    authBtn.className = 'mobile-auth-btn';
-    
-    mobileControls.insertBefore(authBtn, menuBtn);
-    
-    const saved = JSON.parse(localStorage.getItem('almas_account'));
-    if (saved && saved.name) {
-      const initial = saved.name.charAt(0).toUpperCase();
-      authBtn.href = "/account.html";
-      authBtn.title = "My Account";
-      authBtn.innerHTML = `<span class="mobile-auth-avatar-text">${initial}</span>`;
-      authBtn.classList.add('logged-in');
-    } else {
-      authBtn.href = "/account.html?tab=login";
-      authBtn.title = "Sign In / Sign Up";
-      authBtn.innerHTML = `
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-        </svg>
-      `;
-      authBtn.classList.remove('logged-in');
-    }
-  }
-}
-
-// Auto Initialize badges and elements on import
-function initEcommerceSystem() {
+// Auto Initialize badges on import
+document.addEventListener('DOMContentLoaded', () => {
   injectCartUI();
-  injectAnnouncementBar();
-  injectMobileAuthBtn();
   updateCartBadge(false);
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initEcommerceSystem);
-} else {
-  initEcommerceSystem();
-}
+});
