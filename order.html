@@ -169,11 +169,11 @@
               <!-- Dynamically populated review list -->
             </div>
             
-            <div class="flex justify-between items-center border-t border-white/10 pt-6">
-              <a href="/products.html" style="color:#CC5500; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; text-decoration:none; display:flex; align-items:center; gap:0.5rem;">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-white/10 pt-6">
+              <a href="/products.html" style="color:#CC5500; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; text-decoration:none; display:flex; align-items:center; gap:0.5rem; padding:0.5rem 0;">
                 ← Add More Items
               </a>
-              <button class="btn-premium px-10 py-3 text-xs" id="btn-t-next-1">
+              <button class="btn-premium w-full sm:w-auto px-10 py-3 text-xs" id="btn-t-next-1">
                 Proceed to Pay & Address
               </button>
             </div>
@@ -187,13 +187,13 @@
             <div style="margin-bottom:1.5rem;">
               <label class="form-label">Fulfillment Method</label>
               <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-                <button type="button" id="toggle-t-pickup" class="fulfillment-btn active">
+                <button type="button" id="toggle-t-pickup" class="fulfillment-btn">
                   <svg style="width:18px; height:18px; display:inline-block; margin-right:6px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                   </svg>
                   Store Pickup
                 </button>
-                <button type="button" id="toggle-t-delivery" class="fulfillment-btn">
+                <button type="button" id="toggle-t-delivery" class="fulfillment-btn active">
                   <svg style="width:18px; height:18px; display:inline-block; margin-right:6px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -204,20 +204,15 @@
             </div>
 
             <!-- Fulfillment Location Info Box -->
-            <div id="pickup-address-display" class="fulfillment-info-box">
+            <div id="pickup-address-display" class="fulfillment-info-box" style="display:none;">
               <span style="color:#FFBF00; font-weight:bold; font-size:0.75rem; text-transform:uppercase; display:block; margin-bottom:0.25rem;">Pickup Location</span>
               <p style="color:white; font-size:0.85rem; margin:0;">📍 209 Ellesmere Rd, Scarborough, ON</p>
               <p style="color:rgba(255,255,255,0.5); font-size:0.75rem; margin-top:0.25rem;">Your order will be ready for pickup at our main branch.</p>
             </div>
 
-            <div id="delivery-address-container" class="fulfillment-info-box" style="display:none;">
+            <div id="delivery-address-container" class="fulfillment-info-box" style="display:block;">
               <span style="color:#CC5500; font-weight:bold; font-size:0.75rem; text-transform:uppercase; display:block; margin-bottom:0.5rem;">Delivery Address</span>
-              <div style="display:flex; gap:0.5rem; justify-content:space-between; align-items:center;">
-                <input type="text" id="takeout-address" class="form-input" style="margin-bottom:0; flex-grow:1;" placeholder="E.g., 100 Queen St W, Toronto, ON">
-                <button type="button" id="takeout-get-location" style="flex-shrink:0; padding:0.85rem 1.25rem; border:1px solid #CC5500; color:#CC5500; border-radius:0.75rem; font-size:0.75rem; font-weight:700; background:transparent; cursor:pointer; transition:all 0.2s;">
-                  📍 Get GPS
-                </button>
-              </div>
+              <input type="text" id="takeout-address" class="form-input" style="margin-bottom:0;" placeholder="E.g., 100 Queen St W, Scarborough, ON">
               <p style="color:rgba(255,255,255,0.4); font-size:0.75rem; margin-top:0.5rem; margin-bottom:0;">We deliver across Scarborough and GTA. Delivery fee: $5.00 (FREE for orders over $40.00)</p>
             </div>
             
@@ -235,7 +230,7 @@
                 <input type="email" id="takeout-email" class="form-input" placeholder="E.g., john@example.com">
               </div>
               <div class="md:col-span-2">
-                <label class="form-label" id="takeout-time-label">Preferred Pickup Time</label>
+                <label class="form-label" id="takeout-time-label">Preferred Delivery Time</label>
                 <select id="takeout-time" class="form-select">
                   <option>As soon as possible (20-30 mins)</option>
                   <option>In 45 minutes</option>
@@ -245,11 +240,11 @@
               </div>
             </div>
 
-            <div class="flex justify-between items-center border-t border-white/10 pt-6">
-              <button class="text-white/60 hover:text-white text-xs font-bold uppercase tracking-wider" id="btn-t-back-2">
+            <div class="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 border-t border-white/10 pt-6">
+              <button class="text-white/60 hover:text-white text-xs font-bold uppercase tracking-wider py-2" id="btn-t-back-2">
                 Back
               </button>
-              <button class="btn-premium px-10 py-3 text-xs" id="btn-t-next-2">
+              <button class="btn-premium w-full sm:w-auto px-10 py-3 text-xs" id="btn-t-next-2">
                 Proceed to Payment
               </button>
             </div>
@@ -307,11 +302,11 @@
               <input type="text" id="t-card-name" class="form-input" placeholder="Name on Card">
             </div>
 
-            <div class="flex justify-between items-center border-t border-white/10 pt-6">
-              <button class="text-white/60 hover:text-white text-xs font-bold uppercase tracking-wider" id="btn-t-back-3">
+            <div class="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 border-t border-white/10 pt-6">
+              <button class="text-white/60 hover:text-white text-xs font-bold uppercase tracking-wider py-2" id="btn-t-back-3">
                 Back
               </button>
-              <button class="btn-premium px-12 py-4 text-sm" id="btn-t-place">
+              <button class="btn-premium w-full sm:w-auto px-12 py-4 text-sm" id="btn-t-place">
                 Place Takeout Order
               </button>
             </div>
@@ -518,8 +513,8 @@
               </div>
             </div>
 
-            <div class="flex justify-end border-t border-black/5 pt-6 mt-8">
-              <button class="btn-premium px-10 py-3 text-xs" id="btn-c-next-1">
+            <div class="flex flex-col sm:flex-row justify-end items-center gap-4 border-t border-black/5 pt-6 mt-8">
+              <button class="btn-premium w-full sm:w-auto px-10 py-3 text-xs" id="btn-c-next-1">
                 Continue to Details
               </button>
             </div>
@@ -541,12 +536,7 @@
               
               <div class="md:col-span-2">
                 <label class="form-label" style="color:#CC5500;">Delivery / Venue Address</label>
-                <div style="display:flex; gap:0.5rem;">
-                  <input type="text" id="event-address" class="form-input" style="color:black; border-color:rgba(0,0,0,0.15); background:white;" placeholder="E.g., 100 Queen St W, Toronto, ON">
-                  <button id="catering-get-location" style="flex-shrink:0; padding:0 1rem; border:1px solid #CC5500; color:#CC5500; border-radius:0.75rem; font-size:0.75rem; font-weight:700; background:transparent; cursor:pointer; transition:all 0.2s;">
-                    📍 Get GPS
-                  </button>
-                </div>
+                <input type="text" id="event-address" class="form-input" style="color:black; border-color:rgba(0,0,0,0.15); background:white;" placeholder="E.g., 100 Queen St W, Scarborough, ON">
               </div>
 
               <div>
@@ -563,11 +553,11 @@
               </div>
             </div>
 
-            <div class="flex justify-between items-center border-t border-black/5 pt-6">
-              <button class="text-slate-500 hover:text-slate-800 text-xs font-bold uppercase tracking-wider" id="btn-c-back-2">
+            <div class="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 border-t border-black/5 pt-6">
+              <button class="text-slate-500 hover:text-slate-800 text-xs font-bold uppercase tracking-wider py-2" id="btn-c-back-2">
                 Back
               </button>
-              <button class="btn-premium px-10 py-3 text-xs" id="btn-c-next-2">
+              <button class="btn-premium w-full sm:w-auto px-10 py-3 text-xs" id="btn-c-next-2">
                 Continue to Booking
               </button>
             </div>
@@ -625,11 +615,11 @@
               <input type="text" id="c-card-name" class="form-input" style="color:black; border-color:rgba(0,0,0,0.15); background:white;" placeholder="Cardholder Name">
             </div>
 
-            <div class="flex justify-between items-center border-t border-black/5 pt-6">
-              <button class="text-slate-500 hover:text-slate-800 text-xs font-bold uppercase tracking-wider" id="btn-c-back-3">
+            <div class="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 border-t border-black/5 pt-6">
+              <button class="text-slate-500 hover:text-slate-800 text-xs font-bold uppercase tracking-wider py-2" id="btn-c-back-3">
                 Back
               </button>
-              <button class="btn-premium px-12 py-4 text-sm" id="btn-c-place">
+              <button class="btn-premium w-full sm:w-auto px-12 py-4 text-sm" id="btn-c-place">
                 Secure Catering Booking
               </button>
             </div>
@@ -973,7 +963,7 @@
       const deliveryAddressBox = document.getElementById('delivery-address-container');
       const takeoutTimeLabel = document.getElementById('takeout-time-label');
 
-      let takeoutFulfillment = 'pickup'; // 'pickup' or 'delivery'
+      let takeoutFulfillment = 'delivery'; // 'pickup' or 'delivery'
 
       togglePickupBtn.addEventListener('click', () => {
         takeoutFulfillment = 'pickup';
@@ -995,97 +985,7 @@
         updateTakeoutTotals();
       });
 
-      // GPS buttons helper
-      function handleGPSClick(inputEl, buttonEl) {
-        if (!navigator.geolocation) {
-          alert('Geolocation is not supported by your browser.');
-          return;
-        }
-        buttonEl.textContent = '⌛ Locating...';
-        buttonEl.disabled = true;
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            
-            buttonEl.textContent = '⌛ Resolving...';
-            
-            // Reverse geocode via free Nominatim API
-            fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`, {
-              headers: {
-                'User-Agent': 'AlmasCuisineCheckout/1.0',
-                'Accept-Language': 'en'
-              }
-            })
-            .then(res => res.json())
-            .then(data => {
-              let addressStr = '';
-              if (data && data.address) {
-                const addr = data.address;
-                const parts = [];
-                
-                // 1. Road/Pedestrian
-                if (addr.road) {
-                  parts.push(addr.road);
-                } else if (addr.pedestrian) {
-                  parts.push(addr.pedestrian);
-                }
-                
-                // 2. Suburb / Neighbourhood / Area Name
-                const area = addr.suburb || addr.neighbourhood || addr.city_district || addr.quarter;
-                if (area) {
-                  parts.push(area);
-                }
-                
-                // 3. City / Town / Village
-                const city = addr.city || addr.town || addr.village || addr.municipality;
-                if (city && city !== area) {
-                  parts.push(city);
-                }
-                
-                addressStr = parts.join(', ');
-              }
-              
-              if (!addressStr && data && data.display_name) {
-                addressStr = data.display_name.split(',').slice(0, 3).map(s => s.trim()).join(', ');
-              }
-              
-              if (!addressStr) {
-                addressStr = 'GPS Location';
-              }
-              
-              inputEl.value = `${addressStr} (${lat.toFixed(5)}, ${lon.toFixed(5)})`;
-              buttonEl.textContent = '📍 Get GPS';
-              buttonEl.disabled = false;
-              showToast('GPS location resolved successfully!');
-            })
-            .catch(err => {
-              console.error('Error reverse geocoding:', err);
-              // Fallback to coordinates only
-              inputEl.value = `(${lat.toFixed(5)}, ${lon.toFixed(5)})`;
-              buttonEl.textContent = '📍 Get GPS';
-              buttonEl.disabled = false;
-              showToast('Location captured (coordinates only).');
-            });
-          },
-          (error) => {
-            buttonEl.textContent = '📍 Get GPS';
-            buttonEl.disabled = false;
-            alert('Unable to retrieve your location. Please enter it manually.');
-          },
-          { timeout: 8000 }
-        );
-      }
 
-      document.getElementById('takeout-get-location').addEventListener('click', (e) => {
-        e.preventDefault();
-        handleGPSClick(document.getElementById('takeout-address'), e.currentTarget);
-      });
-
-      document.getElementById('catering-get-location').addEventListener('click', (e) => {
-        e.preventDefault();
-        handleGPSClick(document.getElementById('event-address'), e.currentTarget);
-      });
 
       // Takeout Wizard Navigation
       document.getElementById('btn-t-next-1').addEventListener('click', () => {
