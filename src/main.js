@@ -57,8 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     } else {
       authGroup.innerHTML = `
-        <a href="/account.html?tab=login" class="hover:text-primary transition-colors">Login</a>
-        <a href="/account.html?tab=signup" class="hover:text-primary transition-colors" style="color: #D4AF37;">Sign Up</a>
+        <a href="/account.html?tab=login" class="hover:text-primary transition-colors">Sign In / Sign Up</a>
       `;
     }
   }
