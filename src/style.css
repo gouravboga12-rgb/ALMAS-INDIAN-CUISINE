@@ -331,6 +331,16 @@ html {
     display: none !important;
   }
 
+  /* On products page, keep search icon in the header instead of login/signup icon */
+  body.products-page .glass-nav #mobile-search-btn {
+    display: inline-flex !important;
+    order: 3 !important;
+    margin: 0 !important;
+  }
+  body.products-page #mobile-auth-group-header {
+    display: none !important;
+  }
+
   /* Align WhatsApp button symmetrically at the bottom-right */
   .whatsapp-float {
     bottom: 1.5rem !important;

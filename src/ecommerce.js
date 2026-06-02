@@ -213,6 +213,7 @@ function setupDrawerListeners() {
   const closeCart = () => {
     overlay.classList.remove('open');
     drawer.classList.remove('open');
+    updateCartBadge(false);
   };
 
   overlay.addEventListener('click', closeCart);
@@ -222,9 +223,7 @@ function setupDrawerListeners() {
   document.querySelectorAll('.nav-cart-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      overlay.classList.add('open');
-      drawer.classList.add('open');
-      renderCart();
+      openCartDrawer();
     });
   });
 }
@@ -416,6 +415,11 @@ export function openCartDrawer() {
     overlay.classList.add('open');
     drawer.classList.add('open');
     renderCart();
+    // Hide floating cart when drawer is open
+    const floatingCart = document.getElementById('mobile-floating-cart');
+    if (floatingCart) {
+      floatingCart.classList.remove('visible');
+    }
   }
 }
 
