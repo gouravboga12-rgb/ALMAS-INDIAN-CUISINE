@@ -140,6 +140,11 @@ html {
     height: 54px;
   }
 
+  /* Hide search icon in mobile view header */
+  #mobile-search-btn {
+    display: none !important;
+  }
+
   /* Keep headings clean and less bulky on mobile for elegant look */
   h1 {
     font-size: 2.25rem !important;
