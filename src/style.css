@@ -147,14 +147,18 @@ html {
 
   /* Ecommerce Style Mobile Navigation Menu */
   #mobile-menu {
-    padding: 2rem 1.5rem !important;
+    padding: 1.5rem 1.25rem !important; /* Reduced padding */
     align-items: stretch !important; /* Stretch children to full width */
   }
 
   #mobile-menu > div.mb-10 {
     align-self: flex-start !important; /* Left-align the logo */
-    margin-bottom: 1.5rem !important;
+    margin-bottom: 1rem !important; /* Reduced margin */
     width: auto !important;
+  }
+
+  #mobile-menu > div.mb-10 img {
+    height: 2.25rem !important; /* Scaled down logo height */
   }
 
   #mobile-menu nav {
@@ -173,10 +177,10 @@ html {
     align-items: center !important;
     justify-content: space-between !important;
     width: 100% !important;
-    padding: 0.95rem 0.5rem !important;
+    padding: 0.72rem 0.5rem !important; /* Tighter vertical padding */
     font-family: var(--font-body) !important; /* Clean sans-serif font */
     font-weight: 500 !important;
-    font-size: 0.95rem !important;
+    font-size: 0.92rem !important; /* Slightly smaller font size */
     letter-spacing: 0.05em !important;
     color: rgba(255, 255, 255, 0.85) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important; /* Separator lines */
@@ -189,7 +193,7 @@ html {
   #mobile-menu nav button::after {
     content: '\276F' !important; /* Chevron ❯ */
     position: static !important;
-    font-size: 0.75rem !important;
+    font-size: 0.72rem !important;
     color: rgba(255, 255, 255, 0.25) !important;
     transform: none !important;
     width: auto !important;
@@ -230,16 +234,27 @@ html {
 
   /* Centered Order Now CTA at bottom */
   #mobile-menu a.btn-premium {
-    margin-top: 1.5rem !important;
+    margin-top: 1rem !important; /* Reduced margin */
     align-self: center !important;
     width: 100% !important;
-    max-width: 280px !important;
-    padding: 0.8rem 1.5rem !important;
+    max-width: 260px !important; /* Slightly narrower button */
+    padding: 0.65rem 1.25rem !important; /* More compact padding */
     border-radius: 999px !important;
     text-transform: uppercase !important;
-    font-size: 0.85rem !important;
+    font-size: 0.8rem !important; /* Smaller text */
     font-family: var(--font-body) !important;
     font-weight: 700 !important;
+  }
+
+  /* Compact Address & Social footer inside mobile menu */
+  #mobile-menu .mt-10 {
+    margin-top: 0.85rem !important; /* Reduced spacing */
+  }
+  #mobile-menu .pt-8 {
+    padding-top: 0.75rem !important;
+  }
+  #mobile-menu .flex.space-x-4 {
+    margin-top: 0.75rem !important;
   }
 
   /* Keep headings clean and less bulky on mobile for elegant look */
