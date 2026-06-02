@@ -2656,6 +2656,22 @@
             searchInput.blur();
           }
         });
+
+        // Make page-level search icon clickable to trigger scroll
+        const searchIcon = searchInput.nextElementSibling;
+        if (searchIcon) {
+          searchIcon.style.cursor = 'pointer';
+          searchIcon.addEventListener('click', () => {
+            const visibleCards = document.querySelectorAll('.card-premium:not([style*="display: none"])');
+            if (visibleCards.length > 0) {
+              visibleCards[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+              visibleCards[0].classList.add('highlight-premium');
+              setTimeout(() => {
+                visibleCards[0].classList.remove('highlight-premium');
+              }, 2000);
+            }
+          });
+        }
       }
 
       // Diet Filters Event Listener

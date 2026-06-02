@@ -200,6 +200,54 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Unified Search Handler
+  function triggerSearch(value) {
+    const cleanVal = value.trim();
+    if (!cleanVal) return;
+
+    const productSearch = document.getElementById('product-search');
+    const menuSearch = document.getElementById('menu-search-input');
+
+    if (productSearch) {
+      // Products page: update input, trigger filtering, scroll to first card
+      productSearch.value = cleanVal;
+      productSearch.dispatchEvent(new Event('input'));
+      
+      setTimeout(() => {
+        const visibleCards = document.querySelectorAll('.card-premium:not([style*="display: none"])');
+        if (visibleCards.length > 0) {
+          visibleCards[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          visibleCards[0].classList.add('highlight-premium');
+          setTimeout(() => {
+            visibleCards[0].classList.remove('highlight-premium');
+          }, 2500);
+        } else {
+          productSearch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 150);
+    } else if (menuSearch) {
+      // Menu page: update input, trigger filtering, scroll to first menu item
+      menuSearch.value = cleanVal;
+      menuSearch.dispatchEvent(new Event('input'));
+      
+      setTimeout(() => {
+        const visibleItems = document.querySelectorAll('.menu-item-row:not(.search-hidden)');
+        if (visibleItems.length > 0) {
+          visibleItems[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          visibleItems[0].classList.add('highlight-premium');
+          setTimeout(() => {
+            visibleItems[0].classList.remove('highlight-premium');
+          }, 2500);
+        } else {
+          menuSearch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 150);
+    } else {
+      // Other page: redirect to products page with search query
+      window.location.href = `/products.html?search=${encodeURIComponent(cleanVal)}`;
+    }
+  }
+
   // Mobile Search Bar Toggle & Input handling
   const mobileSearchBtn = document.getElementById('mobile-search-btn');
   const mobileSearchBar = document.getElementById('mobile-search-bar');
@@ -222,10 +270,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Connect to page-level search if present
+    // Connect mobile input typing to page-level input in real-time
     mobileSearchInput.addEventListener('input', (e) => {
       const value = e.target.value;
-      
       const productSearch = document.getElementById('product-search');
       const menuSearch = document.getElementById('menu-search-input');
       
@@ -238,18 +285,22 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Handle enter key (submit search)
+    // Handle Enter key on mobile search
     mobileSearchInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        const value = mobileSearchInput.value.trim();
-        const isProductPage = !!document.getElementById('product-search');
-        const isMenuPage = !!document.getElementById('menu-search-input');
-        
-        if (!isProductPage && !isMenuPage && value) {
-          window.location.href = `/products.html?search=${encodeURIComponent(value)}`;
-        }
+        e.preventDefault();
+        triggerSearch(mobileSearchInput.value);
       }
     });
+
+    // Make mobile search icon clickable to trigger search
+    const mobileSearchIcon = document.querySelector('#mobile-search-bar span.absolute');
+    if (mobileSearchIcon) {
+      mobileSearchIcon.style.cursor = 'pointer';
+      mobileSearchIcon.addEventListener('click', () => {
+        triggerSearch(mobileSearchInput.value);
+      });
+    }
   }
 
   // Check URL query parameters for search on page load
@@ -257,24 +308,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchQueryParams = urlParams.get('search');
   if (searchQueryParams) {
     const cleanSearch = decodeURIComponent(searchQueryParams).trim();
-    setTimeout(() => {
-      const productSearch = document.getElementById('product-search');
-      const menuSearch = document.getElementById('menu-search-input');
-      if (productSearch) {
-        productSearch.value = cleanSearch;
-        productSearch.dispatchEvent(new Event('input'));
-        productSearch.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } else if (menuSearch) {
-        menuSearch.value = cleanSearch;
-        menuSearch.dispatchEvent(new Event('input'));
-        menuSearch.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }, 200);
+    triggerSearch(cleanSearch);
   }
 
   // Desktop Search Input Handling
   const desktopSearchInput = document.getElementById('desktop-search-input');
+  const desktopSearchIcon = document.querySelector('.desktop-search-icon');
+
   if (desktopSearchInput) {
+    // Connect desktop input typing to page-level input in real-time
     desktopSearchInput.addEventListener('input', (e) => {
       const value = e.target.value;
       const productSearch = document.getElementById('product-search');
@@ -289,18 +331,23 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Handle Enter key on desktop search
     desktopSearchInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        const value = desktopSearchInput.value.trim();
-        const isProductPage = !!document.getElementById('product-search');
-        const isMenuPage = !!document.getElementById('menu-search-input');
-        
-        if (!isProductPage && !isMenuPage && value) {
-          window.location.href = `/products.html?search=${encodeURIComponent(value)}`;
-        }
+        e.preventDefault();
+        triggerSearch(desktopSearchInput.value);
       }
     });
   }
+
+  // Make desktop search icon clickable to trigger search
+  if (desktopSearchIcon && desktopSearchInput) {
+    desktopSearchIcon.style.cursor = 'pointer';
+    desktopSearchIcon.addEventListener('click', () => {
+      triggerSearch(desktopSearchInput.value);
+    });
+  }
+
 
   // Table Reservation Query/Hash Redirects
   const serviceDropdown = document.getElementById('service-type');
