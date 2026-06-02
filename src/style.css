@@ -147,8 +147,8 @@ html {
     height: 48px;
   }
 
-  /* Hide search icon in mobile view header */
-  #mobile-search-btn {
+  /* Hide search icon in mobile view header except on products page */
+  body:not(.products-page) #mobile-search-btn {
     display: none !important;
   }
 
