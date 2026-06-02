@@ -2790,3 +2790,49 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
     flex-grow: 1 !important;
   }
 }
+
+/* Premium Checkout Drawer Button */
+.checkout-drawer-btn {
+  width: 100%;
+  margin-top: 1.25rem;
+  padding: 0.95rem 1.5rem;
+  background: linear-gradient(135deg, #CC5500 0%, #E28743 50%, #D4AF37 100%);
+  background-size: 200% auto;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: 999px;
+  font-family: var(--font-body), sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 6px 22px rgba(204, 85, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.checkout-drawer-btn:hover {
+  background-position: right center;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(204, 85, 0, 0.55), 0 0 15px rgba(212, 175, 55, 0.25);
+  border-color: rgba(212, 175, 55, 0.8);
+}
+
+.checkout-drawer-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(204, 85, 0, 0.3);
+}
+
+.checkout-drawer-btn svg {
+  transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  stroke-width: 2.5;
+}
+
+.checkout-drawer-btn:hover svg {
+  transform: translateX(4px);
+}
+

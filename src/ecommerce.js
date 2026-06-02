@@ -79,8 +79,11 @@ function injectCartUI() {
         <span>Grand Total</span>
         <span id="cart-grand-total">$0.00</span>
       </div>
-      <button id="checkout-drawer-btn" style="width:100%; margin-top:1.25rem; padding:0.9rem; background:#CC5500; color:white; border:none; border-radius:999px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; cursor:pointer; transition:all 0.3s; box-shadow:0 6px 20px rgba(204,85,0,0.3);" onclick="window.location.href='/order'">
-        Proceed to Checkout
+      <button id="checkout-drawer-btn" class="checkout-drawer-btn" onclick="window.location.href='/order.html'">
+        <span>Proceed to Checkout</span>
+        <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px;">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+        </svg>
       </button>
     </div>
   `;
