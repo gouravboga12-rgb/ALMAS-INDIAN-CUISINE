@@ -292,28 +292,29 @@ html {
     width: auto !important;
   }
 
-  /* Make mobile controls row span full width */
+  /* Make mobile controls row span full width and align items to right */
   .glass-nav > div > div.lg\:hidden {
     width: 100% !important;
     display: flex !important;
-    justify-content: space-between !important;
+    justify-content: flex-end !important;
     align-items: center !important;
     position: relative !important;
     z-index: 10 !important;
     pointer-events: none !important;
     margin: 0 !important;
     padding: 0 !important;
-    gap: 0 !important;
-    space-x: 0 !important;
+    gap: 0.5rem !important; /* Spacing between search and profile on products page */
   }
   .glass-nav > div > div.lg\:hidden > * {
     pointer-events: auto !important;
   }
 
-  /* Position Hamburger (menu bar) on the left */
+  /* Position Hamburger (menu bar) on the far left absolutely */
   #menu-btn {
-    order: 1 !important;
+    position: absolute !important;
+    left: 0 !important;
     margin: 0 !important;
+    order: -10 !important; /* Taken out of right-aligned flow */
   }
 
   /* Position dynamic login/signup on the right */
@@ -325,20 +326,20 @@ html {
     justify-content: center !important;
   }
 
-  /* Hide cart and search button from mobile header */
-  .glass-nav #mobile-search-btn,
+  /* Hide header cart button globally on mobile viewports */
   .glass-nav .nav-cart-btn {
     display: none !important;
   }
 
-  /* On products page, keep search icon in the header instead of login/signup icon */
-  body.products-page .glass-nav #mobile-search-btn {
-    display: inline-flex !important;
-    order: 3 !important;
-    margin: 0 !important;
-  }
-  body.products-page #mobile-auth-group-header {
+  /* Hide search button globally on mobile, EXCEPT on the products page */
+  body:not(.products-page) #mobile-search-btn {
     display: none !important;
+  }
+
+  /* Show and style search button on products page mobile header */
+  body.products-page #mobile-search-btn {
+    display: inline-flex !important;
+    margin: 0 !important;
   }
 
   /* Align WhatsApp button symmetrically at the bottom-right */
