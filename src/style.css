@@ -139,6 +139,26 @@ html {
     width: 54px;
     height: 54px;
   }
+
+  /* Keep headings clean and less bulky on mobile for elegant look */
+  h1 {
+    font-size: 2.25rem !important;
+    line-height: 1.15 !important;
+  }
+  h2.text-5xl, 
+  h2.text-4xl,
+  .section-title h2 {
+    font-size: 1.85rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 1.25rem !important;
+  }
+  
+  /* Lighter text for descriptions on mobile for luxury look */
+  p.text-text-secondary {
+    font-weight: 300 !important;
+    font-size: 0.92rem !important;
+    line-height: 1.55 !important;
+  }
 }
 
 .whatsapp-tooltip {
@@ -295,8 +315,16 @@ html {
 }
 
 #mobile-menu nav a:hover::after,
-#mobile-menu nav button:hover::after {
+#mobile-menu nav button:hover::after,
+#mobile-menu nav a.active-mobile::after,
+#mobile-menu nav button.active-mobile::after {
   width: 40px;
+}
+
+#mobile-menu nav a.active-mobile,
+#mobile-menu nav button.active-mobile {
+  color: var(--color-gold) !important;
+  letter-spacing: 0.2em;
 }
 
 #mobile-menu nav .nav-cart-btn {

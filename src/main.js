@@ -112,10 +112,21 @@ document.addEventListener('DOMContentLoaded', () => {
   if (closeBtn) closeBtn.addEventListener('click', closeMenu);
   if (overlay) overlay.addEventListener('click', closeMenu);
 
-  // Close menu when a nav link is clicked
+  // Close menu when a nav link is clicked & highlight active link
   if (mobileMenu) {
+    const currentPath = window.location.pathname;
     mobileMenu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', closeMenu);
+      
+      const href = link.getAttribute('href');
+      if (href) {
+        const isHome = currentPath === '/' || currentPath === '/index.html' || currentPath.endsWith('/');
+        const linkIsHome = href === '/' || href === '/index.html' || href === 'index.html';
+        
+        if ((isHome && linkIsHome) || (!isHome && href !== '/' && href !== 'index.html' && currentPath.includes(href))) {
+          link.classList.add('active-mobile');
+        }
+      }
     });
   }
 
