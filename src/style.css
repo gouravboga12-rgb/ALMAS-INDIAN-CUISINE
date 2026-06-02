@@ -226,9 +226,9 @@ html {
   z-index: 100;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start; /* Fix flex overflow scroll bug */
   align-items: center;
-  padding: 3rem 2.5rem;
+  padding: 2rem 1.5rem;
   transform: translateY(-100%);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow-y: auto;
@@ -287,8 +287,8 @@ html {
   position: relative;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.35rem;
-  letter-spacing: 0.15em;
+  font-size: 1.1rem; /* Reduced from 1.35rem */
+  letter-spacing: 0.12em;
   color: rgba(255, 255, 255, 0.85);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-transform: uppercase;
@@ -334,15 +334,27 @@ html {
 
 /* Order button custom styles */
 #mobile-menu a.btn-premium {
-  margin-top: 2rem !important;
+  margin-top: 1.25rem !important; /* Reduced from 2rem */
   width: 100%;
-  max-width: 280px;
+  max-width: 260px;
+  padding: 0.75rem 1.5rem !important; /* More compact on mobile */
   box-shadow: 0 10px 25px rgba(204, 85, 0, 0.25), 0 0 0 1px rgba(212, 175, 55, 0.1);
   transition: all 0.3s ease;
 }
 #mobile-menu a.btn-premium:hover {
   box-shadow: 0 15px 35px rgba(204, 85, 0, 0.4), 0 0 0 2px var(--color-gold);
   transform: translateY(-3px) scale(1.03);
+}
+
+/* Reduce logo margin and border spacing on mobile */
+#mobile-menu > div.mb-10 {
+  margin-bottom: 1.25rem !important;
+}
+#mobile-menu .mt-10 {
+  margin-top: 1.25rem !important;
+}
+#mobile-menu .pt-8 {
+  padding-top: 1rem !important;
 }
 
 /* Address and Social details styling */
@@ -376,20 +388,20 @@ html {
 
 /* Custom Spacing Overrides for nav items */
 #mobile-menu nav > * + * {
-  margin-top: 1.25rem !important;
+  margin-top: 0.85rem !important; /* Reduced from 1.25rem */
 }
 
 @media (max-width: 380px) {
   #mobile-menu nav a,
   #mobile-menu nav button {
-    font-size: 1.15rem !important;
+    font-size: 0.95rem !important; /* Scale down for tiny viewports */
   }
   #mobile-menu nav > * + * {
-    margin-top: 0.95rem !important;
+    margin-top: 0.65rem !important;
   }
   #mobile-menu a.btn-premium {
-    margin-top: 1.5rem !important;
-    padding: 0.75rem 1.5rem !important;
+    margin-top: 1rem !important;
+    padding: 0.65rem 1.25rem !important;
   }
 }
 
