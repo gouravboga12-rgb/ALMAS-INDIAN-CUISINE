@@ -82,6 +82,13 @@ html {
   box-shadow: 0 30px 60px var(--tw-shadow-color);
 }
 
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* Animations */
 @keyframes ken-burns {
   0% { transform: scale(1) translate(0, 0); }
@@ -134,10 +141,10 @@ html {
 
 @media (max-width: 768px) {
   .whatsapp-float {
-    bottom: 1.5rem;
-    right: 1.5rem;
-    width: 54px;
-    height: 54px;
+    bottom: 4.5rem; /* Raised to prevent overlapping Add to Cart buttons */
+    right: 1rem;
+    width: 48px;
+    height: 48px;
   }
 
   /* Hide search icon in mobile view header */
