@@ -37,6 +37,15 @@
     <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center h-28 md:h-24">
       <!-- Left: Logo & Search Bar -->
       <div class="flex items-center gap-6 flex-1">
+        <!-- Mobile Hamburger & Halal Logo (Mobile & Tablet) -->
+        <div class="lg:hidden flex items-center gap-3">
+          <button id="menu-btn" title="Menu">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+          <img src="/halal_logo.png" alt="Halal Certified" class="h-8 w-auto object-contain">
+        </div>
         <a href="/" class="flex items-center">
           <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-20 md:h-16 w-auto object-contain">
         </a>
@@ -55,7 +64,7 @@
       <!-- Desktop Navigation & Actions -->
       <div class="hidden lg:flex items-center space-x-8">
         <a href="/" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Home</a>
-        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Products</a>
+        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Our Menu</a>
         <a href="/services.html" class="text-xs uppercase tracking-widest font-heading font-bold text-primary border-b-2 border-primary pb-0.5">Catering</a>
         <a href="/about.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">About</a>
         <a href="/contact.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Contact</a>
@@ -74,6 +83,9 @@
             </svg>
             <span class="cart-count-badge">0</span>
           </button>
+
+          <!-- Halal Logo (Desktop) -->
+          <img src="/halal_logo.png" alt="Halal Certified" class="hidden lg:block h-10 w-auto object-contain ml-2">
         </div>
       </div>
       <!-- Mobile Controls (visible on mobile, hidden on desktop) -->
@@ -93,12 +105,7 @@
           <span class="cart-count-badge">0</span>
         </button>
 
-        <!-- Mobile Menu Button (Hamburger) -->
-        <button id="menu-btn" title="Menu">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
+        
       </div>
     </div>
 
@@ -127,7 +134,7 @@
     </div>
         <nav class="flex flex-col space-y-6 text-white text-lg font-heading font-semibold uppercase tracking-widest">
       <a href="/" class="hover:text-primary transition-colors">Home</a>
-      <a href="/products.html" class="hover:text-primary transition-colors">Products</a>
+      <a href="/products.html" class="hover:text-primary transition-colors">Our Menu</a>
       <a href="/services.html" class="hover:text-primary transition-colors">Catering</a>
       <a href="/about.html" class="hover:text-primary transition-colors">About</a>
       <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
@@ -190,7 +197,7 @@
           <p class="text-text-secondary text-base md:text-lg font-light leading-relaxed mb-6 md:mb-10">
             Order your favorite Indian and Lebanese dishes with a Hyderabadi touch, freshly prepared and ready for pickup. Ideal for quick meals without compromising on authentic taste.
           </p>
-          <a href="/products.html" class="btn-premium inline-flex px-8 md:px-12 mb-8 lg:mb-0 text-sm md:text-base">Browse Products</a>
+          <a href="/products.html" class="btn-premium inline-flex px-8 md:px-12 mb-8 lg:mb-0 text-sm md:text-base">Browse Our Menu</a>
         </div>
         <div class="order-1 md:order-1 relative" data-aos="zoom-in">
           <img src="/takeout.png" class="rounded-2xl shadow-2xl w-full h-52 md:h-auto object-cover" alt="Takeout">
@@ -235,7 +242,7 @@
           <p class="text-text-secondary text-base md:text-lg font-light leading-relaxed mb-6 md:mb-10">
             Order easily through our website or delivery platforms. Experience the richness of Indian, Lebanese, and Hyderabadi-inspired dishes delivered fresh to your doorstep by Uber Eats, DoorDash, and SkipTheDishes.
           </p>
-          <a href="/order.html" class="btn-premium inline-flex px-8 md:px-12 mb-8 lg:mb-0 text-sm md:text-base">Order Now</a>
+          <a href="/order.html?tab=delivery" class="btn-premium inline-flex px-8 md:px-12 mb-8 lg:mb-0 text-sm md:text-base">Order Now</a>
         </div>
         <div class="order-1 md:order-2 relative" data-aos="zoom-in">
           <img src="/delivery.png" class="rounded-2xl shadow-2xl w-full h-52 md:h-auto object-cover" alt="Delivery">

@@ -227,6 +227,15 @@
     <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center h-28 md:h-24">
       <!-- Left: Logo & Search Bar -->
       <div class="flex items-center gap-6 flex-1">
+        <!-- Mobile Hamburger & Halal Logo (Mobile & Tablet) -->
+        <div class="lg:hidden flex items-center gap-3">
+          <button id="menu-btn" title="Menu">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+          <img src="/halal_logo.png" alt="Halal Certified" class="h-8 w-auto object-contain">
+        </div>
         <a href="/" class="flex items-center">
           <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-20 md:h-16 w-auto object-contain">
         </a>
@@ -245,7 +254,7 @@
       <!-- Desktop Navigation & Actions -->
       <div class="hidden lg:flex items-center space-x-8">
         <a href="/" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Home</a>
-        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Products</a>
+        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Our Menu</a>
         <a href="/services.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Catering</a>
         <a href="/about.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">About</a>
         <a href="/contact.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Contact</a>
@@ -263,6 +272,9 @@
             </svg>
             <span class="cart-count-badge">0</span>
           </button>
+
+          <!-- Halal Logo (Desktop) -->
+          <img src="/halal_logo.png" alt="Halal Certified" class="hidden lg:block h-10 w-auto object-contain ml-2">
         </div>
       </div>
       
@@ -284,11 +296,7 @@
         </button>
 
         <!-- Mobile Menu Button -->
-        <button id="menu-btn" title="Menu">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
+        
       </div>
     </div>
 
@@ -317,7 +325,7 @@
     </div>
         <nav class="flex flex-col space-y-6 text-white text-lg font-heading font-semibold uppercase tracking-widest">
       <a href="/" class="hover:text-primary transition-colors">Home</a>
-      <a href="/products.html" class="hover:text-primary transition-colors">Products</a>
+      <a href="/products.html" class="hover:text-primary transition-colors">Our Menu</a>
       <a href="/services.html" class="hover:text-primary transition-colors">Catering</a>
       <a href="/about.html" class="hover:text-primary transition-colors">About</a>
       <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
@@ -352,7 +360,7 @@
       <span class="text-5xl mb-4">🍽️</span>
       <h2 class="text-2xl font-heading text-primary-deep mb-3">Dish Not Found</h2>
       <p class="text-text-secondary text-sm mb-8">We couldn't load the details for this selection. It might have been updated or seasoned differently in our latest menu.</p>
-      <a href="/products.html" class="btn-premium py-3 px-8 text-xs">Back to Products Menu</a>
+      <a href="/products.html" class="btn-premium py-3 px-8 text-xs">Back to Our Menu</a>
     </div>
 
     <!-- Main Detail Section (Populated dynamically) -->
@@ -391,6 +399,12 @@
 
         <!-- Customizations Form -->
         <div class="space-y-6 pt-4">
+          <!-- Special Instructions Block -->
+          <div id="special-instructions-block" class="hidden space-y-3 transition-all duration-300">
+            <label class="block text-xs uppercase tracking-widest text-text-secondary/70 font-semibold">Special Instructions / Description</label>
+            <textarea id="detail-special-instructions" class="w-full bg-[#FFFAF3] border border-primary/20 rounded-2xl p-4 text-sm text-text-primary focus:outline-none focus:border-primary" rows="3" placeholder="E.g., Mild, Medium, Hot, No onions, extra sauce, sauce on side..."></textarea>
+          </div>
+
           <!-- Step Stepper & Order Buttons -->
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6">
             <div>
@@ -540,7 +554,7 @@
         <ul class="space-y-4 font-light text-xs uppercase tracking-widest">
           <li><a href="/" class="hover:text-primary transition-colors">Home</a></li>
           <li><a href="/about.html" class="hover:text-primary transition-colors">About Us</a></li>
-          <li><a href="/products.html" class="hover:text-primary transition-colors">Products Menu</a></li>
+          <li><a href="/products.html" class="hover:text-primary transition-colors">Our Menu</a></li>
           <li><a href="/services.html" class="hover:text-primary transition-colors">Catering</a></li>
           <li><a href="/contact.html" class="hover:text-primary transition-colors">Contact</a></li>
         </ul>
@@ -569,7 +583,7 @@
 
   <script type="module">
     import { products } from '/src/products-data.js';
-    import { openCustomizationModal, addToCart, getCart } from '/src/ecommerce.js';
+    import { openCustomizationModal, addToCart, getCart, openCartDrawer } from '/src/ecommerce.js';
 
     let showAllReviews = false;
     let currentProductReviews = [];
@@ -752,7 +766,8 @@
         prices.forEach((price, idx) => {
           let label = `Portion ${idx + 1}`;
           if (prices.length === 2) {
-            label = idx === 0 ? (isHalfWhole ? 'Half' : 'Single') : (isHalfWhole ? 'Whole' : 'Family');
+            const isGrillChicken = product.id === 'grill-chicken' || product.name.toLowerCase().includes('grill chicken');
+            label = idx === 0 ? (isGrillChicken ? 'Half' : (isHalfWhole ? 'Half' : 'Single')) : (isGrillChicken ? 'Full' : (isHalfWhole ? 'Whole' : 'Family'));
           } else if (prices.length === 3) {
             label = idx === 0 ? 'Single Portion' : (idx === 1 ? '2 People Portion' : '3 People Feast');
           }
@@ -803,15 +818,33 @@
       };
 
       document.getElementById('btn-add-cart').onclick = () => {
+        const block = document.getElementById('special-instructions-block');
+        if (block.classList.contains('hidden')) {
+          block.classList.remove('hidden');
+          document.getElementById('detail-special-instructions').focus();
+          document.getElementById('btn-add-cart').textContent = 'Confirm Add to Order';
+          return;
+        }
+
         const item = getItemObject();
-        addToCart(item, quantity, 'Mild', '');
+        const instructions = document.getElementById('detail-special-instructions').value;
+        addToCart(item, quantity, '', instructions);
         updateCartBadgeCount();
       };
 
       document.getElementById('btn-buy-now').onclick = () => {
+        const block = document.getElementById('special-instructions-block');
+        if (block.classList.contains('hidden')) {
+          block.classList.remove('hidden');
+          document.getElementById('detail-special-instructions').focus();
+          document.getElementById('btn-buy-now').textContent = 'Confirm Buy Now';
+          return;
+        }
+
         const item = getItemObject();
-        addToCart(item, quantity, 'Mild', '');
-        window.location.href = '/order.html';
+        const instructions = document.getElementById('detail-special-instructions').value;
+        addToCart(item, quantity, '', instructions);
+        openCartDrawer();
       };
 
       // Initialize Ratings and Reviews

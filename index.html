@@ -44,6 +44,15 @@
     <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center h-28 md:h-24">
       <!-- Left: Logo & Search Bar -->
       <div class="flex items-center gap-6 flex-1">
+        <!-- Mobile Hamburger & Halal Logo (Mobile & Tablet) -->
+        <div class="lg:hidden flex items-center gap-3">
+          <button id="menu-btn" title="Menu">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+          <img src="/halal_logo.png" alt="Halal Certified" class="h-8 w-auto object-contain">
+        </div>
         <a href="/" class="flex items-center">
           <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-20 md:h-16 w-auto object-contain">
         </a>
@@ -62,7 +71,7 @@
       <!-- Desktop Navigation & Actions -->
       <div class="hidden lg:flex items-center space-x-8">
         <a href="/" class="text-xs uppercase tracking-widest font-heading font-bold text-primary border-b-2 border-primary pb-0.5">Home</a>
-        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Products</a>
+        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Our Menu</a>
         <a href="/services.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Catering</a>
         <a href="/about.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">About</a>
         <a href="/contact.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Contact</a>
@@ -81,6 +90,9 @@
             </svg>
             <span class="cart-count-badge">0</span>
           </button>
+
+          <!-- Halal Logo (Desktop) -->
+          <img src="/halal_logo.png" alt="Halal Certified" class="hidden lg:block h-10 w-auto object-contain ml-2">
         </div>
       </div>
 
@@ -104,12 +116,7 @@
           <span class="cart-count-badge">0</span>
         </button>
 
-        <!-- Mobile Menu Button (Hamburger) -->
-        <button id="menu-btn" title="Menu">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
+        
       </div>
     </div>
 
@@ -146,7 +153,7 @@
     </div>
         <nav class="flex flex-col space-y-6 text-white text-lg font-heading font-semibold uppercase tracking-widest">
       <a href="/" class="hover:text-primary transition-colors">Home</a>
-      <a href="/products.html" class="hover:text-primary transition-colors">Products</a>
+      <a href="/products.html" class="hover:text-primary transition-colors">Our Menu</a>
       <a href="/services.html" class="hover:text-primary transition-colors">Catering</a>
       <a href="/about.html" class="hover:text-primary transition-colors">About</a>
       <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
@@ -172,12 +179,12 @@
 
     <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full text-white">
       <div class="max-w-3xl" data-aos="fade-right">
-        <span class="inline-block text-secondary font-semibold tracking-[0.3em] uppercase text-[10px] md:text-sm mb-6">A
+        <span class="inline-block text-secondary font-semibold tracking-[0.3em] uppercase text-[10px] md:text-sm mb-2">A
           Legacy of Hyderabadi Taste</span>
-        <h1 class="text-4xl sm:text-6xl md:text-8xl mb-8 leading-[1.1]">Where Tradition <br><span
-            class="text-secondary italic">Meets Excellence.</span></h1>
-        <p class="text-lg md:text-2xl mb-12 text-white/80 leading-relaxed font-light max-w-xl italic">Experience
-          authentic Hyderabadi hospitality and Middle Eastern flavors crafted for the discerning palate.</p>
+        <div class="max-w-[340px] sm:max-w-[500px] md:max-w-[600px] -mt-16 sm:-mt-28 md:-mt-36 -mb-16 sm:-mb-32 md:-mb-36 -ml-6 sm:-ml-10 md:-ml-12">
+          <img src="/hero_logo.png" alt="ALMAS Indian Cuisine" class="w-full h-auto object-contain object-left" style="filter: brightness(0) saturate(100%) invert(75%) sepia(87%) saturate(1469%) hue-rotate(2deg) brightness(103%) contrast(104%);">
+        </div>
+        <p class="text-lg md:text-2xl mb-12 text-white/80 leading-relaxed font-light max-w-xl italic">Authentic Hyderabadi hospitality and Middle Eastern flavors crafted for the discerning palate.</p>
         <div class="flex flex-col sm:flex-row space-y-5 sm:space-y-0 sm:space-x-6">
           <a href="/order.html" class="btn-premium px-12">Order Now</a>
           <a href="/contact.html?type=reservation#contact-section"
@@ -329,7 +336,7 @@
       </div>
 
       <div class="text-center mt-10 md:mt-32">
-        <a href="/products.html" class="btn-premium inline-flex px-16">Explore Our Products</a>
+        <a href="/products.html" class="btn-premium inline-flex px-16">Explore Our Menu</a>
       </div>
     </div>
   </section>

@@ -41,6 +41,15 @@
     <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center h-28 md:h-24">
       <!-- Left: Logo & Search Bar -->
       <div class="flex items-center gap-6 flex-1">
+        <!-- Mobile Hamburger & Halal Logo (Mobile & Tablet) -->
+        <div class="lg:hidden flex items-center gap-3">
+          <button id="menu-btn" title="Menu">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+          <img src="/halal_logo.png" alt="Halal Certified" class="h-8 w-auto object-contain">
+        </div>
         <a href="/" class="flex items-center">
           <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-20 md:h-16 w-auto object-contain">
         </a>
@@ -59,7 +68,7 @@
       <!-- Desktop Navigation & Actions -->
       <div class="hidden lg:flex items-center space-x-8">
         <a href="/" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Home</a>
-        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-bold text-primary border-b-2 border-primary pb-0.5">Products</a>
+        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-bold text-primary border-b-2 border-primary pb-0.5">Our Menu</a>
         <a href="/services.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Catering</a>
         <a href="/about.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">About</a>
         <a href="/contact.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Contact</a>
@@ -78,6 +87,9 @@
             </svg>
             <span class="cart-count-badge">0</span>
           </button>
+
+          <!-- Halal Logo (Desktop) -->
+          <img src="/halal_logo.png" alt="Halal Certified" class="hidden lg:block h-10 w-auto object-contain ml-2">
         </div>
       </div>
       <!-- Mobile Controls (visible on mobile, hidden on desktop) -->
@@ -97,12 +109,7 @@
           <span class="cart-count-badge">0</span>
         </button>
 
-        <!-- Mobile Menu Button (Hamburger) -->
-        <button id="menu-btn" title="Menu">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
+        
       </div>
     </div>
 
@@ -133,7 +140,7 @@
     </div>
         <nav class="flex flex-col space-y-6 text-white text-lg font-heading font-semibold uppercase tracking-widest">
       <a href="/" class="hover:text-primary transition-colors">Home</a>
-      <a href="/products.html" class="hover:text-primary transition-colors">Products</a>
+      <a href="/products.html" class="hover:text-primary transition-colors">Our Menu</a>
       <a href="/services.html" class="hover:text-primary transition-colors">Catering</a>
       <a href="/about.html" class="hover:text-primary transition-colors">About</a>
       <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
@@ -2455,8 +2462,9 @@
               optionsHtml += `<option value="${price}" data-label="${label}">${label} ($${price.toFixed(2)})</option>`;
             });
           } else if (prices.length === 2) {
-            const opt1 = isHalfWhole ? 'Half' : 'Single';
-            const opt2 = isHalfWhole ? 'Whole' : 'Family';
+            const isGrillChicken = id === 'grill-chicken' || name.toLowerCase().includes('grill chicken');
+            const opt1 = isGrillChicken ? 'Half' : (isHalfWhole ? 'Half' : 'Single');
+            const opt2 = isGrillChicken ? 'Full' : (isHalfWhole ? 'Whole' : 'Family');
             optionsHtml = `
               <option value="${prices[0]}" data-label="${opt1}">${opt1} ($${prices[0].toFixed(2)})</option>
               <option value="${prices[1]}" data-label="${opt2}">${opt2} ($${prices[1].toFixed(2)})</option>
@@ -2534,15 +2542,13 @@
 
         if (addToCartBtn) {
           addToCartBtn.addEventListener('click', () => {
-            addToCart(getItem(), 1, 'Mild', '');
+            openCustomizationModal(getItem());
           });
         }
 
         if (buyNowBtn) {
           buyNowBtn.addEventListener('click', () => {
-            const item = getItem();
-            addToCart(item, 1, 'Mild', '');
-            window.location.href = '/order.html';
+            openCustomizationModal(getItem());
           });
         }
       });

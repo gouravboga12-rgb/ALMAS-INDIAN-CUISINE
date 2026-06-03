@@ -72,7 +72,7 @@ function injectCartUI() {
         <span id="cart-subtotal">$0.00</span>
       </div>
       <div class="cart-total-row">
-        <span>Estimated Tax (8%)</span>
+        <span>Estimated Tax (14%)</span>
         <span id="cart-tax">$0.00</span>
       </div>
       <div class="cart-total-row grand">
@@ -99,23 +99,13 @@ function injectCartUI() {
       <h3 id="modal-item-name" style="font-family:var(--font-heading); color:white; font-size:1.6rem; font-weight:700; margin-bottom:0.25rem;"></h3>
       <p id="modal-item-price" style="color:#CC5500; font-weight:700; font-size:1.2rem; margin-bottom:1.25rem;"></p>
       
-      <div style="margin-bottom:1.25rem;">
-        <label class="form-label">Spice Level</label>
-        <div class="spice-options">
-          <button class="spice-btn active" data-spice="Mild">Mild</button>
-          <button class="spice-btn" data-spice="Medium">Medium</button>
-          <button class="spice-btn" data-spice="Hot">Hot</button>
-          <button class="spice-btn" data-spice="Extra Hot">Extra Hot</button>
-        </div>
-      </div>
-
       <div style="margin-bottom:1.5rem;">
-        <label class="form-label">Special Instructions</label>
-        <textarea id="modal-special-notes" class="modal-input" rows="2" placeholder="E.g., No onions, extra sauce, sauce on side..."></textarea>
+        <label class="form-label">Special Instructions / Description</label>
+        <textarea id="modal-special-notes" class="modal-input" rows="3" placeholder="E.g., Mild, Medium, Hot, No onions, extra sauce, sauce on side..."></textarea>
       </div>
 
-      <div style="display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.08); padding-top:1.25rem;">
-        <div>
+      <div class="modal-action-footer">
+        <div class="qty-stepper-container">
           <label class="form-label" style="margin-bottom:0.25rem;">Quantity</label>
           <div class="qty-stepper">
             <button class="qty-stepper-btn" id="qty-dec">-</button>
@@ -123,7 +113,7 @@ function injectCartUI() {
             <button class="qty-stepper-btn" id="qty-inc">+</button>
           </div>
         </div>
-        <button id="modal-add-btn" style="padding:0.9rem 2rem; background:#CC5500; color:white; border:none; border-radius:999px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; cursor:pointer; transition:all 0.3s; box-shadow:0 6px 20px rgba(204,85,0,0.3);">
+        <button id="modal-add-btn">
           Add to Cart
         </button>
       </div>
@@ -267,20 +257,12 @@ function setupModalListeners() {
   });
 
   // Spice level toggles
-  document.querySelectorAll('.spice-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      document.querySelectorAll('.spice-btn').forEach(b => b.classList.remove('active'));
-      e.target.classList.add('active');
-      activeModalSpice = e.target.dataset.spice;
-    });
-  });
-
   // Add to cart submit
   addBtn.addEventListener('click', () => {
     if (!activeModalItem) return;
     const note = document.getElementById('modal-special-notes').value.trim();
 
-    addToCart(activeModalItem, activeModalQty, activeModalSpice, note);
+    addToCart(activeModalItem, activeModalQty, '', note);
     closeModal();
   });
 }
@@ -290,19 +272,13 @@ export function openCustomizationModal(item) {
   injectCartUI();
   activeModalItem = item;
   activeModalQty = 1;
-  activeModalSpice = 'Mild';
+  activeModalSpice = '';
   
   document.getElementById('modal-item-img').src = item.image;
   document.getElementById('modal-item-name').textContent = item.name;
   document.getElementById('modal-item-price').textContent = `$${parseFloat(item.price).toFixed(2)}`;
   document.getElementById('modal-special-notes').value = '';
   document.getElementById('qty-val').textContent = '1';
-  
-  // Reset spice buttons
-  document.querySelectorAll('.spice-btn').forEach(b => {
-    b.classList.remove('active');
-    if (b.dataset.spice === 'Mild') b.classList.add('active');
-  });
 
   document.getElementById('customization-modal-overlay').classList.add('open');
 }
@@ -429,7 +405,7 @@ export function openCartDrawer() {
 // Calculate Cart Totals
 export function getCartTotals() {
   const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-  const tax = subtotal * 0.08;
+  const tax = subtotal * 0.14;
   const total = subtotal + tax;
   return { subtotal, tax, total };
 }
@@ -505,20 +481,27 @@ export function renderCart() {
   checkoutBtn.style.opacity = '1';
   checkoutBtn.style.pointerEvents = 'all';
 
-  list.innerHTML = cart.map((item, idx) => `
-    <div class="cart-item">
-      <img src="${item.image}" alt="${item.name}" class="cart-item-img">
-      <div class="cart-item-info">
-        <div class="cart-item-name">${item.name}</div>
-        <div class="cart-qty-controls">
-          <button class="cart-qty-btn dec-qty" data-idx="${idx}">-</button>
-          <span class="cart-qty-num">${item.qty}</span>
-          <button class="cart-qty-btn inc-qty" data-idx="${idx}">+</button>
+  list.innerHTML = cart.map((item, idx) => {
+    const details = [];
+    if (item.spice) details.push(`Spice: ${item.spice}`);
+    if (item.note) details.push(`Note: ${item.note}`);
+    const detailsHtml = details.length > 0 ? `<div style="font-size:0.75rem; color:rgba(255,255,255,0.45); font-style:italic; margin-top:0.25rem;">${details.join(' | ')}</div>` : '';
+    return `
+      <div class="cart-item">
+        <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+        <div class="cart-item-info">
+          <div class="cart-item-name">${item.name}</div>
+          ${detailsHtml}
+          <div class="cart-qty-controls">
+            <button class="cart-qty-btn dec-qty" data-idx="${idx}">-</button>
+            <span class="cart-qty-num">${item.qty}</span>
+            <button class="cart-qty-btn inc-qty" data-idx="${idx}">+</button>
+          </div>
         </div>
+        <div class="cart-item-price">$${(item.price * item.qty).toFixed(2)}</div>
       </div>
-      <div class="cart-item-price">$${(item.price * item.qty).toFixed(2)}</div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 
   // Add click handlers for qty buttons inside drawer
   list.querySelectorAll('.dec-qty').forEach(btn => {

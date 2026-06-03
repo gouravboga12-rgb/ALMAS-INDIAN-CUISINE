@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 2. Create and inject mobile header auth button dynamically
-  const mobileControls = document.querySelector('.glass-nav .lg\\:hidden');
+  const mobileControls = document.querySelector('.glass-nav .lg\\:hidden.space-x-3');
   if (mobileControls && !document.getElementById('mobile-auth-group-header')) {
     const mobileAuthContainer = document.createElement('div');
     mobileAuthContainer.id = 'mobile-auth-group-header';

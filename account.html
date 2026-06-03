@@ -980,6 +980,15 @@
     <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center h-28 md:h-24">
       <!-- Left: Logo & Search Bar -->
       <div class="flex items-center gap-6 flex-1">
+        <!-- Mobile Hamburger & Halal Logo (Mobile & Tablet) -->
+        <div class="lg:hidden flex items-center gap-3">
+          <button id="menu-btn" title="Menu">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+          <img src="/halal_logo.png" alt="Halal Certified" class="h-8 w-auto object-contain">
+        </div>
         <a href="/" class="flex items-center">
           <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-20 md:h-16 w-auto object-contain">
         </a>
@@ -998,7 +1007,7 @@
       <!-- Desktop Navigation & Actions -->
       <div class="hidden lg:flex items-center space-x-8">
         <a href="/" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Home</a>
-        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Products</a>
+        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Our Menu</a>
         <a href="/services.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Catering</a>
         <a href="/about.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">About</a>
         <a href="/contact.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Contact</a>
@@ -1017,6 +1026,9 @@
             </svg>
             <span class="cart-count-badge">0</span>
           </button>
+
+          <!-- Halal Logo (Desktop) -->
+          <img src="/halal_logo.png" alt="Halal Certified" class="hidden lg:block h-10 w-auto object-contain ml-2">
         </div>
       </div>
 
@@ -1037,12 +1049,7 @@
           <span class="cart-count-badge">0</span>
         </button>
 
-        <!-- Mobile Menu Button (Hamburger) -->
-        <button id="menu-btn" title="Menu">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
+        
       </div>
     </div>
 
@@ -1071,7 +1078,7 @@
     </div>
         <nav class="flex flex-col space-y-6 text-white text-lg font-heading font-semibold uppercase tracking-widest">
       <a href="/" class="hover:text-primary transition-colors">Home</a>
-      <a href="/products.html" class="hover:text-primary transition-colors">Products</a>
+      <a href="/products.html" class="hover:text-primary transition-colors">Our Menu</a>
       <a href="/services.html" class="hover:text-primary transition-colors">Catering</a>
       <a href="/about.html" class="hover:text-primary transition-colors">About</a>
       <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
@@ -1187,7 +1194,7 @@
         <div style="border-top:1px solid rgba(255,255,255,0.07); padding-top:1.5rem;">
           <a href="/products.html" class="quick-action-btn" style="margin-bottom:0.75rem; display:flex; align-items:center; gap:0.75rem; text-decoration:none;">
             <span style="font-size:1.2rem;">🍛</span>
-            <span style="color:rgba(255,255,255,0.7); font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;">Browse Products</span>
+            <span style="color:rgba(255,255,255,0.7); font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;">Browse Our Menu</span>
           </a>
           <a href="/order" class="quick-action-btn" style="margin-bottom:0.75rem; display:flex; align-items:center; gap:0.75rem; text-decoration:none;">
             <span style="font-size:1.2rem;">🛒</span>
@@ -1234,7 +1241,7 @@
         <div class="orders-empty-icon">🍽️</div>
         <h3>No orders yet</h3>
         <p>Your completed takeout and catering orders will appear here.</p>
-        <a href="/products.html" class="btn-premium inline-flex text-xs px-8 py-3" style="text-decoration:none; margin-top:0.5rem;">Explore Our Products</a>
+        <a href="/products.html" class="btn-premium inline-flex text-xs px-8 py-3" style="text-decoration:none; margin-top:0.5rem;">Explore Our Menu</a>
       </div>
     </div>
 
