@@ -2991,8 +2991,8 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   }
 
   .glass-nav img[src="/halal_logo.png"] {
-    height: 68px !important;
-    max-height: 68px !important;
+    height: 80px !important;
+    max-height: 80px !important;
     width: auto !important;
     transition: all 0.3s ease;
   }
@@ -3009,8 +3009,8 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   }
 
   .glass-nav img[src="/halal_logo.png"] {
-    height: 76px !important;
-    max-height: 76px !important;
+    height: 90px !important;
+    max-height: 90px !important;
   }
 }
 
