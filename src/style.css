@@ -314,10 +314,12 @@ body:has(#checkout-prompt-overlay.open) .whatsapp-float {
     margin: 0 !important;
     padding: 0 !important;
     width: auto !important;
-    display: block !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0 !important;
   }
 
-  /* Absolutely center the company logo */
+  /* Absolutely center the company logo in middle of header */
   .glass-nav > div > div.flex-1 > a {
     position: absolute !important;
     left: 50% !important;
@@ -325,16 +327,16 @@ body:has(#checkout-prompt-overlay.open) .whatsapp-float {
     transform: translate(-50%, -50%) !important;
     margin: 0 !important;
     padding: 0 !important;
-    z-index: 5 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    z-index: 5 !important;
   }
 
-  /* Position Hamburger & Halal Logo on the far left */
+  /* Position Hamburger & Halal Logo absolutely on the left */
   .glass-nav > div > div.flex-1 > div.lg\:hidden {
     position: absolute !important;
-    left: 1rem !important;
+    left: 1.5rem !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
     display: flex !important;
@@ -343,34 +345,24 @@ body:has(#checkout-prompt-overlay.open) .whatsapp-float {
     z-index: 10 !important;
   }
 
-  .glass-nav img[src="/logo.png"] {
-    height: 72px !important;
-    width: auto !important;
-  }
-
-  .glass-nav img[src="/halal_logo.png"] {
-    height: 60px !important;
-    width: auto !important;
-  }
-
   .sticky.top-\[60px\] {
     top: 90px !important;
   }
 
-  /* Position the mobile controls (search, cart, user profile) on the far right */
+  /* Position mobile controls absolutely on the far right */
   .glass-nav > div > div.lg\:hidden.space-x-3 {
     position: absolute !important;
-    right: 1rem !important;
+    right: 1.5rem !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
     width: auto !important;
     display: flex !important;
     justify-content: flex-end !important;
     align-items: center !important;
-    z-index: 10 !important;
     margin: 0 !important;
     padding: 0 !important;
     gap: 0.5rem !important;
+    z-index: 10 !important;
   }
 
   /* Position Hamburger (menu bar) inline in the left group */
@@ -2985,52 +2977,182 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   transform: translateX(4px);
 }
 
-/* Keep company logo big in header (desktop) */
-.glass-nav img[src="/logo.png"] {
-  height: 80px !important;
-  max-height: 80px !important;
-  width: auto !important;
-  transition: all 0.3s ease;
+/* Keep company logo and Halal logo as big as possible in desktop views */
+@media (min-width: 1024px) {
+  .glass-nav > div {
+    height: 112px !important;
+  }
+  
+  .glass-nav img[src="/logo.png"] {
+    height: 96px !important;
+    max-height: 96px !important;
+    width: auto !important;
+    transition: all 0.3s ease;
+  }
+
+  .glass-nav img[src="/halal_logo.png"] {
+    height: 68px !important;
+    max-height: 68px !important;
+    width: auto !important;
+    transition: all 0.3s ease;
+  }
 }
 
-/* Keep Halal Certified logo big in header (desktop) */
-.glass-nav img[src="/halal_logo.png"] {
-  height: 52px !important;
-  max-height: 52px !important;
-  width: auto !important;
-  transition: all 0.3s ease;
+@media (min-width: 1440px) {
+  .glass-nav > div {
+    height: 120px !important;
+  }
+
+  .glass-nav img[src="/logo.png"] {
+    height: 102px !important;
+    max-height: 102px !important;
+  }
+
+  .glass-nav img[src="/halal_logo.png"] {
+    height: 76px !important;
+    max-height: 76px !important;
+  }
 }
 
+/* Responsive logo sizes & button sizes for mobile / tablet views */
 @media (max-width: 1023px) {
-  /* Keep company logo big in header (mobile) */
+  /* Tablet / iPad sizes (768px - 1023px) */
   .glass-nav img[src="/logo.png"] {
     height: 84px !important;
     max-height: 84px !important;
   }
-  /* Keep Halal Certified logo big in header (mobile) */
   .glass-nav img[src="/halal_logo.png"] {
     height: 72px !important;
     max-height: 72px !important;
   }
+  
+  .glass-nav > div > div.flex-1 > div.lg\:hidden {
+    left: 2rem !important;
+  }
+  .glass-nav > div > div.lg\:hidden.space-x-3 {
+    right: 2rem !important;
+  }
 }
 
+@media (max-width: 767px) {
+  /* Standard Mobile sizes (361px - 767px) */
+  .glass-nav img[src="/logo.png"] {
+    height: 80px !important;
+    max-height: 80px !important;
+  }
+  .glass-nav img[src="/halal_logo.png"] {
+    height: 68px !important;
+    max-height: 68px !important;
+  }
+  
+  .glass-nav > div > div.flex-1 > div.lg\:hidden {
+    left: 1rem !important;
+    gap: 0.5rem !important;
+  }
+  .glass-nav > div > div.lg\:hidden.space-x-3 {
+    right: 1rem !important;
+    gap: 0.5rem !important;
+  }
+}
 
+@media (max-width: 360px) {
+  /* Small Mobile sizes (321px - 360px) */
+  .glass-nav > div {
+    height: 80px !important;
+  }
+  .sticky.top-\[60px\] {
+    top: 80px !important;
+  }
+  
+  .glass-nav img[src="/logo.png"] {
+    height: 68px !important;
+    max-height: 68px !important;
+  }
+  .glass-nav img[src="/halal_logo.png"] {
+    height: 56px !important;
+    max-height: 56px !important;
+  }
+  
+  .glass-nav > div > div.flex-1 > div.lg\:hidden {
+    left: 0.75rem !important;
+    gap: 0.35rem !important;
+  }
+  .glass-nav > div > div.lg\:hidden.space-x-3 {
+    right: 0.75rem !important;
+    gap: 0.35rem !important;
+  }
+  
+  /* Scale down buttons in header to prevent collision */
+  .nav-cart-btn:not(.w-full),
+  #mobile-search-btn,
+  #menu-btn {
+    width: 38px !important;
+    height: 38px !important;
+  }
+  .nav-cart-btn:not(.w-full) svg,
+  #mobile-search-btn svg,
+  #menu-btn svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  #mobile-auth-group-header .nav-signin-btn {
+    width: 38px !important;
+    height: 38px !important;
+  }
+  #mobile-auth-group-header .nav-signin-avatar {
+    width: 28px !important;
+    height: 28px !important;
+  }
+}
 
-/* Extra support for small viewport sizes to prevent overlap */
-@media (max-width: 400px) {
+@media (max-width: 320px) {
+  /* Micro Mobile sizes (<= 320px) */
   .glass-nav > div {
     height: 76px !important;
   }
+  .sticky.top-\[60px\] {
+    top: 76px !important;
+  }
+  
   .glass-nav img[src="/logo.png"] {
     height: 60px !important;
     max-height: 60px !important;
   }
   .glass-nav img[src="/halal_logo.png"] {
-    height: 52px !important;
-    max-height: 52px !important;
+    height: 48px !important;
+    max-height: 48px !important;
   }
-  .sticky.top-\[60px\] {
-    top: 76px !important;
+  
+  .glass-nav > div > div.flex-1 > div.lg\:hidden {
+    left: 0.5rem !important;
+    gap: 0.25rem !important;
+  }
+  .glass-nav > div > div.lg\:hidden.space-x-3 {
+    right: 0.5rem !important;
+    gap: 0.25rem !important;
+  }
+  
+  .nav-cart-btn:not(.w-full),
+  #mobile-search-btn,
+  #menu-btn {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  .nav-cart-btn:not(.w-full) svg,
+  #mobile-search-btn svg,
+  #menu-btn svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  #mobile-auth-group-header .nav-signin-btn {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  #mobile-auth-group-header .nav-signin-avatar {
+    width: 24px !important;
+    height: 24px !important;
   }
 }
+
+
 
