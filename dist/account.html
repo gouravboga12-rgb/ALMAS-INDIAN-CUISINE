@@ -972,7 +972,7 @@
       transform: none !important;
     }
   </style>
-  <script type="module" crossorigin src="/assets/account-PLeJ28Do.js"></script>
+  <script type="module" crossorigin src="/assets/account-D23QMRnV.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/style-Cr8-PNSf.js">
   <link rel="stylesheet" crossorigin href="/assets/style-DPkAID5s.css">
 </head>
@@ -1111,17 +1111,23 @@
         <div id="auth-alert" class="auth-alert"></div>
 
         <!-- Headers (Toggled in JS instead of Tabs) -->
-        <div id="auth-header-login" class="auth-header">
+        <div id="auth-header-login" class="auth-header" style="display:none;">
           <h2 class="auth-card-title">Welcome back!</h2>
           <p class="auth-card-subtitle">Login to manage your dining hub & orders</p>
         </div>
-        <div id="auth-header-signup" class="auth-header" style="display:none;">
+        <div id="auth-header-signup" class="auth-header">
           <h2 class="auth-card-title">Create Account</h2>
           <p class="auth-card-subtitle">Join us to experience exclusive benefits</p>
         </div>
 
         <!-- Login Form -->
-        <div id="auth-panel-login">
+        <div id="auth-panel-login" style="display:none;">
+          <div class="social-login-group" style="margin-bottom:1rem;">
+            <div id="btn-google-login" style="display:flex; justify-content:center;"></div>
+          </div>
+
+          <div class="auth-divider" style="margin-bottom:1.25rem;">OR</div>
+
           <div class="auth-input-group">
             <input type="text" id="login-email" class="auth-input" placeholder="Email or Phone">
           </div>
@@ -1147,16 +1153,16 @@
           <div class="auth-switch-prompt">
             Need to create an account?<button type="button" class="auth-switch-link" id="switch-to-signup">Sign UP</button>
           </div>
-          
-          <div class="auth-divider" style="margin-top:1.5rem;">OR</div>
-          
-          <div class="social-login-group" style="margin-bottom:0.5rem;">
-            <div id="btn-google-login" style="margin-top:0.5rem; display:flex; justify-content:center;"></div>
-          </div>
         </div>
 
         <!-- Sign Up Form -->
-        <div id="auth-panel-signup" style="display:none;">
+        <div id="auth-panel-signup">
+          <div class="social-login-group" style="margin-bottom:1rem;">
+            <div id="btn-google-signup" style="display:flex; justify-content:center;"></div>
+          </div>
+
+          <div class="auth-divider" style="margin-bottom:1.25rem;">OR</div>
+
           <div class="auth-input-group">
             <input type="text" id="signup-name" class="auth-input" placeholder="Full Name">
           </div>

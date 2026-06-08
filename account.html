@@ -1109,17 +1109,23 @@
         <div id="auth-alert" class="auth-alert"></div>
 
         <!-- Headers (Toggled in JS instead of Tabs) -->
-        <div id="auth-header-login" class="auth-header">
+        <div id="auth-header-login" class="auth-header" style="display:none;">
           <h2 class="auth-card-title">Welcome back!</h2>
           <p class="auth-card-subtitle">Login to manage your dining hub & orders</p>
         </div>
-        <div id="auth-header-signup" class="auth-header" style="display:none;">
+        <div id="auth-header-signup" class="auth-header">
           <h2 class="auth-card-title">Create Account</h2>
           <p class="auth-card-subtitle">Join us to experience exclusive benefits</p>
         </div>
 
         <!-- Login Form -->
-        <div id="auth-panel-login">
+        <div id="auth-panel-login" style="display:none;">
+          <div class="social-login-group" style="margin-bottom:1rem;">
+            <div id="btn-google-login" style="display:flex; justify-content:center;"></div>
+          </div>
+
+          <div class="auth-divider" style="margin-bottom:1.25rem;">OR</div>
+
           <div class="auth-input-group">
             <input type="text" id="login-email" class="auth-input" placeholder="Email or Phone">
           </div>
@@ -1145,16 +1151,16 @@
           <div class="auth-switch-prompt">
             Need to create an account?<button type="button" class="auth-switch-link" id="switch-to-signup">Sign UP</button>
           </div>
-          
-          <div class="auth-divider" style="margin-top:1.5rem;">OR</div>
-          
-          <div class="social-login-group" style="margin-bottom:0.5rem;">
-            <div id="btn-google-login" style="margin-top:0.5rem; display:flex; justify-content:center;"></div>
-          </div>
         </div>
 
         <!-- Sign Up Form -->
-        <div id="auth-panel-signup" style="display:none;">
+        <div id="auth-panel-signup">
+          <div class="social-login-group" style="margin-bottom:1rem;">
+            <div id="btn-google-signup" style="display:flex; justify-content:center;"></div>
+          </div>
+
+          <div class="auth-divider" style="margin-bottom:1.25rem;">OR</div>
+
           <div class="auth-input-group">
             <input type="text" id="signup-name" class="auth-input" placeholder="Full Name">
           </div>
@@ -1461,6 +1467,13 @@
       document.getElementById('account-main-content').style.display = 'none';
       document.getElementById('login-email').value = '';
       document.getElementById('login-password').value = '';
+
+      // Default to showing the sign-up panel first
+      document.getElementById('auth-panel-login').style.display = 'none';
+      document.getElementById('auth-panel-signup').style.display = 'block';
+      document.getElementById('auth-header-login').style.display = 'none';
+      document.getElementById('auth-header-signup').style.display = 'block';
+
       window.dispatchEvent(new Event('auth-change'));
     }
 
@@ -1594,7 +1607,16 @@
         .then(config => {
           if (config.googleClientId && window.google) {
             google.accounts.id.initialize({ client_id: config.googleClientId, callback: handleGoogleCredentialResponse });
-            google.accounts.id.renderButton(document.getElementById("btn-google-login"), { theme: "outline", size: "large", width: "100%" });
+            
+            const loginBtn = document.getElementById("btn-google-login");
+            if (loginBtn) {
+              google.accounts.id.renderButton(loginBtn, { theme: "outline", size: "large", width: "100%" });
+            }
+            
+            const signupBtn = document.getElementById("btn-google-signup");
+            if (signupBtn) {
+              google.accounts.id.renderButton(signupBtn, { theme: "outline", size: "large", width: "100%" });
+            }
           }
         });
 
