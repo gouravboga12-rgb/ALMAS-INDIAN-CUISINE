@@ -352,7 +352,7 @@
         </p>
 
         <!-- Dynamic Grid of 4 Packages -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left mb-12">
+        <div id="dynamic-packages-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left mb-12">
           <!-- Royal Feast Package Card -->
           <div class="catering-package-card selected cursor-pointer p-6 rounded-2xl border-2 transition-all duration-300 relative hover:shadow-lg bg-[#FFFAF3]" style="border-color:#CC5500; background:rgba(204,85,0,0.03);" data-package="Royal Feast Package" data-inclusions="Premium Biryani, 2 Appetizers, 1 Dessert, Raita & Salad." data-price="15">
             <span class="pkg-badge bg-[#CC5500] text-white text-[9px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full inline-block mb-3">20+ Guests</span>
@@ -452,7 +452,7 @@
             <div class="relative overflow-hidden rounded-2xl mb-6 aspect-video shadow-2xl">
               <img src="/uber_eats_service.png" alt="Uber Eats" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
             </div>
-            <a href="https://www.ubereats.com/" target="_blank" class="flex items-center justify-center h-24 px-6 rounded-xl bg-[#06C167] text-white transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+            <a href="https://www.ubereats.com/" id="partner-link-uber" target="_blank" class="flex items-center justify-center h-24 px-6 rounded-xl bg-[#06C167] text-white transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
               <span class="text-lg font-bold tracking-tight uppercase text-center">Order on Uber Eats</span>
             </a>
           </div>
@@ -461,7 +461,7 @@
             <div class="relative overflow-hidden rounded-2xl mb-6 aspect-video shadow-2xl">
               <img src="/doordash_service.png" alt="DoorDash" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
             </div>
-            <a href="https://www.doordash.com/" target="_blank" class="flex items-center justify-center h-24 px-6 rounded-xl bg-[#FF3008] text-white transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+            <a href="https://www.doordash.com/" id="partner-link-doordash" target="_blank" class="flex items-center justify-center h-24 px-6 rounded-xl bg-[#FF3008] text-white transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
               <span class="text-lg font-bold tracking-tight uppercase text-center">Order on DoorDash</span>
             </a>
           </div>
@@ -470,7 +470,7 @@
             <div class="relative overflow-hidden rounded-2xl mb-6 aspect-video shadow-2xl">
               <img src="/delivery.png" alt="Skip" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
             </div>
-            <a href="https://www.skipthedishes.com/" target="_blank" class="flex items-center justify-center h-24 px-6 rounded-xl bg-[#FF1232] text-white transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+            <a href="https://www.skipthedishes.com/" id="partner-link-skip" target="_blank" class="flex items-center justify-center h-24 px-6 rounded-xl bg-[#FF1232] text-white transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
               <span class="text-lg font-bold tracking-tight uppercase text-center">Order on Skip</span>
             </a>
           </div>
@@ -936,9 +936,37 @@
       let cateringInitialized = false;
       let cateringGuestCount = 20;
 
-      function initCateringLogic() {
+      async function initCateringLogic() {
         if (cateringInitialized) return;
         cateringInitialized = true;
+
+        const container = document.getElementById('dynamic-packages-grid');
+        
+        try {
+          const res = await fetch('/api/packages');
+          if (res.ok) {
+            const pkgs = await res.json();
+            if (container && pkgs && pkgs.length > 0) {
+              container.innerHTML = pkgs.map((pkg, index) => {
+                const isSelected = index === 0 ? 'selected' : '';
+                const selectStyle = index === 0 ? `style="border-color:#CC5500; background:rgba(204,85,0,0.03);"` : '';
+                return `
+                  <div class="catering-package-card ${isSelected} cursor-pointer p-6 rounded-2xl border-2 transition-all duration-300 relative hover:shadow-lg bg-[#FFFAF3]" 
+                       ${selectStyle}
+                       data-package="${pkg.name}" 
+                       data-inclusions="${pkg.description}" 
+                       data-price="${pkg.price}">
+                    <span class="pkg-badge text-white text-[9px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full inline-block mb-3" style="background-color: ${pkg.badgeBg || '#CC5500'}">${pkg.badge || 'Guests'}</span>
+                    <h4 class="text-xl font-heading font-bold text-text-primary mb-2 text-[#1a1a1a]">$${pkg.price.toFixed(2)} <span class="text-xs text-text-secondary font-normal">/ guest</span></h4>
+                    <p class="text-slate-600 text-xs leading-relaxed">${pkg.description}</p>
+                  </div>
+                `;
+              }).join('');
+            }
+          }
+        } catch (err) {
+          console.error("Error loading catering packages:", err);
+        }
 
         const pkgCards = document.querySelectorAll('.catering-package-card');
         const hiddenInput = document.getElementById('catering-selected-package');
@@ -984,7 +1012,13 @@
         });
 
         if (guestDecBtn && guestIncBtn && guestValEl) {
-          guestDecBtn.addEventListener('click', () => {
+          // Clone to prevent duplicate listeners if re-initialized
+          const newDecBtn = guestDecBtn.cloneNode(true);
+          const newIncBtn = guestIncBtn.cloneNode(true);
+          guestDecBtn.parentNode.replaceChild(newDecBtn, guestDecBtn);
+          guestIncBtn.parentNode.replaceChild(newIncBtn, guestIncBtn);
+
+          newDecBtn.addEventListener('click', () => {
             if (cateringGuestCount > 20) {
               cateringGuestCount--;
               guestValEl.textContent = cateringGuestCount;
@@ -992,7 +1026,7 @@
             }
           });
 
-          guestIncBtn.addEventListener('click', () => {
+          newIncBtn.addEventListener('click', () => {
             cateringGuestCount++;
             guestValEl.textContent = cateringGuestCount;
             updateRequirements();
@@ -1010,16 +1044,53 @@
         const successMsg = document.getElementById('catering-success-msg');
 
         if (form) {
-          form.addEventListener('submit', (e) => {
+          // Remove potential existing submit listener by replacing the form node (simplified clone)
+          const newForm = form.cloneNode(true);
+          form.parentNode.replaceChild(newForm, form);
+
+          newForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Clear inputs
-            document.getElementById('catering-fullname').value = '';
-            document.getElementById('catering-phone-field').value = '';
-            document.getElementById('catering-email-field').value = '';
-            
-            // Show success message
-            successMsg.classList.remove('hidden');
+            const fullname = document.getElementById('catering-fullname').value.trim();
+            const phone = document.getElementById('catering-phone-field').value.trim();
+            const email = document.getElementById('catering-email-field').value.trim();
+            const requirements = document.getElementById('catering-requirements').value.trim();
+            const selectedPkg = hiddenInput.value;
+
+            try {
+              const res = await fetch('/api/inquiries', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  name: fullname,
+                  phone,
+                  email,
+                  message: requirements,
+                  type: 'Catering Booking',
+                  selectedPackage: selectedPkg,
+                  guestCount: cateringGuestCount
+                })
+              });
+
+              if (res.ok) {
+                // Clear inputs
+                document.getElementById('catering-fullname').value = '';
+                document.getElementById('catering-phone-field').value = '';
+                document.getElementById('catering-email-field').value = '';
+                
+                // Show success message
+                successMsg.classList.remove('hidden');
+                setTimeout(() => {
+                  successMsg.classList.add('hidden');
+                }, 8000);
+              } else {
+                const data = await res.json();
+                alert(data.error || 'Failed to submit catering inquiry. Please try again.');
+              }
+            } catch (err) {
+              console.error('Error submitting inquiry:', err);
+              alert('An error occurred. Please try again later.');
+            }
           });
         }
       }

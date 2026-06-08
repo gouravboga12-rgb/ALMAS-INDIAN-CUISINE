@@ -19,12 +19,20 @@ export default defineConfig({
             req.url = '/order.html';
           } else if (pathname === '/product-detail') {
             req.url = '/product-detail.html';
+          } else if (pathname === '/admin' || pathname === '/admin/') {
+            req.url = '/admin.html';
           }
           next();
         });
       }
     }
   ],
+  server: {
+    proxy: {
+      '/api': 'http://localhost:3000',
+      '/uploads': 'http://localhost:3000'
+    }
+  },
   build: {
     rollupOptions: {
       input: {
@@ -37,6 +45,7 @@ export default defineConfig({
         order: resolve(__dirname, 'order.html'),
         account: resolve(__dirname, 'account.html'),
         'product-detail': resolve(__dirname, 'product-detail.html'),
+        admin: resolve(__dirname, 'admin.html'),
       },
     },
   },

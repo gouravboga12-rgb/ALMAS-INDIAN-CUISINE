@@ -355,7 +355,7 @@
 
   <!-- Category Secondary Nav -->
   <div class="bg-background border-b border-black/5 sticky top-[60px] lg:top-[96px] z-40 overflow-x-auto whitespace-nowrap hide-scrollbar">
-    <div class="max-w-7xl mx-auto px-6 md:px-12 flex items-center h-14 space-x-8">
+    <div id="dynamic-category-nav" class="max-w-7xl mx-auto px-6 md:px-12 flex items-center h-14 space-x-8">
       <a href="#soups" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Soups</a>
       <a href="#appetizers" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Appetizers</a>
       <a href="#tandoor" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Tandoor</a>
@@ -413,6 +413,7 @@
       <p>Try a different keyword — like "biryani", "chicken", or "shrimp"</p>
     </div>
     
+    <div id="dynamic-menu-sections">
     <!-- SOUPS -->
     <section id="soups" class="scroll-mt-48 md:scroll-mt-40">
       <h2 class="section-title">Soups</h2>
@@ -1414,6 +1415,7 @@
         </div>
       </div>
     </section>
+    </div>
 
     <div class="mt-32 text-center text-white/30 text-[10px] uppercase tracking-[0.2em]">
       <p>Please inform your server of any allergies or dietary requirements. All prices in CAD. Tax & gratuity not included.</p>
@@ -1551,7 +1553,118 @@
   <script type="module" src="/src/main.js"></script>
   <script type="module">
     import AOS from 'aos';
-    document.addEventListener('DOMContentLoaded', () => {
+
+    async function loadDynamicMenu() {
+      try {
+        const res = await fetch('/api/menu');
+        if (!res.ok) {
+          runInit();
+          return;
+        }
+        const data = await res.json();
+
+        // Populate Category Secondary Nav
+        const secondaryNav = document.getElementById('dynamic-category-nav');
+        if (secondaryNav) {
+          secondaryNav.innerHTML = data.categories.sort((a,b) => a.order - b.order).map(cat => `
+            <a href="#${cat.id}" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">${cat.name}</a>
+          `).join('');
+        }
+
+        // Subtitles mapping
+        const categorySubtitles = {
+          'soups': 'Broths & slow-simmered warmth',
+          'appetizers': 'Bold starters & sharing plates',
+          'tandoor': 'Clay oven crafted',
+          'tandoor-treasures': 'Clay oven crafted',
+          'mains': 'Curries & slow-cooked gravies',
+          'biryani': 'Muglai saffron standard',
+          'mandi': 'Arabic smoked rice',
+          'beverages': 'Teas & cold mocktails',
+          'chinese': 'Wok tossed',
+          'momo': 'Steamed or fried',
+          'breads': 'Tandoor baked',
+          'desserts': 'Sweet endings'
+        };
+
+        // Populate dynamic menu sections
+        const menuSections = document.getElementById('dynamic-menu-sections');
+        if (menuSections) {
+          let html = '';
+          
+          data.categories.sort((a,b) => a.order - b.order).forEach(cat => {
+            const catProducts = data.products.filter(p => p.category === cat.name);
+            if (catProducts.length === 0) return;
+
+            const subtitle = categorySubtitles[cat.id] || 'Freshly prepared';
+            
+            const vegProducts = catProducts.filter(p => p.diet === 'VEG');
+            const nonVegProducts = catProducts.filter(p => p.diet !== 'VEG');
+
+            html += `
+              <section id="${cat.id}" class="scroll-mt-48 md:scroll-mt-40">
+                <h2 class="section-title">${cat.name}</h2>
+                <p class="text-center text-menu-secondary italic mb-12 -mt-8">${subtitle}</p>
+            `;
+
+            if (vegProducts.length > 0 && nonVegProducts.length > 0 && ['appetizers', 'mains', 'tandoor'].includes(cat.id)) {
+              html += `
+                <h4 class="category-title">Vegetarian</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+                  ${vegProducts.map(renderRow).join('')}
+                </div>
+                <h4 class="category-title">Non-Vegetarian</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12">
+                  ${nonVegProducts.map(renderRow).join('')}
+                </div>
+              `;
+            } else {
+              html += `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12">
+                  ${catProducts.map(renderRow).join('')}
+                </div>
+              `;
+            }
+
+            html += `</section>`;
+          });
+
+          menuSections.innerHTML = html;
+        }
+
+        runInit();
+
+      } catch (err) {
+        console.error("Error loading dynamic menu in menu.html:", err);
+        runInit(); // fallback
+      }
+    }
+
+    function renderRow(p) {
+      const isVeg = p.diet === 'VEG';
+      const vegTag = isVeg ? '<span class="tag-veg">VEG</span> ' : '';
+      
+      let badgeTag = '';
+      if (p.badge) {
+        const isSig = p.badge.toUpperCase() === 'SIGNATURE';
+        const bgStyle = isSig ? '' : ' style="background:#8B3A00"';
+        badgeTag = ` <span class="tag-signature"${bgStyle}>${p.badge.toUpperCase()}</span>`;
+      }
+
+      return `
+        <div class="menu-item-row">
+          <div class="menu-item-info">
+            <h3 class="menu-item-name">${vegTag}${p.name}${badgeTag}</h3>
+            <p class="menu-item-description">${p.desc || ''}</p>
+          </div>
+          <span class="menu-item-price">${p.price}</span>
+        </div>
+      `;
+    }
+
+    document.addEventListener('DOMContentLoaded', loadDynamicMenu);
+
+    function runInit() {
       // ============================================
       // Live Search Functionality
       // ============================================
@@ -1652,7 +1765,7 @@
           searchInput.blur();
         }
       });
-    });
+    }
   </script>
 </body>
 </html>

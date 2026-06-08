@@ -204,7 +204,7 @@
   </section>
 
   <!-- Mobile Category Quick-Nav (Visible only on mobile) -->
-  <div class="lg:hidden flex items-center gap-5 overflow-x-auto py-3 px-6 bg-[#FFFAF3] border-b border-primary/10 sticky top-[60px] z-20 scrollbar-none">
+  <div id="dynamic-mobile-quick-nav" class="lg:hidden flex items-center gap-5 overflow-x-auto py-3 px-6 bg-[#FFFAF3] border-b border-primary/10 sticky top-[60px] z-20 scrollbar-none">
     <button class="category-btn pb-1 text-xs font-semibold uppercase tracking-wider text-primary border-b-2 border-primary active whitespace-nowrap cursor-pointer" data-category="all">All</button>
     <button class="category-btn pb-1 text-xs font-semibold uppercase tracking-wider text-text-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer" data-category="soups">Soups</button>
     <button class="category-btn pb-1 text-xs font-semibold uppercase tracking-wider text-text-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer" data-category="appetizers">Appetizers</button>
@@ -228,7 +228,7 @@
         <h3 class="category-sidebar-title">
           <span>📂</span> Categories
         </h3>
-        <div class="space-y-2">
+        <div id="dynamic-category-sidebar" class="space-y-2">
           <button class="category-sidebar-btn category-btn active" data-category="all">
             <div class="category-sidebar-thumb"><span>🍽️</span></div>
             <span>All items</span>
@@ -282,7 +282,7 @@
     </aside>
 
     <!-- Right Side: Product Sections (Columns 2-4) -->
-    <main class="products-container lg:col-span-3 space-y-24">
+    <main id="dynamic-products-container" class="products-container lg:col-span-3 space-y-24">
 
     <!-- Soups Section -->
     <section id="soups" class="scroll-mt-40" data-aos="fade-up">
@@ -2268,7 +2268,140 @@
     import { openCustomizationModal, addToCart } from '/src/ecommerce.js';
     import AOS from 'aos';
 
-    document.addEventListener('DOMContentLoaded', () => {
+    async function loadDynamicMenu() {
+      try {
+        const res = await fetch('/api/menu');
+        if (!res.ok) {
+          runInit();
+          return;
+        }
+        const data = await res.json();
+        
+        // Populate quick nav
+        const mobileQuickNav = document.getElementById('dynamic-mobile-quick-nav');
+        if (mobileQuickNav) {
+          mobileQuickNav.innerHTML = `
+            <button class="category-btn pb-1 text-xs font-semibold uppercase tracking-wider text-primary border-b-2 border-primary active whitespace-nowrap cursor-pointer" data-category="all">All</button>
+            ${data.categories.sort((a,b) => a.order - b.order).map(cat => `
+              <button class="category-btn pb-1 text-xs font-semibold uppercase tracking-wider text-text-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer" data-category="${cat.id}">${cat.name}</button>
+            `).join('')}
+          `;
+        }
+
+        // Populate sidebar categories
+        const sidebar = document.getElementById('dynamic-category-sidebar');
+        if (sidebar) {
+          sidebar.innerHTML = `
+            <button class="category-sidebar-btn category-btn active" data-category="all">
+              <div class="category-sidebar-thumb"><span>🍽️</span></div>
+              <span>All items</span>
+            </button>
+            ${data.categories.sort((a,b) => a.order - b.order).map(cat => `
+              <button class="category-sidebar-btn category-btn" data-category="${cat.id}">
+                <div class="category-sidebar-thumb"><span>${cat.icon || '🍽️'}</span></div>
+                <span>${cat.name}</span>
+              </button>
+            `).join('')}
+          `;
+        }
+
+        // Subtitles mapping
+        const categorySubtitles = {
+          'soups': 'Broths & slow-simmered warmth',
+          'appetizers': 'Bold starters & sharing plates',
+          'tandoor': 'Clay oven crafted',
+          'tandoor-treasures': 'Clay oven crafted',
+          'mains': 'Curries & slow-cooked gravies',
+          'biryani': 'Muglai saffron standard',
+          'mandi': 'Arabic smoked rice',
+          'beverages': 'Teas & cold mocktails',
+          'chinese': 'Wok tossed',
+          'momo': 'Steamed or fried',
+          'breads': 'Tandoor baked',
+          'desserts': 'Sweet endings'
+        };
+
+        // Populate products sections
+        const productsContainer = document.getElementById('dynamic-products-container');
+        if (productsContainer) {
+          let sectionsHtml = '';
+          
+          data.categories.sort((a,b) => a.order - b.order).forEach(cat => {
+            const catProducts = data.products.filter(p => p.category === cat.name);
+            if (catProducts.length === 0) return;
+
+            const subtitle = categorySubtitles[cat.id] || 'Freshly prepared';
+            
+            sectionsHtml += `
+              <section id="${cat.id}" class="scroll-mt-40" data-aos="fade-up">
+                <div class="flex items-center gap-10 mb-16">
+                  <div class="flex-1 h-px bg-primary/10"></div>
+                  <div class="text-center">
+                    <span class="text-gold text-2xl mb-2 block">${cat.icon || '🍽️'}</span>
+                    <h2 class="text-4xl font-heading">${cat.name}</h2>
+                    <p class="text-text-secondary text-xs uppercase tracking-widest mt-2">${subtitle}</p>
+                  </div>
+                  <div class="flex-1 h-px bg-primary/10"></div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
+                  ${catProducts.map(p => {
+                    const badgeText = p.badge || (p.diet === 'VEG' ? 'VEG' : p.diet);
+                    const badgeColorClass = p.diet === 'VEG' ? 'text-green-600' : (p.diet === 'SEAFOOD' ? 'text-blue-600' : 'text-red-600');
+                    return `
+                      <div class="card-premium flex flex-col md:flex-row gap-6 group" data-name="${p.name.toLowerCase()}" data-desc="${(p.desc || '').toLowerCase()}" data-diet="${p.diet ? p.diet.toLowerCase() : ''}">
+                        <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
+                          <img src="${p.image || '/logo.png'}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="${p.name}">
+                        </div>
+                        <div class="w-full md:w-3/5 flex flex-col justify-center">
+                          <span class="${badgeColorClass} font-bold text-[10px] uppercase tracking-widest mb-2">${badgeText}</span>
+                          <h3 class="text-xl font-bold mb-3">${p.name}</h3>
+                          <p class="text-text-secondary text-xs italic mb-6 leading-relaxed">${p.desc || ''}</p>
+                          <div class="flex items-center justify-between mt-auto">
+                            <span class="text-primary font-bold text-xl">${p.price}</span>
+                          </div>
+                        </div>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              </section>
+            `;
+          });
+
+          // Add back the static Call to Action at the end
+          sectionsHtml += `
+            <!-- Call to Action -->
+            <section class="text-center py-20 bg-primary-deep rounded-3xl text-white shadow-2xl relative overflow-hidden">
+              <div class="absolute inset-0 bg-primary/20 backdrop-blur-sm"></div>
+              <div class="relative z-10">
+                <h2 class="text-4xl md:text-5xl font-heading mb-8 italic">Ready to Experience Royalty?</h2>
+                <p class="text-white/70 max-w-2xl mx-auto mb-12 font-light leading-relaxed">Whether it's a quick lunch or a
+                  grand family dinner, Almas brings the authentic flavors of Hyderabad and the Middle East to your table.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-6">
+                  <a href="/order.html" class="btn-premium px-12 py-4">Order for Delivery</a>
+                  <a href="/contact.html"
+                    class="border border-white/20 hover:bg-white/10 px-12 py-4 rounded-full transition-all uppercase tracking-widest text-[10px] font-bold flex items-center justify-center">Reserve
+                    a Table</a>
+                </div>
+              </div>
+            </section>
+          `;
+
+          productsContainer.innerHTML = sectionsHtml;
+        }
+
+        runInit();
+
+      } catch (err) {
+        console.error("Failed loading dynamic menu:", err);
+        runInit(); // fallback
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadDynamicMenu);
+
+    function runInit() {
       let isScrolling = false;
 
       // 1. Restructure section grids to use modern 3-column layout
@@ -2872,7 +3005,7 @@
       // Run on initial load and listen for hash changes
       setTimeout(handleHashRedirect, 350);
       window.addEventListener('hashchange', handleHashRedirect);
-    });
+    }
   </script>
   <script type="module" src="/src/main.js"></script>
 </body>

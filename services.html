@@ -172,7 +172,7 @@
 
   <!-- Services Grid -->
   <section class="py-16 md:py-32 bg-white/20 backdrop-blur-[1px]">
-    <div class="max-w-7xl mx-auto px-5 md:px-12 space-y-16 md:space-y-40">
+    <div id="dynamic-services-grid" class="max-w-7xl mx-auto px-5 md:px-12 space-y-16 md:space-y-40">
       
       <!-- Service 1: Catering -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-20 items-center">
@@ -327,5 +327,50 @@
 
 
   <script type="module" src="/src/main.js"></script>
+  <script type="module">
+    import AOS from 'aos';
+
+    async function loadServices() {
+      try {
+        const res = await fetch('/api/services');
+        if (!res.ok) return;
+        const services = await res.json();
+        const container = document.getElementById('dynamic-services-grid');
+        if (!container || !services || services.length === 0) return;
+
+        container.innerHTML = services.map((service, index) => {
+          const isEven = index % 2 === 0;
+          const textOrderClass = isEven ? 'order-2 md:order-1' : 'order-2 md:order-2';
+          const textFade = isEven ? 'fade-right' : 'fade-left';
+          const imageOrderClass = isEven ? 'order-1 md:order-2' : 'order-1 md:order-1';
+          return `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-20 items-center">
+              <div class="${textOrderClass} text-center md:text-left" data-aos="${textFade}">
+                <span class="text-gold font-bold tracking-widest uppercase text-xs mb-4 block">${service.badge || ''}</span>
+                <h2 class="text-2xl md:text-4xl lg:text-5xl font-heading mb-5 md:mb-8">${service.title}</h2>
+                <p class="text-text-secondary text-base md:text-lg font-light leading-relaxed mb-6 md:mb-10">
+                  ${service.description}
+                </p>
+                <a href="${service.link || '#'}" class="btn-premium inline-flex px-8 md:px-12 mb-8 lg:mb-0 text-sm md:text-base">${service.linkText || 'Request Quote'}</a>
+              </div>
+              <div class="${imageOrderClass} relative" data-aos="zoom-in">
+                <img src="${service.image || '/logo.png'}" class="rounded-2xl shadow-2xl w-full h-52 md:h-auto object-cover" alt="${service.title}">
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // Refresh AOS to animate new dynamic elements
+        setTimeout(() => {
+          AOS.refresh();
+        }, 100);
+
+      } catch (err) {
+        console.error("Error loading catering services:", err);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadServices);
+  </script>
 </body>
 </html>

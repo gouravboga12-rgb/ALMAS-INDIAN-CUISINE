@@ -635,10 +635,23 @@
     }
 
     async function loadProductDetails(id) {
-      // 1. Try to find the product in the local products-data.js array
-      let product = products.find(p => p.id === id);
+      let product = null;
+      try {
+        const res = await fetch('/api/menu');
+        if (res.ok) {
+          const data = await res.json();
+          product = data.products.find(p => p.id === id);
+        }
+      } catch (err) {
+        console.error("Error fetching dynamic product details:", err);
+      }
 
-      // 2. Fallback: parse from products.html at runtime if not in static list
+      // 1. Try to find the product in the local products-data.js array if API failed
+      if (!product) {
+        product = products.find(p => p.id === id);
+      }
+
+      // 2. Fallback: parse from products.html at runtime if not in list
       if (!product) {
         try {
           const response = await fetch('/products.html');

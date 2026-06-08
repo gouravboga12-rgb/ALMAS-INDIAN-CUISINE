@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     announcementBar.className = 'announcement-bar';
     announcementBar.innerHTML = `
       <div class="marquee-wrapper">
-        <div class="marquee-content">
+        <div class="marquee-content" id="announcement-marquee-content">
           <span class="marquee-item">100% NATURAL AND FORM FRESH EVERY DAY • ALMAS THE QUALITY CHOICE • FREE DELIVERY ON ORDERS OVER $50 • GET 10% OFF ON YOUR FIRST ORDER USE CODE: ALMAS10 •</span>
           <span class="marquee-item">100% NATURAL AND FORM FRESH EVERY DAY • ALMAS THE QUALITY CHOICE • FREE DELIVERY ON ORDERS OVER $50 • GET 10% OFF ON YOUR FIRST ORDER USE CODE: ALMAS10 •</span>
         </div>
@@ -361,4 +361,124 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, 450);
   }
+
+  // Load global website settings from API
+  async function loadGlobalSettings() {
+    try {
+      const res = await fetch('/api/settings');
+      if (!res.ok) return;
+      const data = await res.json();
+      
+      // Update Announcement Marquee
+      if (data.marquee) {
+        const marqueeContent = document.getElementById('announcement-marquee-content');
+        if (marqueeContent) {
+          marqueeContent.innerHTML = `
+            <span class="marquee-item">${data.marquee}</span>
+            <span class="marquee-item">${data.marquee}</span>
+          `;
+        }
+      }
+
+      // Update Timings (Hours)
+      if (data.timings) {
+        const hoursHeader = Array.from(document.querySelectorAll('h4')).find(el => el.textContent.trim().toLowerCase() === 'hours');
+        if (hoursHeader) {
+          const list = hoursHeader.nextElementSibling;
+          if (list) {
+            list.innerHTML = `
+              <li class="flex justify-between"><span>Mon - Thu</span> <span>${data.timings.mon_thu}</span></li>
+              <li class="flex justify-between"><span>Fri - Sat</span> <span>${data.timings.fri_sat}</span></li>
+              <li class="flex justify-between text-primary"><span>Sunday</span> <span>${data.timings.sun}</span></li>
+            `;
+          }
+        }
+      }
+
+      // Update Floating WhatsApp & Footer WhatsApp Text
+      if (data.whatsapp) {
+        const cleanNum = data.whatsapp.replace(/[^0-9]/g, '');
+        
+        // Floating button
+        const whatsappFloat = document.querySelector('.whatsapp-float');
+        if (whatsappFloat) {
+          whatsappFloat.href = `https://wa.me/${cleanNum}`;
+        }
+        
+        // Footer text item
+        document.querySelectorAll('footer li').forEach(li => {
+          if (li.textContent.includes('WHATSAPP:') || li.textContent.includes('TBD')) {
+            if (li.textContent.toUpperCase().includes('WHATSAPP')) {
+              li.textContent = `WHATSAPP: ${data.whatsapp}`;
+            }
+          }
+        });
+      }
+
+      // Update Social links in footer and mobile menu
+      if (data.socials) {
+        // Clear and rebuild footer-social-links
+        const footerSocials = document.querySelector('.footer-social-links');
+        if (footerSocials) {
+          footerSocials.innerHTML = `
+            <a href="${data.socials.instagram || '#'}" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 group" aria-label="Instagram">
+              <svg class="w-5 h-5 text-white/40 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="${data.socials.facebook || '#'}" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 group" aria-label="Facebook">
+              <svg class="w-5 h-5 text-white/40 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+            </a>
+            <a href="${data.socials.tiktok || '#'}" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 group" aria-label="TikTok">
+              <svg class="w-5 h-5 text-white/40 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z"/></svg>
+            </a>
+            <a href="${data.socials.google_page || '#'}" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 group" aria-label="Google Page">
+              <svg class="w-5 h-5 text-white/40 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.113-5.136 4.113-3.327 0-6.031-2.704-6.031-6.031s2.704-6.031 6.031-6.031c1.527 0 2.918.572 3.99 1.503l3.203-3.203C19.23 2.115 15.934 1 12.24 1 6.033 1 12.24 10.285c6.478 0 11.24 4.555 11.24 11.24 0 .768-.068 1.516-.188 2.24H12.24z"/></svg>
+            </a>
+            <a href="${data.socials.trip_advisor || '#'}" target="_blank" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 group" aria-label="TripAdvisor">
+              <svg class="w-5 h-5 text-white/40 group-hover:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.38 0 0 5.38 0 12s5.38 12 12 12 12-5.38 12-12S18.62 0 12 0zm-3.23 18.06c-1.39 0-2.52-1.13-2.52-2.52 0-1.39 1.13-2.52 2.52-2.52 1.39 0 2.52 1.13 2.52 2.52 0 1.39-1.13 2.52-2.52 2.52zm.05-7.79c-.76 0-1.38-.62-1.38-1.38 0-.76.62-1.38 1.38-1.38.76 0 1.38.62 1.38 1.38 0 .76-.62 1.38-1.38 1.38zm6.41 7.79c-1.39 0-2.52-1.13-2.52-2.52 0-1.39 1.13-2.52 2.52-2.52 1.39 0 2.52 1.13 2.52 2.52 0 1.39-1.13 2.52-2.52 2.52zm-.05-7.79c-.76 0-1.38-.62-1.38-1.38 0-.76.62-1.38 1.38-1.38.76 0 1.38.62 1.38 1.38 0 .76-.62 1.38-1.38 1.38z"/></svg>
+            </a>
+          `;
+        }
+        
+        // Update mobile menu social links
+        const mobileSocials = document.querySelector('#mobile-menu .flex.space-x-4');
+        if (mobileSocials) {
+          mobileSocials.querySelectorAll('a').forEach(link => {
+            const href = link.href || '';
+            if (href.includes('instagram.com') || href.includes('instagram')) {
+              if (data.socials.instagram) link.href = data.socials.instagram;
+            } else if (href.includes('facebook.com') || href.includes('facebook')) {
+              if (data.socials.facebook) link.href = data.socials.facebook;
+            } else if (href.includes('tiktok.com') || href.includes('tiktok')) {
+              if (data.socials.tiktok) link.href = data.socials.tiktok;
+            }
+          });
+        }
+      }
+
+      // Update copyright with Developed by CODTECH IT SOLUTION
+      const footerBottom = document.querySelector('.footer-bottom-container p') || 
+                           document.querySelector('footer .max-w-7xl + .border-t p') || 
+                           document.querySelector('footer p');
+      if (footerBottom) {
+        footerBottom.innerHTML = `&copy; 2024 ALMAS INDIAN CUISINE. Developed by <a href="https://www.codtechitsolutions.com/" target="_blank" style="color:#D4AF37; text-decoration: underline; font-weight: 600;">CODTECH IT SOLUTION</a>.`;
+      }
+
+      // Update delivery partner links on order.html
+      if (data.delivery) {
+        const uberBtn = document.getElementById('partner-link-uber');
+        if (uberBtn && data.delivery.uber_eats) uberBtn.href = data.delivery.uber_eats;
+        
+        const ddBtn = document.getElementById('partner-link-doordash');
+        if (ddBtn && data.delivery.doordash) ddBtn.href = data.delivery.doordash;
+
+        const skipBtn = document.getElementById('partner-link-skip');
+        if (skipBtn && data.delivery.skip) skipBtn.href = data.delivery.skip;
+      }
+
+    } catch (err) {
+      console.error("Error loading global configurations:", err);
+    }
+  }
+
+  loadGlobalSettings();
 });
