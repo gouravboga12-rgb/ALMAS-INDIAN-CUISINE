@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/style.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     body {
       background-color: #0f0600 !important;
@@ -1148,10 +1149,7 @@
           <div class="auth-divider" style="margin-top:1.5rem;">OR</div>
           
           <div class="social-login-group" style="margin-bottom:0.5rem;">
-            <button class="social-login-btn google" id="btn-google-login">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" class="social-icon">
-              Log in using Google
-            </button>
+            <div id="btn-google-login" style="margin-top:0.5rem; display:flex; justify-content:center;"></div>
           </div>
         </div>
 
@@ -1303,13 +1301,12 @@
     <svg class="w-9 h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.298-.149-1.758-.867-2.034-.968-.273-.099-.472-.148-.671.148-.198.297-.768.968-.941 1.166-.173.199-.347.223-.645.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.149-.174.198-.298.298-.496.099-.198.05-.371-.025-.521-.075-.148-.671-1.611-.919-2.207-.242-.579-.487-.501-.671-.51l-.571-.01c-.198 0-.521.074-.794.371-.272.297-1.041 1.016-1.041 2.478 0 1.462 1.066 2.875 1.214 3.074.149.198 2.097 3.203 5.081 4.487.71.306 1.265.489 1.696.626.713.226 1.36.194 1.872.118.571-.085 1.761-.719 2.009-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
   </a>
 
-  <script type="module" src="/src/main.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script type="module">
     // ============================================================
-    // ACCOUNT PAGE LOGIC
+    // ACCOUNT PAGE LOGIC WITH REAL API
     // ============================================================
 
-    // Prep status → track step index mapping
     const PREP_STEPS = ['Order Received', 'Kitchen Preparing', 'Ready for Pickup'];
 
     function getPrepStatusIndex(status) {
@@ -1385,190 +1382,163 @@
       `;
     }
 
-    function loadOrders() {
-      const orders = JSON.parse(localStorage.getItem('almas_orders')) || [];
+    async function loadOrders() {
+      const token = localStorage.getItem('almas_token');
       const list = document.getElementById('orders-list');
       const empty = document.getElementById('orders-empty');
       const badge = document.getElementById('order-count-badge');
       const totalCount = document.getElementById('total-order-count');
 
-      badge.textContent = `${orders.length} order${orders.length !== 1 ? 's' : ''}`;
-      totalCount.textContent = orders.length;
+      try {
+        const orders = await apiGet('/api/user/orders', token);
+        badge.textContent = `${orders.length} order${orders.length !== 1 ? 's' : ''}`;
+        totalCount.textContent = orders.length;
 
-      if (orders.length === 0) {
-        empty.style.display = 'block';
-        list.innerHTML = '';
-        return;
-      }
+        if (orders.length === 0) {
+          empty.style.display = 'block';
+          list.innerHTML = '';
+          return;
+        }
 
-      empty.style.display = 'none';
-      list.innerHTML = orders.map((order, idx) => renderOrderCard(order, idx)).join('');
+        empty.style.display = 'none';
+        list.innerHTML = orders.map((order, idx) => renderOrderCard(order, idx)).join('');
 
-      // Expand toggle listeners
-      list.querySelectorAll('.order-expand-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const idx = btn.dataset.idx;
-          const expanded = document.getElementById(`order-expanded-${idx}`);
-          const isOpen = expanded.classList.toggle('open');
-          btn.innerHTML = `
-            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="${isOpen ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7'}"></path>
-            </svg>
-            ${isOpen ? 'Hide Items' : 'View Items'}
-          `;
+        list.querySelectorAll('.order-expand-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const idx = btn.dataset.idx;
+            const expanded = document.getElementById(`order-expanded-${idx}`);
+            const isOpen = expanded.classList.toggle('open');
+            btn.innerHTML = `
+              <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="${isOpen ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7'}"></path>
+              </svg>
+              ${isOpen ? 'Hide Items' : 'View Items'}
+            `;
+          });
         });
-      });
+      } catch (err) {
+        empty.style.display = 'block';
+      }
     }
 
-    function showLoggedIn(name, email) {
-      // Update sidebar
-      const initial = (name || 'G')[0].toUpperCase();
+    function showLoggedIn(name, email, avatar = null) {
+      const initial = (name || 'U')[0].toUpperCase();
       document.getElementById('auth-card-view').style.display = 'none';
       document.getElementById('logged-in-view').style.display = 'block';
-      document.getElementById('sidebar-avatar').textContent = initial;
+      
+      const avatarEl = document.getElementById('sidebar-avatar');
+      if (avatar) {
+        avatarEl.innerHTML = `<img src="${avatar}" alt="${name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      } else {
+        avatarEl.textContent = initial;
+      }
       document.getElementById('sidebar-name').textContent = name;
       document.getElementById('sidebar-email').textContent = email;
 
-      // Update main content
-      document.getElementById('main-avatar').textContent = initial;
+      const mainAvatarEl = document.getElementById('main-avatar');
+      if (avatar) {
+        mainAvatarEl.innerHTML = `<img src="${avatar}" alt="${name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      } else {
+        mainAvatarEl.textContent = initial;
+      }
       document.getElementById('main-name').textContent = name;
       document.getElementById('main-email').textContent = email;
 
-      // Update layout state to logged in (enable grid sidebar/dashboard)
       const layout = document.querySelector('.account-layout');
-      if (layout) {
-        layout.classList.remove('logged-out');
-      }
+      if (layout) layout.classList.remove('logged-out');
 
-      // Show main content
       document.getElementById('account-main-content').style.display = 'block';
-
       loadOrders();
     }
 
     function handleLogout() {
       localStorage.removeItem('almas_account');
-      
-      // Update layout state to logged out (center the auth card)
+      localStorage.removeItem('almas_token');
       const layout = document.querySelector('.account-layout');
-      if (layout) {
-        layout.classList.add('logged-out');
-      }
-
+      if (layout) layout.classList.add('logged-out');
       document.getElementById('auth-card-view').style.display = 'block';
       document.getElementById('logged-in-view').style.display = 'none';
       document.getElementById('account-main-content').style.display = 'none';
+      document.getElementById('login-email').value = '';
+      document.getElementById('login-password').value = '';
+      window.dispatchEvent(new Event('auth-change'));
     }
 
-    // ============================================================
-    // SIMULATED DATABASE & AUTHENTICATION HELPERS
-    // ============================================================
-    const DB_KEY = 'almas_registered_users';
-    
-    // Seed database with a few default users for demo purposes if empty
-    function initializeDemoDatabase() {
-      if (!localStorage.getItem(DB_KEY)) {
-        const initialUsers = [
-          { name: 'Gourav Boga', email: 'gouravboga12@gmail.com', phone: '+1 (416) 123-4567', password: 'password123' },
-          { name: 'Demo User', email: 'demo@gmail.com', phone: '+1 (416) 999-9999', password: 'password123' }
-        ];
-        localStorage.setItem(DB_KEY, JSON.stringify(initialUsers));
+    async function apiPost(url, body, token = null) {
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+      const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Request failed.');
+      return data;
+    }
+
+    async function apiGet(url, token) {
+      const res = await fetch(url, { method: 'GET', headers: { 'Authorization': `Bearer ${token}` } });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Request failed.');
+      return data;
+    }
+
+    async function handleGoogleCredentialResponse(response) {
+      try {
+        clearAuthAlert();
+        const data = await apiPost('/api/user/auth/google', { credential: response.credential });
+        if (data.success) {
+          localStorage.setItem('almas_account', JSON.stringify(data.user));
+          localStorage.setItem('almas_token', data.token);
+          showLoggedIn(data.user.name, data.user.email, data.user.avatar);
+          window.dispatchEvent(new Event('auth-change'));
+        }
+      } catch (err) {
+        showAuthAlert(err.message || 'Google sign-in verification failed.');
       }
     }
-    initializeDemoDatabase();
 
-    function getUsers() {
-      return JSON.parse(localStorage.getItem(DB_KEY)) || [];
-    }
-
-    function registerUser(name, email, phone, password) {
-      const users = getUsers();
-      if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
-        return { success: false, message: 'Email address is already registered.' };
-      }
-      users.push({ name, email, phone, password });
-      localStorage.setItem(DB_KEY, JSON.stringify(users));
-      return { success: true };
-    }
-
-    function authenticateUser(email, password) {
-      const users = getUsers();
-      const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-      if (!user) {
-        return { success: false, message: 'No account found with this email. Please register.' };
-      }
-      if (user.password !== password) {
-        return { success: false, message: 'Incorrect password. Please try again.' };
-      }
-      return { success: true, user };
-    }
-
-    // Toast alerts inside the login card
     function showAuthAlert(message, type = 'error') {
       const alertEl = document.getElementById('auth-alert');
       if (!alertEl) return;
       alertEl.textContent = message;
       alertEl.className = 'auth-alert ' + type;
       alertEl.style.display = 'flex';
-      
-      // Auto scroll to make it visible
       alertEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     function clearAuthAlert() {
       const alertEl = document.getElementById('auth-alert');
-      if (alertEl) {
-        alertEl.style.display = 'none';
-      }
+      if (alertEl) alertEl.style.display = 'none';
     }
 
-    // Toggle password fields helper
     function setupPasswordToggle(inputId, toggleId) {
       const input = document.getElementById(inputId);
       const toggle = document.getElementById(toggleId);
       if (!input || !toggle) return;
-
-      const eyeIcon = `
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-        </svg>
-      `;
-      const eyeSlashIcon = `
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
-        </svg>
-      `;
-
-      // Set initial SVG
-      toggle.innerHTML = eyeIcon;
-
       toggle.addEventListener('click', (e) => {
         e.preventDefault();
-        if (input.type === 'password') {
-          input.type = 'text';
-          toggle.innerHTML = eyeSlashIcon;
-          toggle.title = 'Hide Password';
-        } else {
-          input.type = 'password';
-          toggle.innerHTML = eyeIcon;
-          toggle.title = 'Show Password';
-        }
+        input.type = input.type === 'password' ? 'text' : 'password';
       });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Check for saved session
+      const token = localStorage.getItem('almas_token');
       const saved = JSON.parse(localStorage.getItem('almas_account'));
-      if (saved && saved.name) {
-        showLoggedIn(saved.name, saved.email);
+      if (token && saved) {
+        showLoggedIn(saved.name, saved.email, saved.avatar);
+        apiGet('/api/user/profile', token)
+          .then(data => {
+            if (data.success && data.user) {
+              localStorage.setItem('almas_account', JSON.stringify(data.user));
+              showLoggedIn(data.user.name, data.user.email, data.user.avatar);
+            }
+          })
+          .catch(() => handleLogout());
+      } else {
+        handleLogout();
       }
 
-      // Password visibility toggles
       setupPasswordToggle('login-password', 'btn-toggle-login-password');
       setupPasswordToggle('signup-password', 'btn-toggle-signup-password');
 
-      // Auth panel switching helpers
       function showSignupPanel() {
         clearAuthAlert();
         document.getElementById('auth-panel-login').style.display = 'none';
@@ -1585,222 +1555,51 @@
         document.getElementById('auth-header-signup').style.display = 'none';
       }
 
-      const btnSwitchToSignup = document.getElementById('switch-to-signup');
-      if (btnSwitchToSignup) {
-        btnSwitchToSignup.addEventListener('click', (e) => {
-          e.preventDefault();
-          showSignupPanel();
-        });
-      }
+      document.getElementById('switch-to-signup')?.addEventListener('click', (e) => { e.preventDefault(); showSignupPanel(); });
+      document.getElementById('switch-to-login')?.addEventListener('click', (e) => { e.preventDefault(); showLoginPanel(); });
 
-      const btnSwitchToLogin = document.getElementById('switch-to-login');
-      if (btnSwitchToLogin) {
-        btnSwitchToLogin.addEventListener('click', (e) => {
-          e.preventDefault();
-          showLoginPanel();
-        });
-      }
-
-      // Simulated forgot password alert
-      const linkForgotPass = document.getElementById('link-forgot-password');
-      if (linkForgotPass) {
-        linkForgotPass.addEventListener('click', (e) => {
-          e.preventDefault();
-          showAuthAlert('Password reset link has been simulated! Use password123 to log in.', 'success');
-        });
-      }
-
-      // Check query parameter for active auth tab
-      const urlParams = new URLSearchParams(window.location.search);
-      const authTab = urlParams.get('tab');
-      if (authTab === 'signup') {
-        showSignupPanel();
-      } else {
-        showLoginPanel();
-      }
-
-      // Email/Password Login
-      document.getElementById('btn-login').addEventListener('click', () => {
+      document.getElementById('btn-login').addEventListener('click', async () => {
         clearAuthAlert();
         const email = document.getElementById('login-email').value.trim();
-        const pass  = document.getElementById('login-password').value.trim();
+        const pass = document.getElementById('login-password').value.trim();
+        if (!email || !pass) { showAuthAlert('Required fields missing.'); return; }
         
-        if (!email) {
-          showAuthAlert('Please enter your email or phone number.');
-          return;
-        }
-        if (!pass) {
-          showAuthAlert('Please enter your password.');
-          return;
-        }
-        
-        const authResult = authenticateUser(email, pass);
-        if (authResult.success) {
-          const account = { name: authResult.user.name, email: authResult.user.email };
-          localStorage.setItem('almas_account', JSON.stringify(account));
-          showLoggedIn(account.name, account.email);
-        } else {
-          showAuthAlert(authResult.message);
-        }
+        try {
+          const data = await apiPost('/api/user/auth/login', { email, password: pass });
+          localStorage.setItem('almas_account', JSON.stringify(data.user));
+          localStorage.setItem('almas_token', data.token);
+          showLoggedIn(data.user.name, data.user.email, data.user.avatar);
+          window.dispatchEvent(new Event('auth-change'));
+        } catch (err) { showAuthAlert(err.message); }
       });
 
-      // Sign Up Registration
-      document.getElementById('btn-signup').addEventListener('click', () => {
+      document.getElementById('btn-signup').addEventListener('click', async () => {
         clearAuthAlert();
-        const name  = document.getElementById('signup-name').value.trim();
+        const name = document.getElementById('signup-name').value.trim();
         const email = document.getElementById('signup-email').value.trim();
-        const phone = document.getElementById('signup-phone').value.trim();
-        const pass  = document.getElementById('signup-password').value.trim();
-        
-        if (!name) {
-          showAuthAlert('Please enter your full name.');
-          return;
-        }
-        if (!email) {
-          showAuthAlert('Please enter your email address.');
-          return;
-        }
-        if (!pass) {
-          showAuthAlert('Please create a password.');
-          return;
-        }
-        
-        const registerResult = registerUser(name, email, phone, pass);
-        if (registerResult.success) {
-          const account = { name, email };
-          localStorage.setItem('almas_account', JSON.stringify(account));
-          showLoggedIn(name, email);
-        } else {
-          showAuthAlert(registerResult.message);
-        }
+        const pass = document.getElementById('signup-password').value.trim();
+        if (!name || !email || !pass) { showAuthAlert('Required fields missing.'); return; }
+
+        try {
+          const data = await apiPost('/api/user/auth/register', { name, email, password: pass });
+          localStorage.setItem('almas_account', JSON.stringify(data.user));
+          localStorage.setItem('almas_token', data.token);
+          showLoggedIn(data.user.name, data.user.email, data.user.avatar);
+          window.dispatchEvent(new Event('auth-change'));
+        } catch (err) { showAuthAlert(err.message); }
       });
 
-      // ============================================================
-      // GOOGLE SIGN-IN MOCK MODAL FLOW
-      // ============================================================
-      const googleModal = document.getElementById('google-signin-modal');
-      const googleAccountsList = document.getElementById('google-accounts-list');
-      const googleCloseBtn = document.getElementById('google-modal-close-btn');
-
-      const mockGoogleAccounts = [
-        { name: 'Gourav Boga', email: 'gouravboga12@gmail.com', avatar: 'G' },
-        { name: 'Almas Guest', email: 'guest.almas@gmail.com', avatar: 'A' },
-        { name: 'Demo User', email: 'demo.user@gmail.com', avatar: 'D' }
-      ];
-
-      function renderGoogleAccounts() {
-        if (!googleAccountsList) return;
-        googleAccountsList.innerHTML = mockGoogleAccounts.map((acc, index) => `
-          <button class="google-account-item" data-index="${index}">
-            <div class="google-avatar">${acc.avatar}</div>
-            <div class="google-account-details">
-              <p class="google-account-name">${acc.name}</p>
-              <p class="google-account-email">${acc.email}</p>
-            </div>
-          </button>
-        `).join('') + `
-          <button class="google-account-item" id="google-use-another">
-            <div class="google-avatar" style="background:#f1f3f4; color:#5f6368; font-size:1.2rem;">👤</div>
-            <div class="google-account-details">
-              <p class="google-account-name" style="color:#1a73e8; font-weight:500;">Use another account</p>
-            </div>
-          </button>
-        `;
-
-        // Add event listeners to accounts
-        googleAccountsList.querySelectorAll('.google-account-item').forEach(item => {
-          item.addEventListener('click', () => {
-            if (item.id === 'google-use-another') {
-              const emailInput = prompt('Enter your Google email:');
-              if (!emailInput) return;
-              if (!emailInput.includes('@')) {
-                alert('Please enter a valid email address.');
-                return;
-              }
-              const nameFromEmail = emailInput.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-              handleGoogleAccountSelect({ name: nameFromEmail, email: emailInput });
-            } else {
-              const idx = item.dataset.index;
-              handleGoogleAccountSelect(mockGoogleAccounts[idx]);
-            }
-          });
-        });
-      }
-
-      function handleGoogleAccountSelect(account) {
-        googleAccountsList.innerHTML = `
-          <div style="padding:40px 24px; text-align:center;">
-            <div class="loading-spinner" style="border: 3px solid #f3f3f3; border-top: 3px solid #1a73e8; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin:0 auto 16px;"></div>
-            <p style="font-size:0.9rem; color:#5f6368;">Signing in with Google...</p>
-          </div>
-          <style>
-            @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-          </style>
-        `;
-
-        setTimeout(() => {
-          // Check if user is registered, if not auto-register them
-          const users = getUsers();
-          let user = users.find(u => u.email.toLowerCase() === account.email.toLowerCase());
-          if (!user) {
-            registerUser(account.name, account.email, '', 'google_provider_oauth');
-          }
-          
-          // Log them in
-          const savedAccount = { name: account.name, email: account.email };
-          localStorage.setItem('almas_account', JSON.stringify(savedAccount));
-          googleModal.classList.remove('active');
-          showLoggedIn(account.name, account.email);
-        }, 1200); // 1.2s delay to simulate authentic Google Login redirect/validation
-      }
-
-      if (document.getElementById('btn-google-login')) {
-        document.getElementById('btn-google-login').addEventListener('click', () => {
-          clearAuthAlert();
-          renderGoogleAccounts();
-          googleModal.classList.add('active');
-        });
-      }
-
-      if (googleCloseBtn) {
-        googleCloseBtn.addEventListener('click', () => {
-          googleModal.classList.remove('active');
-        });
-      }
-
-      if (googleModal) {
-        googleModal.addEventListener('click', (e) => {
-          if (e.target === googleModal) {
-            googleModal.classList.remove('active');
+      fetch('/api/auth/config')
+        .then(res => res.json())
+        .then(config => {
+          if (config.googleClientId && window.google) {
+            google.accounts.id.initialize({ client_id: config.googleClientId, callback: handleGoogleCredentialResponse });
+            google.accounts.id.renderButton(document.getElementById("btn-google-login"), { theme: "outline", size: "large", width: "100%" });
           }
         });
-      }
 
-      // ============================================================
-      // APPLE SIGN-IN MOCK FLOW
-      // ============================================================
-      // Apple Sign-In removed per user request
-
-      // Logout
       document.getElementById('btn-logout').addEventListener('click', handleLogout);
     });
   </script>
-  <!-- Google Sign-In Mock Modal -->
-  <div class="google-modal-overlay" id="google-signin-modal">
-    <div class="google-modal-card">
-      <button class="google-modal-close" id="google-modal-close-btn">&times;</button>
-      <div class="google-modal-header">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" class="google-modal-logo">
-        <h3 class="google-modal-title">Sign in with Google</h3>
-        <p class="google-modal-subtitle">to continue to ALMAS Indian Cuisine</p>
-      </div>
-      <div class="google-accounts-list" id="google-accounts-list">
-        <!-- Accounts populated dynamically -->
-      </div>
-      <div class="google-modal-footer">
-        To continue, Google will share your name, email address, language preference, and profile picture with ALMAS Indian Cuisine. See their <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>.
-      </div>
-    </div>
-  </div>
 </body>
 </html>

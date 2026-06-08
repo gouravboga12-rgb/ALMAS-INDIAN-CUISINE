@@ -1152,5 +1152,17 @@
       "description": "Custom size options. Completely customizable chef's table menu selection."
     }
   ],
-  "inquiries": []
+  "inquiries": [],
+  "users": [
+    {
+      "id": "usr-1780950307811-421",
+      "name": "Test User",
+      "email": "test@almas.com",
+      "password_hash": "$2a$10$Bl8ERtiU/ReYRCk0xDS4POWlL2wYJrflBQr0dDsiZunBdMh7tWrle",
+      "google_id": null,
+      "avatar": null,
+      "provider": "email",
+      "created_at": 1780950307812
+    }
+  ]
 }

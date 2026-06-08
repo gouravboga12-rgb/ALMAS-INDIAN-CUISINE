@@ -5,6 +5,8 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import { OAuth2Client } from 'google-auth-library';
 import {
   initializeDatabase,
   getMenu,
@@ -27,7 +29,12 @@ import {
   getInquiries,
   addInquiry,
   updateInquiryStatus,
-  deleteInquiry
+  deleteInquiry,
+  findUserByEmail,
+  findUserByGoogleId,
+  createUser,
+  getUserById,
+  updateUser
 } from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -36,6 +43,9 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = 'almas_indian_cuisine_super_secret_key_2026';
+
+// Google OAuth Client
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Middleware
 app.use(cors());
@@ -82,6 +92,24 @@ function authenticateAdmin(req, res, next) {
   }
 }
 
+// User Authentication Middleware
+function authenticateUser(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  if (!authHeader) return res.status(401).json({ error: 'Access denied. Token missing.' });
+
+  const token = authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ error: 'Access denied. Token missing.' });
+
+  try {
+    const userSecret = process.env.JWT_USER_SECRET || 'almas_user_auth_secret_token_2026_xyz';
+    const verified = jwt.verify(token, userSecret);
+    req.user = verified;
+    next();
+  } catch (err) {
+    res.status(401).json({ error: 'Invalid or expired session. Please log in again.' });
+  }
+}
+
 // -----------------------------------------------------------------------------
 // ROUTES
 // -----------------------------------------------------------------------------
@@ -97,6 +125,186 @@ app.post('/api/auth/login', async (req, res) => {
   }
 
   return res.status(400).json({ success: false, error: 'Invalid email or password.' });
+});
+
+// ─── USER AUTHENTICATION ENDPOINTS ───────────────────────────────────────────
+
+// POST /api/user/auth/register - Email/Password Registration
+app.post('/api/user/auth/register', async (req, res) => {
+  const { name, email, password } = req.body;
+  if (!name || !email || !password) {
+    return res.status(400).json({ success: false, error: 'Name, email, and password are required.' });
+  }
+
+  try {
+    const existing = await findUserByEmail(email);
+    if (existing) {
+      return res.status(400).json({ success: false, error: 'Email address is already registered.' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const password_hash = await bcrypt.hash(password, salt);
+
+    const user = await createUser({
+      name,
+      email,
+      password_hash,
+      provider: 'email'
+    });
+
+    const userSecret = process.env.JWT_USER_SECRET || 'almas_user_auth_secret_token_2026_xyz';
+    const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, userSecret, { expiresIn: '7d' });
+
+    res.status(201).json({
+      success: true,
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+        provider: user.provider
+      }
+    });
+  } catch (err) {
+    console.error('Registration error:', err);
+    res.status(500).json({ success: false, error: 'Server error during registration.' });
+  }
+});
+
+// POST /api/user/auth/login - Email/Password Login
+app.post('/api/user/auth/login', async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ success: false, error: 'Email and password are required.' });
+  }
+
+  try {
+    const user = await findUserByEmail(email);
+    if (!user) {
+      return res.status(400).json({ success: false, error: 'Invalid email or password.' });
+    }
+
+    if (user.provider === 'google' && !user.password_hash) {
+      return res.status(400).json({ success: false, error: 'This email is linked to a Google Account. Please sign in with Google.' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password_hash);
+    if (!isMatch) {
+      return res.status(400).json({ success: false, error: 'Invalid email or password.' });
+    }
+
+    const userSecret = process.env.JWT_USER_SECRET || 'almas_user_auth_secret_token_2026_xyz';
+    const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, userSecret, { expiresIn: '7d' });
+
+    res.json({
+      success: true,
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+        provider: user.provider
+      }
+    });
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ success: false, error: 'Server error during login.' });
+  }
+});
+
+// POST /api/user/auth/google - Google Sign-In verification & sync
+app.post('/api/user/auth/google', async (req, res) => {
+  const { credential } = req.body;
+  if (!credential) {
+    return res.status(400).json({ success: false, error: 'Google credential token is missing.' });
+  }
+
+  try {
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID
+    });
+
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name, picture: avatar } = payload;
+
+    if (!email) {
+      return res.status(400).json({ success: false, error: 'Google account does not provide an email address.' });
+    }
+
+    let user = await findUserByGoogleId(googleId);
+    if (!user) {
+      user = await findUserByEmail(email);
+      if (user) {
+        user = await updateUser(user.id, { google_id: googleId, avatar: avatar || user.avatar, provider: 'google' });
+      } else {
+        user = await createUser({
+          name: name || email.split('@')[0],
+          email,
+          google_id: googleId,
+          avatar,
+          provider: 'google'
+        });
+      }
+    } else {
+      if (user.avatar !== avatar || user.name !== name) {
+        user = await updateUser(user.id, { name: name || user.name, avatar: avatar || user.avatar });
+      }
+    }
+
+    const userSecret = process.env.JWT_USER_SECRET || 'almas_user_auth_secret_token_2026_xyz';
+    const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, userSecret, { expiresIn: '7d' });
+
+    res.json({
+      success: true,
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+        provider: user.provider
+      }
+    });
+  } catch (err) {
+    console.error('Google Auth verification error:', err);
+    res.status(400).json({ success: false, error: 'Google sign-in verification failed.' });
+  }
+});
+
+// GET /api/user/profile - Get currently logged-in user details
+app.get('/api/user/profile', authenticateUser, async (req, res) => {
+  try {
+    const user = await getUserById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User profile not found.' });
+    }
+
+    res.json({
+      success: true,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+        provider: user.provider,
+        created_at: user.created_at
+      }
+    });
+  } catch (err) {
+    console.error('Profile fetch error:', err);
+    res.status(500).json({ success: false, error: 'Server error fetching profile.' });
+  }
+});
+
+
+// GET /api/auth/config - Retrieve public authentication config
+app.get('/api/auth/config', (req, res) => {
+  res.json({
+    googleClientId: process.env.GOOGLE_CLIENT_ID || ''
+  });
 });
 
 // GET /api/menu - Retrieve entire menu (products and categories)

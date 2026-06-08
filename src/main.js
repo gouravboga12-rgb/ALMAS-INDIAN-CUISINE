@@ -481,4 +481,85 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   loadGlobalSettings();
+
+  // ── Navbar live auth update ──────────────────────────────────────────────────
+  // Re-render both desktop & mobile auth slots whenever auth state changes.
+  function refreshNavbarAuth() {
+    const saved = JSON.parse(localStorage.getItem('almas_account'));
+
+    // Desktop
+    const desktopAuthGroup = document.getElementById('desktop-auth-group');
+    if (desktopAuthGroup) {
+      if (saved && saved.name) {
+        const initial = saved.name.charAt(0).toUpperCase();
+        desktopAuthGroup.innerHTML = `
+          <a href="/account.html" class="nav-signin-btn" title="My Account">
+            <div class="nav-signin-avatar">${saved.avatar ? `<img src="${saved.avatar}" alt="${saved.name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : initial}</div>
+            <span>Account</span>
+          </a>
+        `;
+      } else {
+        desktopAuthGroup.innerHTML = `
+          <a href="/account.html?tab=login" class="nav-signin-btn" title="Sign In">
+            <div class="nav-signin-avatar" style="background:#4A4A4A;">
+              <svg class="nav-signin-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 12c2.667 0 8 1.333 8 4v2H4v-2c0-2.667 5.333-4 8-4zm0-2a4 4 0 110-8 4 4 0 010 8z"/>
+              </svg>
+            </div>
+            <span>Sign In</span>
+          </a>
+        `;
+      }
+    }
+
+    // Mobile menu
+    const mobileAuthGroup = document.getElementById('mobile-auth-group');
+    if (mobileAuthGroup) {
+      if (saved && saved.name) {
+        const isAccountPage = window.location.pathname.includes('account');
+        mobileAuthGroup.innerHTML = `
+          <a href="/account.html" class="${isAccountPage ? 'text-primary' : 'hover:text-primary'} transition-colors" style="color: #D4AF37;">My Account</a>
+        `;
+      } else {
+        mobileAuthGroup.innerHTML = `
+          <a href="/account.html?tab=login" class="hover:text-primary transition-colors">Sign In / Sign Up</a>
+        `;
+      }
+    }
+
+    // Mobile header auth icon
+    const mobileAuthHeader = document.getElementById('mobile-auth-group-header');
+    if (mobileAuthHeader) {
+      if (saved && saved.name) {
+        const initial = saved.name.charAt(0).toUpperCase();
+        mobileAuthHeader.innerHTML = `
+          <a href="/account.html" class="nav-signin-btn" title="My Account" style="display:flex!important;justify-content:center!important;align-items:center!important;width:44px!important;height:44px!important;">
+            <div class="nav-signin-avatar" style="width:32px!important;height:32px!important;font-size:0.85rem!important;">
+              ${saved.avatar ? `<img src="${saved.avatar}" alt="${saved.name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : initial}
+            </div>
+          </a>
+        `;
+      } else {
+        mobileAuthHeader.innerHTML = `
+          <a href="/account.html?tab=login" class="nav-signin-btn" title="Sign In" style="display:flex!important;justify-content:center!important;align-items:center!important;width:44px!important;height:44px!important;">
+            <div class="nav-signin-avatar" style="background:#1A1A1A;width:32px!important;height:32px!important;">
+              <svg class="nav-signin-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:1.1rem;height:1.1rem;">
+                <path d="M12 12c2.667 0 8 1.333 8 4v2H4v-2c0-2.667 5.333-4 8-4zm0-2a4 4 0 110-8 4 4 0 010 8z"/>
+              </svg>
+            </div>
+          </a>
+        `;
+      }
+    }
+  }
+
+  // Listen for login/logout events dispatched from account.html
+  window.addEventListener('auth-change', refreshNavbarAuth);
+
+  // Also listen for cross-tab storage changes (user logs in/out in another tab)
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'almas_account' || e.key === 'almas_token') {
+      refreshNavbarAuth();
+    }
+  });
 });

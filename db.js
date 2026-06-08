@@ -229,8 +229,12 @@ async function initJSONDB() {
       settings: defaultSettings,
       services: defaultServices,
       packages: defaultPackages,
-      inquiries: []
+      inquiries: [],
+      users: []
     };
+    writeJSONDB(db);
+  } else if (!db.users) {
+    db.users = [];
     writeJSONDB(db);
   }
 }
@@ -336,6 +340,20 @@ async function initMySQL() {
         timestamp BIGINT NOT NULL,
         dateString VARCHAR(255) NOT NULL,
         status VARCHAR(255) NOT NULL DEFAULT 'new'
+      )
+    `);
+
+    // 7. Users table
+    await conn.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id VARCHAR(255) PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL UNIQUE,
+        password_hash VARCHAR(255),
+        google_id VARCHAR(255),
+        avatar VARCHAR(255),
+        provider VARCHAR(50) NOT NULL DEFAULT 'email',
+        created_at BIGINT NOT NULL
       )
     `);
 
@@ -775,5 +793,98 @@ export async function deleteInquiry(id) {
     const db = readJSONDB();
     db.inquiries = db.inquiries.filter(inq => inq.id !== id);
     writeJSONDB(db);
+  }
+}
+
+// ─── USERS CRUD
+export async function findUserByEmail(email) {
+  if (!email) return null;
+  const targetEmail = email.toLowerCase().trim();
+  if (pool) {
+    const [rows] = await pool.query("SELECT * FROM users WHERE LOWER(email) = ?", [targetEmail]);
+    return rows.length > 0 ? rows[0] : null;
+  } else {
+    const db = readJSONDB() || { users: [] };
+    const users = db.users || [];
+    return users.find(u => u.email && u.email.toLowerCase().trim() === targetEmail) || null;
+  }
+}
+
+export async function findUserByGoogleId(googleId) {
+  if (!googleId) return null;
+  if (pool) {
+    const [rows] = await pool.query("SELECT * FROM users WHERE google_id = ?", [googleId]);
+    return rows.length > 0 ? rows[0] : null;
+  } else {
+    const db = readJSONDB() || { users: [] };
+    const users = db.users || [];
+    return users.find(u => u.google_id === googleId) || null;
+  }
+}
+
+export async function createUser(user) {
+  const newUser = {
+    id: user.id || 'usr-' + Date.now() + '-' + Math.round(Math.random() * 1000),
+    name: user.name || '',
+    email: (user.email || '').toLowerCase().trim(),
+    password_hash: user.password_hash || null,
+    google_id: user.google_id || null,
+    avatar: user.avatar || null,
+    provider: user.provider || 'email',
+    created_at: Date.now()
+  };
+
+  if (pool) {
+    await pool.query(
+      "INSERT INTO users (id, name, email, password_hash, google_id, avatar, provider, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [newUser.id, newUser.name, newUser.email, newUser.password_hash, newUser.google_id, newUser.avatar, newUser.provider, newUser.created_at]
+    );
+  } else {
+    const db = readJSONDB();
+    if (!db.users) db.users = [];
+    db.users.push(newUser);
+    writeJSONDB(db);
+  }
+  return newUser;
+}
+
+export async function getUserById(id) {
+  if (!id) return null;
+  if (pool) {
+    const [rows] = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
+    return rows.length > 0 ? rows[0] : null;
+  } else {
+    const db = readJSONDB() || { users: [] };
+    const users = db.users || [];
+    return users.find(u => u.id === id) || null;
+  }
+}
+
+export async function updateUser(id, updates) {
+  if (!id) return null;
+  if (pool) {
+    const fields = [];
+    const values = [];
+    for (const [key, val] of Object.entries(updates)) {
+      if (['name', 'email', 'password_hash', 'google_id', 'avatar', 'provider'].includes(key)) {
+        fields.push(`\`${key}\` = ?`);
+        values.push(key === 'email' ? val.toLowerCase().trim() : val);
+      }
+    }
+    if (fields.length === 0) return null;
+    values.push(id);
+    await pool.query(`UPDATE users SET ${fields.join(', ')} WHERE id = ?`, values);
+    const [rows] = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
+    return rows[0] || null;
+  } else {
+    const db = readJSONDB();
+    if (!db.users) db.users = [];
+    const idx = db.users.findIndex(u => u.id === id);
+    if (idx !== -1) {
+      db.users[idx] = { ...db.users[idx], ...updates, id };
+      writeJSONDB(db);
+      return db.users[idx];
+    }
+    return null;
   }
 }
