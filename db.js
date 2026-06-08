@@ -353,9 +353,23 @@ async function initMySQL() {
         google_id VARCHAR(255),
         avatar VARCHAR(255),
         provider VARCHAR(50) NOT NULL DEFAULT 'email',
-        created_at BIGINT NOT NULL
+        created_at BIGINT NOT NULL,
+        is_verified TINYINT(1) NOT NULL DEFAULT 0,
+        otp_code VARCHAR(255) NULL,
+        otp_expires BIGINT NULL
       )
     `);
+
+    // Run safe migrations for existing databases
+    try {
+      await conn.query("ALTER TABLE users ADD COLUMN is_verified TINYINT(1) NOT NULL DEFAULT 0");
+    } catch (e) { /* already exists */ }
+    try {
+      await conn.query("ALTER TABLE users ADD COLUMN otp_code VARCHAR(255) NULL");
+    } catch (e) { /* already exists */ }
+    try {
+      await conn.query("ALTER TABLE users ADD COLUMN otp_expires BIGINT NULL");
+    } catch (e) { /* already exists */ }
 
     conn.release();
     
@@ -831,13 +845,16 @@ export async function createUser(user) {
     google_id: user.google_id || null,
     avatar: user.avatar || null,
     provider: user.provider || 'email',
-    created_at: Date.now()
+    created_at: Date.now(),
+    is_verified: user.is_verified || 0,
+    otp_code: user.otp_code || null,
+    otp_expires: user.otp_expires || null
   };
 
   if (pool) {
     await pool.query(
-      "INSERT INTO users (id, name, email, password_hash, google_id, avatar, provider, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-      [newUser.id, newUser.name, newUser.email, newUser.password_hash, newUser.google_id, newUser.avatar, newUser.provider, newUser.created_at]
+      "INSERT INTO users (id, name, email, password_hash, google_id, avatar, provider, created_at, is_verified, otp_code, otp_expires) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [newUser.id, newUser.name, newUser.email, newUser.password_hash, newUser.google_id, newUser.avatar, newUser.provider, newUser.created_at, newUser.is_verified, newUser.otp_code, newUser.otp_expires]
     );
   } else {
     const db = readJSONDB();
@@ -866,7 +883,7 @@ export async function updateUser(id, updates) {
     const fields = [];
     const values = [];
     for (const [key, val] of Object.entries(updates)) {
-      if (['name', 'email', 'password_hash', 'google_id', 'avatar', 'provider'].includes(key)) {
+      if (['name', 'email', 'password_hash', 'google_id', 'avatar', 'provider', 'is_verified', 'otp_code', 'otp_expires'].includes(key)) {
         fields.push(`\`${key}\` = ?`);
         values.push(key === 'email' ? val.toLowerCase().trim() : val);
       }

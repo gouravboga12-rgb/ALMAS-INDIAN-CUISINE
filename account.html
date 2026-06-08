@@ -972,29 +972,41 @@
       transform: none !important;
     }
 
-    /* ---- Compact Sign Up Form styling ---- */
-    #auth-panel-signup .auth-input {
+    /* ---- Compact Form Styling (Sign Up, OTP, Forgot) ---- */
+    #auth-panel-signup .auth-input,
+    #auth-panel-otp .auth-input,
+    #auth-panel-forgot .auth-input {
       padding: 0.65rem 0.85rem !important;
       font-size: 0.82rem !important;
       border-radius: 6px !important;
     }
-    #auth-panel-signup .auth-input-group {
+    #auth-panel-signup .auth-input-group,
+    #auth-panel-otp .auth-input-group,
+    #auth-panel-forgot .auth-input-group {
       margin-bottom: 0.6rem !important;
     }
-    #auth-panel-signup .auth-submit-btn {
+    #auth-panel-signup .auth-submit-btn,
+    #auth-panel-otp .auth-submit-btn,
+    #auth-panel-forgot .auth-submit-btn {
       padding: 0.75rem !important;
       font-size: 0.88rem !important;
       border-radius: 6px !important;
       margin-top: 0.25rem !important;
     }
-    #auth-panel-signup .auth-divider {
+    #auth-panel-signup .auth-divider,
+    #auth-panel-otp .auth-divider,
+    #auth-panel-forgot .auth-divider {
       margin: 0.75rem 0 !important;
       font-size: 0.75rem !important;
     }
-    #auth-panel-signup .social-login-group {
+    #auth-panel-signup .social-login-group,
+    #auth-panel-otp .social-login-group,
+    #auth-panel-forgot .social-login-group {
       margin-bottom: 0.75rem !important;
     }
-    #auth-panel-signup .auth-switch-prompt {
+    #auth-panel-signup .auth-switch-prompt,
+    #auth-panel-otp .auth-switch-prompt,
+    #auth-panel-forgot .auth-switch-prompt {
       margin-top: 1rem !important;
       font-size: 0.8rem !important;
     }
@@ -1143,6 +1155,14 @@
           <h2 class="auth-card-title">Create Account</h2>
           <p class="auth-card-subtitle">Join us to experience exclusive benefits</p>
         </div>
+        <div id="auth-header-otp" class="auth-header" style="display:none;">
+          <h2 class="auth-card-title">Verify Email</h2>
+          <p class="auth-card-subtitle" id="otp-header-subtitle">Enter the 6-digit code sent to your email</p>
+        </div>
+        <div id="auth-header-forgot" class="auth-header" style="display:none;">
+          <h2 class="auth-card-title">Reset Password</h2>
+          <p class="auth-card-subtitle" id="forgot-header-subtitle">Recover access to your account</p>
+        </div>
 
         <!-- Login Form -->
         <div id="auth-panel-login">
@@ -1211,6 +1231,57 @@
           
           <div class="auth-switch-prompt" style="margin-top:1.5rem;">
             Already have an account?<button type="button" class="auth-switch-link" id="switch-to-login">Log In</button>
+          </div>
+        </div>
+
+        <!-- OTP Verification Form -->
+        <div id="auth-panel-otp" style="display:none;">
+          <div class="auth-input-group">
+            <input type="text" id="otp-code" class="auth-input" placeholder="6-digit OTP Code" maxlength="6" style="text-align:center; font-size:1.2rem; letter-spacing:0.2em; font-weight:700;">
+          </div>
+          <button class="auth-submit-btn" id="btn-verify-otp">Verify Code</button>
+          
+          <div class="auth-switch-prompt" style="margin-top:1.5rem;">
+            Didn't receive code? <button type="button" class="auth-switch-link" id="btn-resend-otp">Resend</button>
+          </div>
+          <div class="auth-switch-prompt">
+            <button type="button" class="auth-switch-link" id="switch-to-login-from-otp">← Back to Log In</button>
+          </div>
+        </div>
+
+        <!-- Forgot / Reset Password Form -->
+        <div id="auth-panel-forgot" style="display:none;">
+          <!-- Step 1: Send OTP -->
+          <div id="forgot-step-send">
+            <div class="auth-input-group">
+              <input type="email" id="forgot-email" class="auth-input" placeholder="Email Address">
+            </div>
+            <button class="auth-submit-btn" id="btn-forgot-send">Send Code</button>
+            <div class="auth-switch-prompt" style="margin-top:1.5rem;">
+              Back to <button type="button" class="auth-switch-link" id="switch-to-login-from-forgot">Log In</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Reset Password -->
+          <div id="forgot-step-reset" style="display:none;">
+            <div class="auth-input-group" style="margin-bottom:0.75rem;">
+              <input type="text" id="reset-otp" class="auth-input" placeholder="6-digit Reset Code" maxlength="6" style="text-align:center; font-size:1.1rem; letter-spacing:0.15em; font-weight:700;">
+            </div>
+            <div class="auth-input-group">
+              <div class="input-wrapper">
+                <input type="password" id="reset-password" class="auth-input password-input" placeholder="New Password">
+                <button type="button" class="password-toggle" id="btn-toggle-reset-password" title="Show Password">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <button class="auth-submit-btn" id="btn-reset-submit">Save & Log In</button>
+            <div class="auth-switch-prompt" style="margin-top:1.5rem;">
+              Back to <button type="button" class="auth-switch-link" id="switch-to-login-from-reset">Log In</button>
+            </div>
           </div>
         </div>
       </div>
@@ -1508,7 +1579,11 @@
       if (token) headers['Authorization'] = `Bearer ${token}`;
       const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Request failed.');
+      if (!res.ok) {
+        const err = new Error(data.error || 'Request failed.');
+        err.data = data;
+        throw err;
+      }
       return data;
     }
 
@@ -1578,24 +1653,77 @@
       setupPasswordToggle('login-password', 'btn-toggle-login-password');
       setupPasswordToggle('signup-password', 'btn-toggle-signup-password');
 
+      let pendingEmail = '';
+
       function showSignupPanel() {
         clearAuthAlert();
         document.getElementById('auth-panel-login').style.display = 'none';
         document.getElementById('auth-panel-signup').style.display = 'block';
+        document.getElementById('auth-panel-otp').style.display = 'none';
+        document.getElementById('auth-panel-forgot').style.display = 'none';
         document.getElementById('auth-header-login').style.display = 'none';
         document.getElementById('auth-header-signup').style.display = 'block';
+        document.getElementById('auth-header-otp').style.display = 'none';
+        document.getElementById('auth-header-forgot').style.display = 'none';
       }
 
       function showLoginPanel() {
         clearAuthAlert();
         document.getElementById('auth-panel-login').style.display = 'block';
         document.getElementById('auth-panel-signup').style.display = 'none';
+        document.getElementById('auth-panel-otp').style.display = 'none';
+        document.getElementById('auth-panel-forgot').style.display = 'none';
         document.getElementById('auth-header-login').style.display = 'block';
         document.getElementById('auth-header-signup').style.display = 'none';
+        document.getElementById('auth-header-otp').style.display = 'none';
+        document.getElementById('auth-header-forgot').style.display = 'none';
+      }
+
+      function showOtpPanel(email, message = 'Verification code sent to your email.') {
+        clearAuthAlert();
+        pendingEmail = email;
+        
+        document.getElementById('auth-panel-login').style.display = 'none';
+        document.getElementById('auth-panel-signup').style.display = 'none';
+        document.getElementById('auth-panel-forgot').style.display = 'none';
+        document.getElementById('auth-header-login').style.display = 'none';
+        document.getElementById('auth-header-signup').style.display = 'none';
+        document.getElementById('auth-header-forgot').style.display = 'none';
+        
+        document.getElementById('auth-panel-otp').style.display = 'block';
+        document.getElementById('auth-header-otp').style.display = 'block';
+        document.getElementById('otp-header-subtitle').innerHTML = `${message}<br><strong style="color:#202124;">${email}</strong>`;
+        document.getElementById('otp-code').value = '';
+        showAuthAlert('Please check your email for the verification code.', 'success');
+      }
+
+      function showForgotPanel() {
+        clearAuthAlert();
+        document.getElementById('auth-panel-login').style.display = 'none';
+        document.getElementById('auth-panel-signup').style.display = 'none';
+        document.getElementById('auth-panel-otp').style.display = 'none';
+        document.getElementById('auth-header-login').style.display = 'none';
+        document.getElementById('auth-header-signup').style.display = 'none';
+        document.getElementById('auth-header-otp').style.display = 'none';
+        
+        document.getElementById('auth-panel-forgot').style.display = 'block';
+        document.getElementById('auth-header-forgot').style.display = 'block';
+        document.getElementById('forgot-step-send').style.display = 'block';
+        document.getElementById('forgot-step-reset').style.display = 'none';
+        document.getElementById('forgot-email').value = '';
       }
 
       document.getElementById('switch-to-signup')?.addEventListener('click', (e) => { e.preventDefault(); showSignupPanel(); });
       document.getElementById('switch-to-login')?.addEventListener('click', (e) => { e.preventDefault(); showLoginPanel(); });
+      
+      document.getElementById('switch-to-login-from-otp')?.addEventListener('click', (e) => { e.preventDefault(); showLoginPanel(); });
+      document.getElementById('switch-to-login-from-forgot')?.addEventListener('click', (e) => { e.preventDefault(); showLoginPanel(); });
+      document.getElementById('switch-to-login-from-reset')?.addEventListener('click', (e) => { e.preventDefault(); showLoginPanel(); });
+
+      document.getElementById('link-forgot-password').addEventListener('click', (e) => {
+        e.preventDefault();
+        showForgotPanel();
+      });
 
       document.getElementById('btn-login').addEventListener('click', async () => {
         clearAuthAlert();
@@ -1609,7 +1737,13 @@
           localStorage.setItem('almas_token', data.token);
           showLoggedIn(data.user.name, data.user.email, data.user.avatar);
           window.dispatchEvent(new Event('auth-change'));
-        } catch (err) { showAuthAlert(err.message); }
+        } catch (err) {
+          if (err.data && err.data.requiresVerification) {
+            showOtpPanel(err.data.email, err.message);
+          } else {
+            showAuthAlert(err.message);
+          }
+        }
       });
 
       document.getElementById('btn-signup').addEventListener('click', async () => {
@@ -1621,10 +1755,74 @@
 
         try {
           const data = await apiPost('/api/user/auth/register', { name, email, password: pass });
+          if (data.requiresVerification) {
+            showOtpPanel(data.email, data.message);
+          } else {
+            localStorage.setItem('almas_account', JSON.stringify(data.user));
+            localStorage.setItem('almas_token', data.token);
+            showLoggedIn(data.user.name, data.user.email, data.user.avatar);
+            window.dispatchEvent(new Event('auth-change'));
+          }
+        } catch (err) { showAuthAlert(err.message); }
+      });
+
+      document.getElementById('btn-verify-otp').addEventListener('click', async () => {
+        clearAuthAlert();
+        const otp = document.getElementById('otp-code').value.trim();
+        if (!otp || otp.length !== 6) { showAuthAlert('Please enter the 6-digit verification code.'); return; }
+
+        try {
+          const data = await apiPost('/api/user/auth/verify-signup', { email: pendingEmail, otp });
           localStorage.setItem('almas_account', JSON.stringify(data.user));
           localStorage.setItem('almas_token', data.token);
           showLoggedIn(data.user.name, data.user.email, data.user.avatar);
           window.dispatchEvent(new Event('auth-change'));
+          clearAuthAlert();
+        } catch (err) { showAuthAlert(err.message); }
+      });
+
+      document.getElementById('btn-resend-otp').addEventListener('click', async () => {
+        clearAuthAlert();
+        try {
+          const data = await apiPost('/api/user/auth/resend-signup-otp', { email: pendingEmail });
+          showAuthAlert(data.message || 'Verification code resent!', 'success');
+        } catch (err) { showAuthAlert(err.message); }
+      });
+
+      document.getElementById('btn-forgot-send').addEventListener('click', async () => {
+        clearAuthAlert();
+        const email = document.getElementById('forgot-email').value.trim();
+        if (!email) { showAuthAlert('Please enter your email address.'); return; }
+
+        try {
+          const data = await apiPost('/api/user/auth/forgot-password', { email });
+          pendingEmail = email;
+          document.getElementById('forgot-step-send').style.display = 'none';
+          document.getElementById('forgot-step-reset').style.display = 'block';
+          document.getElementById('reset-otp').value = '';
+          document.getElementById('reset-password').value = '';
+          showAuthAlert('If registered, a reset code was sent to your email.', 'success');
+        } catch (err) { showAuthAlert(err.message); }
+      });
+
+      setupPasswordToggle('reset-password', 'btn-toggle-reset-password');
+
+      document.getElementById('btn-reset-submit').addEventListener('click', async () => {
+        clearAuthAlert();
+        const otp = document.getElementById('reset-otp').value.trim();
+        const newPassword = document.getElementById('reset-password').value.trim();
+        if (!otp || otp.length !== 6 || !newPassword) {
+          showAuthAlert('Please enter the 6-digit code and your new password.');
+          return;
+        }
+
+        try {
+          const data = await apiPost('/api/user/auth/reset-password', { email: pendingEmail, otp, newPassword });
+          showAuthAlert(data.message || 'Password reset successful!', 'success');
+          setTimeout(() => {
+            showLoginPanel();
+            document.getElementById('login-email').value = pendingEmail;
+          }, 1500);
         } catch (err) { showAuthAlert(err.message); }
       });
 

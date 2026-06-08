@@ -1163,6 +1163,32 @@
       "avatar": null,
       "provider": "email",
       "created_at": 1780950307812
+    },
+    {
+      "id": "usr-1780952416939-54",
+      "name": "Test Verify",
+      "email": "testverification@gmail.com",
+      "password_hash": "$2a$10$fvSsch/XXDQ/Vx4HMtV0QODas..2OlwNac64KUkb7OTTmbbYDG.vm",
+      "google_id": null,
+      "avatar": null,
+      "provider": "email",
+      "created_at": 1780952416940,
+      "is_verified": 0,
+      "otp_code": "304182",
+      "otp_expires": 1780953389509
+    },
+    {
+      "id": "usr-1780953498555-191",
+      "name": "SMTP Test User",
+      "email": "almasindiancuisine@gmail.com",
+      "password_hash": "$2a$10$HYlBEef7tYLI7Gj96ljrBeZqcJZRPxKVjFbyramH.jrjr4S82Mvna",
+      "google_id": null,
+      "avatar": null,
+      "provider": "email",
+      "created_at": 1780953498556,
+      "is_verified": 0,
+      "otp_code": "589287",
+      "otp_expires": 1780954112865
     }
   ]
 }

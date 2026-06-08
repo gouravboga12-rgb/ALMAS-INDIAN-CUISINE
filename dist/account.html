@@ -971,34 +971,46 @@
       transform: none !important;
     }
 
-    /* ---- Compact Sign Up Form styling ---- */
-    #auth-panel-signup .auth-input {
+    /* ---- Compact Form Styling (Sign Up, OTP, Forgot) ---- */
+    #auth-panel-signup .auth-input,
+    #auth-panel-otp .auth-input,
+    #auth-panel-forgot .auth-input {
       padding: 0.65rem 0.85rem !important;
       font-size: 0.82rem !important;
       border-radius: 6px !important;
     }
-    #auth-panel-signup .auth-input-group {
+    #auth-panel-signup .auth-input-group,
+    #auth-panel-otp .auth-input-group,
+    #auth-panel-forgot .auth-input-group {
       margin-bottom: 0.6rem !important;
     }
-    #auth-panel-signup .auth-submit-btn {
+    #auth-panel-signup .auth-submit-btn,
+    #auth-panel-otp .auth-submit-btn,
+    #auth-panel-forgot .auth-submit-btn {
       padding: 0.75rem !important;
       font-size: 0.88rem !important;
       border-radius: 6px !important;
       margin-top: 0.25rem !important;
     }
-    #auth-panel-signup .auth-divider {
+    #auth-panel-signup .auth-divider,
+    #auth-panel-otp .auth-divider,
+    #auth-panel-forgot .auth-divider {
       margin: 0.75rem 0 !important;
       font-size: 0.75rem !important;
     }
-    #auth-panel-signup .social-login-group {
+    #auth-panel-signup .social-login-group,
+    #auth-panel-otp .social-login-group,
+    #auth-panel-forgot .social-login-group {
       margin-bottom: 0.75rem !important;
     }
-    #auth-panel-signup .auth-switch-prompt {
+    #auth-panel-signup .auth-switch-prompt,
+    #auth-panel-otp .auth-switch-prompt,
+    #auth-panel-forgot .auth-switch-prompt {
       margin-top: 1rem !important;
       font-size: 0.8rem !important;
     }
   </style>
-  <script type="module" crossorigin src="/assets/account-GruYDMP5.js"></script>
+  <script type="module" crossorigin src="/assets/account-CILF0n42.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/style-Cr8-PNSf.js">
   <link rel="stylesheet" crossorigin href="/assets/style-DPkAID5s.css">
 </head>
@@ -1145,6 +1157,14 @@
           <h2 class="auth-card-title">Create Account</h2>
           <p class="auth-card-subtitle">Join us to experience exclusive benefits</p>
         </div>
+        <div id="auth-header-otp" class="auth-header" style="display:none;">
+          <h2 class="auth-card-title">Verify Email</h2>
+          <p class="auth-card-subtitle" id="otp-header-subtitle">Enter the 6-digit code sent to your email</p>
+        </div>
+        <div id="auth-header-forgot" class="auth-header" style="display:none;">
+          <h2 class="auth-card-title">Reset Password</h2>
+          <p class="auth-card-subtitle" id="forgot-header-subtitle">Recover access to your account</p>
+        </div>
 
         <!-- Login Form -->
         <div id="auth-panel-login">
@@ -1213,6 +1233,57 @@
           
           <div class="auth-switch-prompt" style="margin-top:1.5rem;">
             Already have an account?<button type="button" class="auth-switch-link" id="switch-to-login">Log In</button>
+          </div>
+        </div>
+
+        <!-- OTP Verification Form -->
+        <div id="auth-panel-otp" style="display:none;">
+          <div class="auth-input-group">
+            <input type="text" id="otp-code" class="auth-input" placeholder="6-digit OTP Code" maxlength="6" style="text-align:center; font-size:1.2rem; letter-spacing:0.2em; font-weight:700;">
+          </div>
+          <button class="auth-submit-btn" id="btn-verify-otp">Verify Code</button>
+          
+          <div class="auth-switch-prompt" style="margin-top:1.5rem;">
+            Didn't receive code? <button type="button" class="auth-switch-link" id="btn-resend-otp">Resend</button>
+          </div>
+          <div class="auth-switch-prompt">
+            <button type="button" class="auth-switch-link" id="switch-to-login-from-otp">← Back to Log In</button>
+          </div>
+        </div>
+
+        <!-- Forgot / Reset Password Form -->
+        <div id="auth-panel-forgot" style="display:none;">
+          <!-- Step 1: Send OTP -->
+          <div id="forgot-step-send">
+            <div class="auth-input-group">
+              <input type="email" id="forgot-email" class="auth-input" placeholder="Email Address">
+            </div>
+            <button class="auth-submit-btn" id="btn-forgot-send">Send Code</button>
+            <div class="auth-switch-prompt" style="margin-top:1.5rem;">
+              Back to <button type="button" class="auth-switch-link" id="switch-to-login-from-forgot">Log In</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Reset Password -->
+          <div id="forgot-step-reset" style="display:none;">
+            <div class="auth-input-group" style="margin-bottom:0.75rem;">
+              <input type="text" id="reset-otp" class="auth-input" placeholder="6-digit Reset Code" maxlength="6" style="text-align:center; font-size:1.1rem; letter-spacing:0.15em; font-weight:700;">
+            </div>
+            <div class="auth-input-group">
+              <div class="input-wrapper">
+                <input type="password" id="reset-password" class="auth-input password-input" placeholder="New Password">
+                <button type="button" class="password-toggle" id="btn-toggle-reset-password" title="Show Password">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <button class="auth-submit-btn" id="btn-reset-submit">Save & Log In</button>
+            <div class="auth-switch-prompt" style="margin-top:1.5rem;">
+              Back to <button type="button" class="auth-switch-link" id="switch-to-login-from-reset">Log In</button>
+            </div>
           </div>
         </div>
       </div>

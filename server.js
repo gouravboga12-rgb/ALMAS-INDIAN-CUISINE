@@ -7,6 +7,7 @@ import multer from 'multer';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { OAuth2Client } from 'google-auth-library';
+import { sendVerificationEmail, sendPasswordResetEmail } from './email.js';
 import {
   initializeDatabase,
   getMenu,
@@ -129,7 +130,7 @@ app.post('/api/auth/login', async (req, res) => {
 
 // ─── USER AUTHENTICATION ENDPOINTS ───────────────────────────────────────────
 
-// POST /api/user/auth/register - Email/Password Registration
+// POST /api/user/auth/register - Email/Password Registration (with OTP Email Verification)
 app.post('/api/user/auth/register', async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
@@ -138,24 +139,65 @@ app.post('/api/user/auth/register', async (req, res) => {
 
   try {
     const existing = await findUserByEmail(email);
-    if (existing) {
-      return res.status(400).json({ success: false, error: 'Email address is already registered.' });
-    }
-
     const salt = await bcrypt.genSalt(10);
     const password_hash = await bcrypt.hash(password, salt);
 
-    const user = await createUser({
-      name,
-      email,
-      password_hash,
-      provider: 'email'
+    let user;
+    if (existing) {
+      if (existing.is_verified) {
+        return res.status(400).json({ success: false, error: 'Email address is already registered.' });
+      }
+      // Reuse existing unverified account
+      user = await updateUser(existing.id, { name, password_hash, provider: 'email' });
+    } else {
+      // Create new unverified account
+      user = await createUser({
+        name,
+        email,
+        password_hash,
+        provider: 'email',
+        is_verified: 0
+      });
+    }
+
+    // Generate 6-digit OTP code
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expires = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+    await updateUser(user.id, { otp_code: otp, otp_expires: expires });
+    await sendVerificationEmail(user.email, user.name, otp);
+
+    res.status(201).json({
+      success: true,
+      requiresVerification: true,
+      email: user.email,
+      message: 'Verification code sent to your email.'
     });
+  } catch (err) {
+    console.error('Registration error:', err);
+    res.status(500).json({ success: false, error: 'Server error during registration.' });
+  }
+});
+
+// POST /api/user/auth/verify-signup - Verify OTP for registration activation
+app.post('/api/user/auth/verify-signup', async (req, res) => {
+  const { email, otp } = req.body;
+  if (!email || !otp) {
+    return res.status(400).json({ success: false, error: 'Email and verification code are required.' });
+  }
+
+  try {
+    const user = await findUserByEmail(email);
+    if (!user || user.otp_code !== otp || Date.now() > user.otp_expires) {
+      return res.status(400).json({ success: false, error: 'Invalid or expired verification code.' });
+    }
+
+    await updateUser(user.id, { is_verified: 1, otp_code: null, otp_expires: null });
 
     const userSecret = process.env.JWT_USER_SECRET || 'almas_user_auth_secret_token_2026_xyz';
     const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, userSecret, { expiresIn: '7d' });
 
-    res.status(201).json({
+    res.json({
       success: true,
       token,
       user: {
@@ -167,8 +209,34 @@ app.post('/api/user/auth/register', async (req, res) => {
       }
     });
   } catch (err) {
-    console.error('Registration error:', err);
-    res.status(500).json({ success: false, error: 'Server error during registration.' });
+    console.error('Verification error:', err);
+    res.status(500).json({ success: false, error: 'Server error during email verification.' });
+  }
+});
+
+// POST /api/user/auth/resend-signup-otp - Resend code
+app.post('/api/user/auth/resend-signup-otp', async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ success: false, error: 'Email is required.' });
+  }
+
+  try {
+    const user = await findUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User account not found.' });
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expires = Date.now() + 10 * 60 * 1000;
+
+    await updateUser(user.id, { otp_code: otp, otp_expires: expires });
+    await sendVerificationEmail(user.email, user.name, otp);
+
+    res.json({ success: true, message: 'Verification code resent.' });
+  } catch (err) {
+    console.error('Resend OTP error:', err);
+    res.status(500).json({ success: false, error: 'Server error resending code.' });
   }
 });
 
@@ -192,6 +260,22 @@ app.post('/api/user/auth/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password_hash);
     if (!isMatch) {
       return res.status(400).json({ success: false, error: 'Invalid email or password.' });
+    }
+
+    // Check if email is verified
+    if (!user.is_verified) {
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const expires = Date.now() + 10 * 60 * 1000;
+
+      await updateUser(user.id, { otp_code: otp, otp_expires: expires });
+      await sendVerificationEmail(user.email, user.name, otp);
+
+      return res.status(400).json({
+        success: false,
+        requiresVerification: true,
+        email: user.email,
+        error: 'Your email address is not verified. A new verification code has been sent.'
+      });
     }
 
     const userSecret = process.env.JWT_USER_SECRET || 'almas_user_auth_secret_token_2026_xyz';
@@ -238,19 +322,20 @@ app.post('/api/user/auth/google', async (req, res) => {
     if (!user) {
       user = await findUserByEmail(email);
       if (user) {
-        user = await updateUser(user.id, { google_id: googleId, avatar: avatar || user.avatar, provider: 'google' });
+        user = await updateUser(user.id, { google_id: googleId, avatar: avatar || user.avatar, provider: 'google', is_verified: 1 });
       } else {
         user = await createUser({
           name: name || email.split('@')[0],
           email,
           google_id: googleId,
           avatar,
-          provider: 'google'
+          provider: 'google',
+          is_verified: 1
         });
       }
     } else {
-      if (user.avatar !== avatar || user.name !== name) {
-        user = await updateUser(user.id, { name: name || user.name, avatar: avatar || user.avatar });
+      if (user.avatar !== avatar || user.name !== name || !user.is_verified) {
+        user = await updateUser(user.id, { name: name || user.name, avatar: avatar || user.avatar, is_verified: 1 });
       }
     }
 
@@ -271,6 +356,63 @@ app.post('/api/user/auth/google', async (req, res) => {
   } catch (err) {
     console.error('Google Auth verification error:', err);
     res.status(400).json({ success: false, error: 'Google sign-in verification failed.' });
+  }
+});
+
+// POST /api/user/auth/forgot-password - Trigger password reset email
+app.post('/api/user/auth/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ success: false, error: 'Email is required.' });
+  }
+
+  try {
+    const user = await findUserByEmail(email);
+    // Return success for security obfuscation even if user doesn't exist
+    if (!user) {
+      return res.json({ success: true, message: 'If the email is registered, a reset code has been sent.' });
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expires = Date.now() + 10 * 60 * 1000;
+
+    await updateUser(user.id, { otp_code: otp, otp_expires: expires });
+    await sendPasswordResetEmail(user.email, user.name, otp);
+
+    res.json({ success: true, message: 'If the email is registered, a reset code has been sent.' });
+  } catch (err) {
+    console.error('Forgot password error:', err);
+    res.status(500).json({ success: false, error: 'Server error during password reset request.' });
+  }
+});
+
+// POST /api/user/auth/reset-password - Verify reset code and save new password
+app.post('/api/user/auth/reset-password', async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+  if (!email || !otp || !newPassword) {
+    return res.status(400).json({ success: false, error: 'Email, code, and new password are required.' });
+  }
+
+  try {
+    const user = await findUserByEmail(email);
+    if (!user || user.otp_code !== otp || Date.now() > user.otp_expires) {
+      return res.status(400).json({ success: false, error: 'Invalid or expired verification code.' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const password_hash = await bcrypt.hash(newPassword, salt);
+
+    await updateUser(user.id, {
+      password_hash,
+      is_verified: 1, // Resetting automatically verifies the email
+      otp_code: null,
+      otp_expires: null
+    });
+
+    res.json({ success: true, message: 'Password reset successfully. You can now log in.' });
+  } catch (err) {
+    console.error('Reset password error:', err);
+    res.status(500).json({ success: false, error: 'Server error resetting password.' });
   }
 });
 
