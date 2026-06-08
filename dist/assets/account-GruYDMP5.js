@@ -1,0 +1,47 @@
+import"./style-Cr8-PNSf.js";var e=[`Order Received`,`Kitchen Preparing`,`Ready for Pickup`];function t(t){let n=e.indexOf(t);return n===-1?0:n}function n(e){let t=(e||``).toLowerCase();return t.includes(`paid`)||t.includes(`authorized`)?`paid`:t.includes(`pending`)?`pending`:`authorized`}function r(t){return`
+        <div class="order-status-track">
+          ${e.map((e,n)=>{let r=``;return n<t?r=`done`:n===t&&(r=`active`),`
+              <div class="track-step ${r}">
+                <div class="track-dot"></div>
+                <span class="track-label">${e}</span>
+              </div>
+            `}).join(``)}
+        </div>
+      `}function i(e,i){let a=t(e.prepStatus),o=n(e.status),s=Array.isArray(e.items)?e.items.join(` · `):e.items,c=Array.isArray(e.items)?e.items.map(e=>`<div class="order-item-line">${e}</div>`).join(``):`<div class="order-item-line">${e.items}</div>`;return`
+        <div class="order-card" id="order-card-${i}">
+          <div class="order-card-header">
+            <div>
+              <div class="order-card-id">${e.id||`ALM-`+i}</div>
+              <div class="order-card-type">${e.type}</div>
+            </div>
+            <div class="order-card-date">
+              <div>${e.date}</div>
+              <div class="order-card-total" style="margin-top:0.4rem;">$${parseFloat(e.total||0).toFixed(2)}</div>
+            </div>
+          </div>
+
+          <div class="order-card-items">${s}</div>
+
+          <button class="order-expand-btn" data-idx="${i}">
+            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+            </svg>
+            View Items
+          </button>
+          <div class="order-items-expanded" id="order-expanded-${i}">
+            ${c}
+          </div>
+
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
+            <span class="order-status-badge ${o}">${e.status}</span>
+            <span style="color:rgba(255,255,255,0.3); font-size:0.72rem;">${e.payment||``}</span>
+          </div>
+
+          ${r(a)}
+        </div>
+      `}async function a(){let e=localStorage.getItem(`almas_token`),t=document.getElementById(`orders-list`),n=document.getElementById(`orders-empty`),r=document.getElementById(`order-count-badge`),a=document.getElementById(`total-order-count`);try{let o=await l(`/api/user/orders`,e);if(r.textContent=`${o.length} order${o.length===1?``:`s`}`,a.textContent=o.length,o.length===0){n.style.display=`block`,t.innerHTML=``;return}n.style.display=`none`,t.innerHTML=o.map((e,t)=>i(e,t)).join(``),t.querySelectorAll(`.order-expand-btn`).forEach(e=>{e.addEventListener(`click`,()=>{let t=e.dataset.idx,n=document.getElementById(`order-expanded-${t}`).classList.toggle(`open`);e.innerHTML=`
+              <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="${n?`M5 15l7-7 7 7`:`M19 9l-7 7-7-7`}"></path>
+              </svg>
+              ${n?`Hide Items`:`View Items`}
+            `})})}catch{n.style.display=`block`}}function o(e,t,n=null){let r=(e||`U`)[0].toUpperCase();document.getElementById(`auth-card-view`).style.display=`none`,document.getElementById(`logged-in-view`).style.display=`block`;let i=document.getElementById(`sidebar-avatar`);n?i.innerHTML=`<img src="${n}" alt="${e}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`:i.textContent=r,document.getElementById(`sidebar-name`).textContent=e,document.getElementById(`sidebar-email`).textContent=t;let o=document.getElementById(`main-avatar`);n?o.innerHTML=`<img src="${n}" alt="${e}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`:o.textContent=r,document.getElementById(`main-name`).textContent=e,document.getElementById(`main-email`).textContent=t;let s=document.querySelector(`.account-layout`);s&&s.classList.remove(`logged-out`),document.getElementById(`account-main-content`).style.display=`block`,a()}function s(){localStorage.removeItem(`almas_account`),localStorage.removeItem(`almas_token`);let e=document.querySelector(`.account-layout`);e&&e.classList.add(`logged-out`),document.getElementById(`auth-card-view`).style.display=`block`,document.getElementById(`logged-in-view`).style.display=`none`,document.getElementById(`account-main-content`).style.display=`none`,document.getElementById(`login-email`).value=``,document.getElementById(`login-password`).value=``,document.getElementById(`auth-panel-login`).style.display=`block`,document.getElementById(`auth-panel-signup`).style.display=`none`,document.getElementById(`auth-header-login`).style.display=`block`,document.getElementById(`auth-header-signup`).style.display=`none`,window.dispatchEvent(new Event(`auth-change`))}async function c(e,t,n=null){let r={"Content-Type":`application/json`};n&&(r.Authorization=`Bearer ${n}`);let i=await fetch(e,{method:`POST`,headers:r,body:JSON.stringify(t)}),a=await i.json();if(!i.ok)throw Error(a.error||`Request failed.`);return a}async function l(e,t){let n=await fetch(e,{method:`GET`,headers:{Authorization:`Bearer ${t}`}}),r=await n.json();if(!n.ok)throw Error(r.error||`Request failed.`);return r}async function u(e){try{f();let t=await c(`/api/user/auth/google`,{credential:e.credential});t.success&&(localStorage.setItem(`almas_account`,JSON.stringify(t.user)),localStorage.setItem(`almas_token`,t.token),o(t.user.name,t.user.email,t.user.avatar),window.dispatchEvent(new Event(`auth-change`)))}catch(e){d(e.message||`Google sign-in verification failed.`)}}function d(e,t=`error`){let n=document.getElementById(`auth-alert`);n&&(n.textContent=e,n.className=`auth-alert `+t,n.style.display=`flex`,n.scrollIntoView({behavior:`smooth`,block:`nearest`}))}function f(){let e=document.getElementById(`auth-alert`);e&&(e.style.display=`none`)}function p(e,t){let n=document.getElementById(e),r=document.getElementById(t);!n||!r||r.addEventListener(`click`,e=>{e.preventDefault(),n.type=n.type===`password`?`text`:`password`})}document.addEventListener(`DOMContentLoaded`,()=>{let e=localStorage.getItem(`almas_token`),t=JSON.parse(localStorage.getItem(`almas_account`));e&&t?(o(t.name,t.email,t.avatar),l(`/api/user/profile`,e).then(e=>{e.success&&e.user&&(localStorage.setItem(`almas_account`,JSON.stringify(e.user)),o(e.user.name,e.user.email,e.user.avatar))}).catch(()=>s())):s(),p(`login-password`,`btn-toggle-login-password`),p(`signup-password`,`btn-toggle-signup-password`);function n(){f(),document.getElementById(`auth-panel-login`).style.display=`none`,document.getElementById(`auth-panel-signup`).style.display=`block`,document.getElementById(`auth-header-login`).style.display=`none`,document.getElementById(`auth-header-signup`).style.display=`block`}function r(){f(),document.getElementById(`auth-panel-login`).style.display=`block`,document.getElementById(`auth-panel-signup`).style.display=`none`,document.getElementById(`auth-header-login`).style.display=`block`,document.getElementById(`auth-header-signup`).style.display=`none`}document.getElementById(`switch-to-signup`)?.addEventListener(`click`,e=>{e.preventDefault(),n()}),document.getElementById(`switch-to-login`)?.addEventListener(`click`,e=>{e.preventDefault(),r()}),document.getElementById(`btn-login`).addEventListener(`click`,async()=>{f();let e=document.getElementById(`login-email`).value.trim(),t=document.getElementById(`login-password`).value.trim();if(!e||!t){d(`Required fields missing.`);return}try{let n=await c(`/api/user/auth/login`,{email:e,password:t});localStorage.setItem(`almas_account`,JSON.stringify(n.user)),localStorage.setItem(`almas_token`,n.token),o(n.user.name,n.user.email,n.user.avatar),window.dispatchEvent(new Event(`auth-change`))}catch(e){d(e.message)}}),document.getElementById(`btn-signup`).addEventListener(`click`,async()=>{f();let e=document.getElementById(`signup-name`).value.trim(),t=document.getElementById(`signup-email`).value.trim(),n=document.getElementById(`signup-password`).value.trim();if(!e||!t||!n){d(`Required fields missing.`);return}try{let r=await c(`/api/user/auth/register`,{name:e,email:t,password:n});localStorage.setItem(`almas_account`,JSON.stringify(r.user)),localStorage.setItem(`almas_token`,r.token),o(r.user.name,r.user.email,r.user.avatar),window.dispatchEvent(new Event(`auth-change`))}catch(e){d(e.message)}}),fetch(`/api/auth/config`).then(e=>e.json()).then(e=>{if(e.googleClientId&&window.google){google.accounts.id.initialize({client_id:e.googleClientId,callback:u});let t=document.getElementById(`btn-google-login`);t&&google.accounts.id.renderButton(t,{theme:`outline`,size:`large`,width:`100%`});let n=document.getElementById(`btn-google-signup`);n&&google.accounts.id.renderButton(n,{theme:`outline`,size:`medium`,width:`100%`})}}),document.getElementById(`btn-logout`).addEventListener(`click`,s)});

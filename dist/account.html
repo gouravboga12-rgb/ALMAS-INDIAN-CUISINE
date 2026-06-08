@@ -966,13 +966,39 @@
       color: #ffffff !important;
       border: none !important;
     }
-    
     .auth-card-light .social-login-btn.apple:hover {
       background: #1a1a1a !important;
       transform: none !important;
     }
+
+    /* ---- Compact Sign Up Form styling ---- */
+    #auth-panel-signup .auth-input {
+      padding: 0.65rem 0.85rem !important;
+      font-size: 0.82rem !important;
+      border-radius: 6px !important;
+    }
+    #auth-panel-signup .auth-input-group {
+      margin-bottom: 0.6rem !important;
+    }
+    #auth-panel-signup .auth-submit-btn {
+      padding: 0.75rem !important;
+      font-size: 0.88rem !important;
+      border-radius: 6px !important;
+      margin-top: 0.25rem !important;
+    }
+    #auth-panel-signup .auth-divider {
+      margin: 0.75rem 0 !important;
+      font-size: 0.75rem !important;
+    }
+    #auth-panel-signup .social-login-group {
+      margin-bottom: 0.75rem !important;
+    }
+    #auth-panel-signup .auth-switch-prompt {
+      margin-top: 1rem !important;
+      font-size: 0.8rem !important;
+    }
   </style>
-  <script type="module" crossorigin src="/assets/account-D23QMRnV.js"></script>
+  <script type="module" crossorigin src="/assets/account-GruYDMP5.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/style-Cr8-PNSf.js">
   <link rel="stylesheet" crossorigin href="/assets/style-DPkAID5s.css">
 </head>
@@ -1111,17 +1137,17 @@
         <div id="auth-alert" class="auth-alert"></div>
 
         <!-- Headers (Toggled in JS instead of Tabs) -->
-        <div id="auth-header-login" class="auth-header" style="display:none;">
+        <div id="auth-header-login" class="auth-header">
           <h2 class="auth-card-title">Welcome back!</h2>
           <p class="auth-card-subtitle">Login to manage your dining hub & orders</p>
         </div>
-        <div id="auth-header-signup" class="auth-header">
+        <div id="auth-header-signup" class="auth-header" style="display:none;">
           <h2 class="auth-card-title">Create Account</h2>
           <p class="auth-card-subtitle">Join us to experience exclusive benefits</p>
         </div>
 
         <!-- Login Form -->
-        <div id="auth-panel-login" style="display:none;">
+        <div id="auth-panel-login">
           <div class="social-login-group" style="margin-bottom:1rem;">
             <div id="btn-google-login" style="display:flex; justify-content:center;"></div>
           </div>
@@ -1156,7 +1182,7 @@
         </div>
 
         <!-- Sign Up Form -->
-        <div id="auth-panel-signup">
+        <div id="auth-panel-signup" style="display:none;">
           <div class="social-login-group" style="margin-bottom:1rem;">
             <div id="btn-google-signup" style="display:flex; justify-content:center;"></div>
           </div>
