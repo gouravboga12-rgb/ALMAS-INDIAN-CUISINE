@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | ALMAS Indian Cuisine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #0A0A0C;
+      --card-bg: rgba(20, 20, 25, 0.7);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --primary: #CC5500;
+      --primary-hover: #E0650D;
+      --gold: #D4AF37;
+      --text-main: #F3F4F6;
+      --text-muted: #9CA3AF;
+      --success: #10B981;
+      --danger: #EF4444;
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(204, 85, 0, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 40%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Common Components */
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    button {
+      font-family: var(--font-heading);
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: all 0.2s ease-in-out;
+    }
+
+    input, textarea, select {
+      font-family: var(--font-body);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-main);
+      padding: 10px 14px;
+      outline: none;
+      transition: all 0.2s;
+      width: 100%;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(204, 85, 0, 0.25);
+    }
+
+    /* Auth Screen */
+    #auth-screen {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1;
+      padding: 20px;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      padding: 40px 30px;
+      text-align: center;
+    }
+
+    .logo-img {
+      height: 70px;
+      margin-bottom: 20px;
+      object-contain: contain;
+    }
+
+    .auth-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      color: #FFF;
+      letter-spacing: -0.02em;
+    }
+
+    .auth-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .btn-submit {
+      background: var(--primary);
+      color: #FFF;
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-top: 10px;
+      box-shadow: 0 4px 14px rgba(204, 85, 0, 0.4);
+    }
+
+    .btn-submit:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:active {
+      transform: translateY(1px);
+    }
+
+    /* Dashboard Layout */
+    #dashboard-screen {
+      display: none;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border-color);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 12, 0.8);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-logo-group {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .header-logo {
+      height: 40px;
+    }
+
+    .header-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: #FFF;
+      letter-spacing: -0.02em;
+    }
+
+    .btn-logout {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .btn-logout:hover {
+      background: var(--danger);
+      color: #FFF;
+    }
+
+    /* Main Container */
+    .admin-container {
+      display: flex;
+      flex-grow: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 30px;
+      gap: 30px;
+    }
+
+    /* Sidebar Navigation */
+    .admin-nav {
+      width: 250px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 18px;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text-muted);
+      text-align: left;
+      font-size: 0.9rem;
+      font-weight: 600;
+      width: 100%;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+    }
+
+    .nav-btn.active {
+      background: rgba(204, 85, 0, 0.15);
+      color: var(--primary);
+      border-left: 3px solid var(--primary);
+      border-radius: 0 8px 8px 0;
+    }
+
+    /* Dashboard Panels */
+    .admin-content {
+      flex-grow: 1;
+      min-width: 0;
+    }
+
+    .panel {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 15px;
+    }
+
+    .panel-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: #FFF;
+    }
+
+    .btn-add {
+      background: var(--primary);
+      color: #FFF;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-add:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Lists and Tables */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      padding: 14px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 700;
+    }
+
+    td {
+      padding: 16px 14px;
+      font-size: 0.85rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .action-btn-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-action {
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .btn-action.edit {
+      background: rgba(212, 175, 55, 0.1);
+      color: var(--gold);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .btn-action.edit:hover {
+      background: var(--gold);
+      color: #000;
+    }
+
+    .btn-action.delete {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .btn-action.delete:hover {
+      background: var(--danger);
+      color: #FFF;
+    }
+
+    /* Grid layout */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .item-card {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .item-img-preview {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .item-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #FFF;
+      margin-bottom: 4px;
+    }
+
+    .item-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 12px;
+      flex-grow: 1;
+    }
+
+    .item-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .item-price {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .badge-p {
+      font-size: 0.65rem;
+      background: var(--border-color);
+      padding: 2px 8px;
+      border-radius: 99px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* Settings Sections */
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 25px;
+    }
+
+    @media (min-width: 900px) {
+      .settings-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .settings-section {
+      padding: 25px;
+    }
+
+    .settings-section-title {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+      margin-bottom: 18px;
+      color: #FFF;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 600px;
+      padding: 30px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    .modal-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #FFF;
+    }
+
+    .modal-close {
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 1.25rem;
+    }
+
+    .modal-close:hover {
+      color: #FFF;
+    }
+
+    .modal-form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    @media (min-width: 600px) {
+      .modal-form-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .col-span-2 {
+        grid-column: span 2;
+      }
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 25px;
+      border-top: 1px solid var(--border-color);
+      padding-top: 15px;
+    }
+
+    .btn-cancel {
+      background: rgba(255,255,255,0.06);
+      color: var(--text-main);
+      padding: 10px 20px;
+      border-radius: 8px;
+    }
+
+    .btn-cancel:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* Loading and Status */
+    .status-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .status-badge.new {
+      background: rgba(204, 85, 0, 0.15);
+      color: var(--primary);
+    }
+
+    .status-badge.read {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+    }
+
+    /* Floating Toasts */
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 2000;
+    }
+
+    .toast {
+      background: #1F2937;
+      border-left: 4px solid var(--primary);
+      padding: 12px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      font-weight: 600;
+      animation: slideIn 0.3s ease, fadeOut 0.3s ease 3.7s;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .admin-container {
+        flex-direction: column;
+      }
+      .admin-nav {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 10px;
+      }
+      .nav-btn {
+        white-space: nowrap;
+        padding: 10px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- AUTH SCREEN -->
+  <div id="auth-screen">
+    <div class="auth-card glass-card">
+      <img src="/logo.png" alt="ALMAS" class="logo-img">
+      <h2 class="auth-title">Admin Login</h2>
+      <p class="auth-subtitle">ALMAS Indian Cuisine Control Deck</p>
+      
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label">Admin Email</label>
+          <input type="email" id="login-email" required placeholder="admin@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="login-password" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn-submit">Authenticate</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- DASHBOARD SCREEN -->
+  <div id="dashboard-screen">
+    <header>
+      <div class="header-logo-group">
+        <img src="/logo.png" alt="ALMAS" class="header-logo">
+        <h1 class="header-title">Control Panel</h1>
+      </div>
+      <button id="logout-btn" class="btn-logout">Sign Out</button>
+    </header>
+
+    <div class="admin-container">
+      <!-- NAVIGATION -->
+      <nav class="admin-nav">
+        <button class="nav-btn active" data-panel="inquiries-panel">📩 Inquiries</button>
+        <button class="nav-btn" data-panel="categories-panel">📁 Categories</button>
+        <button class="nav-btn" data-panel="products-panel">🍲 Menu Items</button>
+        <button class="nav-btn" data-panel="services-panel">🤝 Catering Services</button>
+        <button class="nav-btn" data-panel="packages-panel">📦 Catering Packages</button>
+        <button class="nav-btn" data-panel="settings-panel">⚙️ Settings</button>
+      </nav>
+
+      <!-- PANELS CONTENT -->
+      <main class="admin-content">
+        
+        <!-- ================= PANEL 1: INQUIRIES ================= -->
+        <section id="inquiries-panel" class="panel active">
+          <div class="panel-header">
+            <h2 class="panel-title">Inbox Inquiries</h2>
+          </div>
+          <div class="glass-card table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Name</th>
+                  <th>Contact info</th>
+                  <th>Inquiry Details</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="inquiries-table-body">
+                <!-- Dynamically loaded -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ================= PANEL 2: CATEGORIES ================= -->
+        <section id="categories-panel" class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Menu Categories</h2>
+            <button class="btn-add" id="btn-add-category">✚ Add Category</button>
+          </div>
+          <div class="glass-card table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Category ID</th>
+                  <th>Category Name</th>
+                  <th>Icon</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="categories-table-body">
+                <!-- Dynamically loaded -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ================= PANEL 3: PRODUCTS ================= -->
+        <section id="products-panel" class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Menu Items</h2>
+            <button class="btn-add" id="btn-add-product">✚ Add Menu Item</button>
+          </div>
+          
+          <!-- Filter options -->
+          <div class="glass-card" style="padding: 15px; margin-bottom: 20px; display: flex; gap: 15px; align-items: center;">
+            <span class="form-label" style="margin-bottom: 0;">Filter Category:</span>
+            <select id="product-category-filter" style="width: auto; max-width: 250px;">
+              <option value="all">All Categories</option>
+            </select>
+          </div>
+
+          <div class="grid-container" id="products-grid">
+            <!-- Dynamically loaded cards -->
+          </div>
+        </section>
+
+        <!-- ================= PANEL 4: CATERING SERVICES ================= -->
+        <section id="services-panel" class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Catering Services</h2>
+            <button class="btn-add" id="btn-add-service">✚ Add Service</button>
+          </div>
+          <div class="grid-container" id="services-grid">
+            <!-- Dynamically loaded cards -->
+          </div>
+        </section>
+
+        <!-- ================= PANEL 5: CATERING PACKAGES ================= -->
+        <section id="packages-panel" class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Catering Packages</h2>
+            <button class="btn-add" id="btn-add-package">✚ Add Package</button>
+          </div>
+          <div class="glass-card table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Package Name</th>
+                  <th>Badge (Limit)</th>
+                  <th>Price / Guest</th>
+                  <th>Inclusions & description</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="packages-table-body">
+                <!-- Dynamically loaded -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ================= PANEL 6: GLOBAL SETTINGS ================= -->
+        <section id="settings-panel" class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Website Settings</h2>
+          </div>
+          
+          <form id="settings-form" class="settings-grid">
+            <!-- timings -->
+            <div class="glass-card settings-section">
+              <h3 class="settings-section-title">🕒 timings (Hours)</h3>
+              <div class="form-group">
+                <label class="form-label">Monday - Thursday</label>
+                <input type="text" id="setting-hours-mon-thu" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Friday - Saturday</label>
+                <input type="text" id="setting-hours-fri-sat" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Sunday</label>
+                <input type="text" id="setting-hours-sun" required>
+              </div>
+            </div>
+
+            <!-- Scroll text and WhatsApp -->
+            <div class="glass-card settings-section">
+              <h3 class="settings-section-title">📢 Marketing & Floating Actions</h3>
+              <div class="form-group">
+                <label class="form-label">Scrolling Offers / Marquee Text</label>
+                <textarea id="setting-marquee" rows="4" required></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">WhatsApp Contact Number (Floating Icon)</label>
+                <input type="text" id="setting-whatsapp" required placeholder="E.g., +14165550199">
+              </div>
+            </div>
+
+            <!-- Social Media URLs -->
+            <div class="glass-card settings-section">
+              <h3 class="settings-section-title">🌐 Footer Social Icons</h3>
+              <div class="form-group">
+                <label class="form-label">Instagram Link</label>
+                <input type="url" id="setting-social-instagram" placeholder="https://instagram.com/...">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Facebook Link</label>
+                <input type="url" id="setting-social-facebook" placeholder="https://facebook.com/...">
+              </div>
+              <div class="form-group">
+                <label class="form-label">TikTok Link</label>
+                <input type="url" id="setting-social-tiktok" placeholder="https://tiktok.com/...">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Google Page Review Link</label>
+                <input type="url" id="setting-social-google" placeholder="https://share.google/...">
+              </div>
+              <div class="form-group">
+                <label class="form-label">TripAdvisor Review Link</label>
+                <input type="url" id="setting-social-tripadvisor" placeholder="https://tripadvisor.com/...">
+              </div>
+            </div>
+
+            <!-- Delivery Partner URLs -->
+            <div class="glass-card settings-section">
+              <h3 class="settings-section-title">🚗 Delivery Platforms</h3>
+              <div class="form-group">
+                <label class="form-label">Uber Eats Link</label>
+                <input type="url" id="setting-delivery-uber" required placeholder="https://ubereats.com/...">
+              </div>
+              <div class="form-group">
+                <label class="form-label">DoorDash Link</label>
+                <input type="url" id="setting-delivery-doordash" required placeholder="https://doordash.com/...">
+              </div>
+              <div class="form-group">
+                <label class="form-label">SkipTheDishes Link</label>
+                <input type="url" id="setting-delivery-skip" required placeholder="https://skipthedishes.com/...">
+              </div>
+              <button type="submit" class="btn-submit" style="margin-top: 25px;">Save All Settings</button>
+            </div>
+          </form>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- CATEGORY MODAL -->
+  <div id="category-modal" class="modal-overlay">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="category-modal-title">Category Details</h3>
+        <button class="modal-close" onclick="closeModal('category-modal')">✕</button>
+      </div>
+      <form id="category-form" class="modal-form-grid">
+        <input type="hidden" id="category-form-mode" value="add">
+        <div class="form-group">
+          <label class="form-label">Category ID (Slug)</label>
+          <input type="text" id="category-slug" placeholder="e.g. signature-dishes" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category Name</label>
+          <input type="text" id="category-name" placeholder="e.g. Signature Dishes" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Icon (Emoji)</label>
+          <input type="text" id="category-icon" placeholder="e.g. 🍛" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Display Order</label>
+          <input type="number" id="category-order" value="1" required>
+        </div>
+        <div class="modal-footer col-span-2">
+          <button type="button" class="btn-cancel" onclick="closeModal('category-modal')">Cancel</button>
+          <button type="submit" class="btn-submit" style="width: auto; margin-top:0;">Save Category</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- PRODUCT MODAL -->
+  <div id="product-modal" class="modal-overlay">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="product-modal-title">Menu Item Details</h3>
+        <button class="modal-close" onclick="closeModal('product-modal')">✕</button>
+      </div>
+      <form id="product-form" class="modal-form-grid">
+        <input type="hidden" id="product-form-mode" value="add">
+        <input type="hidden" id="product-old-id" value="">
+        
+        <div class="form-group">
+          <label class="form-label">Item Unique ID</label>
+          <input type="text" id="product-id" placeholder="e.g. mutton-marag" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Item Name</label>
+          <input type="text" id="product-name" placeholder="e.g. Mutton Marag" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Price (Raw String or list)</label>
+          <input type="text" id="product-price" placeholder="e.g. $7.99 or $18.99 / $29.99" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select id="product-category" required></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Diet Profile</label>
+          <select id="product-diet" required>
+            <option value="VEG">VEG (Green)</option>
+            <option value="NON-VEG">NON-VEG (Red)</option>
+            <option value="SEAFOOD">SEAFOOD (Blue)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Badge Label (Optional)</label>
+          <input type="text" id="product-badge" placeholder="e.g. Weekend Special, Signature">
+        </div>
+        <div class="form-group col-span-2">
+          <label class="form-label">Image Upload</label>
+          <input type="file" id="product-img-file" accept="image/*">
+          <input type="text" id="product-img-url" placeholder="or paste image URL link" style="margin-top: 8px;">
+        </div>
+        <div class="form-group col-span-2">
+          <label class="form-label">Chef's Description</label>
+          <textarea id="product-desc" rows="3" placeholder="Tell us about the ingredients, background..."></textarea>
+        </div>
+        <div class="modal-footer col-span-2">
+          <button type="button" class="btn-cancel" onclick="closeModal('product-modal')">Cancel</button>
+          <button type="submit" class="btn-submit" style="width: auto; margin-top:0;">Save Menu Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SERVICE MODAL -->
+  <div id="service-modal" class="modal-overlay">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="service-modal-title">Catering Service Details</h3>
+        <button class="modal-close" onclick="closeModal('service-modal')">✕</button>
+      </div>
+      <form id="service-form" class="modal-form-grid">
+        <input type="hidden" id="service-form-mode" value="add">
+        
+        <div class="form-group">
+          <label class="form-label">Service Slug ID</label>
+          <input type="text" id="service-id" placeholder="e.g. live-catering" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Service Title</label>
+          <input type="text" id="service-title" placeholder="e.g. Live Catering" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Sub-badge</label>
+          <input type="text" id="service-badge" placeholder="e.g. Interactive Feasting" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Action Link</label>
+          <input type="text" id="service-link" placeholder="e.g. /order.html?tab=catering" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Button Label</label>
+          <input type="text" id="service-link-text" placeholder="e.g. Book Experience" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Display Order</label>
+          <input type="number" id="service-order" value="1" required>
+        </div>
+        <div class="form-group col-span-2">
+          <label class="form-label">Image Upload</label>
+          <input type="file" id="service-img-file" accept="image/*">
+          <input type="text" id="service-img-url" placeholder="or paste image URL link" style="margin-top: 8px;">
+        </div>
+        <div class="form-group col-span-2">
+          <label class="form-label">Description Text</label>
+          <textarea id="service-desc" rows="3" required></textarea>
+        </div>
+        <div class="modal-footer col-span-2">
+          <button type="button" class="btn-cancel" onclick="closeModal('service-modal')">Cancel</button>
+          <button type="submit" class="btn-submit" style="width: auto; margin-top:0;">Save Service</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- PACKAGE MODAL -->
+  <div id="package-modal" class="modal-overlay">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="package-modal-title">Catering Package Details</h3>
+        <button class="modal-close" onclick="closeModal('package-modal')">✕</button>
+      </div>
+      <form id="package-form" class="modal-form-grid">
+        <input type="hidden" id="package-form-mode" value="add">
+        
+        <div class="form-group">
+          <label class="form-label">Package ID (Slug)</label>
+          <input type="text" id="package-id" placeholder="e.g. royal-feast" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Package Name</label>
+          <input type="text" id="package-name" placeholder="e.g. Royal Feast Package" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Limit Badge</label>
+          <input type="text" id="package-badge" placeholder="e.g. 20+ Guests" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Limit Badge Color</label>
+          <input type="text" id="package-badge-bg" placeholder="e.g. #CC5500" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Price / Guest</label>
+          <input type="number" step="0.01" id="package-price" placeholder="e.g. 15.00" required>
+        </div>
+        <div class="form-group col-span-2">
+          <label class="form-label">Inclusions description</label>
+          <textarea id="package-desc" rows="3" placeholder="e.g. Premium Biryani, 2 Appetizers, 1 Dessert, Raita & Salad." required></textarea>
+        </div>
+        <div class="modal-footer col-span-2">
+          <button type="button" class="btn-cancel" onclick="closeModal('package-modal')">Cancel</button>
+          <button type="submit" class="btn-submit" style="width: auto; margin-top:0;">Save Package</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- INQUIRY DETAILS MODAL -->
+  <div id="inquiry-modal" class="modal-overlay">
+    <div class="modal-content glass-card" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Inquiry Details</h3>
+        <button class="modal-close" onclick="closeModal('inquiry-modal')">✕</button>
+      </div>
+      <div id="inquiry-modal-body" style="font-size: 0.9rem; line-height: 1.6;">
+        <!-- Loaded dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" onclick="closeModal('inquiry-modal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENT SCRIPTS -->
+  <script>
+    // Configuration
+    const API_URL = ''; // Proxied via Vite config locally, uses relative paths
+
+    // Session State
+    let adminToken = localStorage.getItem('almas_admin_token');
+
+    // Local data caches
+    let cachedMenu = { products: [], categories: [] };
+    let cachedServices = [];
+    let cachedPackages = [];
+    let cachedInquiries = [];
+
+    // Initialize UI on load
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAuth();
+      setupTabs();
+      setupEventListeners();
+    });
+
+    // Check Authorization state
+    function checkAuth() {
+      if (adminToken) {
+        document.getElementById('auth-screen').style.display = 'none';
+        document.getElementById('dashboard-screen').style.display = 'flex';
+        loadDashboardData();
+      } else {
+        document.getElementById('auth-screen').style.display = 'flex';
+        document.getElementById('dashboard-screen').style.display = 'none';
+      }
+    }
+
+    // Authenticated API request wrapper
+    async function apiFetch(endpoint, options = {}) {
+      const headers = {
+        'Content-Type': 'application/json',
+        ...options.headers
+      };
+
+      if (adminToken) {
+        headers['Authorization'] = `Bearer ${adminToken}`;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+        if (response.status === 401 || response.status === 403) {
+          showToast('Session expired. Please log in again.', 'danger');
+          logout();
+          return null;
+        }
+        
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || 'Server request error.');
+        }
+        return data;
+      } catch (err) {
+        showToast(err.message, 'danger');
+        console.error(err);
+        return null;
+      }
+    }
+
+    // Show float notification toast
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.style.borderLeftColor = type === 'success' ? 'var(--success)' : (type === 'danger' ? 'var(--danger)' : 'var(--gold)');
+      toast.textContent = message;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 4000);
+    }
+
+    // Handle Authentication Form Submit
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        
+        const data = await response.json();
+        if (response.ok && data.token) {
+          localStorage.setItem('almas_admin_token', data.token);
+          adminToken = data.token;
+          showToast('Welcome back, Admin!');
+          checkAuth();
+        } else {
+          showToast(data.error || 'Login failed. Invalid credentials.', 'danger');
+        }
+      } catch (err) {
+        showToast('Network error connecting to authentication API.', 'danger');
+      }
+    });
+
+    // Logout
+    function logout() {
+      localStorage.removeItem('almas_admin_token');
+      adminToken = null;
+      checkAuth();
+    }
+    document.getElementById('logout-btn').addEventListener('click', logout);
+
+    // Tab Navigation Setup
+    function setupTabs() {
+      const navButtons = document.querySelectorAll('.nav-btn');
+      const panels = document.querySelectorAll('.panel');
+
+      navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          navButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const targetPanel = btn.dataset.panel;
+          panels.forEach(p => {
+            if (p.id === targetPanel) {
+              p.classList.add('active');
+            } else {
+              p.classList.remove('active');
+            }
+          });
+        });
+      });
+    }
+
+    // Fetch and Populate all Dashboard components
+    async function loadDashboardData() {
+      await Promise.all([
+        loadInquiries(),
+        loadMenuCatalog(),
+        loadCateringServices(),
+        loadCateringPackages(),
+        loadSettings()
+      ]);
+    }
+
+    // =========================================================================
+    // INQUIRIES MANAGEMENT
+    // =========================================================================
+    async function loadInquiries() {
+      const data = await apiFetch('/api/inquiries');
+      if (!data) return;
+      cachedInquiries = data;
+
+      const tbody = document.getElementById('inquiries-table-body');
+      tbody.innerHTML = '';
+
+      if (data.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted)">No inquiries received in the inbox.</td></tr>`;
+        return;
+      }
+
+      data.forEach(inq => {
+        const tr = document.createElement('tr');
+        
+        const typeBadge = inq.type === 'catering' ? `<span class="badge-p" style="background:rgba(212,175,55,0.15); color:var(--gold)">Catering</span>` :
+                          (inq.type === 'contact' ? `<span class="badge-p" style="background:rgba(204,85,0,0.15); color:var(--primary)">Contact</span>` :
+                          `<span class="badge-p">Fulfillment</span>`);
+        
+        const isNewBadge = inq.status === 'new' ? 
+                          `<span class="status-badge new">New</span>` : 
+                          `<span class="status-badge read">Read</span>`;
+
+        // Crop text summary
+        const detailExcerpt = inq.requirements ? inq.requirements.substring(0, 50) + (inq.requirements.length > 50 ? '...' : '') :
+                               (inq.message ? inq.message.substring(0, 50) + (inq.message.length > 50 ? '...' : '') : '');
+
+        tr.innerHTML = `
+          <td style="white-space:nowrap">${inq.dateString || new Date(inq.timestamp).toLocaleDateString()}</td>
+          <td>${typeBadge}</td>
+          <td style="font-weight:600">${inq.name}</td>
+          <td style="font-size:0.8rem">
+            📞 ${inq.phone}<br>
+            ✉️ ${inq.email}
+          </td>
+          <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis;">
+            ${inq.selectedPackage ? `<strong>Pkg: ${inq.selectedPackage}</strong><br>` : ''}
+            ${inq.guests ? `👥 Guest Count: ${inq.guests}<br>` : ''}
+            ${detailExcerpt}
+          </td>
+          <td>${isNewBadge}</td>
+          <td>
+            <div class="action-btn-group">
+              <button class="btn-action edit" onclick="viewInquiryDetail('${inq.id}')">View</button>
+              <button class="btn-action delete" onclick="deleteInquiry('${inq.id}')">✕</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    window.viewInquiryDetail = async function(id) {
+      const inq = cachedInquiries.find(i => i.id === id);
+      if (!inq) return;
+
+      const body = document.getElementById('inquiry-modal-body');
+      body.innerHTML = `
+        <div style="margin-bottom: 12px;"><strong>Date Received:</strong> ${inq.dateString || new Date(inq.timestamp).toLocaleString()}</div>
+        <div style="margin-bottom: 12px;"><strong>Fulfillment Type:</strong> ${inq.type ? inq.type.toUpperCase() : 'N/A'}</div>
+        <div style="margin-bottom: 12px;"><strong>Customer Name:</strong> ${inq.name}</div>
+        <div style="margin-bottom: 12px;"><strong>Customer Email:</strong> ${inq.email}</div>
+        <div style="margin-bottom: 12px;"><strong>Customer Phone:</strong> ${inq.phone}</div>
+        ${inq.selectedPackage ? `<div style="margin-bottom: 12px;"><strong>Package Chosen:</strong> ${inq.selectedPackage}</div>` : ''}
+        ${inq.guests ? `<div style="margin-bottom: 12px;"><strong>Expected Guest Count:</strong> ${inq.guests}</div>` : ''}
+        <div style="margin-bottom: 12px; white-space: pre-wrap; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; border:1px solid var(--border-color)">
+          <strong>Customer Description:</strong><br>${inq.requirements || inq.message || 'No description provided.'}
+        </div>
+      `;
+
+      openModal('inquiry-modal');
+      
+      // Update status to read if new
+      if (inq.status === 'new') {
+        const result = await apiFetch(`/api/inquiries/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify({ status: 'read' })
+        });
+        if (result) {
+          loadInquiries();
+        }
+      }
+    };
+
+    window.deleteInquiry = async function(id) {
+      if (!confirm('Are you sure you want to delete this customer inquiry?')) return;
+      const result = await apiFetch(`/api/inquiries/${id}`, { method: 'DELETE' });
+      if (result) {
+        showToast('Inquiry deleted from inbox.');
+        loadInquiries();
+      }
+    };
+
+    // =========================================================================
+    // CATEGORIES MANAGEMENT
+    // =========================================================================
+    async function loadMenuCatalog() {
+      const data = await apiFetch('/api/menu');
+      if (!data) return;
+      cachedMenu = data;
+
+      // Populate Categories Table
+      const catBody = document.getElementById('categories-table-body');
+      catBody.innerHTML = '';
+      data.categories.sort((a,b) => a.order - b.order);
+      data.categories.forEach(cat => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${cat.order}</td>
+          <td><code>${cat.id}</code></td>
+          <td style="font-weight:700">${cat.name}</td>
+          <td style="font-size:1.2rem">${cat.icon || '🍽️'}</td>
+          <td>
+            <div class="action-btn-group">
+              <button class="btn-action edit" onclick="editCategoryClick('${cat.id}')">Edit</button>
+              <button class="btn-action delete" onclick="deleteCategory('${cat.id}')">Delete</button>
+            </div>
+          </td>
+        `;
+        catBody.appendChild(tr);
+      });
+
+      // Populate select filters & select dropdowns
+      const filterSelect = document.getElementById('product-category-filter');
+      const formSelect = document.getElementById('product-category');
+      
+      // Save filter state
+      const lastFilter = filterSelect.value;
+      
+      filterSelect.innerHTML = '<option value="all">All Categories</option>';
+      formSelect.innerHTML = '';
+
+      data.categories.forEach(cat => {
+        filterSelect.innerHTML += `<option value="${cat.name}">${cat.name}</option>`;
+        formSelect.innerHTML += `<option value="${cat.name}">${cat.name}</option>`;
+      });
+
+      filterSelect.value = lastFilter;
+      
+      // Render products grid
+      renderProductsGrid();
+    }
+
+    document.getElementById('btn-add-category').addEventListener('click', () => {
+      document.getElementById('category-modal-title').textContent = 'Add Menu Category';
+      document.getElementById('category-form-mode').value = 'add';
+      document.getElementById('category-slug').disabled = false;
+      document.getElementById('category-slug').value = '';
+      document.getElementById('category-name').value = '';
+      document.getElementById('category-icon').value = '🍛';
+      document.getElementById('category-order').value = cachedMenu.categories.length + 1;
+      
+      openModal('category-modal');
+    });
+
+    window.editCategoryClick = function(id) {
+      const cat = cachedMenu.categories.find(c => c.id === id);
+      if (!cat) return;
+
+      document.getElementById('category-modal-title').textContent = 'Edit Menu Category';
+      document.getElementById('category-form-mode').value = 'edit';
+      document.getElementById('category-slug').value = cat.id;
+      document.getElementById('category-slug').disabled = true; // id immutable on edit
+      document.getElementById('category-name').value = cat.name;
+      document.getElementById('category-icon').value = cat.icon || '🍛';
+      document.getElementById('category-order').value = cat.order;
+
+      openModal('category-modal');
+    };
+
+    document.getElementById('category-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const mode = document.getElementById('category-form-mode').value;
+      const id = document.getElementById('category-slug').value.trim();
+      const name = document.getElementById('category-name').value.trim();
+      const icon = document.getElementById('category-icon').value.trim();
+      const order = parseInt(document.getElementById('category-order').value);
+
+      const payload = { id, name, icon, order };
+      let result;
+
+      if (mode === 'add') {
+        result = await apiFetch('/api/menu/categories', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+      } else {
+        result = await apiFetch(`/api/menu/categories/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify(payload)
+        });
+      }
+
+      if (result) {
+        showToast(`Category ${mode === 'add' ? 'created' : 'updated'} successfully!`);
+        closeModal('category-modal');
+        loadMenuCatalog();
+      }
+    });
+
+    window.deleteCategory = async function(id) {
+      if (!confirm('Warning: Deleting a category will delete all menu items that belong to it. Proceed?')) return;
+      const result = await apiFetch(`/api/menu/categories/${id}`, { method: 'DELETE' });
+      if (result) {
+        showToast('Category deleted successfully.');
+        loadMenuCatalog();
+      }
+    };
+
+    // =========================================================================
+    // MENU PRODUCTS MANAGEMENT
+    // =========================================================================
+    function renderProductsGrid() {
+      const grid = document.getElementById('products-grid');
+      const catFilter = document.getElementById('product-category-filter').value;
+      grid.innerHTML = '';
+
+      let items = cachedMenu.products;
+      if (catFilter !== 'all') {
+        items = items.filter(p => p.category === catFilter);
+      }
+
+      if (items.length === 0) {
+        grid.innerHTML = `<div class="glass-card" style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted)">No menu items match this category filter.</div>`;
+        return;
+      }
+
+      items.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'glass-card item-card';
+        
+        const dietBadge = p.diet === 'VEG' ? `<span class="badge-p" style="border-color:#16a34a; color:#16a34a;">VEG</span>` :
+                           (p.diet === 'SEAFOOD' ? `<span class="badge-p" style="border-color:#2563eb; color:#2563eb;">SEAFOOD</span>` :
+                           `<span class="badge-p" style="border-color:#dc2626; color:#dc2626;">NON-VEG</span>`);
+
+        const badgeHtml = p.badge ? `<span class="badge-p" style="border-color:var(--gold); color:var(--gold); margin-left: 5px;">${p.badge}</span>` : '';
+
+        card.innerHTML = `
+          <div>
+            <img src="${p.image || '/logo.png'}" alt="${p.name}" class="item-img-preview">
+            <div class="item-name">${p.name}</div>
+            <div style="margin-bottom:10px;">
+              ${dietBadge}
+              ${badgeHtml}
+              <span class="badge-p" style="margin-left: 5px;">${p.category}</span>
+            </div>
+            <div class="item-desc">${p.desc || 'No description provided.'}</div>
+          </div>
+          <div>
+            <div class="item-meta">
+              <span class="item-price">${p.price}</span>
+              <div class="action-btn-group">
+                <button class="btn-action edit" onclick="editProductClick('${p.id}')">Edit</button>
+                <button class="btn-action delete" onclick="deleteProduct('${p.id}')">✕</button>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    document.getElementById('product-category-filter').addEventListener('change', renderProductsGrid);
+
+    document.getElementById('btn-add-product').addEventListener('click', () => {
+      document.getElementById('product-modal-title').textContent = 'Add Menu Item';
+      document.getElementById('product-form-mode').value = 'add';
+      document.getElementById('product-id').disabled = false;
+      
+      document.getElementById('product-id').value = '';
+      document.getElementById('product-name').value = '';
+      document.getElementById('product-price').value = '';
+      document.getElementById('product-badge').value = '';
+      document.getElementById('product-img-url').value = '';
+      document.getElementById('product-desc').value = '';
+      document.getElementById('product-img-file').value = '';
+      
+      openModal('product-modal');
+    });
+
+    window.editProductClick = function(id) {
+      const p = cachedMenu.products.find(item => item.id === id);
+      if (!p) return;
+
+      document.getElementById('product-modal-title').textContent = 'Edit Menu Item';
+      document.getElementById('product-form-mode').value = 'edit';
+      document.getElementById('product-id').value = p.id;
+      document.getElementById('product-id').disabled = true; // id immutable
+      document.getElementById('product-old-id').value = p.id;
+      
+      document.getElementById('product-name').value = p.name;
+      document.getElementById('product-price').value = p.price;
+      document.getElementById('product-category').value = p.category;
+      document.getElementById('product-diet').value = p.diet || 'NON-VEG';
+      document.getElementById('product-badge').value = p.badge || '';
+      document.getElementById('product-img-url').value = p.image || '';
+      document.getElementById('product-desc').value = p.desc || '';
+      document.getElementById('product-img-file').value = '';
+
+      openModal('product-modal');
+    };
+
+    // Helper to upload image files
+    async function uploadImage(fileInputId) {
+      const fileInput = document.getElementById(fileInputId);
+      if (!fileInput || fileInput.files.length === 0) return null;
+
+      const formData = new FormData();
+      formData.append('image', fileInput.files[0]);
+
+      try {
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${adminToken}`
+          },
+          body: formData
+        });
+        const data = await response.json();
+        if (response.ok && data.imageUrl) {
+          return data.imageUrl;
+        } else {
+          showToast(data.error || 'Failed to upload image.', 'danger');
+          return null;
+        }
+      } catch (err) {
+        showToast('Image upload failed.', 'danger');
+        console.error(err);
+        return null;
+      }
+    }
+
+    document.getElementById('product-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const mode = document.getElementById('product-form-mode').value;
+      const id = document.getElementById('product-id').value.trim();
+      const name = document.getElementById('product-name').value.trim();
+      const price = document.getElementById('product-price').value.trim();
+      const category = document.getElementById('product-category').value;
+      const diet = document.getElementById('product-diet').value;
+      const badge = document.getElementById('product-badge').value.trim();
+      const desc = document.getElementById('product-desc').value.trim();
+      
+      // Determine image URL
+      let imageUrl = document.getElementById('product-img-url').value.trim();
+      const uploadedUrl = await uploadImage('product-img-file');
+      if (uploadedUrl) {
+        imageUrl = uploadedUrl;
+      }
+
+      // Map color based on diet
+      const dietColor = diet === 'VEG' ? '#16a34a' : (diet === 'SEAFOOD' ? '#2563eb' : '#dc2626');
+
+      const payload = {
+        id, name, price, category, diet, badge, image: imageUrl, desc, dietColor, spiceDefault: 'Medium'
+      };
+
+      let result;
+      if (mode === 'add') {
+        result = await apiFetch('/api/menu/products', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+      } else {
+        result = await apiFetch(`/api/menu/products/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify(payload)
+        });
+      }
+
+      if (result) {
+        showToast(`Product ${mode === 'add' ? 'created' : 'updated'} successfully!`);
+        closeModal('product-modal');
+        loadMenuCatalog();
+      }
+    });
+
+    window.deleteProduct = async function(id) {
+      if (!confirm('Are you sure you want to delete this menu item?')) return;
+      const result = await apiFetch(`/api/menu/products/${id}`, { method: 'DELETE' });
+      if (result) {
+        showToast('Menu item deleted.');
+        loadMenuCatalog();
+      }
+    };
+
+    // =========================================================================
+    // CATERING SERVICES MANAGEMENT
+    // =========================================================================
+    async function loadCateringServices() {
+      const data = await apiFetch('/api/services');
+      if (!data) return;
+      cachedServices = data;
+
+      const grid = document.getElementById('services-grid');
+      grid.innerHTML = '';
+
+      data.forEach(s => {
+        const card = document.createElement('div');
+        card.className = 'glass-card item-card';
+        card.innerHTML = `
+          <div>
+            <img src="${s.image || '/logo.png'}" alt="${s.title}" class="item-img-preview">
+            <div class="item-name">${s.title}</div>
+            <div style="margin-bottom:10px;">
+              <span class="badge-p" style="border-color:var(--gold); color:var(--gold);">${s.badge}</span>
+              <span class="badge-p" style="margin-left: 5px;">Order: ${s.order}</span>
+            </div>
+            <div class="item-desc">${s.description}</div>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:12px;">Link: <code>${s.link}</code> (${s.linkText})</div>
+          </div>
+          <div>
+            <div class="item-meta">
+              <span></span>
+              <div class="action-btn-group">
+                <button class="btn-action edit" onclick="editServiceClick('${s.id}')">Edit</button>
+                <button class="btn-action delete" onclick="deleteService('${s.id}')">✕</button>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    document.getElementById('btn-add-service').addEventListener('click', () => {
+      document.getElementById('service-modal-title').textContent = 'Add Catering Service';
+      document.getElementById('service-form-mode').value = 'add';
+      document.getElementById('service-id').disabled = false;
+
+      document.getElementById('service-id').value = '';
+      document.getElementById('service-title').value = '';
+      document.getElementById('service-badge').value = '';
+      document.getElementById('service-link').value = '/order.html?tab=catering';
+      document.getElementById('service-link-text').value = 'Request Quote';
+      document.getElementById('service-order').value = cachedServices.length + 1;
+      document.getElementById('service-img-url').value = '';
+      document.getElementById('service-desc').value = '';
+      document.getElementById('service-img-file').value = '';
+
+      openModal('service-modal');
+    });
+
+    window.editServiceClick = function(id) {
+      const s = cachedServices.find(srv => srv.id === id);
+      if (!s) return;
+
+      document.getElementById('service-modal-title').textContent = 'Edit Catering Service';
+      document.getElementById('service-form-mode').value = 'edit';
+      document.getElementById('service-id').value = s.id;
+      document.getElementById('service-id').disabled = true; // id immutable
+
+      document.getElementById('service-title').value = s.title;
+      document.getElementById('service-badge').value = s.badge;
+      document.getElementById('service-link').value = s.link;
+      document.getElementById('service-link-text').value = s.linkText;
+      document.getElementById('service-order').value = s.order || 1;
+      document.getElementById('service-img-url').value = s.image;
+      document.getElementById('service-desc').value = s.description;
+      document.getElementById('service-img-file').value = '';
+
+      openModal('service-modal');
+    };
+
+    document.getElementById('service-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const mode = document.getElementById('service-form-mode').value;
+      const id = document.getElementById('service-id').value.trim();
+      const title = document.getElementById('service-title').value.trim();
+      const badge = document.getElementById('service-badge').value.trim();
+      const link = document.getElementById('service-link').value.trim();
+      const linkText = document.getElementById('service-link-text').value.trim();
+      const order = parseInt(document.getElementById('service-order').value);
+      const description = document.getElementById('service-desc').value.trim();
+
+      let image = document.getElementById('service-img-url').value.trim();
+      const uploadedUrl = await uploadImage('service-img-file');
+      if (uploadedUrl) {
+        image = uploadedUrl;
+      }
+
+      const payload = { id, title, badge, link, linkText, order, description, image };
+
+      let result;
+      if (mode === 'add') {
+        result = await apiFetch('/api/services', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+      } else {
+        result = await apiFetch(`/api/services/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify(payload)
+        });
+      }
+
+      if (result) {
+        showToast(`Catering Service ${mode === 'add' ? 'created' : 'updated'} successfully!`);
+        closeModal('service-modal');
+        loadCateringServices();
+      }
+    });
+
+    window.deleteService = async function(id) {
+      if (!confirm('Are you sure you want to delete this catering service?')) return;
+      const result = await apiFetch(`/api/services/${id}`, { method: 'DELETE' });
+      if (result) {
+        showToast('Service deleted.');
+        loadCateringServices();
+      }
+    };
+
+    // =========================================================================
+    // CATERING PACKAGES MANAGEMENT
+    // =========================================================================
+    async function loadCateringPackages() {
+      const data = await apiFetch('/api/packages');
+      if (!data) return;
+      cachedPackages = data;
+
+      const tbody = document.getElementById('packages-table-body');
+      tbody.innerHTML = '';
+
+      data.forEach(pkg => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight:700">${pkg.name}</td>
+          <td><span class="status-badge" style="background:${pkg.badgeBg || '#1A1A1A'}; color:#FFF">${pkg.badge}</span></td>
+          <td style="color:var(--primary); font-weight:700">$${parseFloat(pkg.price).toFixed(2)}</td>
+          <td>${pkg.description}</td>
+          <td>
+            <div class="action-btn-group">
+              <button class="btn-action edit" onclick="editPackageClick('${pkg.id}')">Edit</button>
+              <button class="btn-action delete" onclick="deletePackage('${pkg.id}')">✕</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById('btn-add-package').addEventListener('click', () => {
+      document.getElementById('package-modal-title').textContent = 'Add Catering Package';
+      document.getElementById('package-form-mode').value = 'add';
+      document.getElementById('package-id').disabled = false;
+
+      document.getElementById('package-id').value = '';
+      document.getElementById('package-name').value = '';
+      document.getElementById('package-badge').value = '20+ Guests';
+      document.getElementById('package-badge-bg').value = '#CC5500';
+      document.getElementById('package-price').value = '';
+      document.getElementById('package-desc').value = '';
+
+      openModal('package-modal');
+    });
+
+    window.editPackageClick = function(id) {
+      const pkg = cachedPackages.find(p => p.id === id);
+      if (!pkg) return;
+
+      document.getElementById('package-modal-title').textContent = 'Edit Catering Package';
+      document.getElementById('package-form-mode').value = 'edit';
+      document.getElementById('package-id').value = pkg.id;
+      document.getElementById('package-id').disabled = true; // id immutable
+
+      document.getElementById('package-name').value = pkg.name;
+      document.getElementById('package-badge').value = pkg.badge;
+      document.getElementById('package-badge-bg').value = pkg.badgeBg || '#CC5500';
+      document.getElementById('package-price').value = pkg.price;
+      document.getElementById('package-desc').value = pkg.description;
+
+      openModal('package-modal');
+    };
+
+    document.getElementById('package-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const mode = document.getElementById('package-form-mode').value;
+      const id = document.getElementById('package-id').value.trim();
+      const name = document.getElementById('package-name').value.trim();
+      const badge = document.getElementById('package-badge').value.trim();
+      const badgeBg = document.getElementById('package-badge-bg').value.trim();
+      const price = parseFloat(document.getElementById('package-price').value);
+      const description = document.getElementById('package-desc').value.trim();
+
+      const payload = { id, name, badge, badgeBg, price, description };
+
+      let result;
+      if (mode === 'add') {
+        result = await apiFetch('/api/packages', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+      } else {
+        result = await apiFetch(`/api/packages/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify(payload)
+        });
+      }
+
+      if (result) {
+        showToast(`Catering Package ${mode === 'add' ? 'created' : 'updated'} successfully!`);
+        closeModal('package-modal');
+        loadCateringPackages();
+      }
+    });
+
+    window.deletePackage = async function(id) {
+      if (!confirm('Are you sure you want to delete this catering package?')) return;
+      const result = await apiFetch(`/api/packages/${id}`, { method: 'DELETE' });
+      if (result) {
+        showToast('Package deleted.');
+        loadCateringPackages();
+      }
+    };
+
+    // =========================================================================
+    // GLOBAL SETTINGS MANAGEMENT
+    // =========================================================================
+    async function loadSettings() {
+      const data = await apiFetch('/api/settings');
+      if (!data) return;
+
+      // Timings
+      document.getElementById('setting-hours-mon-thu').value = data.timings.mon_thu;
+      document.getElementById('setting-hours-fri-sat').value = data.timings.fri_sat;
+      document.getElementById('setting-hours-sun').value = data.timings.sun;
+
+      // Scrolling and WhatsApp
+      document.getElementById('setting-marquee').value = data.marquee;
+      document.getElementById('setting-whatsapp').value = data.whatsapp;
+
+      // Socials
+      document.getElementById('setting-social-instagram').value = data.socials.instagram || '';
+      document.getElementById('setting-social-facebook').value = data.socials.facebook || '';
+      document.getElementById('setting-social-tiktok').value = data.socials.tiktok || '';
+      document.getElementById('setting-social-google').value = data.socials.google_page || '';
+      document.getElementById('setting-social-tripadvisor').value = data.socials.trip_advisor || '';
+
+      // Delivery
+      document.getElementById('setting-delivery-uber').value = data.delivery.uber_eats;
+      document.getElementById('setting-delivery-doordash').value = data.delivery.doordash;
+      document.getElementById('setting-delivery-skip').value = data.delivery.skip;
+    }
+
+    document.getElementById('settings-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const payload = {
+        timings: {
+          mon_thu: document.getElementById('setting-hours-mon-thu').value.trim(),
+          fri_sat: document.getElementById('setting-hours-fri-sat').value.trim(),
+          sun: document.getElementById('setting-hours-sun').value.trim()
+        },
+        marquee: document.getElementById('setting-marquee').value.trim(),
+        whatsapp: document.getElementById('setting-whatsapp').value.trim(),
+        socials: {
+          instagram: document.getElementById('setting-social-instagram').value.trim(),
+          facebook: document.getElementById('setting-social-facebook').value.trim(),
+          tiktok: document.getElementById('setting-social-tiktok').value.trim(),
+          google_page: document.getElementById('setting-social-google').value.trim(),
+          trip_advisor: document.getElementById('setting-social-tripadvisor').value.trim()
+        },
+        delivery: {
+          uber_eats: document.getElementById('setting-delivery-uber').value.trim(),
+          doordash: document.getElementById('setting-delivery-doordash').value.trim(),
+          skip: document.getElementById('setting-delivery-skip').value.trim()
+        }
+      };
+
+      const result = await apiFetch('/api/settings', {
+        method: 'PUT',
+        body: JSON.stringify(payload)
+      });
+
+      if (result) {
+        showToast('All global website settings saved successfully!');
+        loadSettings();
+      }
+    });
+
+    // =========================================================================
+    // MODAL STATE UTILITIES
+    // =========================================================================
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'flex';
+    }
+
+    window.closeModal = function(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    };
+
+    // Close on click outside modal content
+    const overlays = document.querySelectorAll('.modal-overlay');
+    overlays.forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          overlay.style.display = 'none';
+        }
+      });
+    });
+
+    function setupEventListeners() {
+      // Toggle dropdown values or triggers if needed
+    }
+  </script>
+</body>
+</html>

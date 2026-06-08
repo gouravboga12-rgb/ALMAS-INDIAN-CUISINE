@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout & Booking | ALMAS Indian Cuisine</title>
+  <meta name="description" content="Checkout your takeout order or book your premium catering packages with Scarborough's best Hyderabadi and Lebanese caterers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/order-ZwkQG5mi.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/main-DS7Wfilc.js">
+  <link rel="stylesheet" crossorigin href="/assets/main-BfunoFqW.css">
+</head>
+<body class="bg-background text-text-primary">
+
+  <!-- Navigation -->
+  <nav class="glass-nav w-full z-50 sticky top-0">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center h-28 md:h-24">
+      <!-- Left: Logo & Search Bar -->
+      <div class="flex items-center gap-6 flex-1">
+        <!-- Mobile Hamburger & Halal Logo (Mobile & Tablet) -->
+        <div class="lg:hidden flex items-center gap-3">
+          <button id="menu-btn" title="Menu">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+          <img src="/halal_logo.png" alt="Halal Certified" class="h-8 w-auto object-contain">
+        </div>
+        <a href="/" class="flex items-center">
+          <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-20 md:h-16 w-auto object-contain">
+        </a>
+
+        <!-- Desktop Search Bar -->
+        <div class="hidden lg:block desktop-search-container">
+          <span class="desktop-search-icon">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </span>
+          <input type="text" id="desktop-search-input" placeholder="Search delicious dishes..." class="desktop-search-input">
+        </div>
+      </div>
+
+      <!-- Desktop Navigation & Actions -->
+      <div class="hidden lg:flex items-center space-x-8">
+        <a href="/" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Home</a>
+        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Our Menu</a>
+        <a href="/services.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Catering</a>
+        <a href="/about.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">About</a>
+        <a href="/contact.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Contact</a>
+
+        <!-- Sign In & Cart Group -->
+        <div class="flex items-center space-x-6 pl-6 border-l border-gray-200">
+          <!-- Dynamic Sign In (Desktop) -->
+          <div id="desktop-auth-group">
+            <!-- Dynamically populated by main.js -->
+          </div>
+
+          <!-- Add to Cart (Desktop) -->
+          <button class="nav-cart-btn" title="View Cart">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+            <span class="cart-count-badge">0</span>
+          </button>
+
+          <!-- Halal Logo (Desktop) -->
+          <img src="/halal_logo.png" alt="Halal Certified" class="hidden lg:block h-10 w-auto object-contain ml-2">
+        </div>
+      </div>
+
+      <!-- Mobile Controls (visible on mobile, hidden on desktop) -->
+      <div class="lg:hidden flex items-center space-x-3">
+        <!-- Mobile Search Button -->
+        <button id="mobile-search-btn" title="Search">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"></path>
+          </svg>
+        </button>
+
+        <!-- Mobile Cart Button -->
+        <button class="nav-cart-btn" title="View Cart">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+          <span class="cart-count-badge">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Search Bar Dropdown -->
+    <div id="mobile-search-bar" class="hidden border-t border-primary/10 bg-background/95 backdrop-blur-md px-6 py-4 transition-all duration-300">
+      <div class="relative max-w-3xl mx-auto">
+        <input type="text" id="mobile-search-input" placeholder="Search delicious dishes..." class="w-full bg-[#FFFAF3] border border-primary/20 rounded-full py-2.5 pl-10 pr-10 text-sm focus:outline-none focus:border-primary/50 text-text-primary">
+        <span class="absolute left-3.5 top-3 text-text-secondary/50">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </span>
+        <button id="mobile-search-clear" class="absolute right-3.5 top-2.5 text-text-secondary/50 hover:text-primary text-sm p-1">✕</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Backdrop -->
+  <div id="menu-overlay"></div>
+
+  <!-- Mobile Menu Half-Panel -->
+  <div id="mobile-menu">
+    <button id="close-btn" class="absolute top-6 right-6 text-white/60 hover:text-white transition-colors">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    </button>
+    <div class="mb-10">
+      <img src="/logo.png" alt="ALMAS" class="h-14 w-auto object-contain opacity-80">
+    </div>
+        <nav class="flex flex-col space-y-6 text-white text-lg font-heading font-semibold uppercase tracking-widest">
+      <a href="/" class="hover:text-primary transition-colors">Home</a>
+      <a href="/products.html" class="hover:text-primary transition-colors">Our Menu</a>
+      <a href="/services.html" class="hover:text-primary transition-colors">Catering</a>
+      <a href="/about.html" class="hover:text-primary transition-colors">About</a>
+      <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
+      <div id="mobile-auth-group" class="flex flex-col space-y-6">
+        <a href="/account.html" class="hover:text-primary transition-colors">My Account</a>
+      </div>
+      
+      <a href="/order.html" class="btn-premium text-sm px-8 py-3 w-full max-w-[280px]">Order Now</a>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-6 py-20">
+    <div class="text-center mb-16">
+      <span class="text-primary font-bold tracking-[0.4em] uppercase text-xs mb-4 block">E-Commerce & Catering Hub</span>
+      <h1 class="text-4xl md:text-6xl font-heading mb-6 leading-tight">Order & <span class="italic text-primary">Reservations</span></h1>
+      <p class="text-text-secondary text-base font-light leading-relaxed max-w-xl mx-auto">
+        Seamlessly order premium takeout or design your custom royal catering feast below.
+      </p>
+    </div>
+
+    <!-- Toggle Tabs -->
+    <div class="max-w-xl mx-auto mb-16">
+      <div class="ecom-tabs">
+        <button class="ecom-tab-btn active" data-tab="takeout">Takeout Order</button>
+        <button class="ecom-tab-btn" data-tab="catering">Catering Booking</button>
+        <button class="ecom-tab-btn" data-tab="delivery">Delivery Partners</button>
+      </div>
+    </div>
+
+    <!-- ======================= TAB 1: TAKEOUT ======================= -->
+    <div class="ecom-tab-panel active" id="panel-takeout">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+        
+        <!-- Takeout Left: Checkout Wizard -->
+        <div class="lg:col-span-2 checkout-card-dark">
+          
+          <!-- Takeout Wizard Progress -->
+          <div class="checkout-steps">
+            <div class="checkout-step active" id="step-t-1">
+              <div class="step-circle">1</div>
+              <span class="step-label">Review</span>
+            </div>
+            <div class="checkout-step" id="step-t-2">
+              <div class="step-circle">2</div>
+              <span class="step-label">Address & Details</span>
+            </div>
+            <div class="checkout-step" id="step-t-3">
+              <div class="step-circle">3</div>
+              <span class="step-label">Payment</span>
+            </div>
+          </div>
+
+          <!-- Takeout Panel 1: Review Items -->
+          <div class="checkout-panel active" id="panel-t-1">
+            <h3 style="font-family:var(--font-heading); font-size:1.5rem; color:white; font-weight:700; margin-bottom:1.5rem;">Review Takeout Items</h3>
+            <div id="takeout-review-items" class="space-y-4 mb-8">
+              <!-- Dynamically populated review list -->
+            </div>
+            
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-white/10 pt-6">
+              <a href="/products.html" style="color:#CC5500; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; text-decoration:none; display:flex; align-items:center; gap:0.5rem; padding:0.5rem 0;">
+                ← Add More Items
+              </a>
+              <button class="btn-premium w-full sm:w-auto px-10 py-3 text-xs" id="btn-t-next-1">
+                Proceed to Pay & Address
+              </button>
+            </div>
+          </div>
+
+          <!-- Takeout Panel 2: Customer Details -->
+          <div class="checkout-panel" id="panel-t-2">
+            <h3 style="font-family:var(--font-heading); font-size:1.5rem; color:white; font-weight:700; margin-bottom:1.5rem;">Your Details & Fulfillment</h3>
+            
+            <!-- Fulfillment Location Info Box -->
+            <div id="pickup-address-display" class="fulfillment-info-box" style="display:block; margin-bottom:1.5rem;">
+              <span style="color:#FFBF00; font-weight:bold; font-size:0.75rem; text-transform:uppercase; display:block; margin-bottom:0.25rem;">Pickup Location</span>
+              <p style="color:white; font-size:0.85rem; margin:0;">📍 209 Ellesmere Rd, Scarborough, ON</p>
+              <p style="color:rgba(255,255,255,0.5); font-size:0.75rem; margin-top:0.25rem;">Your order will be ready for pickup at our main branch.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div>
+                <label class="form-label">Full Name</label>
+                <input type="text" id="takeout-name" class="form-input" placeholder="E.g., John Doe">
+              </div>
+              <div>
+                <label class="form-label">Phone Number</label>
+                <input type="tel" id="takeout-phone" class="form-input" placeholder="E.g., (416) 555-0199">
+              </div>
+              <div class="md:col-span-2">
+                <label class="form-label">Email Address</label>
+                <input type="email" id="takeout-email" class="form-input" placeholder="E.g., john@example.com">
+              </div>
+              <div class="md:col-span-2">
+                <label class="form-label" id="takeout-time-label">Preferred Pickup Time</label>
+                <select id="takeout-time" class="form-select">
+                  <option>As Soon As Possible (30-40 mins)</option>
+                  <option>In 45 minutes</option>
+                  <option>In 1 hour</option>
+                  <option>Schedule for later today</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 border-t border-white/10 pt-6">
+              <button class="text-white/60 hover:text-white text-xs font-bold uppercase tracking-wider py-2" id="btn-t-back-2">
+                Back
+              </button>
+              <button class="btn-premium w-full sm:w-auto px-10 py-3 text-xs" id="btn-t-next-2">
+                Proceed to Payment
+              </button>
+            </div>
+          </div>
+
+          <!-- Takeout Panel 3: Payment Options -->
+          <div class="checkout-panel" id="panel-t-3">
+            <h3 style="font-family:var(--font-heading); font-size:1.5rem; color:white; font-weight:700; margin-bottom:1.5rem;">Select Payment Method</h3>
+            
+            <!-- $50 limit warning -->
+            <div class="payment-threshold-alert" id="takeout-alert">
+              <svg style="width:20px; height:20px; flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+              </svg>
+              <div>
+                <span class="font-bold">Mandatory Online Payment Required:</span>
+                Your products cost exceeds $50.00. For security and preparation assurance, we require credit card authorization.
+              </div>
+            </div>
+
+            <div class="payment-method-grid">
+              <div class="payment-method-card selected" id="method-t-online">
+                <svg style="width:24px; height:24px; margin:0 auto 0.5rem; color:#CC5500;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                </svg>
+                <div style="color:white; font-size:0.8rem; font-weight:700;">Pay Online</div>
+                <div style="font-size:0.6rem; color:rgba(255,255,255,0.4);">Credit/Debit Card</div>
+              </div>
+              <div class="payment-method-card" id="method-t-pickup">
+                <svg style="width:24px; height:24px; margin:0 auto 0.5rem; color:#FFBF00;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+                <div style="color:white; font-size:0.8rem; font-weight:700;">Pay at Pickup</div>
+                <div style="font-size:0.6rem; color:rgba(255,255,255,0.4);">In-Store Payment</div>
+              </div>
+            </div>
+
+            <!-- Card inputs panel -->
+            <div id="takeout-card-form" class="space-y-4 mb-8">
+              <label class="form-label">Card Information</label>
+              <div class="card-input-group">
+                <div class="card-input-row">
+                  <span class="card-icon">💳</span>
+                  <input type="text" id="t-card-num" class="card-input-field" placeholder="Card Number (4000 1234 5678 9010)" maxlength="19">
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0;">
+                  <div class="card-input-row" style="border-right:1px solid rgba(255,255,255,0.06);">
+                    <input type="text" id="t-card-exp" class="card-input-field" placeholder="MM/YY" maxlength="5">
+                  </div>
+                  <div class="card-input-row">
+                    <input type="password" id="t-card-cvv" class="card-input-field" placeholder="CVV" maxlength="4">
+                  </div>
+                </div>
+              </div>
+              <input type="text" id="t-card-name" class="form-input" placeholder="Name on Card">
+            </div>
+
+            <div class="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 border-t border-white/10 pt-6">
+              <button class="text-white/60 hover:text-white text-xs font-bold uppercase tracking-wider py-2" id="btn-t-back-3">
+                Back
+              </button>
+              <button class="btn-premium w-full sm:w-auto px-12 py-4 text-sm" id="btn-t-place">
+                Place Takeout Order
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Takeout Right: Summary Card -->
+        <div class="checkout-card-dark space-y-6">
+          <h3 style="font-family:var(--font-heading); color:white; font-size:1.3rem; font-weight:700; border-bottom:1px solid rgba(255,255,255,0.07); padding-bottom:1rem;">Your Order</h3>
+          
+          <!-- Dynamic Items List -->
+          <div id="summary-t-items" class="space-y-3 max-h-48 overflow-y-auto pr-1">
+            <!-- Populated dynamically by updateTakeoutTotals() -->
+          </div>
+          
+          <!-- Promo Code Input -->
+          <div class="pt-4 border-t border-white/10">
+            <div class="flex gap-2">
+              <input type="text" id="promo-code-input" class="form-input" style="margin-bottom:0; padding:0.5rem 1rem; font-size:0.85rem; flex-grow:1;" placeholder="Promo Code">
+              <button type="button" id="btn-apply-promo" class="btn-premium px-4 py-2 text-xs" style="min-width:70px;">Apply</button>
+            </div>
+            <div id="promo-status-msg" class="text-xs font-semibold pt-2 hidden"></div>
+          </div>
+
+          <div class="space-y-3 pt-4 border-t border-white/10">
+            <div style="display:flex; justify-content:space-between; color:rgba(255,255,255,0.6); font-size:0.85rem;">
+              <span>Subtotal</span>
+              <span id="summary-t-subtotal" class="ml-auto font-bold text-white">$0.00</span>
+            </div>
+
+            <div id="summary-t-discount-row" style="display:none; justify-content:space-between; color:#FFBF00; font-size:0.85rem;">
+              <span>Discount (<span id="promo-discount-percent">0</span>%)</span>
+              <span id="summary-t-discount" class="ml-auto font-bold">-$0.00</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; color:rgba(255,255,255,0.6); font-size:0.85rem;">
+              <span>Tax (14%)</span>
+              <span id="summary-t-tax" class="ml-auto font-bold text-white">$0.00</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.08); padding-top:1rem; font-size:1.1rem; color:white; font-weight:700;">
+              <span>Grand Total</span>
+              <span id="summary-t-total" class="ml-auto text-[#CC5500]">$0.00</span>
+            </div>
+          </div>
+
+          <!-- Checkout / Action Button -->
+          <div class="pt-4">
+            <button type="button" id="summary-t-checkout-btn" class="w-full text-white font-bold uppercase tracking-wider py-4 rounded-xl transition-all duration-300 shadow-lg text-center" style="background:#CC5500; font-size:0.85rem; cursor:pointer;">
+              Proceed to Checkout
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ======================= TAB 2: CATERING ======================= -->
+    <div class="ecom-tab-panel" id="panel-catering">
+      <div class="max-w-5xl mx-auto checkout-card-light p-8 md:p-12 rounded-3xl text-center">
+        <h2 class="text-3xl font-heading font-bold mb-4 text-[#1a1a1a]">ALMAS Catering Packages</h2>
+        <p class="text-slate-600 text-sm mb-12 max-w-xl mx-auto">
+          Choose from our selection of curated catering packages or contact us to build a custom menu for your event.
+        </p>
+
+        <!-- Dynamic Grid of 4 Packages -->
+        <div id="dynamic-packages-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left mb-12">
+          <!-- Royal Feast Package Card -->
+          <div class="catering-package-card selected cursor-pointer p-6 rounded-2xl border-2 transition-all duration-300 relative hover:shadow-lg bg-[#FFFAF3]" style="border-color:#CC5500; background:rgba(204,85,0,0.03);" data-package="Royal Feast Package" data-inclusions="Premium Biryani, 2 Appetizers, 1 Dessert, Raita & Salad." data-price="15">
+            <span class="pkg-badge bg-[#CC5500] text-white text-[9px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full inline-block mb-3">20+ Guests</span>
+            <h4 class="text-xl font-heading font-bold text-text-primary mb-2 text-[#1a1a1a]">$15.00 <span class="text-xs text-text-secondary font-normal">/ guest</span></h4>
+            <p class="text-slate-600 text-xs leading-relaxed">Premium Biryani, 2 Appetizers, 1 Dessert, Raita & Salad.</p>
+          </div>
+
+          <!-- Imperial Feast Package Card -->
+          <div class="catering-package-card cursor-pointer p-6 rounded-2xl border-2 border-primary/10 transition-all duration-300 relative hover:shadow-lg bg-[#FFFAF3]" data-package="Imperial Feast Package" data-inclusions="Premium Biryani, Tandoori Platters, 2 Appetizers, 2 Desserts." data-price="13">
+            <span class="pkg-badge bg-[#5C2E0B] text-white text-[9px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full inline-block mb-3">40+ Guests</span>
+            <h4 class="text-xl font-heading font-bold text-text-primary mb-2 text-[#1a1a1a]">$13.00 <span class="text-xs text-text-secondary font-normal">/ guest</span></h4>
+            <p class="text-slate-600 text-xs leading-relaxed">Premium Biryani, Tandoori Platters, 2 Appetizers, 2 Desserts.</p>
+          </div>
+
+          <!-- Dynasty Grand Feast Card -->
+          <div class="catering-package-card cursor-pointer p-6 rounded-2xl border-2 border-primary/10 transition-all duration-300 relative hover:shadow-lg bg-[#FFFAF3]" data-package="Dynasty Grand Feast" data-inclusions="Mandi & Biryani, Unlimited Grills, 3 Appetizers, 2 Desserts, Drinks." data-price="11">
+            <span class="pkg-badge bg-[#D4AF37] text-white text-[9px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full inline-block mb-3">60+ Guests</span>
+            <h4 class="text-xl font-heading font-bold text-[#1a1a1a] mb-2">$11.00 <span class="text-xs text-text-secondary font-normal">/ guest</span></h4>
+            <p class="text-slate-600 text-xs leading-relaxed">Mandi & Biryani, Unlimited Grills, 3 Appetizers, 2 Desserts, Drinks.</p>
+          </div>
+
+          <!-- Elite Custom Planner Card -->
+          <div class="catering-package-card cursor-pointer p-6 rounded-2xl border-2 border-primary/10 transition-all duration-300 relative hover:shadow-lg bg-[#FFFAF3]" data-package="Elite Custom Planner" data-inclusions="Custom size options. Completely customizable chef's table menu selection." data-price="18">
+            <span class="pkg-badge bg-[#1A1A1A] text-white text-[9px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full inline-block mb-3">Custom Range</span>
+            <h4 class="text-xl font-heading font-bold text-[#1a1a1a] mb-2">$18.00 <span class="text-xs text-text-secondary font-normal">/ guest</span></h4>
+            <p class="text-slate-600 text-xs leading-relaxed">Custom size options. Completely customizable chef's table menu selection.</p>
+          </div>
+        </div>
+
+        <!-- Guest Count Selector -->
+        <div class="max-w-2xl mx-auto checkout-card-light p-6 rounded-2xl border border-primary/10 flex items-center justify-between mb-8" style="background:#FFFAF3; border-color: rgba(204, 85, 0, 0.15);">
+          <div class="text-left">
+            <h4 class="text-base font-heading font-bold text-[#1a1a1a]" style="margin-bottom:0.15rem;">Guest Count</h4>
+            <p class="text-slate-500 text-xs">Minimum count of 20 guests required</p>
+          </div>
+          <div class="flex items-center">
+            <div class="flex items-center border border-primary/20 rounded-full bg-white px-2 py-1">
+              <button type="button" id="catering-guest-dec" class="w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold hover:bg-[#CC5500] hover:text-white transition-all cursor-pointer" style="background: rgba(204, 85, 0, 0.05); color:#CC5500; border:none; line-height: 1;">-</button>
+              <span id="catering-guest-val" class="w-12 text-center font-bold text-base text-[#1a1a1a]">20</span>
+              <button type="button" id="catering-guest-inc" class="w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold hover:bg-[#CC5500] hover:text-white transition-all cursor-pointer" style="background: rgba(204, 85, 0, 0.05); color:#CC5500; border:none; line-height: 1;">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Catering Contact Form -->
+        <div class="max-w-2xl mx-auto pt-8 border-t border-primary/10 text-left">
+          <h3 class="text-2xl font-heading font-bold mb-6 text-[#1a1a1a] text-center">Catering Inquiry Form</h3>
+          <form id="catering-inquiry-form" class="space-y-6">
+            <input type="hidden" id="catering-selected-package" name="selected_package" value="Royal Feast Package">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="form-label" style="color:#1a1a1a;">Full Name *</label>
+                <input type="text" id="catering-fullname" required class="form-input" style="background:white; border-color:rgba(0,0,0,0.15); color:#1a1a1a;" placeholder="E.g., Jane Smith">
+              </div>
+              <div>
+                <label class="form-label" style="color:#1a1a1a;">Phone Number *</label>
+                <input type="tel" id="catering-phone-field" required class="form-input" style="background:white; border-color:rgba(0,0,0,0.15); color:#1a1a1a;" placeholder="E.g., (416) 555-0199">
+              </div>
+            </div>
+
+            <div>
+              <label class="form-label" style="color:#1a1a1a;">Email Address *</label>
+              <input type="email" id="catering-email-field" required class="form-input" style="background:white; border-color:rgba(0,0,0,0.15); color:#1a1a1a;" placeholder="E.g., jane@example.com">
+            </div>
+
+            <div>
+              <label class="form-label" style="color:#1a1a1a;">Description / Requirements *</label>
+              <textarea id="catering-requirements" required rows="5" class="form-input" style="background:white; border-color:rgba(0,0,0,0.15); color:#1a1a1a; border-radius:1rem; padding:1rem;" placeholder="Specify package requirements, guest count, date/time, diet restrictions, etc."></textarea>
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn-premium px-12 py-4 text-sm font-bold bg-[#CC5500] hover:bg-[#8B3A00] border-none text-white shadow-lg w-full md:w-auto">
+                Submit Inquiry
+              </button>
+            </div>
+          </form>
+
+          <!-- Success Message -->
+          <div id="catering-success-msg" class="hidden mt-6 p-4 rounded-xl text-center font-bold text-sm bg-emerald-50 text-emerald-700 border border-emerald-200">
+            Thank you for your enquiry. Our team will get back to you soon.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================= TAB 3: PARTNERS ======================= -->
+    <div class="ecom-tab-panel" id="panel-delivery">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 style="font-family:var(--font-heading); color:#1a1a1a; font-size:2.2rem; font-weight:700; margin-bottom:1.5rem;">Partner Delivery Apps</h2>
+        <p class="text-text-secondary text-base mb-12 font-light leading-relaxed max-w-xl mx-auto">
+          Prefer using standard on-demand delivery platforms? Order directly via our certified channels below.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="group">
+            <div class="relative overflow-hidden rounded-2xl mb-6 aspect-video shadow-2xl">
+              <img src="/uber_eats_service.png" alt="Uber Eats" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <a href="https://www.ubereats.com/" id="partner-link-uber" target="_blank" class="flex items-center justify-center h-24 px-6 rounded-xl bg-[#06C167] text-white transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+              <span class="text-lg font-bold tracking-tight uppercase text-center">Order on Uber Eats</span>
+            </a>
+          </div>
+          
+          <div class="group">
+            <div class="relative overflow-hidden rounded-2xl mb-6 aspect-video shadow-2xl">
+              <img src="/doordash_service.png" alt="DoorDash" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <a href="https://www.doordash.com/" id="partner-link-doordash" target="_blank" class="flex items-center justify-center h-24 px-6 rounded-xl bg-[#FF3008] text-white transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+              <span class="text-lg font-bold tracking-tight uppercase text-center">Order on DoorDash</span>
+            </a>
+          </div>
+
+          <div class="group">
+            <div class="relative overflow-hidden rounded-2xl mb-6 aspect-video shadow-2xl">
+              <img src="/delivery.png" alt="Skip" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            </div>
+            <a href="https://www.skipthedishes.com/" id="partner-link-skip" target="_blank" class="flex items-center justify-center h-24 px-6 rounded-xl bg-[#FF1232] text-white transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+              <span class="text-lg font-bold tracking-tight uppercase text-center">Order on Skip</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ======================= INVOICE PANEL ======================= -->
+    <div class="ecom-tab-panel" id="panel-invoice" style="margin-top:4rem;">
+      <div class="invoice-container">
+        <div class="invoice-header">
+          <img src="/logo.png" alt="ALMAS" class="h-16 w-auto mx-auto mb-4 object-contain">
+          <h2 style="font-family:var(--font-heading); font-size:1.5rem; font-weight:800; color:#1a1a1a;">ORDER CONFIRMATION</h2>
+          <p style="font-size:0.75rem; color:rgba(0,0,0,0.5); text-transform:uppercase; tracking-widest; margin-top:0.25rem;">Receipt #: ALM-<span id="inv-num">98231</span></p>
+        </div>
+
+        <div style="margin-bottom:1.5rem;">
+          <h4 style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:#CC5500; margin-bottom:0.75rem;">Booking Information</h4>
+          <div class="invoice-row">
+            <span>Customer Name</span>
+            <span id="inv-name" class="font-bold">John Doe</span>
+          </div>
+          <div class="invoice-row">
+            <span>Contact Phone</span>
+            <span id="inv-phone" class="font-bold">416-555-0192</span>
+          </div>
+          <div class="invoice-row">
+            <span>Order Type</span>
+            <span id="inv-type" class="font-bold">Takeout Order</span>
+          </div>
+          <div class="invoice-row" id="inv-address-row">
+            <span>Location / Address</span>
+            <span id="inv-address" class="font-bold">209 Ellesmere Rd, Scarborough</span>
+          </div>
+          <div class="invoice-row">
+            <span>Scheduled Time</span>
+            <span id="inv-time" class="font-bold">12:30 PM Today</span>
+          </div>
+        </div>
+
+        <div style="margin-bottom:1.5rem;">
+          <h4 style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:#CC5500; margin-bottom:0.75rem;">Items & Menu</h4>
+          <div id="inv-items-list" class="space-y-1">
+            <!-- Dynamic Items -->
+          </div>
+        </div>
+
+        <div>
+          <h4 style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:#CC5500; margin-bottom:0.75rem;">Payment Receipt</h4>
+          <div class="invoice-row">
+            <span>Payment Status</span>
+            <span id="inv-status-badge" class="invoice-badge success">Paid Online</span>
+          </div>
+          <div class="invoice-row">
+            <span>Payment Option</span>
+            <span id="inv-payment-opt" class="font-bold">Visa Ending 4000</span>
+          </div>
+          <div class="invoice-row">
+            <span>Tax (14%)</span>
+            <span id="inv-tax" class="font-bold">$0.00</span>
+          </div>
+          <div class="invoice-row total">
+            <span>Total Authorized</span>
+            <span id="inv-total">$0.00</span>
+          </div>
+        </div>
+
+        <div style="text-align:center; margin-top:2.5rem; border-top:1px solid rgba(0,0,0,0.06); padding-top:1.5rem;">
+          <p style="font-size:0.8rem; font-weight:700; color:#1a1a1a;">Thank you for dining with Almas Indian Cuisine!</p>
+          <p style="font-size:0.7rem; color:rgba(0,0,0,0.4); margin-top:0.25rem;">A confirmation text has been dispatched to your mobile phone number.</p>
+          
+          <button onclick="window.print()" style="margin-top:1.5rem; background:transparent; border:1px solid #CC5500; color:#CC5500; padding:0.5rem 1.25rem; border-radius:999px; font-weight:700; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; cursor:pointer; transition:all 0.2s;">
+            Print / Save Receipt
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>
