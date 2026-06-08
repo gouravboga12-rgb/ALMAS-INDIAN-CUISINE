@@ -757,12 +757,31 @@
       dietEl.style.color = product.dietColor || '#dc2626';
 
       // Parse price portions
-      let prices = [15.99];
+      let prices = [];
+      let priceLabels = [];
       const priceString = product.price || '$15.99';
       
-      const priceMatches = priceString.match(/([0-9]+\.[0-9]+)/g);
-      if (priceMatches) {
-        prices = priceMatches.map(p => parseFloat(p));
+      if (priceString.includes('/')) {
+        const parts = priceString.split('/');
+        parts.forEach(part => {
+          const priceMatch = part.match(/([0-9]+\.[0-9]+)/);
+          if (priceMatch) {
+            prices.push(parseFloat(priceMatch[1]));
+            let label = part.replace(priceMatch[0], '').replace(/[$:/]/g, '').trim();
+            if (label) {
+              priceLabels.push(label);
+            } else {
+              priceLabels.push(`Option ${prices.length}`);
+            }
+          }
+        });
+      } else {
+        const priceMatches = priceString.match(/([0-9]+\.[0-9]+)/g);
+        if (priceMatches) {
+          prices = priceMatches.map(p => parseFloat(p));
+        } else {
+          prices = [15.99];
+        }
       }
 
       const priceDisplay = document.getElementById('detail-price');
@@ -777,12 +796,15 @@
         const isHalfWhole = product.desc.toLowerCase().includes('half') || product.name.toLowerCase().includes('half');
         
         prices.forEach((price, idx) => {
-          let label = `Portion ${idx + 1}`;
-          if (prices.length === 2) {
-            const isGrillChicken = product.id === 'grill-chicken' || product.name.toLowerCase().includes('grill chicken');
-            label = idx === 0 ? (isGrillChicken ? 'Half' : (isHalfWhole ? 'Half' : 'Single')) : (isGrillChicken ? 'Full' : (isHalfWhole ? 'Whole' : 'Family'));
-          } else if (prices.length === 3) {
-            label = idx === 0 ? 'Single Portion' : (idx === 1 ? '2 People Portion' : '3 People Feast');
+          let label = priceLabels[idx];
+          if (!label) {
+            label = `Portion ${idx + 1}`;
+            if (prices.length === 2) {
+              const isGrillChicken = product.id === 'grill-chicken' || product.name.toLowerCase().includes('grill chicken');
+              label = idx === 0 ? (isGrillChicken ? 'Half' : (isHalfWhole ? 'Half' : 'Single')) : (isGrillChicken ? 'Full' : (isHalfWhole ? 'Whole' : 'Family'));
+            } else if (prices.length === 3) {
+              label = idx === 0 ? 'Single Portion' : (idx === 1 ? '2 People Portion' : '3 People Feast');
+            }
           }
           const opt = document.createElement('option');
           opt.value = price;

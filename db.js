@@ -6,6 +6,25 @@ import mysql from 'mysql2/promise';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Parse .env if it exists to load database credentials
+const envPath = path.join(__dirname, '.env');
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, 'utf8');
+  envContent.split(/\r?\n/).forEach(line => {
+    const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+    if (match) {
+      const key = match[1];
+      let value = match[2] || '';
+      if (value.startsWith('"') && value.endsWith('"')) {
+        value = value.substring(1, value.length - 1);
+      } else if (value.startsWith("'") && value.endsWith("'")) {
+        value = value.substring(1, value.length - 1);
+      }
+      process.env[key] = value.trim();
+    }
+  });
+}
+
 const DB_FILE = path.join(__dirname, 'database.json');
 
 // Check if MySQL configuration is provided in env
@@ -154,9 +173,12 @@ async function loadSeedProducts() {
         else if (slug.includes('main')) icon = '🍛';
         else if (slug.includes('biryani')) icon = '🍛';
         else if (slug.includes('mandi')) icon = '🍛';
-        else if (slug.includes('dessert')) icon = '🍧';
-        else if (slug.includes('beverage') || slug.includes('drink')) icon = '🥤';
+        else if (slug.includes('pulao')) icon = '🍲';
+        else if (slug.includes('chinese')) icon = '🥢';
+        else if (slug.includes('momo')) icon = '🥟';
         else if (slug.includes('bread')) icon = '🫓';
+        else if (slug.includes('dessert')) icon = '🍰';
+        else if (slug.includes('beverage') || slug.includes('drink')) icon = '🥤';
         
         return {
           id: slug,
@@ -381,6 +403,57 @@ async function seedMySQLIfNeeded() {
   }
 }
 
+async function autoSyncDatabase() {
+  try {
+    const { products: seedProducts, categories: seedCategories } = await loadSeedProducts();
+    if (!seedProducts || seedProducts.length === 0) return;
+
+    console.log(`[DB] Auto-syncing database: checking ${seedProducts.length} products and ${seedCategories.length} categories...`);
+
+    const existingMenu = await getMenu();
+    const existingCategories = existingMenu.categories || [];
+    const existingProducts = existingMenu.products || [];
+
+    // Sync categories
+    for (const cat of seedCategories) {
+      const exists = existingCategories.find(c => c.id === cat.id);
+      if (exists) {
+        if (exists.name !== cat.name || exists.icon !== cat.icon || exists.order !== cat.order) {
+          await updateCategory(cat.id, cat);
+        }
+      } else {
+        console.log(`[DB] Auto-sync: Adding missing category ${cat.name}`);
+        await addCategory(cat);
+      }
+    }
+
+    // Sync products
+    for (const prod of seedProducts) {
+      const exists = existingProducts.find(p => p.id === prod.id);
+      if (exists) {
+        const isChanged = exists.name !== prod.name ||
+                          exists.price !== prod.price ||
+                          exists.image !== prod.image ||
+                          exists.category !== prod.category ||
+                          exists.diet !== prod.diet ||
+                          exists.badge !== (prod.badge || '') ||
+                          exists.dietColor !== (prod.dietColor || '') ||
+                          exists.desc !== (prod.desc || '') ||
+                          exists.spiceDefault !== (prod.spiceDefault || 'Mild');
+        if (isChanged) {
+          await updateProduct(prod.id, prod);
+        }
+      } else {
+        console.log(`[DB] Auto-sync: Adding missing product ${prod.name}`);
+        await addProduct(prod);
+      }
+    }
+    console.log('[DB] Auto-sync complete!');
+  } catch (err) {
+    console.error('[DB] Auto-sync failed:', err);
+  }
+}
+
 // ─── ADAPTER PUBLIC INTERFACE ───────────────────────────────────────────────────
 
 export async function initializeDatabase() {
@@ -390,6 +463,7 @@ export async function initializeDatabase() {
     console.log("[DB] No MySQL environment variables detected. Using local database.json.");
     await initJSONDB();
   }
+  await autoSyncDatabase();
 }
 
 // ─── GET ENTIRE MENU (Products & Categories)

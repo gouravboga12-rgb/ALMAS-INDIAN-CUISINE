@@ -2314,6 +2314,7 @@
           'mains': 'Curries & slow-cooked gravies',
           'biryani': 'Muglai saffron standard',
           'mandi': 'Arabic smoked rice',
+          'pulao': 'Aromatic one-pot rice dishes',
           'beverages': 'Teas & cold mocktails',
           'chinese': 'Wok tossed',
           'momo': 'Steamed or fried',
@@ -2526,9 +2527,26 @@
             const priceTextEl = priceContainer.querySelector('.text-primary') || priceContainer.querySelector('.font-bold') || priceContainer;
             if (priceTextEl) {
               const priceText = priceTextEl.textContent.trim();
-              const priceMatches = priceText.match(/([0-9]+\.[0-9]+)/g);
-              if (priceMatches) {
-                prices = priceMatches.map(p => parseFloat(p));
+              if (priceText.includes('/')) {
+                // Smart parser for slash-separated choice values (e.g., Veg $13.99 / Chicken $14.99 / Shrimp $15.99)
+                prices = [];
+                priceLabels = [];
+                const parts = priceText.split('/');
+                parts.forEach(part => {
+                  const priceMatch = part.match(/([0-9]+\.[0-9]+)/);
+                  if (priceMatch) {
+                    prices.push(parseFloat(priceMatch[1]));
+                    let label = part.replace(priceMatch[0], '').replace(/[$:/]/g, '').trim();
+                    if (label) {
+                      priceLabels.push(label);
+                    }
+                  }
+                });
+              } else {
+                const priceMatches = priceText.match(/([0-9]+\.[0-9]+)/g);
+                if (priceMatches) {
+                  prices = priceMatches.map(p => parseFloat(p));
+                }
               }
             }
           }
