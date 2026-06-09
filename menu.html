@@ -231,8 +231,52 @@
       }
     }
   </style>
+  <style>
+    /* =============================================
+       MENU PAGE — COMPACT HEADER OVERRIDES
+       Override global style.css mobile nav rules
+       so the menu page keeps a slim header.
+    ============================================= */
+    body.menu-page .glass-nav > div {
+      height: 56px !important;      /* mobile: 56px */
+    }
+    @media (min-width: 1024px) {
+      body.menu-page .glass-nav > div {
+        height: 64px !important;    /* desktop: 64px */
+      }
+    }
+    /* Logo stays small on menu page */
+    body.menu-page .glass-nav img[src="/logo.png"] {
+      height: 36px !important;
+    }
+    body.menu-page .glass-nav img[src="/halal_logo.png"] {
+      height: 32px !important;
+    }
+    /* Keep logo centered on mobile for menu page */
+    body.menu-page .glass-nav > div > div.flex-1 > a {
+      position: absolute !important;
+      left: 50% !important;
+      top: 50% !important;
+      transform: translate(-50%, -50%) !important;
+    }
+    /* Category bar: always visible & sticky right below the compact header */
+    body.menu-page #menu-category-bar {
+      position: sticky;
+      top: 56px;
+      z-index: 40;
+    }
+    @media (min-width: 1024px) {
+      body.menu-page #menu-category-bar {
+        top: 64px;
+      }
+    }
+    /* Show search button on mobile for menu page */
+    body.menu-page #mobile-search-btn {
+      display: inline-flex !important;
+    }
+  </style>
 </head>
-<body>
+<body class="menu-page">
 
   <!-- Navigation -->
   <nav class="glass-nav w-full z-50 sticky top-0" style="border-bottom: 1px solid rgba(0,0,0,0.06);">
@@ -354,7 +398,7 @@
   </div>
 
   <!-- Category Secondary Nav -->
-  <div class="bg-background border-b border-black/5 sticky top-[56px] lg:top-[64px] z-40 overflow-x-auto whitespace-nowrap hide-scrollbar">
+  <div id="menu-category-bar" class="bg-background border-b border-black/5 overflow-x-auto whitespace-nowrap hide-scrollbar">
     <div id="dynamic-category-nav" class="max-w-7xl mx-auto px-6 md:px-12 flex items-center h-14 space-x-8">
       <a href="#soups" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Soups</a>
       <a href="#appetizers" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Appetizers</a>
