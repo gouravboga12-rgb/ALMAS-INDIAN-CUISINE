@@ -364,10 +364,38 @@
   <script type="module" src="/src/main.js"></script>
   <script type="module">
     document.addEventListener('DOMContentLoaded', () => {
+      // Pre-populate fields if logged in
+      const savedAccount = localStorage.getItem('almas_account');
+      if (savedAccount) {
+        try {
+          const user = JSON.parse(savedAccount);
+          if (user.name) {
+            const nameField = document.getElementById('contact-name');
+            if (nameField) nameField.value = user.name;
+          }
+          if (user.email) {
+            const emailField = document.getElementById('contact-email');
+            if (emailField) emailField.value = user.email;
+          }
+          if (user.phone) {
+            const phoneField = document.getElementById('contact-phone');
+            if (phoneField) phoneField.value = user.phone;
+          }
+        } catch (e) {
+          console.error("Error pre-populating fields:", e);
+        }
+      }
+
       const form = document.getElementById('contact-inquiry-form');
       if (form) {
         form.addEventListener('submit', async (e) => {
           e.preventDefault();
+
+          if (!localStorage.getItem('almas_token')) {
+            alert("Please log in or sign up first to submit contact inquiries.");
+            window.location.href = "/account.html?tab=login";
+            return;
+          }
           
           const name = document.getElementById('contact-name').value.trim();
           const email = document.getElementById('contact-email').value.trim();
@@ -380,7 +408,7 @@
           const occasion = document.getElementById('contact-occasion').value.trim();
           const address = document.getElementById('event-address').value.trim();
           const message = document.getElementById('contact-message').value.trim();
-
+ 
           const details = [];
           if (date) details.push(`Preferred Date: ${date}`);
           if (time) details.push(`Preferred Time: ${time} ${ampm}`);
@@ -390,11 +418,15 @@
           if (message) details.push(`Notes: ${message}`);
           
           const fullMessage = details.join('\n');
-
+ 
           try {
+            const token = localStorage.getItem('almas_token');
             const res = await fetch('/api/inquiries', {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` 
+              },
               body: JSON.stringify({
                 name,
                 email,
@@ -403,10 +435,17 @@
                 message: fullMessage
               })
             });
-
+ 
             if (res.ok) {
               alert('Thank you for contacting us. Your reservation/inquiry has been received.');
               form.reset();
+              // Re-populate after reset
+              if (savedAccount) {
+                const user = JSON.parse(savedAccount);
+                if (user.name) document.getElementById('contact-name').value = user.name;
+                if (user.email) document.getElementById('contact-email').value = user.email;
+                if (user.phone) document.getElementById('contact-phone').value = user.phone;
+              }
             } else {
               const data = await res.json();
               alert(data.error || 'Failed to submit inquiry. Please try again.');

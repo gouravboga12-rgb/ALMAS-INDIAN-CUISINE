@@ -35,7 +35,15 @@ import {
   findUserByGoogleId,
   createUser,
   getUserById,
-  updateUser
+  updateUser,
+  createOrder,
+  getOrdersByUserId,
+  createReview,
+  getReviewsByProductId,
+  getReviewById,
+  updateReview,
+  deleteReview,
+  getCustomersList
 } from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -436,10 +444,165 @@ app.get('/api/user/profile', authenticateUser, async (req, res) => {
       }
     });
   } catch (err) {
-    console.error('Profile fetch error:', err);
+    console.error('Fetch profile error:', err);
     res.status(500).json({ success: false, error: 'Server error fetching profile.' });
   }
 });
+
+// ─── USER ORDERS ENDPOINTS ───────────────────────────────────────────────────
+
+// POST /api/user/orders - Place a new takeout order
+app.post('/api/user/orders', authenticateUser, async (req, res) => {
+  try {
+    const orderData = req.body;
+    if (!orderData.name || !orderData.phone || !orderData.items) {
+      return res.status(400).json({ success: false, error: 'Missing required order details.' });
+    }
+    
+    // Auto-update user record's phone number if it isn't set yet
+    await updateUser(req.user.id, { phone: orderData.phone });
+
+    const order = await createOrder({
+      ...orderData,
+      user_id: req.user.id
+    });
+
+    res.status(201).json({ success: true, order });
+  } catch (err) {
+    console.error('Create order error:', err);
+    res.status(500).json({ success: false, error: 'Server error placing order.' });
+  }
+});
+
+// GET /api/user/orders - Get order history for logged-in user
+app.get('/api/user/orders', authenticateUser, async (req, res) => {
+  try {
+    const list = await getOrdersByUserId(req.user.id);
+    res.json(list);
+  } catch (err) {
+    console.error('Fetch orders error:', err);
+    res.status(500).json({ success: false, error: 'Server error fetching order history.' });
+  }
+});
+
+// ─── MENU ITEMS REVIEWS ENDPOINTS ─────────────────────────────────────────────
+
+// GET /api/reviews/:productId - Get reviews for a menu item
+app.get('/api/reviews/:productId', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const list = await getReviewsByProductId(productId);
+    res.json(list);
+  } catch (err) {
+    console.error('Fetch reviews error:', err);
+    res.status(500).json({ success: false, error: 'Server error fetching reviews.' });
+  }
+});
+
+// POST /api/reviews/:productId - Post review (Only users who purchased the item)
+app.post('/api/reviews/:productId', authenticateUser, async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const { rating, comment } = req.body;
+    
+    if (!rating || !comment) {
+      return res.status(400).json({ success: false, error: 'Rating and comment are required.' });
+    }
+
+    // Verify user has purchased this item
+    const userOrders = await getOrdersByUserId(req.user.id);
+    const targetIdClean = productId.toLowerCase().trim();
+    
+    let hasPurchased = false;
+    for (const order of userOrders) {
+      for (const item of order.items) {
+        if (typeof item === 'string') {
+          const cleanItem = item.toLowerCase();
+          const matchWords = targetIdClean.split('-');
+          const matchesAll = matchWords.every(word => cleanItem.includes(word));
+          if (matchesAll) {
+            hasPurchased = true;
+            break;
+          }
+        } else if (item && typeof item === 'object') {
+          if (item.id === productId || (item.id && item.id.includes(productId))) {
+            hasPurchased = true;
+            break;
+          }
+        }
+      }
+      if (hasPurchased) break;
+    }
+
+    if (!hasPurchased) {
+      return res.status(400).json({ success: false, error: 'You can only review items you have purchased.' });
+    }
+
+    const review = await createReview({
+      product_id: productId,
+      user_id: req.user.id,
+      name: req.user.name,
+      rating,
+      comment
+    });
+
+    res.status(201).json({ success: true, review });
+  } catch (err) {
+    console.error('Post review error:', err);
+    res.status(500).json({ success: false, error: 'Server error posting review.' });
+  }
+});
+
+// PUT /api/reviews/:id - Edit review (Admin Only)
+app.put('/api/reviews/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rating, comment } = req.body;
+    
+    const review = await getReviewById(id);
+    if (!review) {
+      return res.status(404).json({ success: false, error: 'Review not found.' });
+    }
+
+    const updated = await updateReview(id, { rating, comment });
+    res.json({ success: true, review: updated });
+  } catch (err) {
+    console.error('Update review error:', err);
+    res.status(500).json({ success: false, error: 'Server error updating review.' });
+  }
+});
+
+// DELETE /api/reviews/:id - Delete review (Admin Only)
+app.delete('/api/reviews/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const review = await getReviewById(id);
+    if (!review) {
+      return res.status(404).json({ success: false, error: 'Review not found.' });
+    }
+
+    await deleteReview(id);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Delete review error:', err);
+    res.status(500).json({ success: false, error: 'Server error deleting review.' });
+  }
+});
+
+// ─── ADMIN CUSTOMERS ENDPOINTS ────────────────────────────────────────────────
+
+// GET /api/admin/customers - Get registered customers list (Admin Only)
+app.get('/api/admin/customers', authenticateAdmin, async (req, res) => {
+  try {
+    const list = await getCustomersList();
+    res.json(list);
+  } catch (err) {
+    console.error('Fetch customers error:', err);
+    res.status(500).json({ success: false, error: 'Server error fetching customers.' });
+  }
+});
+
+
 
 
 // GET /api/auth/config - Retrieve public authentication config

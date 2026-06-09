@@ -1,4 +1,4 @@
-import"./style-Cr8-PNSf.js";var e=[`Order Received`,`Kitchen Preparing`,`Ready for Pickup`];function t(t){let n=e.indexOf(t);return n===-1?0:n}function n(e){let t=(e||``).toLowerCase();return t.includes(`paid`)||t.includes(`authorized`)?`paid`:t.includes(`pending`)?`pending`:`authorized`}function r(t){return`
+import"./style-iNCSZksz.js";var e=[`Order Received`,`Kitchen Preparing`,`Ready for Pickup`];function t(t){let n=e.indexOf(t);return n===-1?0:n}function n(e){let t=(e||``).toLowerCase();return t.includes(`paid`)||t.includes(`authorized`)?`paid`:t.includes(`pending`)?`pending`:`authorized`}function r(t){return`
         <div class="order-status-track">
           ${e.map((e,n)=>{let r=``;return n<t?r=`done`:n===t&&(r=`active`),`
               <div class="track-step ${r}">

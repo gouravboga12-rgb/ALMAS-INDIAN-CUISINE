@@ -356,7 +356,41 @@ async function initMySQL() {
         created_at BIGINT NOT NULL,
         is_verified TINYINT(1) NOT NULL DEFAULT 0,
         otp_code VARCHAR(255) NULL,
-        otp_expires BIGINT NULL
+        otp_expires BIGINT NULL,
+        phone VARCHAR(50) NULL
+      )
+    `);
+
+    // 8. Orders table
+    await conn.query(`
+      CREATE TABLE IF NOT EXISTS orders (
+        id VARCHAR(50) PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(50) NOT NULL,
+        type VARCHAR(100) NOT NULL,
+        address VARCHAR(255) NOT NULL,
+        time VARCHAR(100) NOT NULL,
+        items TEXT NOT NULL,
+        status VARCHAR(100) NOT NULL,
+        payment VARCHAR(100) NOT NULL,
+        tax DECIMAL(10,2) NOT NULL,
+        total DECIMAL(10,2) NOT NULL,
+        created_at BIGINT NOT NULL
+      )
+    `);
+
+    // 9. Reviews table
+    await conn.query(`
+      CREATE TABLE IF NOT EXISTS reviews (
+        id VARCHAR(50) PRIMARY KEY,
+        product_id VARCHAR(255) NOT NULL,
+        user_id VARCHAR(255) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        rating INT NOT NULL,
+        comment TEXT NOT NULL,
+        created_at BIGINT NOT NULL
       )
     `);
 
@@ -369,6 +403,9 @@ async function initMySQL() {
     } catch (e) { /* already exists */ }
     try {
       await conn.query("ALTER TABLE users ADD COLUMN otp_expires BIGINT NULL");
+    } catch (e) { /* already exists */ }
+    try {
+      await conn.query("ALTER TABLE users ADD COLUMN phone VARCHAR(50) NULL");
     } catch (e) { /* already exists */ }
 
     conn.release();
@@ -848,13 +885,14 @@ export async function createUser(user) {
     created_at: Date.now(),
     is_verified: user.is_verified || 0,
     otp_code: user.otp_code || null,
-    otp_expires: user.otp_expires || null
+    otp_expires: user.otp_expires || null,
+    phone: user.phone || null
   };
 
   if (pool) {
     await pool.query(
-      "INSERT INTO users (id, name, email, password_hash, google_id, avatar, provider, created_at, is_verified, otp_code, otp_expires) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [newUser.id, newUser.name, newUser.email, newUser.password_hash, newUser.google_id, newUser.avatar, newUser.provider, newUser.created_at, newUser.is_verified, newUser.otp_code, newUser.otp_expires]
+      "INSERT INTO users (id, name, email, password_hash, google_id, avatar, provider, created_at, is_verified, otp_code, otp_expires, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [newUser.id, newUser.name, newUser.email, newUser.password_hash, newUser.google_id, newUser.avatar, newUser.provider, newUser.created_at, newUser.is_verified, newUser.otp_code, newUser.otp_expires, newUser.phone]
     );
   } else {
     const db = readJSONDB();
@@ -883,7 +921,7 @@ export async function updateUser(id, updates) {
     const fields = [];
     const values = [];
     for (const [key, val] of Object.entries(updates)) {
-      if (['name', 'email', 'password_hash', 'google_id', 'avatar', 'provider', 'is_verified', 'otp_code', 'otp_expires'].includes(key)) {
+      if (['name', 'email', 'password_hash', 'google_id', 'avatar', 'provider', 'is_verified', 'otp_code', 'otp_expires', 'phone'].includes(key)) {
         fields.push(`\`${key}\` = ?`);
         values.push(key === 'email' ? val.toLowerCase().trim() : val);
       }
@@ -903,5 +941,184 @@ export async function updateUser(id, updates) {
       return db.users[idx];
     }
     return null;
+  }
+}
+
+// ─── ORDERS CRUD
+export async function createOrder(order) {
+  const newOrder = {
+    id: order.id || 'ALM-' + Math.floor(10000 + Math.random() * 90000),
+    user_id: order.user_id,
+    name: order.name,
+    email: order.email,
+    phone: order.phone,
+    type: order.type,
+    address: order.address,
+    time: order.time,
+    items: typeof order.items === 'string' ? order.items : JSON.stringify(order.items),
+    status: order.status,
+    payment: order.payment,
+    tax: parseFloat(order.tax || 0),
+    total: parseFloat(order.total || 0),
+    created_at: order.created_at || Date.now()
+  };
+
+  if (pool) {
+    await pool.query(
+      "INSERT INTO orders (id, user_id, name, email, phone, type, address, time, items, status, payment, tax, total, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [newOrder.id, newOrder.user_id, newOrder.name, newOrder.email, newOrder.phone, newOrder.type, newOrder.address, newOrder.time, newOrder.items, newOrder.status, newOrder.payment, newOrder.tax, newOrder.total, newOrder.created_at]
+    );
+  } else {
+    const db = readJSONDB();
+    if (!db.orders) db.orders = [];
+    db.orders.unshift(newOrder);
+    writeJSONDB(db);
+  }
+  return newOrder;
+}
+
+export async function getOrdersByUserId(userId) {
+  if (pool) {
+    const [rows] = await pool.query("SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC", [userId]);
+    return rows.map(r => ({ ...r, items: JSON.parse(r.items) }));
+  } else {
+    const db = readJSONDB() || { orders: [] };
+    const list = db.orders || [];
+    return list.filter(o => o.user_id === userId).map(o => ({ ...o, items: typeof o.items === 'string' ? JSON.parse(o.items) : o.items }));
+  }
+}
+
+export async function getAllOrders() {
+  if (pool) {
+    const [rows] = await pool.query("SELECT * FROM orders ORDER BY created_at DESC");
+    return rows.map(r => ({ ...r, items: JSON.parse(r.items) }));
+  } else {
+    const db = readJSONDB() || { orders: [] };
+    const list = db.orders || [];
+    return list.map(o => ({ ...o, items: typeof o.items === 'string' ? JSON.parse(o.items) : o.items }));
+  }
+}
+
+// ─── REVIEWS CRUD
+export async function createReview(review) {
+  const newReview = {
+    id: review.id || 'rev-' + Date.now() + '-' + Math.round(Math.random() * 1000),
+    product_id: review.product_id,
+    user_id: review.user_id,
+    name: review.name,
+    rating: parseInt(review.rating || 5),
+    comment: review.comment,
+    created_at: review.created_at || Date.now()
+  };
+
+  if (pool) {
+    await pool.query(
+      "INSERT INTO reviews (id, product_id, user_id, name, rating, comment, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [newReview.id, newReview.product_id, newReview.user_id, newReview.name, newReview.rating, newReview.comment, newReview.created_at]
+    );
+  } else {
+    const db = readJSONDB();
+    if (!db.reviews) db.reviews = [];
+    db.reviews.unshift(newReview);
+    writeJSONDB(db);
+  }
+  return newReview;
+}
+
+export async function getReviewsByProductId(productId) {
+  if (pool) {
+    const [rows] = await pool.query("SELECT * FROM reviews WHERE product_id = ? ORDER BY created_at DESC", [productId]);
+    return rows;
+  } else {
+    const db = readJSONDB() || { reviews: [] };
+    const list = db.reviews || [];
+    return list.filter(r => r.product_id === productId);
+  }
+}
+
+export async function getReviewById(id) {
+  if (pool) {
+    const [rows] = await pool.query("SELECT * FROM reviews WHERE id = ?", [id]);
+    return rows.length > 0 ? rows[0] : null;
+  } else {
+    const db = readJSONDB() || { reviews: [] };
+    const list = db.reviews || [];
+    return list.find(r => r.id === id) || null;
+  }
+}
+
+export async function updateReview(id, updates) {
+  if (pool) {
+    const fields = [];
+    const values = [];
+    for (const [key, val] of Object.entries(updates)) {
+      if (['rating', 'comment'].includes(key)) {
+        fields.push(`\`${key}\` = ?`);
+        values.push(val);
+      }
+    }
+    if (fields.length === 0) return null;
+    values.push(id);
+    await pool.query(`UPDATE reviews SET ${fields.join(', ')} WHERE id = ?`, values);
+    const [rows] = await pool.query("SELECT * FROM reviews WHERE id = ?", [id]);
+    return rows[0] || null;
+  } else {
+    const db = readJSONDB();
+    if (!db.reviews) db.reviews = [];
+    const idx = db.reviews.findIndex(r => r.id === id);
+    if (idx !== -1) {
+      db.reviews[idx] = { ...db.reviews[idx], ...updates, id };
+      writeJSONDB(db);
+      return db.reviews[idx];
+    }
+    return null;
+  }
+}
+
+export async function deleteReview(id) {
+  if (pool) {
+    await pool.query("DELETE FROM reviews WHERE id = ?", [id]);
+  } else {
+    const db = readJSONDB();
+    if (!db.reviews) db.reviews = [];
+    db.reviews = db.reviews.filter(r => r.id !== id);
+    writeJSONDB(db);
+  }
+  return true;
+}
+
+// ─── CUSTOMERS LIST (Admin Dashboard)
+export async function getCustomersList() {
+  if (pool) {
+    const query = `
+      SELECT 
+        u.id, 
+        u.name, 
+        u.email, 
+        COALESCE(u.phone, (SELECT o.phone FROM orders o WHERE o.user_id = u.id ORDER BY o.created_at DESC LIMIT 1)) as phone,
+        u.created_at,
+        (SELECT COUNT(*) FROM orders o WHERE o.user_id = u.id) as orders_count
+      FROM users u
+      ORDER BY u.created_at DESC
+    `;
+    const [rows] = await pool.query(query);
+    return rows;
+  } else {
+    const db = readJSONDB() || { users: [], orders: [] };
+    const users = db.users || [];
+    const orders = db.orders || [];
+    
+    return users.map(u => {
+      const userOrders = orders.filter(o => o.user_id === u.id);
+      const latestOrder = userOrders[0];
+      return {
+        id: u.id,
+        name: u.name,
+        email: u.email,
+        phone: u.phone || (latestOrder ? latestOrder.phone : null),
+        created_at: u.created_at,
+        orders_count: userOrders.length
+      };
+    }).sort((a, b) => b.created_at - a.created_at);
   }
 }

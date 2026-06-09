@@ -2681,12 +2681,22 @@
 
         if (addToCartBtn) {
           addToCartBtn.addEventListener('click', () => {
+            if (!localStorage.getItem('almas_token')) {
+              alert("Please log in or sign up first to add items to your cart.");
+              window.location.href = "/account.html?tab=login";
+              return;
+            }
             openCustomizationModal(getItem());
           });
         }
 
         if (buyNowBtn) {
           buyNowBtn.addEventListener('click', () => {
+            if (!localStorage.getItem('almas_token')) {
+              alert("Please log in or sign up first to order menu items.");
+              window.location.href = "/account.html?tab=login";
+              return;
+            }
             openCustomizationModal(getItem());
           });
         }

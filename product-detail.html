@@ -853,6 +853,11 @@
       };
 
       document.getElementById('btn-add-cart').onclick = () => {
+        if (!localStorage.getItem('almas_token')) {
+          alert("Please log in or sign up first to add items to your cart.");
+          window.location.href = "/account.html?tab=login";
+          return;
+        }
         const block = document.getElementById('special-instructions-block');
         if (block.classList.contains('hidden')) {
           block.classList.remove('hidden');
@@ -868,6 +873,11 @@
       };
 
       document.getElementById('btn-buy-now').onclick = () => {
+        if (!localStorage.getItem('almas_token')) {
+          alert("Please log in or sign up first to order menu items.");
+          window.location.href = "/account.html?tab=login";
+          return;
+        }
         const block = document.getElementById('special-instructions-block');
         if (block.classList.contains('hidden')) {
           block.classList.remove('hidden');
@@ -943,89 +953,134 @@
       });
     });
 
-    function initReviews(id, name) {
-      const storageKey = `almas_reviews_${id}`;
+    function formatReviewDate(createdAt) {
+      if (!createdAt) return 'Just now';
+      const date = new Date(createdAt);
+      if (isNaN(date.getTime())) return createdAt;
+      const diff = Date.now() - date.getTime();
+      const mins = Math.floor(diff / 60000);
+      const hours = Math.floor(mins / 60);
+      const days = Math.floor(hours / 24);
       
-      // Default Seeded Reviews based on category/name
-      const defaultReviewsMap = [
-        { name: "Gourmet Traveler", rating: 5, date: "2 days ago", comment: "Absolutely delightful! The blend of spices is spot-on, and the presentation feels incredibly premium. This has become my favorite dish at ALMAS." },
-        { name: "Fatima K.", rating: 5, date: "1 week ago", comment: "Reminds me of home! The meat is extremely tender and cooked to perfection. Highly recommend choosing 'Medium' spice level for the perfect balance." },
-        { name: "Rajesh S.", rating: 4, date: "3 weeks ago", comment: "Excellent flavor profile and generous portions. The aroma was rich and saffron-forward. Will order again!" }
-      ];
-
-      let reviewsList = JSON.parse(localStorage.getItem(storageKey));
-      if (!reviewsList || reviewsList.length === 0) {
-        reviewsList = defaultReviewsMap;
-        localStorage.setItem(storageKey, JSON.stringify(reviewsList));
-      }
-
-      currentProductReviews = reviewsList;
-      renderReviewsUI(currentProductReviews);
-
-      // Handle Review Submission
-      const reviewForm = document.getElementById('review-form');
-      reviewForm.onsubmit = (e) => {
-        e.preventDefault();
-        
-        const reviewerNameInput = document.getElementById('reviewer-name');
-        const reviewerTextInput = document.getElementById('reviewer-text');
-        
-        const reviewerName = reviewerNameInput.value.trim();
-        const reviewerText = reviewerTextInput.value.trim();
-
-        if (!reviewerName || !reviewerText) return;
-
-        // Check for duplicate reviews to be professional
-        const hasReviewed = reviewsList.some(r => r.name.toLowerCase() === reviewerName.toLowerCase() && r.comment.toLowerCase() === reviewerText.toLowerCase());
-        if (hasReviewed) {
-          alert("This review has already been submitted.");
-          return;
-        }
-
-        const newReviewObj = {
-          name: reviewerName,
-          rating: chosenStarsReview,
-          date: "Just now",
-          comment: reviewerText
-        };
-
-        reviewsList.unshift(newReviewObj);
-        localStorage.setItem(storageKey, JSON.stringify(reviewsList));
-
-        currentProductReviews = reviewsList;
-        showAllReviews = true;
-
-        // Reset Form
-        reviewerNameInput.value = '';
-        reviewerTextInput.value = '';
-        
-        // Dynamic Update
-        renderReviewsUI(currentProductReviews);
-
-        // Success Alert using professional text styling
-        const submitBtn = document.getElementById('submit-review-btn');
-        submitBtn.textContent = "Review Submitted ✓";
-        submitBtn.style.backgroundColor = "#2E7D32";
-        submitBtn.style.borderColor = "#2E7D32";
-        submitBtn.disabled = true;
-
-        setTimeout(() => {
-          submitBtn.textContent = "Post Review";
-          submitBtn.style.backgroundColor = "";
-          submitBtn.style.borderColor = "";
-          submitBtn.disabled = false;
-        }, 3000);
-      };
+      if (mins < 1) return 'Just now';
+      if (mins < 60) return `${mins} min${mins > 1 ? 's' : ''} ago`;
+      if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+      if (days < 30) return `${days} day${days > 1 ? 's' : ''} ago`;
+      
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     }
 
-    function renderReviewsUI(reviews) {
+    async function fetchAndRenderReviews(productId) {
+      try {
+        const response = await fetch(`/api/reviews/${productId}`);
+        if (response.ok) {
+          const list = await response.json();
+          currentProductReviews = list;
+          renderReviewsUI(currentProductReviews, productId);
+        }
+      } catch (err) {
+        console.error("Error fetching reviews:", err);
+      }
+    }
+
+    function initReviews(id, name) {
+      // Fetch reviews dynamically from database
+      fetchAndRenderReviews(id);
+
+      const token = localStorage.getItem('almas_token');
+      const reviewForm = document.getElementById('review-form');
+      if (!token) {
+        if (reviewForm) {
+          reviewForm.innerHTML = `
+            <div class="text-center py-4 space-y-4">
+              <p class="text-xs text-text-secondary/80 leading-relaxed font-semibold">Only verified buyers can review this delicacy.</p>
+              <a href="/account.html?tab=login" class="btn-premium py-2.5 px-6 text-[10px] inline-block uppercase tracking-wider font-bold" style="text-decoration:none;">Log In / Sign Up</a>
+            </div>
+          `;
+        }
+      } else {
+        // Pre-populate name
+        const savedAccount = localStorage.getItem('almas_account');
+        if (savedAccount) {
+          try {
+            const user = JSON.parse(savedAccount);
+            const nameInput = document.getElementById('reviewer-name');
+            if (nameInput && user.name) {
+              nameInput.value = user.name;
+              nameInput.readOnly = true;
+              nameInput.style.opacity = '0.7';
+              nameInput.style.backgroundColor = '#f1f1f1';
+            }
+          } catch (e) {
+            console.error("Error pre-populating review name:", e);
+          }
+        }
+      }
+
+      if (reviewForm && token) {
+        reviewForm.onsubmit = async (e) => {
+          e.preventDefault();
+          
+          const reviewerTextInput = document.getElementById('reviewer-text');
+          const reviewerText = reviewerTextInput.value.trim();
+
+          if (!reviewerText) return;
+
+          const submitBtn = document.getElementById('submit-review-btn');
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Posting...";
+
+          try {
+            const response = await fetch(`/api/reviews/${id}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                rating: chosenStarsReview,
+                comment: reviewerText
+              })
+            });
+
+            if (response.ok) {
+              reviewerTextInput.value = '';
+              submitBtn.textContent = "Review Submitted ✓";
+              submitBtn.style.backgroundColor = "#2E7D32";
+              submitBtn.style.borderColor = "#2E7D32";
+
+              setTimeout(() => {
+                submitBtn.textContent = "Post Review";
+                submitBtn.style.backgroundColor = "";
+                submitBtn.style.borderColor = "";
+                submitBtn.disabled = false;
+              }, 3000);
+
+              await fetchAndRenderReviews(id);
+            } else {
+              const err = await response.json();
+              alert(err.error || 'Failed to submit review.');
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Post Review";
+            }
+          } catch (err) {
+            console.error('Error submitting review:', err);
+            alert('An error occurred. Please try again.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Post Review";
+          }
+        };
+      }
+    }
+
+    function renderReviewsUI(reviews, productId) {
       const container = document.getElementById('reviews-list-container');
       const ratingNumEl = document.getElementById('avg-rating-num');
       const starDisplayEl = document.getElementById('avg-stars');
       const reviewsCountEl = document.getElementById('total-reviews-count');
       const listCountEl = document.getElementById('review-list-count');
 
-      if (reviews.length === 0) {
+      if (!reviews || reviews.length === 0) {
         container.innerHTML = `<p class="text-text-secondary italic text-sm py-6">Be the first to share your culinary experience!</p>`;
         ratingNumEl.textContent = "N/A";
         starDisplayEl.innerHTML = '';
@@ -1050,7 +1105,7 @@
         if (i <= fullStars) {
           starHtml += '★';
         } else if (i === fullStars + 1 && halfStar) {
-          starHtml += '★'; // simple full star fallback or half symbol
+          starHtml += '★'; 
         } else {
           starHtml += '☆';
         }
@@ -1059,21 +1114,37 @@
 
       // Calculate bar width metrics
       const ratingsBreakdown = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-      reviews.forEach(r => { ratingsBreakdown[r.rating]++; });
+      reviews.forEach(r => { 
+        if (ratingsBreakdown[r.rating] !== undefined) {
+          ratingsBreakdown[r.rating]++; 
+        }
+      });
       
       for (let i = 1; i <= 5; i++) {
         const percent = (ratingsBreakdown[i] / reviews.length) * 100;
-        document.getElementById(`bar-${i}`).style.width = `${percent}%`;
+        const bar = document.getElementById(`bar-${i}`);
+        if (bar) bar.style.width = `${percent}%`;
       }
 
       // Render reviews HTML (conditionally sliced based on showAllReviews toggle)
       const reviewsToRender = showAllReviews ? reviews : reviews.slice(0, 1);
+      const isAdmin = !!localStorage.getItem('almas_admin_token');
 
       container.innerHTML = reviewsToRender.map(r => {
         let stars = '';
         for (let j = 1; j <= 5; j++) {
           stars += j <= r.rating ? '★' : '☆';
         }
+
+        const adminActions = isAdmin ? `
+          <div class="flex items-center gap-3 mt-2">
+            <button class="text-[10px] text-blue-500 hover:text-blue-700 font-bold uppercase tracking-wider edit-review-btn cursor-pointer" data-id="${r.id}" data-comment="${escapeHTML(r.comment)}" data-rating="${r.rating}">Edit</button>
+            <button class="text-[10px] text-red-500 hover:text-red-700 font-bold uppercase tracking-wider delete-review-btn cursor-pointer" data-id="${r.id}">Delete</button>
+          </div>
+        ` : '';
+
+        const displayDate = formatReviewDate(r.created_at || r.date);
+
         return `
           <div class="review-bubble p-5 rounded-2xl space-y-2 border border-primary/5 transition-all duration-300">
             <div class="flex items-center justify-between">
@@ -1081,12 +1152,89 @@
                 <strong class="text-sm font-bold text-text-primary block">${escapeHTML(r.name)}</strong>
                 <div class="text-[10px] text-secondary tracking-widest">${stars}</div>
               </div>
-              <span class="text-[10px] text-text-secondary/50 font-bold uppercase tracking-wider">${r.date}</span>
+              <span class="text-[10px] text-text-secondary/50 font-bold uppercase tracking-wider">${displayDate}</span>
             </div>
             <p class="text-text-secondary text-xs md:text-sm leading-relaxed italic">${escapeHTML(r.comment)}</p>
+            ${adminActions}
           </div>
         `;
       }).join('');
+
+      // Wire Admin Actions
+      if (isAdmin) {
+        container.querySelectorAll('.delete-review-btn').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            const reviewId = e.target.dataset.id;
+            if (confirm("Are you sure you want to delete this review?")) {
+              const adminToken = localStorage.getItem('almas_admin_token');
+              try {
+                const response = await fetch(`/api/reviews/${reviewId}`, {
+                  method: 'DELETE',
+                  headers: {
+                    'Authorization': `Bearer ${adminToken}`
+                  }
+                });
+                if (response.ok) {
+                  alert("Review deleted successfully.");
+                  fetchAndRenderReviews(productId);
+                } else {
+                  const err = await response.json();
+                  alert(err.error || "Failed to delete review.");
+                }
+              } catch (err) {
+                console.error("Error deleting review:", err);
+                alert("An error occurred. Please try again.");
+              }
+            }
+          });
+        });
+
+        container.querySelectorAll('.edit-review-btn').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            const reviewId = e.target.dataset.id;
+            const originalComment = e.target.dataset.comment;
+            const originalRating = parseInt(e.target.dataset.rating);
+            
+            const newComment = prompt("Edit review comment:", originalComment);
+            if (newComment === null) return;
+            const newCommentClean = newComment.trim();
+            if (!newCommentClean) {
+              alert("Comment cannot be empty.");
+              return;
+            }
+
+            const newRatingStr = prompt("Edit review rating (1-5):", originalRating);
+            if (newRatingStr === null) return;
+            const newRating = parseInt(newRatingStr);
+            if (isNaN(newRating) || newRating < 1 || newRating > 5) {
+              alert("Rating must be a number between 1 and 5.");
+              return;
+            }
+
+            const adminToken = localStorage.getItem('almas_admin_token');
+            try {
+              const response = await fetch(`/api/reviews/${reviewId}`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${adminToken}`
+                },
+                body: JSON.stringify({ comment: newCommentClean, rating: newRating })
+              });
+              if (response.ok) {
+                alert("Review updated successfully.");
+                fetchAndRenderReviews(productId);
+              } else {
+                const err = await response.json();
+                alert(err.error || "Failed to update review.");
+              }
+            } catch (err) {
+              console.error("Error updating review:", err);
+              alert("An error occurred. Please try again.");
+            }
+          });
+        });
+      }
 
       // Setup See More Button
       const seeMoreBtnWrap = document.getElementById('see-more-reviews-container');

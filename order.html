@@ -556,6 +556,41 @@
   <script type="module">
     import { getCart, getCartTotals, updateCartItemQty, clearCart, showToast } from '/src/ecommerce.js';
 
+    async function syncLocalOrders() {
+      const localOrders = JSON.parse(localStorage.getItem('almas_orders')) || [];
+      if (localOrders.length === 0) return;
+      const token = localStorage.getItem('almas_token');
+      if (!token) return;
+      
+      for (const localOrder of localOrders) {
+        try {
+          await fetch('/api/user/orders', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              name: localOrder.name,
+              email: localOrder.email || '',
+              phone: localOrder.phone || '',
+              type: localOrder.type,
+              address: localOrder.address,
+              time: localOrder.time || 'ASAP',
+              items: localOrder.items,
+              status: localOrder.status,
+              payment: localOrder.payment,
+              tax: localOrder.tax,
+              total: localOrder.total
+            })
+          });
+        } catch (e) {
+          console.error('Failed to sync local order', localOrder.id, e);
+        }
+      }
+      localStorage.removeItem('almas_orders');
+    }
+
     function saveOrderToLocalStorage(orderInfo) {
       const orders = JSON.parse(localStorage.getItem('almas_orders')) || [];
       const newOrder = {
@@ -568,8 +603,8 @@
         items: orderInfo.items,
         status: orderInfo.status,
         payment: orderInfo.payment,
-        tax: orderInfo.totals.tax,
-        total: orderInfo.totals.total,
+        tax: orderInfo.totals ? orderInfo.totals.tax : orderInfo.tax,
+        total: orderInfo.totals ? orderInfo.totals.total : orderInfo.total,
         date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
         prepStatus: 'Order Received',
         timestamp: Date.now()
@@ -579,6 +614,45 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Login Check Guard
+      const token = localStorage.getItem('almas_token');
+      if (!token) {
+        alert("Please log in or sign up first to access the order page.");
+        window.location.href = "/account.html?tab=login";
+        return;
+      }
+
+      // Pre-populate fields
+      const savedAccount = localStorage.getItem('almas_account');
+      if (savedAccount) {
+        try {
+          const user = JSON.parse(savedAccount);
+          if (user.name) {
+            const takeoutName = document.getElementById('takeout-name');
+            if (takeoutName) takeoutName.value = user.name;
+            const cateringName = document.getElementById('catering-fullname');
+            if (cateringName) cateringName.value = user.name;
+          }
+          if (user.email) {
+            const takeoutEmail = document.getElementById('takeout-email');
+            if (takeoutEmail) takeoutEmail.value = user.email;
+            const cateringEmail = document.getElementById('catering-email-field');
+            if (cateringEmail) cateringEmail.value = user.email;
+          }
+          if (user.phone) {
+            const takeoutPhone = document.getElementById('takeout-phone');
+            if (takeoutPhone) takeoutPhone.value = user.phone;
+            const cateringPhone = document.getElementById('catering-phone-field');
+            if (cateringPhone) cateringPhone.value = user.phone;
+          }
+        } catch (e) {
+          console.error("Error pre-populating fields:", e);
+        }
+      }
+
+      // Sync any local orders
+      syncLocalOrders();
+
       // Toggle Tabs
       const tabBtns = document.querySelectorAll('.ecom-tab-btn');
       const panels = document.querySelectorAll('.ecom-tab-panel');
@@ -863,9 +937,10 @@
       });
 
       // Checkout Place Order
-      document.getElementById('btn-t-place').addEventListener('click', () => {
+      document.getElementById('btn-t-place').addEventListener('click', async () => {
         const name = document.getElementById('takeout-name').value.trim();
         const phone = document.getElementById('takeout-phone').value.trim();
+        const email = document.getElementById('takeout-email').value.trim();
         const time = document.getElementById('takeout-time').value;
         const { subtotal } = getCartTotals();
 
@@ -887,8 +962,6 @@
         let finalType = 'Takeout (Store Pickup)';
         let finalFee = 0;
 
-
-
         const baseTotals = getCartTotals();
         let discount = 0;
         if (appliedPromo) {
@@ -904,6 +977,7 @@
 
         const orderData = {
           name: name,
+          email: email,
           phone: phone,
           type: finalType,
           address: finalAddress,
@@ -917,16 +991,46 @@
           }),
           status: activeTakeoutMethod === 'online' ? 'Paid Online' : 'Pending Payment (Store Pickup)',
           payment: activeTakeoutMethod === 'online' ? 'Credit Card Ending 4000' : 'In-Store Cash/Debit',
-          totals: finalTotals,
+          tax: finalTax,
+          total: finalTotals.total,
           promoCode: appliedPromo ? appliedPromo.code : null
         };
 
-        saveOrderToLocalStorage(orderData);
+        const token = localStorage.getItem('almas_token');
+        try {
+          const response = await fetch('/api/user/orders', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(orderData)
+          });
+          if (response.ok) {
+            const resData = await response.json();
+            
+            // Sync user profile phone locally if updated
+            const savedAccount = localStorage.getItem('almas_account');
+            if (savedAccount) {
+              const u = JSON.parse(savedAccount);
+              u.phone = phone;
+              localStorage.setItem('almas_account', JSON.stringify(u));
+            }
 
-        // Complete takeout!
-        showInvoice(orderData);
+            // Sync pre-existing local orders
+            await syncLocalOrders();
 
-        clearCart();
+            // Complete takeout!
+            showInvoice({ ...orderData, totals: finalTotals });
+            clearCart();
+          } else {
+            const err = await response.json();
+            alert(err.error || 'Failed to place order.');
+          }
+        } catch (err) {
+          console.error('Error placing order:', err);
+          alert('An error occurred. Please try again.');
+        }
       });
 
 
