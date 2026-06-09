@@ -1153,7 +1153,7 @@
             <div id="multi-price-preview" style="display:none;"></div>
           </div>
         </div>
-        <div class="form-group col-span-2">
+        <div class="form-group col-span-2" id="product-image-group">
           <label class="form-label">Image Upload</label>
           <input type="file" id="product-img-file" accept="image/*">
           <input type="text" id="product-img-url" placeholder="or paste image URL link" style="margin-top: 8px;">
@@ -1790,6 +1790,7 @@
 
     document.getElementById('btn-add-product').addEventListener('click', () => {
       menuContext = 'standard';
+      document.getElementById('product-image-group').style.display = 'block';
       document.getElementById('product-modal-title').textContent = 'Add Menu Item';
       document.getElementById('product-form-mode').value = 'add';
       document.getElementById('product-id').disabled = false;
@@ -1815,6 +1816,7 @@
 
     window.editProductClick = function(id) {
       menuContext = 'standard';
+      document.getElementById('product-image-group').style.display = 'block';
       const p = cachedMenu.products.find(item => item.id === id);
       if (!p) return;
 
@@ -2033,7 +2035,6 @@
 
         card.innerHTML = `
           <div>
-            <img src="${p.image || '/logo.png'}" alt="${p.name}" class="item-img-preview">
             <div class="item-name">${p.name}</div>
             <div style="margin-bottom:10px;">
               ${dietBadge}
@@ -2098,6 +2099,7 @@
 
     document.getElementById('btn-add-qr-product').addEventListener('click', () => {
       menuContext = 'qr';
+      document.getElementById('product-image-group').style.display = 'none';
       document.getElementById('product-modal-title').textContent = 'Add QR Menu Item';
       document.getElementById('product-form-mode').value = 'add';
       document.getElementById('product-id').disabled = false;
@@ -2123,6 +2125,7 @@
 
     window.editQRProductClick = function(id) {
       menuContext = 'qr';
+      document.getElementById('product-image-group').style.display = 'none';
       const p = cachedQRMenu.products.find(item => item.id === id);
       if (!p) return;
 
