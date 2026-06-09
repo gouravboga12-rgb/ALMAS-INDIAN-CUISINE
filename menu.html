@@ -235,8 +235,8 @@
 <body>
 
   <!-- Navigation -->
-  <nav class="glass-nav w-full z-50 sticky top-0">
-    <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center h-28 md:h-24">
+  <nav class="glass-nav w-full z-50 sticky top-0" style="border-bottom: 1px solid rgba(0,0,0,0.06);">
+    <div class="max-w-7xl mx-auto px-4 md:px-10 flex justify-between items-center h-14 md:h-16">
       <!-- Left: Logo & Search Bar -->
       <div class="flex items-center gap-6 flex-1">
         <!-- Mobile Hamburger & Halal Logo (Mobile & Tablet) -->
@@ -249,17 +249,17 @@
           <img src="/halal_logo.png" alt="Halal Certified" class="h-8 w-auto object-contain">
         </div>
         <a href="/" class="flex items-center">
-          <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-20 md:h-16 w-auto object-contain">
+          <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-9 md:h-10 w-auto object-contain">
         </a>
         
         <!-- Desktop Search Bar -->
-        <div class="hidden lg:block desktop-search-container">
+        <div class="hidden lg:block desktop-search-container" style="max-width:220px;">
           <span class="desktop-search-icon">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
           </span>
-          <input type="text" id="desktop-search-input" placeholder="Search delicious dishes..." class="desktop-search-input">
+          <input type="text" id="desktop-search-input" placeholder="Search dishes..." class="desktop-search-input" style="font-size:0.8rem;">
         </div>
       </div>
 
@@ -287,7 +287,7 @@
           </button>
 
           <!-- Halal Logo (Desktop) -->
-          <img src="/halal_logo.png" alt="Halal Certified" class="hidden lg:block h-10 w-auto object-contain ml-2">
+          <img src="/halal_logo.png" alt="Halal Certified" class="hidden lg:block h-8 w-auto object-contain ml-2">
         </div>
       </div>
 
@@ -354,7 +354,7 @@
   </div>
 
   <!-- Category Secondary Nav -->
-  <div class="bg-background border-b border-black/5 sticky top-[60px] lg:top-[96px] z-40 overflow-x-auto whitespace-nowrap hide-scrollbar">
+  <div class="bg-background border-b border-black/5 sticky top-[56px] lg:top-[64px] z-40 overflow-x-auto whitespace-nowrap hide-scrollbar">
     <div id="dynamic-category-nav" class="max-w-7xl mx-auto px-6 md:px-12 flex items-center h-14 space-x-8">
       <a href="#soups" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Soups</a>
       <a href="#appetizers" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Appetizers</a>
@@ -415,7 +415,7 @@
     
     <div id="dynamic-menu-sections">
     <!-- SOUPS -->
-    <section id="soups" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="soups" class="scroll-mt-36 md:scroll-mt-32">
       <h2 class="section-title">Soups</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Broths & slow-simmered warmth</p>
       
@@ -466,7 +466,7 @@
     </section>
 
     <!-- APPETIZERS -->
-    <section id="appetizers" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="appetizers" class="scroll-mt-36 md:scroll-mt-32">
       <h2 class="section-title">Appetizers</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Bold starters & sharing plates</p>
 
@@ -638,7 +638,7 @@
     </section>
 
     <!-- TANDOOR TREASURES -->
-    <section id="tandoor" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="tandoor" class="scroll-mt-36 md:scroll-mt-32">
       <h2 class="section-title">Tandoor Treasures</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Clay oven crafted</p>
 
@@ -726,7 +726,7 @@
     </section>
 
     <!-- MAINS -->
-    <section id="mains" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="mains" class="scroll-mt-36 md:scroll-mt-32">
       <h2 class="section-title">Mains</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Curries & slow-cooked gravies</p>
 
@@ -875,7 +875,7 @@
     </section>
 
     <!-- BIRYANI -->
-    <section id="biryani" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="biryani" class="scroll-mt-36 md:scroll-mt-32">
       <h2 class="section-title">Biryani</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Dum-sealed & flame-finished</p>
 
@@ -966,7 +966,7 @@
     </section>
 
     <!-- MANDI -->
-    <section id="mandi" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="mandi" class="scroll-mt-36 md:scroll-mt-32">
       <h2 class="section-title">Mandi</h2>
       <p class="text-center text-menu-secondary italic mb-6 -mt-8">Arabian dum-roasted rice platters | Single / 2 / 3 People</p>
       <div class="text-center mb-12">
@@ -1137,7 +1137,7 @@
     </section>
 
     <!-- PULAO -->
-    <section id="pulao" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="pulao" class="scroll-mt-36 md:scroll-mt-32">
       <h2 class="section-title">Pulao</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Fragrant one-pot rice dishes</p>
 
@@ -1209,7 +1209,7 @@
     </section>
 
     <!-- CHINESE -->
-    <section id="chinese" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="chinese" class="scroll-mt-36 md:scroll-mt-32">
       <h2 class="section-title">Chinese</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Indo-Chinese wok kitchen</p>
 
@@ -1246,7 +1246,7 @@
     </section>
 
     <!-- MOMO -->
-    <section id="momo" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="momo" class="scroll-mt-36 md:scroll-mt-32">
       <h2 class="section-title">Momo</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Steamed & grilled dumplings</p>
 
@@ -1269,7 +1269,7 @@
     </section>
 
     <!-- BREADS -->
-    <section id="breads" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="breads" class="scroll-mt-36 md:scroll-mt-32">
       <h2 class="section-title">Breads</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Fresh from the clay oven</p>
 
@@ -1387,7 +1387,7 @@
     </section>
 
     <!-- DESSERTS -->
-    <section id="desserts" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="desserts" class="scroll-mt-36 md:scroll-mt-32">
       <h2 class="section-title">Desserts</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Sweet endings</p>
 
@@ -1603,7 +1603,7 @@
             const nonVegProducts = catProducts.filter(p => p.diet !== 'VEG');
 
             html += `
-              <section id="${cat.id}" class="scroll-mt-48 md:scroll-mt-40">
+              <section id="${cat.id}" class="scroll-mt-36 md:scroll-mt-32">
                 <h2 class="section-title">${cat.name}</h2>
                 <p class="text-center text-menu-secondary italic mb-12 -mt-8">${subtitle}</p>
             `;
