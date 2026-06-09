@@ -759,6 +759,78 @@
       "spiceDefault": "Mild"
     },
     {
+      "id": "irani-chai",
+      "name": "Irani Chai",
+      "price": "$1.99 / $2.99",
+      "image": "/signature_irani_chai.png",
+      "category": "Beverages",
+      "diet": "VEG",
+      "badge": "SIGNATURE",
+      "dietColor": "#CC5500",
+      "desc": "Hyderabadi-style slow-brewed milky tea with cardamom — rich, sweet, and deeply aromatic. A timeless café classic.",
+      "spiceDefault": "Mild"
+    },
+    {
+      "id": "lassi",
+      "name": "Lassi",
+      "price": "$5.99",
+      "image": "/signature_irani_chai.png",
+      "category": "Beverages",
+      "diet": "VEG",
+      "badge": "VEG",
+      "dietColor": "#16a34a",
+      "desc": "Thick house-churned yogurt drink in Mango, Sweet, or Salt — cooling and classic.",
+      "spiceDefault": "Mild"
+    },
+    {
+      "id": "bun-maska",
+      "name": "Bun Maska",
+      "price": "$4.99",
+      "image": "/signature_irani_chai.png",
+      "category": "Beverages",
+      "diet": "VEG",
+      "badge": "VEG",
+      "dietColor": "#16a34a",
+      "desc": "Soft Irani bun slathered with creamy butter — the perfect companion to Irani Chai.",
+      "spiceDefault": "Mild"
+    },
+    {
+      "id": "fresh-lime-soda",
+      "name": "Fresh Lime Soda",
+      "price": "$5.99",
+      "image": "/signature_irani_chai.png",
+      "category": "Beverages",
+      "diet": "VEG",
+      "badge": "VEG",
+      "dietColor": "#16a34a",
+      "desc": "Hand-squeezed lime with sparkling soda — sweet or salted, always refreshing.",
+      "spiceDefault": "Mild"
+    },
+    {
+      "id": "butter-milk",
+      "name": "Butter Milk",
+      "price": "$3.99",
+      "image": "/signature_irani_chai.png",
+      "category": "Beverages",
+      "diet": "VEG",
+      "badge": "VEG",
+      "dietColor": "#16a34a",
+      "desc": "Spiced and salted churned yogurt drink with roasted cumin — a natural digestif.",
+      "spiceDefault": "Mild"
+    },
+    {
+      "id": "pops",
+      "name": "Pops",
+      "price": "$1.99",
+      "image": "/signature_irani_chai.png",
+      "category": "Beverages",
+      "diet": "VEG",
+      "badge": "VEG",
+      "dietColor": "#16a34a",
+      "desc": "Chilled soft drink of your choice — the perfect palate refresher between courses.",
+      "spiceDefault": "Mild"
+    },
+    {
       "id": "cashew-paneer-pulao",
       "name": "Cashew Paneer Pulao",
       "price": "$16.99",
