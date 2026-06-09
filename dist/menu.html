@@ -133,19 +133,60 @@
       font-weight: 700;
       color: #CC5500;
       font-size: 1.1rem;
-      white-space: normal;
-      word-break: break-word;
-      flex-shrink: 1;
-      max-width: 220px;
+      white-space: nowrap;
+      flex-shrink: 0;
       background: rgba(204, 85, 0, 0.10);
       border: 1px solid rgba(204, 85, 0, 0.22);
       border-radius: 8px;
-      padding: 4px 12px;
+      padding: 5px 14px;
       letter-spacing: 0.01em;
       display: inline-block;
       margin-top: 4px;
       line-height: 1.5;
-      text-align: right;
+      text-align: center;
+      align-self: flex-start;
+    }
+
+    /* Multi-tier pricing (e.g. Single / Two People / Three People) */
+    .menu-item-price--multi {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: flex-end;
+      flex-shrink: 0;
+      min-width: 140px;
+      margin-top: 4px;
+      background: rgba(204, 85, 0, 0.07);
+      border: 1px solid rgba(204, 85, 0, 0.18);
+      border-radius: 10px;
+      padding: 8px 12px;
+    }
+    .mp-tier {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+    }
+    .mp-tier-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      color: #888;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+    .mp-tier-price {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: #CC5500;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+    .mp-tier + .mp-tier {
+      border-top: 1px solid rgba(204, 85, 0, 0.12);
+      padding-top: 4px;
     }
 
 
@@ -244,6 +285,12 @@
       }
       .menu-item-price {
         margin-top: 0.5rem;
+        align-self: flex-start;
+      }
+      .menu-item-price--multi {
+        align-self: flex-start;
+        min-width: unset;
+        width: 100%;
       }
     }
   </style>
@@ -267,11 +314,9 @@
       }
     }
   </style>
-  <script type="module" crossorigin src="/assets/menu-CFdqG3Ov.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/main-CP7hZ_4g.js">
-  <link rel="modulepreload" crossorigin href="/assets/style-CtxeAEq1.js">
-  <link rel="stylesheet" crossorigin href="/assets/main-PTugdkvS.css">
-  <link rel="stylesheet" crossorigin href="/assets/style--ek9azXY.css">
+  <script type="module" crossorigin src="/assets/menu-wuH3qhu4.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/main-Dh8FFOlU.js">
+  <link rel="stylesheet" crossorigin href="/assets/main-BkPMw2jZ.css">
 </head>
 <body class="menu-page">
 
