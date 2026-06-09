@@ -233,173 +233,23 @@
   </style>
   <style>
     /* =============================================
-       MENU PAGE — COMPACT HEADER OVERRIDES
-       Override global style.css mobile nav rules
-       so the menu page keeps a slim header.
+       MENU PAGE — CATEGORY BAR STICKY AT TOP
+       No header on this page, category bar sticks
+       at the very top of the viewport.
     ============================================= */
-    body.menu-page .glass-nav > div {
-      height: 56px !important;      /* mobile: 56px */
-    }
-    @media (min-width: 1024px) {
-      body.menu-page .glass-nav > div {
-        height: 64px !important;    /* desktop: 64px */
-      }
-    }
-    /* Logo stays small on menu page */
-    body.menu-page .glass-nav img[src="/logo.png"] {
-      height: 36px !important;
-    }
-    body.menu-page .glass-nav img[src="/halal_logo.png"] {
-      height: 32px !important;
-    }
-    /* Keep logo centered on mobile for menu page */
-    body.menu-page .glass-nav > div > div.flex-1 > a {
-      position: absolute !important;
-      left: 50% !important;
-      top: 50% !important;
-      transform: translate(-50%, -50%) !important;
-    }
-    /* Category bar: always visible & sticky right below the compact header */
     body.menu-page #menu-category-bar {
       position: sticky;
-      top: 56px;
-      z-index: 40;
-    }
-    @media (min-width: 1024px) {
-      body.menu-page #menu-category-bar {
-        top: 64px;
-      }
-    }
-    /* Show search button on mobile for menu page */
-    body.menu-page #mobile-search-btn {
-      display: inline-flex !important;
+      top: 0;
+      z-index: 50;
     }
   </style>
 </head>
 <body class="menu-page">
 
-  <!-- Navigation -->
-  <nav class="glass-nav w-full z-50 sticky top-0" style="border-bottom: 1px solid rgba(0,0,0,0.06);">
-    <div class="max-w-7xl mx-auto px-4 md:px-10 flex justify-between items-center h-14 md:h-16">
-      <!-- Left: Logo & Search Bar -->
-      <div class="flex items-center gap-6 flex-1">
-        <!-- Mobile Hamburger & Halal Logo (Mobile & Tablet) -->
-        <div class="lg:hidden flex items-center gap-3">
-          <button id="menu-btn" title="Menu">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-          </button>
-          <img src="/halal_logo.png" alt="Halal Certified" class="h-8 w-auto object-contain">
-        </div>
-        <a href="/" class="flex items-center">
-          <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-9 md:h-10 w-auto object-contain">
-        </a>
-        
-        <!-- Desktop Search Bar -->
-        <div class="hidden lg:block desktop-search-container" style="max-width:220px;">
-          <span class="desktop-search-icon">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
-          </span>
-          <input type="text" id="desktop-search-input" placeholder="Search dishes..." class="desktop-search-input" style="font-size:0.8rem;">
-        </div>
-      </div>
 
-      <!-- Desktop Navigation & Actions -->
-      <div class="hidden lg:flex items-center space-x-8">
-        <a href="/" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Home</a>
-        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Our Menu</a>
-        <a href="/services.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Catering</a>
-        <a href="/about.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">About</a>
-        <a href="/contact.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Contact</a>
-
-        <!-- Sign In & Cart Group -->
-        <div class="flex items-center space-x-6 pl-6 border-l border-gray-200">
-          <!-- Dynamic Sign In (Desktop) -->
-          <div id="desktop-auth-group">
-            <!-- Dynamically populated by main.js -->
-          </div>
-
-          <!-- Add to Cart (Desktop) -->
-          <button class="nav-cart-btn" title="View Cart">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-            </svg>
-            <span class="cart-count-badge">0</span>
-          </button>
-
-          <!-- Halal Logo (Desktop) -->
-          <img src="/halal_logo.png" alt="Halal Certified" class="hidden lg:block h-8 w-auto object-contain ml-2">
-        </div>
-      </div>
-
-      <!-- Mobile Controls (visible on mobile, hidden on desktop) -->
-      <div class="lg:hidden flex items-center space-x-3">
-        <!-- Mobile Search Button -->
-        <button id="mobile-search-btn" title="Search">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"></path>
-          </svg>
-        </button>
-
-        <!-- Mobile Cart Button -->
-        <button class="nav-cart-btn" title="View Cart">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-          </svg>
-          <span class="cart-count-badge">0</span>
-        </button>
-
-        
-      </div>
-    </div>
-
-    <!-- Mobile Search Bar Dropdown -->
-    <div id="mobile-search-bar" class="hidden border-t border-primary/10 bg-background/95 backdrop-blur-md px-6 py-4 transition-all duration-300">
-      <div class="relative max-w-3xl mx-auto">
-        <input type="text" id="mobile-search-input" placeholder="Search delicious dishes..." class="w-full bg-[#FFFAF3] border border-primary/20 rounded-full py-2.5 pl-10 pr-10 text-sm focus:outline-none focus:border-primary/50 text-text-primary">
-        <span class="absolute left-3.5 top-3 text-text-secondary/50">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-        </span>
-        <button id="mobile-search-clear" class="absolute right-3.5 top-2.5 text-text-secondary/50 hover:text-primary text-sm p-1">✕</button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Mobile Menu Backdrop -->
-  <div id="menu-overlay"></div>
-
-  <!-- Mobile Menu Half-Panel -->
-  <div id="mobile-menu">
-    <button id="close-btn" class="absolute top-6 right-6 text-white/60 hover:text-white transition-colors">
-      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-    </button>
-    <div class="mb-10">
-      <img src="/logo.png" alt="ALMAS" class="h-14 w-auto object-contain opacity-80">
-    </div>
-        <nav class="flex flex-col space-y-6 text-white text-lg font-heading font-semibold uppercase tracking-widest">
-      <a href="/" class="hover:text-primary transition-colors">Home</a>
-      <a href="/products.html" class="hover:text-primary transition-colors">Our Menu</a>
-      <a href="/services.html" class="hover:text-primary transition-colors">Catering</a>
-      <a href="/about.html" class="hover:text-primary transition-colors">About</a>
-      <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
-      <div id="mobile-auth-group" class="flex flex-col space-y-6">
-        <a href="/account.html" class="hover:text-primary transition-colors">My Account</a>
-      </div>
-      
-      <a href="/order.html" class="btn-premium text-sm px-8 py-3 w-full max-w-[280px]">Order Now</a>
-    </nav>
-    <div class="mt-10 pt-8 border-t border-white/10 w-full">
-      <p class="text-white/30 text-[10px] uppercase tracking-widest">209 Ellesmere Rd, Unit 6</p>
-      <p class="text-white/30 text-[10px] uppercase tracking-widest">Scarborough, ON</p>
-    </div>
-  </div>
-
-  <!-- Category Secondary Nav -->
-  <div id="menu-category-bar" class="bg-background border-b border-black/5 overflow-x-auto whitespace-nowrap hide-scrollbar">
-    <div id="dynamic-category-nav" class="max-w-7xl mx-auto px-6 md:px-12 flex items-center h-14 space-x-8">
+  <!-- Category Nav — sticky at top (no header on this page) -->
+  <div id="menu-category-bar" class="bg-white border-b border-black/10 overflow-x-auto whitespace-nowrap hide-scrollbar shadow-sm">
+    <div id="dynamic-category-nav" class="max-w-7xl mx-auto px-6 md:px-12 flex items-center h-12 space-x-8">
       <a href="#soups" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Soups</a>
       <a href="#appetizers" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Appetizers</a>
       <a href="#tandoor" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Tandoor</a>
@@ -459,7 +309,7 @@
     
     <div id="dynamic-menu-sections">
     <!-- SOUPS -->
-    <section id="soups" class="scroll-mt-36 md:scroll-mt-32">
+    <section id="soups" class="scroll-mt-16">
       <h2 class="section-title">Soups</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Broths & slow-simmered warmth</p>
       
@@ -510,7 +360,7 @@
     </section>
 
     <!-- APPETIZERS -->
-    <section id="appetizers" class="scroll-mt-36 md:scroll-mt-32">
+    <section id="appetizers" class="scroll-mt-16">
       <h2 class="section-title">Appetizers</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Bold starters & sharing plates</p>
 
@@ -682,7 +532,7 @@
     </section>
 
     <!-- TANDOOR TREASURES -->
-    <section id="tandoor" class="scroll-mt-36 md:scroll-mt-32">
+    <section id="tandoor" class="scroll-mt-16">
       <h2 class="section-title">Tandoor Treasures</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Clay oven crafted</p>
 
@@ -770,7 +620,7 @@
     </section>
 
     <!-- MAINS -->
-    <section id="mains" class="scroll-mt-36 md:scroll-mt-32">
+    <section id="mains" class="scroll-mt-16">
       <h2 class="section-title">Mains</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Curries & slow-cooked gravies</p>
 
@@ -919,7 +769,7 @@
     </section>
 
     <!-- BIRYANI -->
-    <section id="biryani" class="scroll-mt-36 md:scroll-mt-32">
+    <section id="biryani" class="scroll-mt-16">
       <h2 class="section-title">Biryani</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Dum-sealed & flame-finished</p>
 
@@ -1010,7 +860,7 @@
     </section>
 
     <!-- MANDI -->
-    <section id="mandi" class="scroll-mt-36 md:scroll-mt-32">
+    <section id="mandi" class="scroll-mt-16">
       <h2 class="section-title">Mandi</h2>
       <p class="text-center text-menu-secondary italic mb-6 -mt-8">Arabian dum-roasted rice platters | Single / 2 / 3 People</p>
       <div class="text-center mb-12">
@@ -1181,7 +1031,7 @@
     </section>
 
     <!-- PULAO -->
-    <section id="pulao" class="scroll-mt-36 md:scroll-mt-32">
+    <section id="pulao" class="scroll-mt-16">
       <h2 class="section-title">Pulao</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Fragrant one-pot rice dishes</p>
 
@@ -1253,7 +1103,7 @@
     </section>
 
     <!-- CHINESE -->
-    <section id="chinese" class="scroll-mt-36 md:scroll-mt-32">
+    <section id="chinese" class="scroll-mt-16">
       <h2 class="section-title">Chinese</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Indo-Chinese wok kitchen</p>
 
@@ -1290,7 +1140,7 @@
     </section>
 
     <!-- MOMO -->
-    <section id="momo" class="scroll-mt-36 md:scroll-mt-32">
+    <section id="momo" class="scroll-mt-16">
       <h2 class="section-title">Momo</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Steamed & grilled dumplings</p>
 
@@ -1313,7 +1163,7 @@
     </section>
 
     <!-- BREADS -->
-    <section id="breads" class="scroll-mt-36 md:scroll-mt-32">
+    <section id="breads" class="scroll-mt-16">
       <h2 class="section-title">Breads</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Fresh from the clay oven</p>
 
@@ -1431,7 +1281,7 @@
     </section>
 
     <!-- DESSERTS -->
-    <section id="desserts" class="scroll-mt-36 md:scroll-mt-32">
+    <section id="desserts" class="scroll-mt-16">
       <h2 class="section-title">Desserts</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Sweet endings</p>
 
@@ -1647,7 +1497,7 @@
             const nonVegProducts = catProducts.filter(p => p.diet !== 'VEG');
 
             html += `
-              <section id="${cat.id}" class="scroll-mt-36 md:scroll-mt-32">
+              <section id="${cat.id}" class="scroll-mt-16">
                 <h2 class="section-title">${cat.name}</h2>
                 <p class="text-center text-menu-secondary italic mb-12 -mt-8">${subtitle}</p>
             `;
