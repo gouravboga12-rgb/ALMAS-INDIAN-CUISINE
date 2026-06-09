@@ -1203,7 +1203,7 @@ export const products = [
   {
     "id": "chicken-broaster-mandi",
     "name": "Chicken Broaster Mandi",
-    "price": "CRISPY",
+    "price": "$16.99 / $24.99 / $32.99",
     "image": "/image%20copy%2066.png",
     "category": "Mandi",
     "diet": "NON-VEG",
@@ -1215,7 +1215,7 @@ export const products = [
   {
     "id": "chicken-tandoori-mandi",
     "name": "Chicken Tandoori Mandi",
-    "price": "SMOKY",
+    "price": "$16.99 / $24.99 / $32.99",
     "image": "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?q=80&w=2070&auto=format&fit=crop",
     "category": "Mandi",
     "diet": "NON-VEG",
@@ -1227,7 +1227,7 @@ export const products = [
   {
     "id": "mutton-juicy-mandi",
     "name": "Mutton Juicy Mandi",
-    "price": "TENDER",
+    "price": "$17.99 / $26.99 / $35.99",
     "image": "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?q=80&w=2070&auto=format&fit=crop",
     "category": "Mandi",
     "diet": "NON-VEG",
@@ -1239,7 +1239,7 @@ export const products = [
   {
     "id": "mutton-fry-piece-mandi",
     "name": "Mutton Fry Piece Mandi",
-    "price": "MUTTON",
+    "price": "$17.99 / $26.99 / $35.99",
     "image": "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=2069&auto=format&fit=crop",
     "category": "Mandi",
     "diet": "NON-VEG",
