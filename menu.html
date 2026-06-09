@@ -242,6 +242,14 @@
       top: 0;
       z-index: 50;
     }
+
+    /* Force single column (row-wise) layout on mobile/tablet view for menu items */
+    @media (max-width: 1023px) {
+      body.menu-page #dynamic-menu-sections .grid {
+        grid-template-columns: 1fr !important;
+        gap: 0 !important;
+      }
+    }
   </style>
 </head>
 <body class="menu-page">
