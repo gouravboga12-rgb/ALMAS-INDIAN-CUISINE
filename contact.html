@@ -392,8 +392,7 @@
           e.preventDefault();
 
           if (!localStorage.getItem('almas_token')) {
-            alert("Please log in or sign up first to submit contact inquiries.");
-            window.location.href = "/account.html?tab=login";
+            window.showAuthToast("Please log in or sign up first to submit contact inquiries.");
             return;
           }
           

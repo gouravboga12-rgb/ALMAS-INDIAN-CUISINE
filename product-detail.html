@@ -854,8 +854,7 @@
 
       document.getElementById('btn-add-cart').onclick = () => {
         if (!localStorage.getItem('almas_token')) {
-          alert("Please log in or sign up first to add items to your cart.");
-          window.location.href = "/account.html?tab=login";
+          window.showAuthToast("Please log in or sign up first to add items to your cart.");
           return;
         }
         const block = document.getElementById('special-instructions-block');
@@ -874,8 +873,7 @@
 
       document.getElementById('btn-buy-now').onclick = () => {
         if (!localStorage.getItem('almas_token')) {
-          alert("Please log in or sign up first to order menu items.");
-          window.location.href = "/account.html?tab=login";
+          window.showAuthToast("Please log in or sign up first to order menu items.");
           return;
         }
         const block = document.getElementById('special-instructions-block');

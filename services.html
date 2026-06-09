@@ -384,8 +384,7 @@
           if (href.includes('order.html') || href.includes('contact.html')) {
             if (!localStorage.getItem('almas_token')) {
               e.preventDefault();
-              alert("Please log in or sign up first to access our services.");
-              window.location.href = "/account.html?tab=login";
+              window.showAuthToast("Please log in or sign up first to access our services.");
             }
           }
         });

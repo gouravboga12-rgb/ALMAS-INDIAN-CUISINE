@@ -617,8 +617,7 @@
       // Login Check Guard
       const token = localStorage.getItem('almas_token');
       if (!token) {
-        alert("Please log in or sign up first to access the order page.");
-        window.location.href = "/account.html?tab=login";
+        window.showAuthToast("Please log in or sign up first to access the order page.");
         return;
       }
 

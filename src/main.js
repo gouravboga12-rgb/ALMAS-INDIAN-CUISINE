@@ -3,6 +3,136 @@ import 'aos/dist/aos.css';
 import './ecommerce.js';
 
 
+// Premium E-commerce style Auth Redirect Toast
+window.showAuthToast = function(message, redirectUrl = "/account.html?tab=login") {
+  if (document.querySelector('.almas-toast-overlay')) return;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'almas-toast-overlay';
+  
+  if (!document.getElementById('almas-toast-styles')) {
+    const style = document.createElement('style');
+    style.id = 'almas-toast-styles';
+    style.textContent = `
+      .almas-toast-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: rgba(15, 6, 0, 0.7);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .almas-toast-card {
+        background: linear-gradient(135deg, #1c0e06 0%, #0a0401 100%);
+        border: 1px solid rgba(212, 175, 55, 0.25);
+        border-radius: 24px;
+        padding: 32px 24px;
+        width: 420px;
+        max-width: 90%;
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        transform: scale(0.9) translateY(20px);
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-sizing: border-box;
+      }
+      .almas-toast-icon-container {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: rgba(212, 175, 55, 0.1);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+      }
+      .almas-toast-icon {
+        font-size: 28px;
+        line-height: 1;
+        animation: almas-lock-pulse 1.8s infinite ease-in-out;
+      }
+      .almas-toast-title {
+        font-family: 'Playfair Display', serif;
+        color: #D4AF37;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin: 0 0 10px;
+        letter-spacing: 0.03em;
+      }
+      .almas-toast-message {
+        color: rgba(255, 255, 255, 0.75);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin: 0 0 24px;
+      }
+      .almas-toast-progress-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .almas-toast-progress {
+        height: 100%;
+        background: linear-gradient(90deg, #CC5500 0%, #D4AF37 100%);
+        width: 100%;
+        animation: almas-toast-countdown 2s linear forwards;
+      }
+      @keyframes almas-lock-pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); box-shadow: 0 0 12px rgba(212,175,55,0.2); }
+        100% { transform: scale(1); }
+      }
+      @keyframes almas-toast-countdown {
+        from { width: 100%; }
+        to { width: 0%; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  overlay.innerHTML = `
+    <div class="almas-toast-card">
+      <div class="almas-toast-icon-container">
+        <span class="almas-toast-icon">🔐</span>
+      </div>
+      <h4 class="almas-toast-title">Access Restricted</h4>
+      <p class="almas-toast-message">${message}</p>
+      <div class="almas-toast-progress-bar">
+        <div class="almas-toast-progress"></div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  requestAnimationFrame(() => {
+    overlay.style.opacity = '1';
+    const card = overlay.querySelector('.almas-toast-card');
+    if (card) card.style.transform = 'scale(1) translateY(0)';
+  });
+
+  setTimeout(() => {
+    overlay.style.opacity = '0';
+    const card = overlay.querySelector('.almas-toast-card');
+    if (card) card.style.transform = 'scale(0.9) translateY(-20px)';
+    setTimeout(() => {
+      overlay.remove();
+      window.location.href = redirectUrl;
+    }, 300);
+  }, 2000);
+};
+
+
 // Initialize AOS
 AOS.init({
   duration: 800,
