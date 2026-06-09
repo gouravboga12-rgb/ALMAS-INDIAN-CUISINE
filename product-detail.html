@@ -803,7 +803,7 @@
               const isGrillChicken = product.id === 'grill-chicken' || product.name.toLowerCase().includes('grill chicken');
               label = idx === 0 ? (isGrillChicken ? 'Half' : (isHalfWhole ? 'Half' : 'Single')) : (isGrillChicken ? 'Full' : (isHalfWhole ? 'Whole' : 'Family'));
             } else if (prices.length === 3) {
-              label = idx === 0 ? 'Single Portion' : (idx === 1 ? '2 People Portion' : '3 People Feast');
+              label = idx === 0 ? 'Single' : (idx === 1 ? 'Two People' : 'Three People');
             }
           }
           const opt = document.createElement('option');

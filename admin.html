@@ -607,6 +607,100 @@
       }
     }
   </style>
+  <style>
+    /* Multi-pricing configurator */
+    .multi-price-toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: rgba(204, 85, 0, 0.07);
+      border: 1px solid rgba(204, 85, 0, 0.2);
+      border-radius: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .multi-price-toggle-row input[type=checkbox] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--primary);
+      flex-shrink: 0;
+    }
+    .multi-price-toggle-row label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+      margin: 0;
+    }
+    #multi-price-config-section {
+      background: rgba(255,255,255,0.03);
+      border: 1px dashed rgba(204, 85, 0, 0.3);
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    #multi-price-config-section h5 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+    .multi-price-row {
+      display: grid;
+      grid-template-columns: 1fr 130px 34px;
+      gap: 8px;
+      align-items: center;
+    }
+    .multi-price-row input {
+      font-size: 0.82rem;
+      padding: 7px 10px;
+    }
+    .btn-remove-row {
+      background: rgba(239,68,68,0.15);
+      border: 1px solid rgba(239,68,68,0.3);
+      color: #EF4444;
+      border-radius: 8px;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .btn-remove-row:hover {
+      background: rgba(239,68,68,0.3);
+    }
+    #btn-add-price-row {
+      background: rgba(204,85,0,0.12);
+      border: 1px dashed rgba(204,85,0,0.4);
+      color: var(--primary);
+      border-radius: 8px;
+      padding: 7px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      align-self: flex-start;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #btn-add-price-row:hover {
+      background: rgba(204,85,0,0.22);
+    }
+    #multi-price-preview {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      padding: 6px 10px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 6px;
+      word-break: break-all;
+    }
+  </style>
 </head>
 <body>
 
@@ -946,6 +1040,19 @@
         <div class="form-group">
           <label class="form-label">Badge Label (Optional)</label>
           <input type="text" id="product-badge" placeholder="e.g. Weekend Special, Signature">
+        </div>
+        <!-- Multi-pricing configurator (col-span-2) -->
+        <div class="form-group col-span-2" style="gap:10px; display:flex; flex-direction:column;">
+          <div class="multi-price-toggle-row" onclick="toggleMultiPrice()">
+            <input type="checkbox" id="multi-price-enable" onchange="toggleMultiPrice()" onclick="event.stopPropagation()">
+            <label for="multi-price-enable">⚡ Enable Multi-pricing / Portion Sizing (Single · Two People · Three People)</label>
+          </div>
+          <div id="multi-price-config-section" style="display:none;">
+            <h5>Portion Rows — Label &amp; Price</h5>
+            <div id="multi-price-rows"></div>
+            <button type="button" id="btn-add-price-row" onclick="addPriceRow()">✚ Add Option</button>
+            <div id="multi-price-preview" style="display:none;"></div>
+          </div>
         </div>
         <div class="form-group col-span-2">
           <label class="form-label">Image Upload</label>
@@ -1488,6 +1595,89 @@
 
     document.getElementById('product-category-filter').addEventListener('change', renderProductsGrid);
 
+    // =========================================================================
+    // MULTI-PRICING HELPER FUNCTIONS
+    // =========================================================================
+    function toggleMultiPrice(forceState) {
+      const checkbox = document.getElementById('multi-price-enable');
+      const configSection = document.getElementById('multi-price-config-section');
+      const priceInput = document.getElementById('product-price');
+
+      if (forceState !== undefined) {
+        checkbox.checked = forceState;
+      }
+
+      if (checkbox.checked) {
+        configSection.style.display = 'flex';
+        priceInput.readOnly = true;
+        priceInput.style.opacity = '0.4';
+        priceInput.placeholder = 'Auto-built from portion rows below';
+        priceInput.required = false;
+        updatePriceFromRows();
+      } else {
+        configSection.style.display = 'none';
+        priceInput.readOnly = false;
+        priceInput.style.opacity = '1';
+        priceInput.placeholder = 'e.g. $7.99 or $18.99 / $29.99';
+        priceInput.required = true;
+      }
+    }
+
+    function addPriceRow(label = '', price = '') {
+      const container = document.getElementById('multi-price-rows');
+      const row = document.createElement('div');
+      row.className = 'multi-price-row';
+      row.innerHTML = `
+        <input type="text" placeholder="e.g. Single, Two People, Three People" value="${label}" class="mp-label" oninput="updatePriceFromRows()">
+        <input type="text" placeholder="$15.99" value="${price}" class="mp-price" oninput="updatePriceFromRows()">
+        <button type="button" class="btn-remove-row" title="Remove" onclick="this.closest('.multi-price-row').remove(); updatePriceFromRows();">&times;</button>
+      `;
+      container.appendChild(row);
+      updatePriceFromRows();
+    }
+
+    function updatePriceFromRows() {
+      const rows = document.querySelectorAll('.multi-price-row');
+      const preview = document.getElementById('multi-price-preview');
+      const priceInput = document.getElementById('product-price');
+      const parts = [];
+      rows.forEach(row => {
+        const lbl = row.querySelector('.mp-label').value.trim();
+        const prc = row.querySelector('.mp-price').value.trim();
+        if (lbl && prc) parts.push(`${lbl} ${prc}`);
+      });
+      const priceStr = parts.join(' / ');
+      priceInput.value = priceStr;
+      if (priceStr) {
+        preview.style.display = 'block';
+        preview.textContent = '→ ' + priceStr;
+      } else {
+        preview.style.display = 'none';
+      }
+    }
+
+    function resetMultiPrice() {
+      document.getElementById('multi-price-enable').checked = false;
+      document.getElementById('multi-price-rows').innerHTML = '';
+      toggleMultiPrice();
+    }
+
+    function populateMultiPriceFromString(priceStr) {
+      // Parse e.g. "Single $15.99 / Two People $23.99 / Three People $31.99" or "$16.99 / $24.99 / $32.99"
+      const parts = priceStr.split('/');
+      document.getElementById('multi-price-rows').innerHTML = '';
+      const defaultLabels = ['Single', 'Two People', 'Three People'];
+      parts.forEach((part, idx) => {
+        part = part.trim();
+        const priceMatch = part.match(/\$([0-9]+\.[0-9]+)/);
+        if (!priceMatch) return;
+        const prc = '$' + priceMatch[1];
+        let lbl = part.replace(priceMatch[0], '').trim();
+        if (!lbl) lbl = defaultLabels[idx] || `Option ${idx + 1}`;
+        addPriceRow(lbl, prc);
+      });
+    }
+
     document.getElementById('btn-add-product').addEventListener('click', () => {
       document.getElementById('product-modal-title').textContent = 'Add Menu Item';
       document.getElementById('product-form-mode').value = 'add';
@@ -1500,6 +1690,7 @@
       document.getElementById('product-img-url').value = '';
       document.getElementById('product-desc').value = '';
       document.getElementById('product-img-file').value = '';
+      resetMultiPrice();
       
       openModal('product-modal');
     });
@@ -1522,6 +1713,14 @@
       document.getElementById('product-img-url').value = p.image || '';
       document.getElementById('product-desc').value = p.desc || '';
       document.getElementById('product-img-file').value = '';
+
+      // Auto-detect multi-pricing
+      if (p.price && p.price.includes('/')) {
+        toggleMultiPrice(true);
+        populateMultiPriceFromString(p.price);
+      } else {
+        resetMultiPrice();
+      }
 
       openModal('product-modal');
     };

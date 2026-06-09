@@ -2610,8 +2610,8 @@
             `;
           } else if (prices.length === 3) {
             const opt1 = isHalfWhole ? 'Half' : 'Single';
-            const opt2 = isHalfWhole ? 'Whole' : '2 People';
-            const opt3 = '3 People';
+            const opt2 = isHalfWhole ? 'Whole' : 'Two People';
+            const opt3 = 'Three People';
             optionsHtml = `
               <option value="${prices[0]}" data-label="${opt1}">${opt1} ($${prices[0].toFixed(2)})</option>
               <option value="${prices[1]}" data-label="${opt2}">${opt2} ($${prices[1].toFixed(2)})</option>

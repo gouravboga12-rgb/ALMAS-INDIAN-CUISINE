@@ -1131,11 +1131,11 @@ export const products = [
   {
     "id": "malai-kofta-mandi",
     "name": "Malai Kofta Mandi",
-    "price": "VEG",
+    "price": "$14.99 / $22.99 / $30.99",
     "image": "/image%20copy%2063.png",
     "category": "Mandi",
     "diet": "VEG",
-    "badge": "",
+    "badge": "VEG",
     "dietColor": "#16a34a",
     "desc": "Cream-filled vegetable dumplings over aromatic Mandi rice — indulgent and beautifully spiced.",
     "spiceDefault": "Medium"
@@ -1143,11 +1143,11 @@ export const products = [
   {
     "id": "soya-chaap-mandi",
     "name": "Soya Chaap Mandi",
-    "price": "VEG",
+    "price": "$14.99 / $22.99 / $30.99",
     "image": "/image%20copy%2067.png",
     "category": "Mandi",
     "diet": "VEG",
-    "badge": "",
+    "badge": "VEG",
     "dietColor": "#16a34a",
     "desc": "Marinated soya chaap grilled and plated over fragrant Mandi rice with Yemeni spice blend.",
     "spiceDefault": "Medium"
@@ -1155,11 +1155,11 @@ export const products = [
   {
     "id": "egg-plant-mandi",
     "name": "Egg Plant Mandi",
-    "price": "VEG",
+    "price": "$13.99 / $21.99 / $29.99",
     "image": "https://images.unsplash.com/photo-1626777552726-4a6b52c67ebf?q=80&w=2070&auto=format&fit=crop",
     "category": "Mandi",
     "diet": "VEG",
-    "badge": "",
+    "badge": "VEG",
     "dietColor": "#16a34a",
     "desc": "Smoky roasted aubergine seasoned with Middle Eastern spices atop slow-cooked dum rice.",
     "spiceDefault": "Medium"
@@ -1167,11 +1167,11 @@ export const products = [
   {
     "id": "paneer-tikka-mandi",
     "name": "Paneer Tikka Mandi",
-    "price": "VEG",
+    "price": "$15.99 / $23.99 / $31.99",
     "image": "/image%20copy%2062.png",
     "category": "Mandi",
     "diet": "VEG",
-    "badge": "",
+    "badge": "VEG",
     "dietColor": "#16a34a",
     "desc": "Tandoor-kissed paneer tikka (Malai / Tandoori / Hariyali) over Mandi rice.",
     "spiceDefault": "Medium"
@@ -1179,7 +1179,7 @@ export const products = [
   {
     "id": "egg-roast-mandi",
     "name": "Egg Roast Mandi",
-    "price": "NON-VEG",
+    "price": "$13.99 / $21.99 / $29.99",
     "image": "/image%20copy%2064.png",
     "category": "Mandi",
     "diet": "NON-VEG",
@@ -1191,7 +1191,7 @@ export const products = [
   {
     "id": "chicken-fry-piece-mandi",
     "name": "Chicken Fry Piece Mandi",
-    "price": "NON-VEG",
+    "price": "$15.99 / $23.99 / $31.99",
     "image": "/image%20copy%2065.png",
     "category": "Mandi",
     "diet": "NON-VEG",
@@ -1251,7 +1251,7 @@ export const products = [
   {
     "id": "mutton-ghee-roast-mandi",
     "name": "Mutton Ghee Roast Mandi",
-    "price": "SIGNATURE",
+    "price": "$19.99 / $29.99 / $39.99",
     "image": "https://images.unsplash.com/photo-1606491956689-2ea866880c84?q=80&w=1921&auto=format&fit=crop",
     "category": "Mandi",
     "diet": "NON-VEG",
@@ -1263,11 +1263,11 @@ export const products = [
   {
     "id": "full-fish-tawa-fry-mandi",
     "name": "Full Fish Tawa Fry Mandi",
-    "price": "SEAFOOD",
+    "price": "$17.99 / $25.99 / $33.99",
     "image": "/image.png",
     "category": "Mandi",
     "diet": "SEAFOOD",
-    "badge": "",
+    "badge": "SEAFOOD",
     "dietColor": "#2563eb",
     "desc": "Whole coastal masala-fried fish served over Mandi rice with fresh lemon and chutney.",
     "spiceDefault": "Medium"
@@ -1275,11 +1275,11 @@ export const products = [
   {
     "id": "fish-broaster-mandi",
     "name": "Fish Broaster Mandi",
-    "price": "SEAFOOD",
+    "price": "$16.99 / $24.99 / $32.99",
     "image": "https://images.unsplash.com/photo-1516714435131-44d6b64dc6a2?q=80&w=2070&auto=format&fit=crop",
     "category": "Mandi",
     "diet": "SEAFOOD",
-    "badge": "",
+    "badge": "SEAFOOD",
     "dietColor": "#2563eb",
     "desc": "Pressure-fried fish — crispy battered and golden — laid over fragrant Mandi rice.",
     "spiceDefault": "Medium"
@@ -1287,11 +1287,11 @@ export const products = [
   {
     "id": "shrimp-tawa-fry-mandi",
     "name": "Shrimp Tawa Fry Mandi",
-    "price": "SEAFOOD",
+    "price": "$15.99 / $23.99 / $31.99",
     "image": "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?q=80&w=1974&auto=format&fit=crop",
     "category": "Mandi",
     "diet": "SEAFOOD",
-    "badge": "",
+    "badge": "SEAFOOD",
     "dietColor": "#2563eb",
     "desc": "Spiced tawa-seared shrimp over Mandi rice with a drizzle of coastal herb sauce.",
     "spiceDefault": "Medium"
@@ -1299,7 +1299,7 @@ export const products = [
   {
     "id": "mixed-mandi-full",
     "name": "Mixed Mandi Full",
-    "price": "SIGNATURE",
+    "price": "$34.99",
     "image": "/order_biryani_premium.png",
     "category": "Mandi",
     "diet": "NON-VEG",
@@ -1311,7 +1311,7 @@ export const products = [
   {
     "id": "sultan-s-mandi",
     "name": "Sultan's Mandi",
-    "price": "SERVES 4-5",
+    "price": "$59.99",
     "image": "/mutton_dum_biryani_premium.png",
     "category": "Mandi",
     "diet": "NON-VEG",
@@ -1323,7 +1323,7 @@ export const products = [
   {
     "id": "almas-majilis-mandi",
     "name": "Almas Majilis Mandi",
-    "price": "SERVES 7-8",
+    "price": "$99.99",
     "image": "/tandoori_platter_premium.png",
     "category": "Mandi",
     "diet": "NON-VEG",
