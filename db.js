@@ -220,21 +220,36 @@ function writeJSONDB(data) {
 
 async function initJSONDB() {
   let db = readJSONDB();
+  let updated = false;
   if (!db) {
     console.log("[DB] JSON Database not found. Seeding local database.json...");
     const { products, categories } = await loadSeedProducts();
     db = {
       categories,
       products,
+      qr_categories: JSON.parse(JSON.stringify(categories)),
+      qr_products: JSON.parse(JSON.stringify(products)),
       settings: defaultSettings,
       services: defaultServices,
       packages: defaultPackages,
       inquiries: [],
       users: []
     };
-    writeJSONDB(db);
-  } else if (!db.users) {
+    updated = true;
+  }
+  if (db && !db.users) {
     db.users = [];
+    updated = true;
+  }
+  if (db && !db.qr_categories) {
+    db.qr_categories = JSON.parse(JSON.stringify(db.categories || []));
+    updated = true;
+  }
+  if (db && !db.qr_products) {
+    db.qr_products = JSON.parse(JSON.stringify(db.products || []));
+    updated = true;
+  }
+  if (updated) {
     writeJSONDB(db);
   }
 }
@@ -279,6 +294,32 @@ async function initMySQL() {
     // 2. Products table
     await conn.query(`
       CREATE TABLE IF NOT EXISTS products (
+        id VARCHAR(255) PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        price VARCHAR(255) NOT NULL,
+        image VARCHAR(255) NOT NULL,
+        category VARCHAR(255) NOT NULL,
+        diet VARCHAR(255) NOT NULL,
+        badge VARCHAR(255) NOT NULL,
+        dietColor VARCHAR(255) NOT NULL,
+        \`desc\` TEXT NOT NULL,
+        spiceDefault VARCHAR(255) NOT NULL
+      )
+    `);
+
+    // QR Categories table
+    await conn.query(`
+      CREATE TABLE IF NOT EXISTS qr_categories (
+        id VARCHAR(255) PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        icon VARCHAR(255) NOT NULL,
+        order_num INT NOT NULL DEFAULT 0
+      )
+    `);
+
+    // QR Products table
+    await conn.query(`
+      CREATE TABLE IF NOT EXISTS qr_products (
         id VARCHAR(255) PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         price VARCHAR(255) NOT NULL,
@@ -467,6 +508,36 @@ async function seedMySQLIfNeeded() {
 
       console.log("[DB] MySQL initialization and seeding complete!");
     }
+
+    const [qrCats] = await pool.query("SELECT COUNT(*) as count FROM qr_categories");
+    if (qrCats[0].count === 0) {
+      console.log("[DB] MySQL qr_categories is empty. Seeding QR menu data...");
+      const [stdCats] = await pool.query("SELECT * FROM categories");
+      const [stdProds] = await pool.query("SELECT * FROM products");
+      let catsToSeed = stdCats;
+      let prodsToSeed = stdProds;
+
+      if (catsToSeed.length === 0) {
+        const seedData = await loadSeedProducts();
+        catsToSeed = seedData.categories.map(c => ({ id: c.id, name: c.name, icon: c.icon, order_num: c.order }));
+        prodsToSeed = seedData.products;
+      }
+
+      for (const cat of catsToSeed) {
+        await pool.query(
+          "INSERT INTO qr_categories (id, name, icon, order_num) VALUES (?, ?, ?, ?)",
+          [cat.id, cat.name, cat.icon, cat.order_num !== undefined ? cat.order_num : cat.order]
+        );
+      }
+
+      for (const p of prodsToSeed) {
+        await pool.query(
+          "INSERT INTO qr_products (id, name, price, image, category, diet, badge, dietColor, \`desc\`, spiceDefault) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          [p.id, p.name, p.price, p.image, p.category, p.diet, p.badge || '', p.dietColor || '', p.desc || '', p.spiceDefault || 'Mild']
+        );
+      }
+      console.log("[DB] MySQL QR Menu seeding complete!");
+    }
   } catch (err) {
     console.error("[DB] Error seeding MySQL:", err);
   }
@@ -646,6 +717,122 @@ export async function deleteCategory(id) {
     if (cat) {
       db.categories = db.categories.filter(c => c.id !== id);
       db.products = db.products.filter(p => p.category !== cat.name);
+      writeJSONDB(db);
+    }
+  }
+}
+
+// ─── GET ENTIRE QR MENU (Products & Categories)
+export async function getQRMenu() {
+  if (pool) {
+    const [products] = await pool.query("SELECT * FROM qr_products");
+    const [categories] = await pool.query("SELECT * FROM qr_categories ORDER BY order_num ASC");
+    return {
+      products,
+      categories: categories.map(c => ({ id: c.id, name: c.name, icon: c.icon, order: c.order_num }))
+    };
+  } else {
+    const db = readJSONDB();
+    return { products: db.qr_products || [], categories: db.qr_categories || [] };
+  }
+}
+
+// ─── QR PRODUCTS CRUD
+export async function addQRProduct(p) {
+  if (pool) {
+    await pool.query(
+      "INSERT INTO qr_products (id, name, price, image, category, diet, badge, dietColor, \`desc\`, spiceDefault) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [p.id, p.name, p.price, p.image, p.category, p.diet, p.badge || '', p.dietColor || '', p.desc || '', p.spiceDefault || 'Mild']
+    );
+  } else {
+    const db = readJSONDB();
+    db.qr_products.push(p);
+    writeJSONDB(db);
+  }
+  return p;
+}
+
+export async function updateQRProduct(id, p) {
+  if (pool) {
+    await pool.query(
+      "UPDATE qr_products SET name=?, price=?, image=?, category=?, diet=?, badge=?, dietColor=?, \`desc\`=?, spiceDefault=? WHERE id=?",
+      [p.name, p.price, p.image, p.category, p.diet, p.badge || '', p.dietColor || '', p.desc || '', p.spiceDefault || 'Mild', id]
+    );
+  } else {
+    const db = readJSONDB();
+    const idx = db.qr_products.findIndex(prod => prod.id === id);
+    if (idx !== -1) {
+      db.qr_products[idx] = { ...db.qr_products[idx], ...p, id };
+      writeJSONDB(db);
+    }
+  }
+  return { id, ...p };
+}
+
+export async function deleteQRProduct(id) {
+  if (pool) {
+    await pool.query("DELETE FROM qr_products WHERE id=?", [id]);
+  } else {
+    const db = readJSONDB();
+    db.qr_products = db.qr_products.filter(p => p.id !== id);
+    writeJSONDB(db);
+  }
+}
+
+// ─── QR CATEGORIES CRUD
+export async function addQRCategory(c) {
+  if (pool) {
+    await pool.query(
+      "INSERT INTO qr_categories (id, name, icon, order_num) VALUES (?, ?, ?, ?)",
+      [c.id, c.name, c.icon, c.order || 0]
+    );
+  } else {
+    const db = readJSONDB();
+    db.qr_categories.push(c);
+    writeJSONDB(db);
+  }
+  return c;
+}
+
+export async function updateQRCategory(id, c) {
+  if (pool) {
+    const [oldCat] = await pool.query("SELECT name FROM qr_categories WHERE id=?", [id]);
+    await pool.query(
+      "UPDATE qr_categories SET name=?, icon=?, order_num=? WHERE id=?",
+      [c.name, c.icon, c.order || 0, id]
+    );
+    // Cascade update category name inside qr_products
+    if (oldCat.length > 0 && oldCat[0].name !== c.name) {
+      await pool.query("UPDATE qr_products SET category=? WHERE category=?", [c.name, oldCat[0].name]);
+    }
+  } else {
+    const db = readJSONDB();
+    const idx = db.qr_categories.findIndex(cat => cat.id === id);
+    if (idx !== -1) {
+      const oldName = db.qr_categories[idx].name;
+      db.qr_categories[idx] = { ...db.qr_categories[idx], ...c, id };
+      if (oldName !== c.name) {
+        db.qr_products = db.qr_products.map(p => p.category === oldName ? { ...p, category: c.name } : p);
+      }
+      writeJSONDB(db);
+    }
+  }
+  return { id, ...c };
+}
+
+export async function deleteQRCategory(id) {
+  if (pool) {
+    const [cat] = await pool.query("SELECT name FROM qr_categories WHERE id=?", [id]);
+    await pool.query("DELETE FROM qr_categories WHERE id=?", [id]);
+    if (cat.length > 0) {
+      await pool.query("DELETE FROM qr_products WHERE category=?", [cat[0].name]);
+    }
+  } else {
+    const db = readJSONDB();
+    const cat = db.qr_categories.find(c => c.id === id);
+    if (cat) {
+      db.qr_categories = db.qr_categories.filter(c => c.id !== id);
+      db.qr_products = db.qr_products.filter(p => p.category !== cat.name);
       writeJSONDB(db);
     }
   }

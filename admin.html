@@ -700,6 +700,46 @@
       border-radius: 6px;
       word-break: break-all;
     }
+
+    /* QR Menu Sub-tabs styling */
+    .qr-sub-nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+    
+    .qr-sub-btn {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .qr-sub-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+    }
+
+    .qr-sub-btn.active {
+      background: rgba(204, 85, 0, 0.15);
+      color: var(--primary);
+      border-color: rgba(204, 85, 0, 0.3);
+    }
+
+    .qr-section {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .qr-section.active {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -744,6 +784,7 @@
         <button class="nav-btn active" data-panel="inquiries-panel">📩 Inquiries</button>
         <button class="nav-btn" data-panel="categories-panel">📁 Categories</button>
         <button class="nav-btn" data-panel="products-panel">🍲 Menu Items</button>
+        <button class="nav-btn" data-panel="qr-menu-panel">📱 QR Menu Page</button>
         <button class="nav-btn" data-panel="services-panel">🤝 Catering Services</button>
         <button class="nav-btn" data-panel="packages-panel">📦 Catering Packages</button>
         <button class="nav-btn" data-panel="settings-panel">⚙️ Settings</button>
@@ -960,6 +1001,64 @@
                 <!-- Dynamically loaded -->
               </tbody>
             </table>
+          </div>
+        </section>
+
+        <!-- ================= PANEL 8: QR MENU PAGE ================= -->
+        <section id="qr-menu-panel" class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">QR Menu Page Management</h2>
+          </div>
+
+          <!-- Sub-tabs nav -->
+          <div class="qr-sub-nav">
+            <button class="qr-sub-btn active" data-qr-section="qr-products-section">🍲 QR Menu Items</button>
+            <button class="qr-sub-btn" data-qr-section="qr-categories-section">📁 QR Categories</button>
+          </div>
+
+          <!-- QR MENU ITEMS SUB-PANEL -->
+          <div id="qr-products-section" class="qr-section active">
+            <div class="panel-header" style="border-bottom: none; margin-bottom: 15px; padding-bottom: 0;">
+              <h3 style="font-family: var(--font-heading); font-size: 1.25rem;">QR Menu Items</h3>
+              <button class="btn-add" id="btn-add-qr-product">✚ Add QR Menu Item</button>
+            </div>
+            
+            <!-- Filter options -->
+            <div class="glass-card" style="padding: 15px; margin-bottom: 20px; display: flex; gap: 15px; align-items: center;">
+              <span class="form-label" style="margin-bottom: 0;">Filter Category:</span>
+              <select id="qr-product-category-filter" style="width: auto; max-width: 250px;">
+                <option value="all">All Categories</option>
+              </select>
+            </div>
+
+            <div class="grid-container" id="qr-products-grid">
+              <!-- Dynamically loaded cards -->
+            </div>
+          </div>
+
+          <!-- QR CATEGORIES SUB-PANEL -->
+          <div id="qr-categories-section" class="qr-section">
+            <div class="panel-header" style="border-bottom: none; margin-bottom: 15px; padding-bottom: 0;">
+              <h3 style="font-family: var(--font-heading); font-size: 1.25rem;">QR Categories</h3>
+              <button class="btn-add" id="btn-add-qr-category">✚ Add QR Category</button>
+            </div>
+            
+            <div class="glass-card table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Category ID</th>
+                    <th>Category Name</th>
+                    <th>Icon</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="qr-categories-table-body">
+                  <!-- Dynamically loaded -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
 
@@ -1190,6 +1289,8 @@
 
     // Local data caches
     let cachedMenu = { products: [], categories: [] };
+    let cachedQRMenu = { products: [], categories: [] };
+    let menuContext = 'standard';
     let cachedServices = [];
     let cachedPackages = [];
     let cachedInquiries = [];
@@ -1198,6 +1299,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       checkAuth();
       setupTabs();
+      setupQRTabs();
       setupEventListeners();
     });
 
@@ -1320,6 +1422,7 @@
       await Promise.all([
         loadInquiries(),
         loadMenuCatalog(),
+        loadQRMenuCatalog(),
         loadCateringServices(),
         loadCateringPackages(),
         loadSettings(),
@@ -1475,6 +1578,7 @@
     }
 
     document.getElementById('btn-add-category').addEventListener('click', () => {
+      menuContext = 'standard';
       document.getElementById('category-modal-title').textContent = 'Add Menu Category';
       document.getElementById('category-form-mode').value = 'add';
       document.getElementById('category-slug').disabled = false;
@@ -1487,6 +1591,7 @@
     });
 
     window.editCategoryClick = function(id) {
+      menuContext = 'standard';
       const cat = cachedMenu.categories.find(c => c.id === id);
       if (!cat) return;
 
@@ -1511,14 +1616,15 @@
 
       const payload = { id, name, icon, order };
       let result;
+      const baseUrl = menuContext === 'qr' ? '/api/qr-menu/categories' : '/api/menu/categories';
 
       if (mode === 'add') {
-        result = await apiFetch('/api/menu/categories', {
+        result = await apiFetch(baseUrl, {
           method: 'POST',
           body: JSON.stringify(payload)
         });
       } else {
-        result = await apiFetch(`/api/menu/categories/${id}`, {
+        result = await apiFetch(`${baseUrl}/${id}`, {
           method: 'PUT',
           body: JSON.stringify(payload)
         });
@@ -1527,7 +1633,11 @@
       if (result) {
         showToast(`Category ${mode === 'add' ? 'created' : 'updated'} successfully!`);
         closeModal('category-modal');
-        loadMenuCatalog();
+        if (menuContext === 'qr') {
+          loadQRMenuCatalog();
+        } else {
+          loadMenuCatalog();
+        }
       }
     });
 
@@ -1679,6 +1789,7 @@
     }
 
     document.getElementById('btn-add-product').addEventListener('click', () => {
+      menuContext = 'standard';
       document.getElementById('product-modal-title').textContent = 'Add Menu Item';
       document.getElementById('product-form-mode').value = 'add';
       document.getElementById('product-id').disabled = false;
@@ -1691,11 +1802,19 @@
       document.getElementById('product-desc').value = '';
       document.getElementById('product-img-file').value = '';
       resetMultiPrice();
+
+      // Populate category select list with standard categories
+      const formSelect = document.getElementById('product-category');
+      formSelect.innerHTML = '';
+      cachedMenu.categories.forEach(cat => {
+        formSelect.innerHTML += `<option value="${cat.name}">${cat.name}</option>`;
+      });
       
       openModal('product-modal');
     });
 
     window.editProductClick = function(id) {
+      menuContext = 'standard';
       const p = cachedMenu.products.find(item => item.id === id);
       if (!p) return;
 
@@ -1707,7 +1826,15 @@
       
       document.getElementById('product-name').value = p.name;
       document.getElementById('product-price').value = p.price;
-      document.getElementById('product-category').value = p.category;
+
+      // Populate category select list with standard categories
+      const formSelect = document.getElementById('product-category');
+      formSelect.innerHTML = '';
+      cachedMenu.categories.forEach(cat => {
+        formSelect.innerHTML += `<option value="${cat.name}">${cat.name}</option>`;
+      });
+      formSelect.value = p.category;
+
       document.getElementById('product-diet').value = p.diet || 'NON-VEG';
       document.getElementById('product-badge').value = p.badge || '';
       document.getElementById('product-img-url').value = p.image || '';
@@ -1781,13 +1908,14 @@
       };
 
       let result;
+      const baseUrl = menuContext === 'qr' ? '/api/qr-menu/products' : '/api/menu/products';
       if (mode === 'add') {
-        result = await apiFetch('/api/menu/products', {
+        result = await apiFetch(baseUrl, {
           method: 'POST',
           body: JSON.stringify(payload)
         });
       } else {
-        result = await apiFetch(`/api/menu/products/${id}`, {
+        result = await apiFetch(`${baseUrl}/${id}`, {
           method: 'PUT',
           body: JSON.stringify(payload)
         });
@@ -1796,7 +1924,11 @@
       if (result) {
         showToast(`Product ${mode === 'add' ? 'created' : 'updated'} successfully!`);
         closeModal('product-modal');
-        loadMenuCatalog();
+        if (menuContext === 'qr') {
+          loadQRMenuCatalog();
+        } else {
+          loadMenuCatalog();
+        }
       }
     });
 
@@ -1806,6 +1938,234 @@
       if (result) {
         showToast('Menu item deleted.');
         loadMenuCatalog();
+      }
+    };
+
+    // =========================================================================
+    // QR MENU PAGE MANAGEMENT
+    // =========================================================================
+    function setupQRTabs() {
+      const qrSubButtons = document.querySelectorAll('.qr-sub-btn');
+      const qrSections = document.querySelectorAll('.qr-section');
+
+      qrSubButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          qrSubButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const targetSection = btn.dataset.qrSection;
+          qrSections.forEach(s => {
+            if (s.id === targetSection) {
+              s.classList.add('active');
+            } else {
+              s.classList.remove('active');
+            }
+          });
+        });
+      });
+    }
+
+    async function loadQRMenuCatalog() {
+      const data = await apiFetch('/api/qr-menu');
+      if (!data) return;
+      cachedQRMenu = data;
+
+      // Populate QR Categories Table
+      const catBody = document.getElementById('qr-categories-table-body');
+      catBody.innerHTML = '';
+      data.categories.sort((a,b) => a.order - b.order);
+      data.categories.forEach(cat => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${cat.order}</td>
+          <td><code>${cat.id}</code></td>
+          <td style="font-weight:700">${cat.name}</td>
+          <td style="font-size:1.2rem">${cat.icon || '🍽️'}</td>
+          <td>
+            <div class="action-btn-group">
+              <button class="btn-action edit" onclick="editQRCategoryClick('${cat.id}')">Edit</button>
+              <button class="btn-action delete" onclick="deleteQRCategory('${cat.id}')">Delete</button>
+            </div>
+          </td>
+        `;
+        catBody.appendChild(tr);
+      });
+
+      // Populate select filters & select dropdowns for QR
+      const filterSelect = document.getElementById('qr-product-category-filter');
+      const lastFilter = filterSelect.value;
+      
+      filterSelect.innerHTML = '<option value="all">All Categories</option>';
+      data.categories.forEach(cat => {
+        filterSelect.innerHTML += `<option value="${cat.name}">${cat.name}</option>`;
+      });
+
+      filterSelect.value = lastFilter;
+      
+      // Render QR products grid
+      renderQRProductsGrid();
+    }
+
+    function renderQRProductsGrid() {
+      const grid = document.getElementById('qr-products-grid');
+      const catFilter = document.getElementById('qr-product-category-filter').value;
+      grid.innerHTML = '';
+
+      let items = cachedQRMenu.products;
+      if (catFilter !== 'all') {
+        items = items.filter(p => p.category === catFilter);
+      }
+
+      if (items.length === 0) {
+        grid.innerHTML = `<div class="glass-card" style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted)">No QR menu items match this category filter.</div>`;
+        return;
+      }
+
+      items.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'glass-card item-card';
+        
+        const dietBadge = p.diet === 'VEG' ? `<span class="badge-p" style="border-color:#16a34a; color:#16a34a;">VEG</span>` :
+                           (p.diet === 'SEAFOOD' ? `<span class="badge-p" style="border-color:#2563eb; color:#2563eb;">SEAFOOD</span>` :
+                           `<span class="badge-p" style="border-color:#dc2626; color:#dc2626;">NON-VEG</span>`);
+
+        const badgeHtml = p.badge ? `<span class="badge-p" style="border-color:var(--gold); color:var(--gold); margin-left: 5px;">${p.badge}</span>` : '';
+
+        card.innerHTML = `
+          <div>
+            <img src="${p.image || '/logo.png'}" alt="${p.name}" class="item-img-preview">
+            <div class="item-name">${p.name}</div>
+            <div style="margin-bottom:10px;">
+              ${dietBadge}
+              ${badgeHtml}
+              <span class="badge-p" style="margin-left: 5px;">${p.category}</span>
+            </div>
+            <div class="item-desc">${p.desc || 'No description provided.'}</div>
+          </div>
+          <div>
+            <div class="item-meta">
+              <span class="item-price">${p.price}</span>
+              <div class="action-btn-group">
+                <button class="btn-action edit" onclick="editQRProductClick('${p.id}')">Edit</button>
+                <button class="btn-action delete" onclick="deleteQRProduct('${p.id}')">✕</button>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    document.getElementById('qr-product-category-filter').addEventListener('change', renderQRProductsGrid);
+
+    document.getElementById('btn-add-qr-category').addEventListener('click', () => {
+      menuContext = 'qr';
+      document.getElementById('category-modal-title').textContent = 'Add QR Category';
+      document.getElementById('category-form-mode').value = 'add';
+      document.getElementById('category-slug').disabled = false;
+      document.getElementById('category-slug').value = '';
+      document.getElementById('category-name').value = '';
+      document.getElementById('category-icon').value = '🍛';
+      document.getElementById('category-order').value = cachedQRMenu.categories.length + 1;
+      
+      openModal('category-modal');
+    });
+
+    window.editQRCategoryClick = function(id) {
+      menuContext = 'qr';
+      const cat = cachedQRMenu.categories.find(c => c.id === id);
+      if (!cat) return;
+
+      document.getElementById('category-modal-title').textContent = 'Edit QR Category';
+      document.getElementById('category-form-mode').value = 'edit';
+      document.getElementById('category-slug').value = cat.id;
+      document.getElementById('category-slug').disabled = true; // id immutable
+      document.getElementById('category-name').value = cat.name;
+      document.getElementById('category-icon').value = cat.icon || '🍛';
+      document.getElementById('category-order').value = cat.order;
+
+      openModal('category-modal');
+    };
+
+    window.deleteQRCategory = async function(id) {
+      if (!confirm('Warning: Deleting a category will delete all QR menu items that belong to it. Proceed?')) return;
+      const result = await apiFetch(`/api/qr-menu/categories/${id}`, { method: 'DELETE' });
+      if (result) {
+        showToast('QR Category deleted successfully.');
+        loadQRMenuCatalog();
+      }
+    };
+
+    document.getElementById('btn-add-qr-product').addEventListener('click', () => {
+      menuContext = 'qr';
+      document.getElementById('product-modal-title').textContent = 'Add QR Menu Item';
+      document.getElementById('product-form-mode').value = 'add';
+      document.getElementById('product-id').disabled = false;
+      
+      document.getElementById('product-id').value = '';
+      document.getElementById('product-name').value = '';
+      document.getElementById('product-price').value = '';
+      document.getElementById('product-badge').value = '';
+      document.getElementById('product-img-url').value = '';
+      document.getElementById('product-desc').value = '';
+      document.getElementById('product-img-file').value = '';
+      resetMultiPrice();
+
+      // Populate category select list with QR categories
+      const formSelect = document.getElementById('product-category');
+      formSelect.innerHTML = '';
+      cachedQRMenu.categories.forEach(cat => {
+        formSelect.innerHTML += `<option value="${cat.name}">${cat.name}</option>`;
+      });
+
+      openModal('product-modal');
+    });
+
+    window.editQRProductClick = function(id) {
+      menuContext = 'qr';
+      const p = cachedQRMenu.products.find(item => item.id === id);
+      if (!p) return;
+
+      document.getElementById('product-modal-title').textContent = 'Edit QR Menu Item';
+      document.getElementById('product-form-mode').value = 'edit';
+      document.getElementById('product-id').value = p.id;
+      document.getElementById('product-id').disabled = true; // id immutable
+      document.getElementById('product-old-id').value = p.id;
+      
+      document.getElementById('product-name').value = p.name;
+      document.getElementById('product-price').value = p.price;
+      
+      // Populate category select list with QR categories
+      const formSelect = document.getElementById('product-category');
+      formSelect.innerHTML = '';
+      cachedQRMenu.categories.forEach(cat => {
+        formSelect.innerHTML += `<option value="${cat.name}">${cat.name}</option>`;
+      });
+      formSelect.value = p.category;
+
+      document.getElementById('product-diet').value = p.diet || 'NON-VEG';
+      document.getElementById('product-badge').value = p.badge || '';
+      document.getElementById('product-img-url').value = p.image || '';
+      document.getElementById('product-desc').value = p.desc || '';
+      document.getElementById('product-img-file').value = '';
+
+      // Auto-detect multi-pricing
+      if (p.price && p.price.includes('/')) {
+        toggleMultiPrice(true);
+        populateMultiPriceFromString(p.price);
+      } else {
+        resetMultiPrice();
+      }
+
+      openModal('product-modal');
+    };
+
+    window.deleteQRProduct = async function(id) {
+      if (!confirm('Are you sure you want to delete this QR menu item?')) return;
+      const result = await apiFetch(`/api/qr-menu/products/${id}`, { method: 'DELETE' });
+      if (result) {
+        showToast('QR Menu item deleted.');
+        loadQRMenuCatalog();
       }
     };
 

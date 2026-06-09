@@ -11,12 +11,19 @@ import { sendVerificationEmail, sendPasswordResetEmail } from './email.js';
 import {
   initializeDatabase,
   getMenu,
+  getQRMenu,
   addProduct,
   updateProduct,
   deleteProduct,
+  addQRProduct,
+  updateQRProduct,
+  deleteQRProduct,
   addCategory,
   updateCategory,
   deleteCategory,
+  addQRCategory,
+  updateQRCategory,
+  deleteQRCategory,
   getSettings,
   updateSettings,
   getServices,
@@ -711,6 +718,109 @@ app.delete('/api/menu/categories/:id', authenticateAdmin, async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     console.error("DELETE /api/menu/categories error:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/qr-menu - Retrieve entire QR menu (products and categories)
+app.get('/api/qr-menu', async (req, res) => {
+  try {
+    const menu = await getQRMenu();
+    res.json(menu);
+  } catch (err) {
+    console.error("GET /api/qr-menu error:", err);
+    res.status(500).json({ error: 'Database error fetching QR menu.' });
+  }
+});
+
+// POST /api/qr-menu/products - Add QR product (Admin only)
+app.post('/api/qr-menu/products', authenticateAdmin, async (req, res) => {
+  try {
+    const newProduct = req.body;
+    if (!newProduct.id || !newProduct.name || !newProduct.price) {
+      return res.status(400).json({ error: 'Product must have id, name, and price.' });
+    }
+    
+    const menu = await getQRMenu();
+    if (menu.products.some(p => p.id === newProduct.id)) {
+      return res.status(400).json({ error: 'Product ID already exists.' });
+    }
+
+    await addQRProduct(newProduct);
+    res.json({ success: true, product: newProduct });
+  } catch (err) {
+    console.error("POST /api/qr-menu/products error:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT /api/qr-menu/products/:id - Update QR product (Admin only)
+app.put('/api/qr-menu/products/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedData = req.body;
+    const updated = await updateQRProduct(id, updatedData);
+    res.json({ success: true, product: updated });
+  } catch (err) {
+    console.error("PUT /api/qr-menu/products error:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// DELETE /api/qr-menu/products/:id - Delete QR product (Admin only)
+app.delete('/api/qr-menu/products/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await deleteQRProduct(id);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("DELETE /api/qr-menu/products error:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/qr-menu/categories - Add QR category (Admin only)
+app.post('/api/qr-menu/categories', authenticateAdmin, async (req, res) => {
+  try {
+    const newCategory = req.body;
+    if (!newCategory.id || !newCategory.name) {
+      return res.status(400).json({ error: 'Category must have id and name.' });
+    }
+
+    const menu = await getQRMenu();
+    if (menu.categories.some(c => c.id === newCategory.id)) {
+      return res.status(400).json({ error: 'Category ID already exists.' });
+    }
+
+    await addQRCategory(newCategory);
+    res.json({ success: true, category: newCategory });
+  } catch (err) {
+    console.error("POST /api/qr-menu/categories error:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT /api/qr-menu/categories/:id - Update QR category (Admin only)
+app.put('/api/qr-menu/categories/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedData = req.body;
+    const updated = await updateQRCategory(id, updatedData);
+    res.json({ success: true, category: updated });
+  } catch (err) {
+    console.error("PUT /api/qr-menu/categories error:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// DELETE /api/qr-menu/categories/:id - Delete QR category (Admin only)
+app.delete('/api/qr-menu/categories/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await deleteQRCategory(id);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("DELETE /api/qr-menu/categories error:", err);
     res.status(500).json({ error: err.message });
   }
 });

@@ -1,20 +1,20 @@
-import{c as e,l as t}from"./main-CP7hZ_4g.js";import"./style-iNCSZksz.js";var n=t(e(),1);async function r(){try{let e=await fetch(`/api/menu`);if(!e.ok){a();return}let t=await e.json(),n=document.getElementById(`dynamic-category-nav`);n&&(n.innerHTML=t.categories.sort((e,t)=>e.order-t.order).map(e=>`
+import{c as e,l as t}from"./main-CP7hZ_4g.js";import"./style-D4E7pAWN.js";var n=t(e(),1);async function r(){try{let e=await fetch(`/api/qr-menu`);if(!e.ok){a();return}let t=await e.json(),n=document.getElementById(`dynamic-category-nav`);n&&(n.innerHTML=t.categories.sort((e,t)=>e.order-t.order).map(e=>`
             <a href="#${e.id}" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">${e.name}</a>
           `).join(``));let r={soups:`Broths & slow-simmered warmth`,appetizers:`Bold starters & sharing plates`,tandoor:`Clay oven crafted`,"tandoor-treasures":`Clay oven crafted`,mains:`Curries & slow-cooked gravies`,biryani:`Muglai saffron standard`,mandi:`Arabic smoked rice`,pulao:`Aromatic one-pot rice dishes`,beverages:`Teas & cold mocktails`,chinese:`Wok tossed`,momo:`Steamed or fried`,breads:`Tandoor baked`,desserts:`Sweet endings`},o=document.getElementById(`dynamic-menu-sections`);if(o){let e=``;t.categories.sort((e,t)=>e.order-t.order).forEach(n=>{let a=t.products.filter(e=>e.category===n.name);if(a.length===0)return;let o=r[n.id]||`Freshly prepared`,s=a.filter(e=>e.diet===`VEG`),c=a.filter(e=>e.diet!==`VEG`);e+=`
-              <section id="${n.id}" class="scroll-mt-48 md:scroll-mt-40">
+              <section id="${n.id}" class="scroll-mt-16">
                 <h2 class="section-title">${n.name}</h2>
                 <p class="text-center text-menu-secondary italic mb-12 -mt-8">${o}</p>
             `,s.length>0&&c.length>0&&[`appetizers`,`mains`,`tandoor`].includes(n.id)?e+=`
                 <h4 class="category-title">Vegetarian</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
                   ${s.map(i).join(``)}
                 </div>
                 <h4 class="category-title">Non-Vegetarian</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
                   ${c.map(i).join(``)}
                 </div>
               `:e+=`
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
                   ${a.map(i).join(``)}
                 </div>
               `,e+=`</section>`}),o.innerHTML=e}a()}catch(e){console.error(`Error loading dynamic menu in menu.html:`,e),a()}}function i(e){let t=e.diet===`VEG`?`<span class="tag-veg">VEG</span> `:``,n=``;return e.badge&&(n=` <span class="tag-signature"${e.badge.toUpperCase()===`SIGNATURE`?``:` style="background:#8B3A00"`}>${e.badge.toUpperCase()}</span>`),`

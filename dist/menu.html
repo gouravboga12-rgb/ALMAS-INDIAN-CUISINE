@@ -70,9 +70,10 @@
       padding-bottom: 1.5rem;
       margin-bottom: 1.5rem;
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 1.5rem;
+      gap: 0.75rem 1.5rem;
     }
 
     .menu-item-info {
@@ -116,19 +117,35 @@
 
     .menu-item-description {
       font-style: italic;
-      color: var(--menu-secondary);
+      color: #4A4A4A !important;
       font-size: 0.95rem;
       margin-top: 0.4rem;
       line-height: 1.5;
+    }
+    .menu-item-description a,
+    .menu-item-description span {
+      color: inherit !important;
+      text-decoration: none !important;
     }
 
     .menu-item-price {
       font-family: 'Playfair Display', serif;
       font-weight: 700;
-      color: var(--color-primary);
-      font-size: 1.15rem;
-      white-space: nowrap;
-      flex-shrink: 0;
+      color: #CC5500;
+      font-size: 1.1rem;
+      white-space: normal;
+      word-break: break-word;
+      flex-shrink: 1;
+      max-width: 220px;
+      background: rgba(204, 85, 0, 0.10);
+      border: 1px solid rgba(204, 85, 0, 0.22);
+      border-radius: 8px;
+      padding: 4px 12px;
+      letter-spacing: 0.01em;
+      display: inline-block;
+      margin-top: 4px;
+      line-height: 1.5;
+      text-align: right;
     }
 
 
@@ -230,149 +247,112 @@
       }
     }
   </style>
-  <script type="module" crossorigin src="/assets/menu-D_6cGOcA.js"></script>
+  <style>
+    /* =============================================
+       MENU PAGE — CATEGORY BAR STICKY AT TOP
+       No header on this page, category bar sticks
+       at the very top of the viewport.
+    ============================================= */
+    body.menu-page #menu-category-bar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    /* Force single column (row-wise) layout on mobile/tablet view for menu items */
+    @media (max-width: 1023px) {
+      body.menu-page #dynamic-menu-sections .grid {
+        grid-template-columns: 1fr !important;
+        gap: 0 !important;
+      }
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/menu-DsnGwLhI.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/main-CP7hZ_4g.js">
-  <link rel="modulepreload" crossorigin href="/assets/style-iNCSZksz.js">
+  <link rel="modulepreload" crossorigin href="/assets/style-D4E7pAWN.js">
   <link rel="stylesheet" crossorigin href="/assets/main-PTugdkvS.css">
-  <link rel="stylesheet" crossorigin href="/assets/style-Cuo0YsWw.css">
+  <link rel="stylesheet" crossorigin href="/assets/style-CK2RExJc.css">
 </head>
-<body>
+<body class="menu-page">
 
-  <!-- Navigation -->
-  <nav class="glass-nav w-full z-50 sticky top-0">
-    <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center h-28 md:h-24">
-      <!-- Left: Logo & Search Bar -->
-      <div class="flex items-center gap-6 flex-1">
-        <!-- Mobile Hamburger & Halal Logo (Mobile & Tablet) -->
-        <div class="lg:hidden flex items-center gap-3">
-          <button id="menu-btn" title="Menu">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-          </button>
-          <img src="/halal_logo.png" alt="Halal Certified" class="h-8 w-auto object-contain">
-        </div>
-        <a href="/" class="flex items-center">
-          <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="h-20 md:h-16 w-auto object-contain">
-        </a>
-        
-        <!-- Desktop Search Bar -->
-        <div class="hidden lg:block desktop-search-container">
-          <span class="desktop-search-icon">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
-          </span>
-          <input type="text" id="desktop-search-input" placeholder="Search delicious dishes..." class="desktop-search-input">
-        </div>
-      </div>
 
-      <!-- Desktop Navigation & Actions -->
-      <div class="hidden lg:flex items-center space-x-8">
-        <a href="/" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Home</a>
-        <a href="/products.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Our Menu</a>
-        <a href="/services.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Catering</a>
-        <a href="/about.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">About</a>
-        <a href="/contact.html" class="text-xs uppercase tracking-widest font-heading font-semibold hover:text-primary transition-colors">Contact</a>
+  <!-- Category Nav — sticky at top (no header on this page) -->
+  <div id="menu-category-bar" class="bg-white border-b border-black/10 overflow-x-auto whitespace-nowrap hide-scrollbar shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 md:px-10 flex items-center h-12 gap-0">
 
-        <!-- Sign In & Cart Group -->
-        <div class="flex items-center space-x-6 pl-6 border-l border-gray-200">
-          <!-- Dynamic Sign In (Desktop) -->
-          <div id="desktop-auth-group">
-            <!-- Dynamically populated by main.js -->
-          </div>
-
-          <!-- Add to Cart (Desktop) -->
-          <button class="nav-cart-btn" title="View Cart">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-            </svg>
-            <span class="cart-count-badge">0</span>
-          </button>
-
-          <!-- Halal Logo (Desktop) -->
-          <img src="/halal_logo.png" alt="Halal Certified" class="hidden lg:block h-10 w-auto object-contain ml-2">
-        </div>
-      </div>
-
-      <!-- Mobile Controls (visible on mobile, hidden on desktop) -->
-      <div class="lg:hidden flex items-center space-x-3">
-        <!-- Mobile Search Button -->
-        <button id="mobile-search-btn" title="Search">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"></path>
-          </svg>
+      <!-- Search Icon + Expandable Input -->
+      <div id="cat-search-wrap" style="display:flex; align-items:center; gap:0; flex-shrink:0; padding-right:12px; border-right:1px solid rgba(0,0,0,0.08); margin-right:16px;">
+        <button id="cat-search-btn" title="Search menu" style="display:flex; align-items:center; justify-content:center; width:32px; height:32px; border:none; background:transparent; cursor:pointer; color:#CC5500; flex-shrink:0; border-radius:50%; transition:background 0.2s;" onmouseenter="this.style.background='rgba(204,85,0,0.08)'" onmouseleave="this.style.background='transparent'">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
         </button>
-
-        <!-- Mobile Cart Button -->
-        <button class="nav-cart-btn" title="View Cart">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-          </svg>
-          <span class="cart-count-badge">0</span>
-        </button>
-
-        
+        <div id="cat-search-input-wrap" style="width:0; overflow:hidden; transition:width 0.3s cubic-bezier(0.4,0,0.2,1); display:flex; align-items:center;">
+          <input id="cat-search-inline" type="text" placeholder="Search dishes..." autocomplete="off" spellcheck="false"
+            style="width:180px; border:none; outline:none; font-size:0.78rem; font-family:inherit; color:#1a1a1a; background:transparent; padding:4px 6px 4px 2px; caret-color:#CC5500;">
+          <button id="cat-search-close" title="Close" style="display:flex; align-items:center; justify-content:center; width:20px; height:20px; border:none; background:transparent; cursor:pointer; color:#aaa; font-size:0.85rem; flex-shrink:0;" onclick="closeCatSearch()">✕</button>
+        </div>
       </div>
-    </div>
 
-    <!-- Mobile Search Bar Dropdown -->
-    <div id="mobile-search-bar" class="hidden border-t border-primary/10 bg-background/95 backdrop-blur-md px-6 py-4 transition-all duration-300">
-      <div class="relative max-w-3xl mx-auto">
-        <input type="text" id="mobile-search-input" placeholder="Search delicious dishes..." class="w-full bg-[#FFFAF3] border border-primary/20 rounded-full py-2.5 pl-10 pr-10 text-sm focus:outline-none focus:border-primary/50 text-text-primary">
-        <span class="absolute left-3.5 top-3 text-text-secondary/50">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-        </span>
-        <button id="mobile-search-clear" class="absolute right-3.5 top-2.5 text-text-secondary/50 hover:text-primary text-sm p-1">✕</button>
+      <!-- Category Links -->
+      <div id="dynamic-category-nav" class="flex items-center space-x-7 overflow-x-auto hide-scrollbar" style="flex:1; min-width:0;">
+        <a href="#soups" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Soups</a>
+        <a href="#appetizers" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Appetizers</a>
+        <a href="#tandoor" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Tandoor</a>
+        <a href="#mains" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Mains</a>
+        <a href="#biryani" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Biryani</a>
+        <a href="#mandi" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Mandi</a>
+        <a href="#pulao" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Pulao</a>
+        <a href="#chinese" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Chinese</a>
+        <a href="#momo" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Momo</a>
+        <a href="#breads" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Breads</a>
+        <a href="#desserts" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Desserts</a>
+        <a href="#beverages" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Beverages</a>
       </div>
-    </div>
-  </nav>
-
-  <!-- Mobile Menu Backdrop -->
-  <div id="menu-overlay"></div>
-
-  <!-- Mobile Menu Half-Panel -->
-  <div id="mobile-menu">
-    <button id="close-btn" class="absolute top-6 right-6 text-white/60 hover:text-white transition-colors">
-      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-    </button>
-    <div class="mb-10">
-      <img src="/logo.png" alt="ALMAS" class="h-14 w-auto object-contain opacity-80">
-    </div>
-        <nav class="flex flex-col space-y-6 text-white text-lg font-heading font-semibold uppercase tracking-widest">
-      <a href="/" class="hover:text-primary transition-colors">Home</a>
-      <a href="/products.html" class="hover:text-primary transition-colors">Our Menu</a>
-      <a href="/services.html" class="hover:text-primary transition-colors">Catering</a>
-      <a href="/about.html" class="hover:text-primary transition-colors">About</a>
-      <a href="/contact.html" class="hover:text-primary transition-colors">Contact</a>
-      <div id="mobile-auth-group" class="flex flex-col space-y-6">
-        <a href="/account.html" class="hover:text-primary transition-colors">My Account</a>
-      </div>
-      
-      <a href="/order.html" class="btn-premium text-sm px-8 py-3 w-full max-w-[280px]">Order Now</a>
-    </nav>
-    <div class="mt-10 pt-8 border-t border-white/10 w-full">
-      <p class="text-white/30 text-[10px] uppercase tracking-widest">209 Ellesmere Rd, Unit 6</p>
-      <p class="text-white/30 text-[10px] uppercase tracking-widest">Scarborough, ON</p>
     </div>
   </div>
 
-  <!-- Category Secondary Nav -->
-  <div class="bg-background border-b border-black/5 sticky top-[60px] lg:top-[96px] z-40 overflow-x-auto whitespace-nowrap hide-scrollbar">
-    <div id="dynamic-category-nav" class="max-w-7xl mx-auto px-6 md:px-12 flex items-center h-14 space-x-8">
-      <a href="#soups" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Soups</a>
-      <a href="#appetizers" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Appetizers</a>
-      <a href="#tandoor" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Tandoor</a>
-      <a href="#mains" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Mains</a>
-      <a href="#biryani" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Biryani</a>
-      <a href="#mandi" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Mandi</a>
-      <a href="#pulao" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Pulao</a>
-      <a href="#chinese" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Chinese</a>
-      <a href="#momo" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Momo</a>
-      <a href="#breads" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Breads</a>
-      <a href="#desserts" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Desserts</a>
-    </div>
-  </div>
+  <script>
+    // Category bar inline search toggle
+    const catSearchBtn = document.getElementById('cat-search-btn');
+    const catSearchInputWrap = document.getElementById('cat-search-input-wrap');
+    const catSearchInline = document.getElementById('cat-search-inline');
+    let catSearchOpen = false;
+
+    catSearchBtn.addEventListener('click', () => {
+      catSearchOpen = !catSearchOpen;
+      if (catSearchOpen) {
+        catSearchInputWrap.style.width = '192px';
+        setTimeout(() => catSearchInline.focus(), 320);
+      } else {
+        closeCatSearch();
+      }
+    });
+
+    function closeCatSearch() {
+      catSearchOpen = false;
+      catSearchInputWrap.style.width = '0';
+      catSearchInline.value = '';
+      // Clear search results
+      const mainInput = document.getElementById('menu-search-input');
+      if (mainInput) {
+        mainInput.value = '';
+        mainInput.dispatchEvent(new Event('input'));
+      }
+    }
+
+    catSearchInline.addEventListener('input', () => {
+      const val = catSearchInline.value;
+      // Mirror into the main search input and trigger filtering
+      const mainInput = document.getElementById('menu-search-input');
+      if (mainInput) {
+        mainInput.value = val;
+        mainInput.dispatchEvent(new Event('input'));
+      }
+    });
+
+    catSearchInline.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeCatSearch();
+    });
+  </script>
 
   <!-- Hero Section -->
   <section class="relative h-[60vh] flex items-center overflow-hidden mb-24">
@@ -389,7 +369,7 @@
     </div>
   </section>
 
-  <main class="max-w-5xl mx-auto px-6 pb-40">
+  <main class="max-w-5xl mx-auto px-6 md:px-12 lg:px-16 pb-40">
 
     <!-- Search Bar -->
     <div class="pt-10 pb-2">
@@ -419,11 +399,11 @@
     
     <div id="dynamic-menu-sections">
     <!-- SOUPS -->
-    <section id="soups" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="soups" class="scroll-mt-16">
       <h2 class="section-title">Soups</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Broths & slow-simmered warmth</p>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Sweet Corn Soup</h3>
@@ -470,12 +450,12 @@
     </section>
 
     <!-- APPETIZERS -->
-    <section id="appetizers" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="appetizers" class="scroll-mt-16">
       <h2 class="section-title">Appetizers</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Bold starters & sharing plates</p>
 
       <h4 class="category-title">Vegetarian</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name"><span class="tag-veg">VEG</span> Veg Lollypop</h3>
@@ -521,7 +501,7 @@
       </div>
 
       <h4 class="category-title">Chicken</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Chicken Pepper Fry</h3>
@@ -574,7 +554,7 @@
       </div>
 
       <h4 class="category-title">Mutton & Seafood</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Mutton Pepper Fry</h3>
@@ -642,12 +622,12 @@
     </section>
 
     <!-- TANDOOR TREASURES -->
-    <section id="tandoor" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="tandoor" class="scroll-mt-16">
       <h2 class="section-title">Tandoor Treasures</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Clay oven crafted</p>
 
       <h4 class="category-title">Vegetarian</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name"><span class="tag-veg">VEG</span> Paneer Tikka</h3>
@@ -665,7 +645,7 @@
       </div>
 
       <h4 class="category-title">Chicken & Fish</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Kalmi Kebab</h3>
@@ -718,7 +698,7 @@
       </div>
 
       <h4 class="category-title">Sharing Platter</h4>
-      <div class="grid grid-cols-1 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row" style="background:rgba(204, 85, 0, 0.03); border-radius:12px; padding:1.5rem">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Tandoor Family Platter <span class="tag-signature" style="background:#2E7D32">SERVES 4+</span></h3>
@@ -730,12 +710,12 @@
     </section>
 
     <!-- MAINS -->
-    <section id="mains" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="mains" class="scroll-mt-16">
       <h2 class="section-title">Mains</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Curries & slow-cooked gravies</p>
 
       <h4 class="category-title">Vegetarian</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name"><span class="tag-veg">VEG</span> Lasooni Dal Tadka</h3>
@@ -782,7 +762,7 @@
       </div>
 
       <h4 class="category-title">Chicken</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Butter Chicken</h3>
@@ -828,7 +808,7 @@
       </div>
 
       <h4 class="category-title">Mutton</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Hyderabadi Mutton Curry</h3>
@@ -853,7 +833,7 @@
       </div>
 
       <h4 class="category-title">Seafood</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Fish Pulusu</h3>
@@ -879,12 +859,12 @@
     </section>
 
     <!-- BIRYANI -->
-    <section id="biryani" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="biryani" class="scroll-mt-16">
       <h2 class="section-title">Biryani</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Dum-sealed & flame-finished</p>
 
       <h4 class="category-title">Vegetarian</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name"><span class="tag-veg">VEG</span> Veg Cocktail Biryani</h3>
@@ -902,7 +882,7 @@
       </div>
 
       <h4 class="category-title">Chicken & Mutton</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Chicken Dum Biryani</h3>
@@ -970,7 +950,7 @@
     </section>
 
     <!-- MANDI -->
-    <section id="mandi" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="mandi" class="scroll-mt-16">
       <h2 class="section-title">Mandi</h2>
       <p class="text-center text-menu-secondary italic mb-6 -mt-8">Arabian dum-roasted rice platters | Single / 2 / 3 People</p>
       <div class="text-center mb-12">
@@ -980,7 +960,7 @@
       </div>
 
       <h4 class="category-title">Vegetarian</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name"><span class="tag-veg">VEG</span> Malai Kofta Mandi</h3>
@@ -1019,7 +999,7 @@
       </div>
 
       <h4 class="category-title">Chicken</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Chicken Alfaham Mandi <span class="tag-signature">SIGNATURE</span></h3>
@@ -1058,7 +1038,7 @@
       </div>
 
       <h4 class="category-title">Mutton</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Mutton Juicy Mandi <span class="tag-signature">SIGNATURE</span></h3>
@@ -1090,7 +1070,7 @@
       </div>
 
       <h4 class="category-title">Seafood</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Full Fish Tawa Fry Mandi</h3>
@@ -1115,7 +1095,7 @@
       </div>
 
       <h4 class="category-title">Sharing Feasts</h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div class="menu-item-row" style="background:rgba(204, 85, 0, 0.03); border-radius:12px; padding:1.5rem">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Mixed Mandi Full <span class="tag-signature" style="background:#cc5500">SIGNATURE</span></h3>
@@ -1141,11 +1121,11 @@
     </section>
 
     <!-- PULAO -->
-    <section id="pulao" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="pulao" class="scroll-mt-16">
       <h2 class="section-title">Pulao</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Fragrant one-pot rice dishes</p>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name"><span class="tag-veg">VEG</span> Cashew Paneer Pulao</h3>
@@ -1213,11 +1193,11 @@
     </section>
 
     <!-- CHINESE -->
-    <section id="chinese" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="chinese" class="scroll-mt-16">
       <h2 class="section-title">Chinese</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Indo-Chinese wok kitchen</p>
 
-      <div class="grid grid-cols-1 gap-y-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Fried Rice</h3>
@@ -1250,11 +1230,11 @@
     </section>
 
     <!-- MOMO -->
-    <section id="momo" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="momo" class="scroll-mt-16">
       <h2 class="section-title">Momo</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Steamed & grilled dumplings</p>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 mb-10">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name"><span class="tag-veg">VEG</span> Vegetable Momo</h3>
@@ -1273,11 +1253,11 @@
     </section>
 
     <!-- BREADS -->
-    <section id="breads" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="breads" class="scroll-mt-16">
       <h2 class="section-title">Breads</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Fresh from the clay oven</p>
 
-      <div class="grid grid-cols-1 gap-y-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name"><span class="tag-veg">VEG</span> Naan</h3>
@@ -1307,7 +1287,7 @@
       <h2 class="section-title">Kids Menu</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Little plates for little guests</p>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Stuffed Naan</h3>
@@ -1344,7 +1324,7 @@
       <h2 class="section-title">Beverages & Tea</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Refreshing sips & warm comforts</p>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Irani Chai <span class="tag-signature">SIGNATURE</span></h3>
@@ -1391,11 +1371,11 @@
     </section>
 
     <!-- DESSERTS -->
-    <section id="desserts" class="scroll-mt-48 md:scroll-mt-40">
+    <section id="desserts" class="scroll-mt-16">
       <h2 class="section-title">Desserts</h2>
       <p class="text-center text-menu-secondary italic mb-12 -mt-8">Sweet endings</p>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
         <div class="menu-item-row">
           <div class="menu-item-info">
             <h3 class="menu-item-name">Tres Leches</h3>
@@ -1556,3 +1536,4 @@
 
 </body>
 </html>
+

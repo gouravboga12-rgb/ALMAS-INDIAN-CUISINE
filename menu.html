@@ -1536,7 +1536,7 @@
 
     async function loadDynamicMenu() {
       try {
-        const res = await fetch('/api/menu');
+        const res = await fetch('/api/qr-menu');
         if (!res.ok) {
           runInit();
           return;
