@@ -249,20 +249,80 @@
 
   <!-- Category Nav — sticky at top (no header on this page) -->
   <div id="menu-category-bar" class="bg-white border-b border-black/10 overflow-x-auto whitespace-nowrap hide-scrollbar shadow-sm">
-    <div id="dynamic-category-nav" class="max-w-7xl mx-auto px-6 md:px-12 flex items-center h-12 space-x-8">
-      <a href="#soups" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Soups</a>
-      <a href="#appetizers" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Appetizers</a>
-      <a href="#tandoor" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Tandoor</a>
-      <a href="#mains" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Mains</a>
-      <a href="#biryani" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Biryani</a>
-      <a href="#mandi" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Mandi</a>
-      <a href="#pulao" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Pulao</a>
-      <a href="#chinese" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Chinese</a>
-      <a href="#momo" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Momo</a>
-      <a href="#breads" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Breads</a>
-      <a href="#desserts" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors">Desserts</a>
+    <div class="max-w-7xl mx-auto px-4 md:px-10 flex items-center h-12 gap-0">
+
+      <!-- Search Icon + Expandable Input -->
+      <div id="cat-search-wrap" style="display:flex; align-items:center; gap:0; flex-shrink:0; padding-right:12px; border-right:1px solid rgba(0,0,0,0.08); margin-right:16px;">
+        <button id="cat-search-btn" title="Search menu" style="display:flex; align-items:center; justify-content:center; width:32px; height:32px; border:none; background:transparent; cursor:pointer; color:#CC5500; flex-shrink:0; border-radius:50%; transition:background 0.2s;" onmouseenter="this.style.background='rgba(204,85,0,0.08)'" onmouseleave="this.style.background='transparent'">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </button>
+        <div id="cat-search-input-wrap" style="width:0; overflow:hidden; transition:width 0.3s cubic-bezier(0.4,0,0.2,1); display:flex; align-items:center;">
+          <input id="cat-search-inline" type="text" placeholder="Search dishes..." autocomplete="off" spellcheck="false"
+            style="width:180px; border:none; outline:none; font-size:0.78rem; font-family:inherit; color:#1a1a1a; background:transparent; padding:4px 6px 4px 2px; caret-color:#CC5500;">
+          <button id="cat-search-close" title="Close" style="display:flex; align-items:center; justify-content:center; width:20px; height:20px; border:none; background:transparent; cursor:pointer; color:#aaa; font-size:0.85rem; flex-shrink:0;" onclick="closeCatSearch()">✕</button>
+        </div>
+      </div>
+
+      <!-- Category Links -->
+      <div id="dynamic-category-nav" class="flex items-center space-x-7 overflow-x-auto hide-scrollbar" style="flex:1; min-width:0;">
+        <a href="#soups" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Soups</a>
+        <a href="#appetizers" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Appetizers</a>
+        <a href="#tandoor" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Tandoor</a>
+        <a href="#mains" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Mains</a>
+        <a href="#biryani" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Biryani</a>
+        <a href="#mandi" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Mandi</a>
+        <a href="#pulao" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Pulao</a>
+        <a href="#chinese" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Chinese</a>
+        <a href="#momo" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Momo</a>
+        <a href="#breads" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Breads</a>
+        <a href="#desserts" class="text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold text-text-secondary hover:text-primary transition-colors whitespace-nowrap">Desserts</a>
+      </div>
     </div>
   </div>
+
+  <script>
+    // Category bar inline search toggle
+    const catSearchBtn = document.getElementById('cat-search-btn');
+    const catSearchInputWrap = document.getElementById('cat-search-input-wrap');
+    const catSearchInline = document.getElementById('cat-search-inline');
+    let catSearchOpen = false;
+
+    catSearchBtn.addEventListener('click', () => {
+      catSearchOpen = !catSearchOpen;
+      if (catSearchOpen) {
+        catSearchInputWrap.style.width = '192px';
+        setTimeout(() => catSearchInline.focus(), 320);
+      } else {
+        closeCatSearch();
+      }
+    });
+
+    function closeCatSearch() {
+      catSearchOpen = false;
+      catSearchInputWrap.style.width = '0';
+      catSearchInline.value = '';
+      // Clear search results
+      const mainInput = document.getElementById('menu-search-input');
+      if (mainInput) {
+        mainInput.value = '';
+        mainInput.dispatchEvent(new Event('input'));
+      }
+    }
+
+    catSearchInline.addEventListener('input', () => {
+      const val = catSearchInline.value;
+      // Mirror into the main search input and trigger filtering
+      const mainInput = document.getElementById('menu-search-input');
+      if (mainInput) {
+        mainInput.value = val;
+        mainInput.dispatchEvent(new Event('input'));
+      }
+    });
+
+    catSearchInline.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeCatSearch();
+    });
+  </script>
 
   <!-- Hero Section -->
   <section class="relative h-[60vh] flex items-center overflow-hidden mb-24">
