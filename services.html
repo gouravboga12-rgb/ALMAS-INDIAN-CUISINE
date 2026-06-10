@@ -384,7 +384,7 @@
           if (href.includes('order.html') || href.includes('contact.html')) {
             if (!localStorage.getItem('almas_token')) {
               e.preventDefault();
-              window.location.href = "/account.html?tab=login";
+              window.location.href = "/account.html?tab=login&message=Please%20login%20or%20sign%20up%20to%20continue";
             }
           }
         });

@@ -198,4 +198,14 @@ var e=Object.create,t=Object.defineProperty,n=Object.getOwnPropertyDescriptor,r=
               </svg>
             </div>
           </a>
-        `}window.addEventListener(`auth-change`,C),window.addEventListener(`storage`,e=>{(e.key===`almas_account`||e.key===`almas_token`)&&C()})});export{w as a,l as c,T as i,c as l,b as n,_ as o,S as r,y as s,v as t};
+        `}window.addEventListener(`auth-change`,C),window.addEventListener(`storage`,e=>{(e.key===`almas_account`||e.key===`almas_token`)&&C()});let w=g.get(`message`);w&&k(decodeURIComponent(w))});function k(e){let t=document.getElementById(`warning-toast`);if(!t){t=document.createElement(`div`),t.id=`warning-toast`,t.className=`notification-toast`,t.innerHTML=`
+      <button class="notification-toast-close" id="warning-toast-close" aria-label="Close" style="color: #888; border: none; background: transparent; cursor: pointer; position: absolute; top: 0.6rem; right: 0.65rem;">✕</button>
+      <div class="notification-toast-content" style="display: flex; gap: 0.85rem; align-items: center; width: 100%;">
+        <div class="warning-toast-icon-container" style="width: 20px; height: 20px; background-color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(220, 38, 38, 0.25);">
+          <span style="color: white; font-weight: 900; font-size: 11px; font-family: var(--font-body); line-height: 1;">!</span>
+        </div>
+        <div class="notification-toast-details" style="display: flex; flex-direction: column; gap: 0.1rem; flex-grow: 1; min-width: 0; padding-right: 1.25rem;">
+          <div id="warning-toast-text" style="font-family: var(--font-body); font-weight: 700; font-size: 0.82rem; color: #1a1a1a; line-height: 1.4; white-space: normal; word-break: break-word;"></div>
+        </div>
+      </div>
+    `,document.body.appendChild(t);let e=t.querySelector(`#warning-toast-close`);e&&e.addEventListener(`click`,()=>{t.classList.remove(`show`)})}let n=t.querySelector(`#warning-toast-text`);n&&(n.textContent=e),setTimeout(()=>{t.classList.add(`show`)},100),t.timeoutId&&clearTimeout(t.timeoutId),t.timeoutId=setTimeout(()=>{t.classList.remove(`show`)},5e3)}export{w as a,l as c,T as i,c as l,b as n,_ as o,S as r,y as s,v as t};

@@ -854,7 +854,7 @@
 
       document.getElementById('btn-add-cart').onclick = () => {
         if (!localStorage.getItem('almas_token')) {
-          window.location.href = "/account.html?tab=login";
+          window.location.href = "/account.html?tab=login&message=Please%20login%20or%20sign%20up%20to%20continue";
           return;
         }
         const block = document.getElementById('special-instructions-block');
@@ -873,7 +873,7 @@
 
       document.getElementById('btn-buy-now').onclick = () => {
         if (!localStorage.getItem('almas_token')) {
-          window.location.href = "/account.html?tab=login";
+          window.location.href = "/account.html?tab=login&message=Please%20login%20or%20sign%20up%20to%20continue";
           return;
         }
         const block = document.getElementById('special-instructions-block');
@@ -992,7 +992,7 @@
           reviewForm.innerHTML = `
             <div class="text-center py-4 space-y-4">
               <p class="text-xs text-text-secondary/80 leading-relaxed font-semibold">Only verified buyers can review this delicacy.</p>
-              <a href="/account.html?tab=login" class="btn-premium py-2.5 px-6 text-[10px] inline-block uppercase tracking-wider font-bold" style="text-decoration:none;">Log In / Sign Up</a>
+              <a href="/account.html?tab=login&message=Please%20login%20or%20sign%20up%20to%20continue" class="btn-premium py-2.5 px-6 text-[10px] inline-block uppercase tracking-wider font-bold" style="text-decoration:none;">Log In / Sign Up</a>
             </div>
           `;
         }

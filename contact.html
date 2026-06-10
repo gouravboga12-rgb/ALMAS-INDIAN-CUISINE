@@ -392,7 +392,7 @@
           e.preventDefault();
 
           if (!localStorage.getItem('almas_token')) {
-            window.location.href = "/account.html?tab=login";
+            window.location.href = "/account.html?tab=login&message=Please%20login%20or%20sign%20up%20to%20continue";
             return;
           }
           

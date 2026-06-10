@@ -562,4 +562,57 @@ document.addEventListener('DOMContentLoaded', () => {
       refreshNavbarAuth();
     }
   });
+
+  // Check for warning message query parameters on load
+  const toastMessage = urlParams.get('message');
+  if (toastMessage) {
+    showWarningToast(decodeURIComponent(toastMessage));
+  }
 });
+
+// Helper function to display warning toast notifications
+function showWarningToast(message) {
+  let toast = document.getElementById('warning-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'warning-toast';
+    toast.className = 'notification-toast';
+    toast.innerHTML = `
+      <button class="notification-toast-close" id="warning-toast-close" aria-label="Close" style="color: #888; border: none; background: transparent; cursor: pointer; position: absolute; top: 0.6rem; right: 0.65rem;">✕</button>
+      <div class="notification-toast-content" style="display: flex; gap: 0.85rem; align-items: center; width: 100%;">
+        <div class="warning-toast-icon-container" style="width: 20px; height: 20px; background-color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(220, 38, 38, 0.25);">
+          <span style="color: white; font-weight: 900; font-size: 11px; font-family: var(--font-body); line-height: 1;">!</span>
+        </div>
+        <div class="notification-toast-details" style="display: flex; flex-direction: column; gap: 0.1rem; flex-grow: 1; min-width: 0; padding-right: 1.25rem;">
+          <div id="warning-toast-text" style="font-family: var(--font-body); font-weight: 700; font-size: 0.82rem; color: #1a1a1a; line-height: 1.4; white-space: normal; word-break: break-word;"></div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(toast);
+
+    const closeBtn = toast.querySelector('#warning-toast-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        toast.classList.remove('show');
+      });
+    }
+  }
+
+  const textEl = toast.querySelector('#warning-toast-text');
+  if (textEl) {
+    textEl.textContent = message;
+  }
+
+  // Display the toast with animation
+  setTimeout(() => {
+    toast.classList.add('show');
+  }, 100);
+
+  if (toast.timeoutId) {
+    clearTimeout(toast.timeoutId);
+  }
+
+  toast.timeoutId = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 5000);
+}
