@@ -1010,6 +1010,122 @@
       margin-top: 1rem !important;
       font-size: 0.8rem !important;
     }
+
+    /* ---- Order Status Tracker Timeline ---- */
+    .order-status-track {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin: 2rem 0 1rem;
+      padding-top: 0.5rem;
+    }
+    /* Connecting line behind the dots */
+    .order-status-track::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.08);
+      z-index: 1;
+    }
+    .track-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+    .track-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #0f0600;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 0.5rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .track-dot::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    .track-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.35);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    /* State: Active step */
+    .track-step.active .track-dot {
+      border-color: #CC5500;
+      background: #CC5500;
+      box-shadow: 0 0 12px rgba(204, 85, 0, 0.6);
+    }
+    .track-step.active .track-dot::after {
+      background: white;
+    }
+    .track-step.active .track-label {
+      color: #CC5500;
+      font-weight: 700;
+    }
+    
+    /* State: Completed (done) steps */
+    .track-step.done .track-dot {
+      border-color: #4CAF50;
+      background: #4CAF50;
+    }
+    .track-step.done .track-dot::after {
+      content: '✓';
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 900;
+      background: transparent;
+      border-radius: 0;
+      width: auto;
+      height: auto;
+    }
+    .track-step.done .track-label {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    @media (max-width: 600px) {
+      .order-status-track {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.25rem;
+        margin: 1.5rem 0.5rem;
+        padding-left: 1rem;
+      }
+      .order-status-track::before {
+        left: 21px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        height: auto;
+      }
+      .track-step {
+        flex-direction: row;
+        gap: 1rem;
+        text-align: left;
+      }
+      .track-dot {
+        margin-bottom: 0;
+      }
+    }
   </style>
 </head>
 <body>
