@@ -1,4 +1,4 @@
-import{c as e,l as t,o as n}from"./main-BxrPwCb3.js";var r=t(e(),1);async function i(){try{let e=await fetch(`/api/menu`);if(!e.ok){a();return}let t=await e.json(),n=document.getElementById(`dynamic-mobile-quick-nav`);n&&(n.innerHTML=`
+import{c as e,l as t,o as n}from"./main-BA1o7NrL.js";var r=t(e(),1);async function i(){try{let e=await fetch(`/api/menu`);if(!e.ok){a();return}let t=await e.json(),n=document.getElementById(`dynamic-mobile-quick-nav`);n&&(n.innerHTML=`
             <button class="category-btn pb-1 text-xs font-semibold uppercase tracking-wider text-primary border-b-2 border-primary active whitespace-nowrap cursor-pointer" data-category="all">All</button>
             ${t.categories.sort((e,t)=>e.order-t.order).map(e=>`
               <button class="category-btn pb-1 text-xs font-semibold uppercase tracking-wider text-text-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer" data-category="${e.id}">${e.name}</button>

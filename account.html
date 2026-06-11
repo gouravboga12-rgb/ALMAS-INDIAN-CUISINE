@@ -1415,6 +1415,13 @@
 
     const PREP_STEPS = ['Order Received', 'Kitchen Preparing', 'Ready for Pickup'];
 
+    function getInitials(name) {
+      if (!name) return 'U';
+      const parts = name.trim().split(/\s+/);
+      if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+      return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    }
+
     function getPrepStatusIndex(status) {
       const idx = PREP_STEPS.indexOf(status);
       return idx === -1 ? 0 : idx;
@@ -1528,13 +1535,13 @@
     }
 
     function showLoggedIn(name, email, avatar = null) {
-      const initial = (name || 'U')[0].toUpperCase();
+      const initial = getInitials(name);
       document.getElementById('auth-card-view').style.display = 'none';
       document.getElementById('logged-in-view').style.display = 'block';
       
       const avatarEl = document.getElementById('sidebar-avatar');
       if (avatar) {
-        avatarEl.innerHTML = `<img src="${avatar}" alt="${name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+        avatarEl.innerHTML = `<img src="${avatar}" alt="${name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'; this.parentElement.textContent='${initial}';">`;
       } else {
         avatarEl.textContent = initial;
       }
@@ -1543,7 +1550,7 @@
 
       const mainAvatarEl = document.getElementById('main-avatar');
       if (avatar) {
-        mainAvatarEl.innerHTML = `<img src="${avatar}" alt="${name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+        mainAvatarEl.innerHTML = `<img src="${avatar}" alt="${name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'; this.parentElement.textContent='${initial}';">`;
       } else {
         mainAvatarEl.textContent = initial;
       }
@@ -1606,6 +1613,7 @@
           localStorage.setItem('almas_token', data.token);
           showLoggedIn(data.user.name, data.user.email, data.user.avatar);
           window.dispatchEvent(new Event('auth-change'));
+          window.location.href = '/products.html';
         }
       } catch (err) {
         showAuthAlert(err.message || 'Google sign-in verification failed.');
@@ -1740,6 +1748,7 @@
           localStorage.setItem('almas_token', data.token);
           showLoggedIn(data.user.name, data.user.email, data.user.avatar);
           window.dispatchEvent(new Event('auth-change'));
+          window.location.href = '/products.html';
         } catch (err) {
           if (err.data && err.data.requiresVerification) {
             showOtpPanel(err.data.email, err.message);
@@ -1765,6 +1774,7 @@
             localStorage.setItem('almas_token', data.token);
             showLoggedIn(data.user.name, data.user.email, data.user.avatar);
             window.dispatchEvent(new Event('auth-change'));
+            window.location.href = '/products.html';
           }
         } catch (err) { showAuthAlert(err.message); }
       });
@@ -1781,6 +1791,7 @@
           showLoggedIn(data.user.name, data.user.email, data.user.avatar);
           window.dispatchEvent(new Event('auth-change'));
           clearAuthAlert();
+          window.location.href = '/products.html';
         } catch (err) { showAuthAlert(err.message); }
       });
 

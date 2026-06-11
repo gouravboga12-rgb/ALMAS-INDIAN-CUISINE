@@ -1646,6 +1646,34 @@
       "is_verified": 0,
       "otp_code": "495352",
       "otp_expires": 1780954858527
+    },
+    {
+      "id": "usr-1781131294940-522",
+      "name": "Gourav Boga",
+      "email": "gouravboga12@gmail.com",
+      "password_hash": null,
+      "google_id": "103395675108948711705",
+      "avatar": "https://lh3.googleusercontent.com/a/ACg8ocJbh7HVeZKkPC9G1NnHnUqDO6ZEUu6HeUPOFafm_i4-uvwFaw=s96-c",
+      "provider": "google",
+      "created_at": 1781131294940,
+      "is_verified": 1,
+      "otp_code": null,
+      "otp_expires": null,
+      "phone": null
+    },
+    {
+      "id": "usr-1781132039232-47",
+      "name": "Test Gourav",
+      "email": "tgourav@example.com",
+      "password_hash": "$2a$10$OXa.7lJ633.mjsOqhz04je50VOmjxOV.EOMJi5b3oIjDgF0mdqKUi",
+      "google_id": null,
+      "avatar": null,
+      "provider": "email",
+      "created_at": 1781132039233,
+      "is_verified": 0,
+      "otp_code": "140627",
+      "otp_expires": 1781132973108,
+      "phone": null
     }
   ],
   "qr_categories": [

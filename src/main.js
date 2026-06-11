@@ -11,6 +11,13 @@ AOS.init({
   mirror: false,
 });
 
+function getInitials(name) {
+  if (!name) return 'U';
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+}
+
 // Splash Screen Logic
 function handleSplashScreen() {
   const splash = document.getElementById('splash-screen');
@@ -67,10 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (desktopAuthGroup) {
     const saved = JSON.parse(localStorage.getItem('almas_account'));
     if (saved && saved.name) {
-      const initial = saved.name.charAt(0).toUpperCase();
+      const initial = getInitials(saved.name);
       desktopAuthGroup.innerHTML = `
         <a href="/account.html" class="nav-signin-btn" title="My Account">
-          <div class="nav-signin-avatar">${initial}</div>
+          <div class="nav-signin-avatar">${saved.avatar ? `<img src="${saved.avatar}" alt="${saved.name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'; this.parentElement.textContent='${initial}';">` : initial}</div>
           <span>Account</span>
         </a>
       `;
@@ -112,10 +119,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const saved = JSON.parse(localStorage.getItem('almas_account'));
     if (saved && saved.name) {
-      const initial = saved.name.charAt(0).toUpperCase();
+      const initial = getInitials(saved.name);
       mobileAuthContainer.innerHTML = `
         <a href="/account.html" class="nav-signin-btn" title="My Account" style="display: flex !important; justify-content: center !important; align-items: center !important; width: 44px !important; height: 44px !important;">
-          <div class="nav-signin-avatar" style="width: 32px !important; height: 32px !important; font-size: 0.85rem !important;">${initial}</div>
+          <div class="nav-signin-avatar" style="width: 32px !important; height: 32px !important; font-size: 0.85rem !important;">
+            ${saved.avatar ? `<img src="${saved.avatar}" alt="${saved.name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'; this.parentElement.textContent='${initial}';">` : initial}
+          </div>
         </a>
       `;
     } else {
@@ -491,10 +500,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const desktopAuthGroup = document.getElementById('desktop-auth-group');
     if (desktopAuthGroup) {
       if (saved && saved.name) {
-        const initial = saved.name.charAt(0).toUpperCase();
+        const initial = getInitials(saved.name);
         desktopAuthGroup.innerHTML = `
           <a href="/account.html" class="nav-signin-btn" title="My Account">
-            <div class="nav-signin-avatar">${saved.avatar ? `<img src="${saved.avatar}" alt="${saved.name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : initial}</div>
+            <div class="nav-signin-avatar">${saved.avatar ? `<img src="${saved.avatar}" alt="${saved.name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'; this.parentElement.textContent='${initial}';">` : initial}</div>
             <span>Account</span>
           </a>
         `;
@@ -531,11 +540,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileAuthHeader = document.getElementById('mobile-auth-group-header');
     if (mobileAuthHeader) {
       if (saved && saved.name) {
-        const initial = saved.name.charAt(0).toUpperCase();
+        const initial = getInitials(saved.name);
         mobileAuthHeader.innerHTML = `
           <a href="/account.html" class="nav-signin-btn" title="My Account" style="display:flex!important;justify-content:center!important;align-items:center!important;width:44px!important;height:44px!important;">
             <div class="nav-signin-avatar" style="width:32px!important;height:32px!important;font-size:0.85rem!important;">
-              ${saved.avatar ? `<img src="${saved.avatar}" alt="${saved.name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : initial}
+              ${saved.avatar ? `<img src="${saved.avatar}" alt="${saved.name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.style.display='none'; this.parentElement.textContent='${initial}';">` : initial}
             </div>
           </a>
         `;
