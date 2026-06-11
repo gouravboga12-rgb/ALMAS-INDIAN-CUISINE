@@ -241,7 +241,7 @@
               </svg>
               <div>
                 <span class="font-bold">Mandatory Online Payment Required:</span>
-                Your products cost is equal to or exceeds $100.00. For security and preparation assurance, we require credit card authorization.
+                Your order total is equal to or exceeds $100.00. For security and preparation assurance, we require credit card authorization.
               </div>
             </div>
 
@@ -602,6 +602,7 @@
     }
 
     let cardPaymentObject = null;
+    let currentTakeoutTotal = 0;
 
     async function initializeSquarePayments() {
       try {
@@ -779,17 +780,18 @@
         const discountedSubtotal = subtotal - discount;
         const tax = discountedSubtotal * 0.14;
         const total = discountedSubtotal + tax;
+        currentTakeoutTotal = total; // Save to script-level variable
 
         document.getElementById('summary-t-subtotal').textContent = `$${subtotal.toFixed(2)}`;
         document.getElementById('summary-t-tax').textContent = `$${tax.toFixed(2)}`;
         document.getElementById('summary-t-total').textContent = `$${total.toFixed(2)}`;
 
-        // Force online payment if takeout subtotal (products cost) is equal to or exceeds $100
+        // Force online payment if takeout grand total is equal to or exceeds $100
         const takeoutAlert = document.getElementById('takeout-alert');
         const methodPickup = document.getElementById('method-t-pickup');
         const cardForm = document.getElementById('takeout-card-form');
 
-        if (subtotal >= 100.00) {
+        if (total >= 100.00) {
           takeoutAlert.classList.add('visible');
           methodPickup.classList.add('disabled');
           
@@ -894,8 +896,7 @@
 
       methodTOnline.addEventListener('click', () => selectTakeoutPayment('online'));
       methodTPickup.addEventListener('click', () => {
-        const { subtotal } = getCartTotals();
-        if (subtotal < 100.00) {
+        if (currentTakeoutTotal < 100.00) {
           selectTakeoutPayment('pickup');
         }
       });
@@ -955,10 +956,8 @@
         const phone = document.getElementById('takeout-phone').value.trim();
         const email = document.getElementById('takeout-email').value.trim();
         const time = document.getElementById('takeout-time').value;
-        const { subtotal } = getCartTotals();
-
-        if (subtotal >= 100.00 && activeTakeoutMethod !== 'online') {
-          alert('Since your order subtotal is equal to or exceeds $100.00, online payment is required.');
+        if (currentTakeoutTotal >= 100.00 && activeTakeoutMethod !== 'online') {
+          alert('Since your order total is equal to or exceeds $100.00, online payment is required.');
           selectTakeoutPayment('online');
           return;
         }

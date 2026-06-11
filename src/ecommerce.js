@@ -138,12 +138,12 @@ function injectCartUI() {
 
 // Dynamic Checkout Prompt Helper
 function updateCheckoutPromptContent() {
-  const { subtotal } = getCartTotals();
+  const { subtotal, total } = getCartTotals();
   const textEl = document.getElementById('prompt-text');
   const btnEl = document.getElementById('btn-prompt-checkout');
   if (textEl && btnEl) {
-    if (subtotal >= 100.00) {
-      textEl.innerHTML = `Your order subtotal is <strong style="color:#CC5500;">$${subtotal.toFixed(2)}</strong>. Since your order is equal to or exceeds $100.00, online payment is required. Would you like to proceed to checkout to pay online?`;
+    if (total >= 100.00) {
+      textEl.innerHTML = `Your order total is <strong style="color:#CC5500;">$${total.toFixed(2)}</strong>. Since your order is equal to or exceeds $100.00, online payment is required. Would you like to proceed to checkout to pay online?`;
       btnEl.textContent = "Pay Online";
     } else {
       textEl.textContent = "Would you like to proceed to checkout to enter your delivery address and pay, or continue browsing?";
