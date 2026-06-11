@@ -7,7 +7,8 @@ import multer from 'multer';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { OAuth2Client } from 'google-auth-library';
-import { Client as SquareClient, Environment as SquareEnvironment } from 'square';
+import pkg from 'square';
+const { SquareClient, SquareEnvironment } = pkg;
 import { sendVerificationEmail, sendPasswordResetEmail } from './email.js';
 import {
   initializeDatabase,
@@ -66,7 +67,7 @@ const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Square payment client initialization
 const squareClient = new SquareClient({
-  accessToken: process.env.SQUARE_ACCESS_TOKEN,
+  token: process.env.SQUARE_ACCESS_TOKEN,
   environment: process.env.SQUARE_ENVIRONMENT === 'production' 
     ? SquareEnvironment.Production 
     : SquareEnvironment.Sandbox,
@@ -482,11 +483,11 @@ app.post('/api/user/orders', authenticateUser, async (req, res) => {
     if (orderData.paymentToken && orderData.status === 'Paid Online') {
       const amountInCents = Math.round(parseFloat(orderData.total) * 100);
       try {
-        const response = await squareClient.paymentsApi.createPayment({
+        const response = await squareClient.payments.create({
           sourceId: orderData.paymentToken,
           idempotencyKey: 'key-' + Date.now() + Math.random().toString(36).substring(7),
           amountMoney: {
-            amount: amountInCents,
+            amount: BigInt(amountInCents),
             currency: 'CAD' // Matches the Canadian dollar currency for Almas' physical location
           },
           buyerEmailAddress: orderData.email || req.user.email,
@@ -494,7 +495,7 @@ app.post('/api/user/orders', authenticateUser, async (req, res) => {
         });
 
         // Store the official reference from Square payment
-        orderData.payment = `Square Auth - Ref #${response.result.payment.id.substring(0, 8)}`;
+        orderData.payment = `Square Auth - Ref #${response.payment.id.substring(0, 8)}`;
       } catch (payErr) {
         console.error('Square Payment API error:', payErr);
         let errorMsg = 'Payment authorization failed.';
