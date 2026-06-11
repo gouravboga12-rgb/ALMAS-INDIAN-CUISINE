@@ -47,6 +47,8 @@ import {
   updateUser,
   createOrder,
   getOrdersByUserId,
+  getAllOrders,
+  updateOrderStatus,
   createReview,
   getReviewsByProductId,
   getReviewById,
@@ -643,6 +645,36 @@ app.get('/api/admin/customers', authenticateAdmin, async (req, res) => {
   } catch (err) {
     console.error('Fetch customers error:', err);
     res.status(500).json({ success: false, error: 'Server error fetching customers.' });
+  }
+});
+
+// GET /api/admin/orders - Get all customer orders (Admin Only)
+app.get('/api/admin/orders', authenticateAdmin, async (req, res) => {
+  try {
+    const list = await getAllOrders();
+    res.json(list);
+  } catch (err) {
+    console.error('Fetch admin orders error:', err);
+    res.status(500).json({ success: false, error: 'Server error fetching orders.' });
+  }
+});
+
+// PUT /api/admin/orders/:id/status - Update order status (Admin Only)
+app.put('/api/admin/orders/:id/status', authenticateAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    if (!status) {
+      return res.status(400).json({ success: false, error: 'Status is required.' });
+    }
+    const updated = await updateOrderStatus(id, status);
+    if (!updated) {
+      return res.status(404).json({ success: false, error: 'Order not found.' });
+    }
+    res.json({ success: true, order: updated });
+  } catch (err) {
+    console.error('Update order status error:', err);
+    res.status(500).json({ success: false, error: 'Server error updating order status.' });
   }
 });
 

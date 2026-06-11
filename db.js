@@ -1186,6 +1186,27 @@ export async function getAllOrders() {
   }
 }
 
+export async function updateOrderStatus(id, status) {
+  if (pool) {
+    await pool.query("UPDATE orders SET status = ? WHERE id = ?", [status, id]);
+    const [rows] = await pool.query("SELECT * FROM orders WHERE id = ?", [id]);
+    if (rows.length > 0) {
+      return { ...rows[0], items: JSON.parse(rows[0].items) };
+    }
+    return null;
+  } else {
+    const db = readJSONDB();
+    if (!db.orders) db.orders = [];
+    const idx = db.orders.findIndex(o => o.id === id);
+    if (idx !== -1) {
+      db.orders[idx].status = status;
+      writeJSONDB(db);
+      return db.orders[idx];
+    }
+    return null;
+  }
+}
+
 // ─── REVIEWS CRUD
 export async function createReview(review) {
   const newReview = {

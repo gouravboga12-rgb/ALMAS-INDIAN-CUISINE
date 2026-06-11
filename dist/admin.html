@@ -782,6 +782,7 @@
       <!-- NAVIGATION -->
       <nav class="admin-nav">
         <button class="nav-btn active" data-panel="inquiries-panel">📩 Inquiries</button>
+        <button class="nav-btn" data-panel="orders-panel">🛍️ Takeout Orders</button>
         <button class="nav-btn" data-panel="categories-panel">📁 Categories</button>
         <button class="nav-btn" data-panel="products-panel">🍲 Menu Items</button>
         <button class="nav-btn" data-panel="qr-menu-panel">📱 QR Menu Page</button>
@@ -813,6 +814,44 @@
                 </tr>
               </thead>
               <tbody id="inquiries-table-body">
+                <!-- Dynamically loaded -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ================= PANEL 9: ORDERS ================= -->
+        <section id="orders-panel" class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Takeout Orders & Payments</h2>
+          </div>
+          
+          <!-- Filters -->
+          <div class="qr-sub-nav" style="margin-bottom: 20px;">
+            <button class="qr-sub-btn active" id="btn-order-filter-all" onclick="setOrderFilter('all')">All Orders</button>
+            <button class="qr-sub-btn" id="btn-order-filter-pending" onclick="setOrderFilter('pending')">Pending Payment</button>
+            <button class="qr-sub-btn" id="btn-order-filter-paid" onclick="setOrderFilter('paid')">Paid Online</button>
+            <button class="qr-sub-btn" id="btn-order-filter-preparing" onclick="setOrderFilter('preparing')">Preparing</button>
+            <button class="qr-sub-btn" id="btn-order-filter-ready" onclick="setOrderFilter('ready')">Ready for Pickup</button>
+            <button class="qr-sub-btn" id="btn-order-filter-completed" onclick="setOrderFilter('completed')">Completed</button>
+            <button class="qr-sub-btn" id="btn-order-filter-cancelled" onclick="setOrderFilter('cancelled')">Cancelled</button>
+          </div>
+
+          <div class="glass-card table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date & ID</th>
+                  <th>Customer Info</th>
+                  <th>Fulfillment / Time</th>
+                  <th>Order Items</th>
+                  <th>Total & Tax</th>
+                  <th>Payment Status / Method</th>
+                  <th>Order Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body">
                 <!-- Dynamically loaded -->
               </tbody>
             </table>
@@ -1294,6 +1333,8 @@
     let cachedServices = [];
     let cachedPackages = [];
     let cachedInquiries = [];
+    let cachedOrders = [];
+    let activeOrderFilter = 'all';
 
     // Initialize UI on load
     document.addEventListener('DOMContentLoaded', () => {
@@ -1421,6 +1462,7 @@
     async function loadDashboardData() {
       await Promise.all([
         loadInquiries(),
+        loadOrders(),
         loadMenuCatalog(),
         loadQRMenuCatalog(),
         loadCateringServices(),
@@ -2508,6 +2550,180 @@
         tbody.appendChild(tr);
       });
     }
+
+    // =========================================================================
+    // ORDERS MANAGEMENT
+    // =========================================================================
+    async function loadOrders() {
+      const data = await apiFetch('/api/admin/orders');
+      if (!data) return;
+      cachedOrders = data;
+      renderOrders();
+    }
+
+    window.setOrderFilter = function(filter) {
+      activeOrderFilter = filter;
+      
+      // Update filter tabs UI
+      const filters = ['all', 'pending', 'paid', 'preparing', 'ready', 'completed', 'cancelled'];
+      filters.forEach(f => {
+        const btn = document.getElementById(`btn-order-filter-${f}`);
+        if (btn) {
+          if (f === filter) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        }
+      });
+
+      renderOrders();
+    };
+
+    function renderOrders() {
+      const tbody = document.getElementById('orders-table-body');
+      tbody.innerHTML = '';
+
+      let filtered = cachedOrders;
+      if (activeOrderFilter === 'pending') {
+        filtered = cachedOrders.filter(o => o.status && o.status.includes('Pending Payment'));
+      } else if (activeOrderFilter === 'paid') {
+        filtered = cachedOrders.filter(o => o.status === 'Paid Online');
+      } else if (activeOrderFilter === 'preparing') {
+        filtered = cachedOrders.filter(o => o.status === 'Preparing');
+      } else if (activeOrderFilter === 'ready') {
+        filtered = cachedOrders.filter(o => o.status === 'Ready');
+      } else if (activeOrderFilter === 'completed') {
+        filtered = cachedOrders.filter(o => o.status === 'Completed');
+      } else if (activeOrderFilter === 'cancelled') {
+        filtered = cachedOrders.filter(o => o.status === 'Cancelled');
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted)">No orders found for the selected status.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach(order => {
+        const tr = document.createElement('tr');
+        
+        // Date and ID
+        const dateStr = order.created_at ? new Date(order.created_at).toLocaleString() : 'N/A';
+        
+        // Customer Details
+        const customerHtml = `
+          <strong>${escapeHTML(order.name)}</strong><br>
+          <span style="font-size:0.8rem; color:var(--text-muted);">
+            📞 ${escapeHTML(order.phone)}<br>
+            ✉️ ${escapeHTML(order.email)}
+          </span>
+        `;
+        
+        // Fulfillment / Time
+        const fulfillmentHtml = `
+          <span class="badge-p">${escapeHTML(order.type)}</span><br>
+          <span style="font-size:0.8rem; color:var(--gold);">🕒 ${escapeHTML(order.time)}</span>
+        `;
+        
+        // Items list formatting
+        let itemsHtml = '';
+        if (Array.isArray(order.items)) {
+          itemsHtml = order.items.map(item => `<div style="font-size:0.8rem; margin-bottom:2px;">• ${escapeHTML(item)}</div>`).join('');
+        } else {
+          try {
+            const parsed = JSON.parse(order.items);
+            if (Array.isArray(parsed)) {
+              itemsHtml = parsed.map(item => `<div style="font-size:0.8rem; margin-bottom:2px;">• ${escapeHTML(item)}</div>`).join('');
+            } else {
+              itemsHtml = `<div style="font-size:0.8rem;">• ${escapeHTML(order.items)}</div>`;
+            }
+          } catch(e) {
+            itemsHtml = `<div style="font-size:0.8rem;">• ${escapeHTML(order.items)}</div>`;
+          }
+        }
+
+        // Totals
+        const totalVal = typeof order.total === 'number' ? order.total : parseFloat(order.total || 0);
+        const taxVal = typeof order.tax === 'number' ? order.tax : parseFloat(order.tax || 0);
+        const totalHtml = `
+          <strong>$${totalVal.toFixed(2)}</strong><br>
+          <span style="font-size:0.75rem; color:var(--text-muted);">Tax: $${taxVal.toFixed(2)}</span>
+        `;
+
+        // Payment status
+        let paymentBadge = '';
+        if (order.status === 'Paid Online') {
+          paymentBadge = `<span class="status-badge read" style="font-size:0.7rem;">Paid Online</span>`;
+        } else if (order.status && order.status.includes('Pending Payment')) {
+          paymentBadge = `<span class="status-badge new" style="font-size:0.7rem;">Pending Payment</span>`;
+        } else {
+          paymentBadge = `<span class="badge-p" style="font-size:0.7rem;">${escapeHTML(order.status)}</span>`;
+        }
+
+        const paymentHtml = `
+          ${paymentBadge}<br>
+          <span style="font-size:0.75rem; color:var(--text-muted);">${escapeHTML(order.payment)}</span>
+        `;
+
+        // Status badge color and value
+        let statusBadgeStyle = 'background: rgba(255,255,255,0.08); color: var(--text-muted);';
+        if (order.status === 'Pending Payment (Store Pickup)') {
+          statusBadgeStyle = 'background: rgba(204, 85, 0, 0.15); color: var(--primary);';
+        } else if (order.status === 'Paid Online') {
+          statusBadgeStyle = 'background: rgba(212, 175, 55, 0.15); color: var(--gold);';
+        } else if (order.status === 'Preparing') {
+          statusBadgeStyle = 'background: rgba(59, 130, 246, 0.15); color: #3b82f6;'; // Blue
+        } else if (order.status === 'Ready') {
+          statusBadgeStyle = 'background: rgba(16, 185, 129, 0.15); color: var(--success);'; // Green
+        } else if (order.status === 'Completed') {
+          statusBadgeStyle = 'background: rgba(16, 185, 129, 0.3); color: #10B981; font-weight: bold;';
+        } else if (order.status === 'Cancelled') {
+          statusBadgeStyle = 'background: rgba(239, 68, 68, 0.15); color: var(--danger);';
+        }
+
+        const statusHtml = `
+          <span class="status-badge" style="${statusBadgeStyle}">${escapeHTML(order.status)}</span>
+        `;
+
+        // Actions: Dropdown selector
+        const actionHtml = `
+          <select onchange="changeOrderStatus('${order.id}', this.value)" style="width: auto; padding: 4px 8px; font-size: 0.8rem; background: rgba(0,0,0,0.3); border-color: var(--border-color); border-radius: 4px; color: var(--text-main);">
+            <option value="Pending Payment (Store Pickup)" ${order.status === 'Pending Payment (Store Pickup)' ? 'selected' : ''}>Pending Payment</option>
+            <option value="Paid Online" ${order.status === 'Paid Online' ? 'selected' : ''}>Paid Online</option>
+            <option value="Preparing" ${order.status === 'Preparing' ? 'selected' : ''}>Preparing</option>
+            <option value="Ready" ${order.status === 'Ready' ? 'selected' : ''}>Ready for Pickup</option>
+            <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
+            <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+          </select>
+        `;
+
+        tr.innerHTML = `
+          <td style="white-space:nowrap;">
+            <strong style="color:var(--gold);">${escapeHTML(order.id)}</strong><br>
+            <span style="font-size:0.75rem; color:var(--text-muted);">${dateStr}</span>
+          </td>
+          <td>${customerHtml}</td>
+          <td>${fulfillmentHtml}</td>
+          <td style="max-width:300px; line-height:1.4;">${itemsHtml}</td>
+          <td>${totalHtml}</td>
+          <td>${paymentHtml}</td>
+          <td>${statusHtml}</td>
+          <td>${actionHtml}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    window.changeOrderStatus = async function(id, newStatus) {
+      const result = await apiFetch(`/api/admin/orders/${id}/status`, {
+        method: 'PUT',
+        body: JSON.stringify({ status: newStatus })
+      });
+      if (result) {
+        showToast(`Order ${id} status updated to ${newStatus}`);
+        loadOrders();
+      }
+    };
 
     // =========================================================================
     // MODAL STATE UTILITIES
