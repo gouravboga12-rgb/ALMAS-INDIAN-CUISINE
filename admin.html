@@ -2685,16 +2685,23 @@
           <span class="status-badge" style="${statusBadgeStyle}">${escapeHTML(order.status)}</span>
         `;
 
-        // Actions: Dropdown selector
+        // Actions: Dropdown selector + Invoice + Edit buttons
         const actionHtml = `
-          <select onchange="changeOrderStatus('${order.id}', this.value)" style="width: auto; padding: 4px 8px; font-size: 0.8rem; background: rgba(0,0,0,0.3); border-color: var(--border-color); border-radius: 4px; color: var(--text-main);">
-            <option value="Pending Payment (Store Pickup)" ${order.status === 'Pending Payment (Store Pickup)' ? 'selected' : ''}>Pending Payment</option>
-            <option value="Paid Online" ${order.status === 'Paid Online' ? 'selected' : ''}>Paid Online</option>
-            <option value="Preparing" ${order.status === 'Preparing' ? 'selected' : ''}>Preparing</option>
-            <option value="Ready" ${order.status === 'Ready' ? 'selected' : ''}>Ready for Pickup</option>
-            <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
-            <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-          </select>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <select onchange="changeOrderStatus('${order.id}', this.value)" style="width: 100%; padding: 4px 8px; font-size: 0.8rem; background: rgba(0,0,0,0.3); border-color: var(--border-color); border-radius: 4px; color: var(--text-main);">
+              <option value="Pending Payment (Store Pickup)" ${order.status === 'Pending Payment (Store Pickup)' ? 'selected' : ''}>Pending Payment</option>
+              <option value="Paid Online" ${order.status === 'Paid Online' ? 'selected' : ''}>Paid Online</option>
+              <option value="Preparing" ${order.status === 'Preparing' ? 'selected' : ''}>Preparing</option>
+              <option value="Ready" ${order.status === 'Ready' ? 'selected' : ''}>Ready for Pickup</option>
+              <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
+              <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+            </select>
+            <div style="display:flex; gap:4px;">
+              <button class="btn-action edit" onclick="viewAdminOrderInvoice('${order.id}')" title="View Invoice" style="flex:1; font-size:0.7rem;">🧾 View</button>
+              <button class="btn-action edit" onclick="downloadAdminOrderInvoice('${order.id}')" title="Download Invoice" style="flex:1; font-size:0.7rem;">⬇ Invoice</button>
+              <button class="btn-action edit" onclick="editAdminOrder('${order.id}')" title="Edit Order" style="flex:1; font-size:0.7rem; background:rgba(59,130,246,0.1); color:#60a5fa; border-color:rgba(59,130,246,0.2);">✏ Edit</button>
+            </div>
+          </div>
         `;
 
         tr.innerHTML = `
@@ -2725,6 +2732,163 @@
       }
     };
 
+    function generateAdminInvoiceHTML(order) {
+      const items = Array.isArray(order.items) ? order.items : [];
+      const subtotal = parseFloat(order.total || 0) - parseFloat(order.tax || 0);
+      const tax = parseFloat(order.tax || 0);
+      const total = parseFloat(order.total || 0);
+      const dateStr = order.created_at ? new Date(order.created_at).toLocaleString() : 'N/A';
+
+      return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice ${order.id} | ALMAS Indian Cuisine</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@700;800&display=swap');
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Inter', sans-serif; background: #fff; color: #1a0800; }
+    .invoice-wrap { max-width: 700px; margin: 0 auto; padding: 40px 30px; }
+    .invoice-header { display:flex; justify-content:space-between; align-items:flex-start; border-bottom: 3px solid #CC5500; padding-bottom: 24px; margin-bottom: 30px; }
+    .brand-name { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; color: #CC5500; line-height:1.1; }
+    .brand-tagline { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 0.15em; margin-top: 4px; }
+    .invoice-meta { text-align: right; }
+    .invoice-label { font-size: 2rem; font-weight: 700; color: #CC5500; font-family: 'Playfair Display', serif; }
+    .invoice-id { font-size: 0.8rem; color: #555; margin-top: 4px; }
+    .invoice-date { font-size: 0.75rem; color: #888; margin-top: 2px; }
+    .section-title { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: #CC5500; font-weight: 700; margin-bottom: 6px; margin-top: 24px; }
+    .customer-box { background: #fdf5ef; border-left: 3px solid #CC5500; padding: 14px 18px; border-radius: 0 8px 8px 0; }
+    .customer-name { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .customer-detail { font-size: 0.8rem; color: #555; margin-bottom: 2px; }
+    .items-table { width: 100%; border-collapse: collapse; margin-top: 24px; }
+    .items-table th { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: #fff; background: #CC5500; padding: 10px 14px; text-align: left; }
+    .items-table td { padding: 10px 14px; font-size: 0.85rem; border-bottom: 1px solid #f0e8e0; vertical-align: top; }
+    .items-table tr:last-child td { border-bottom: none; }
+    .totals-box { margin-top: 20px; display: flex; justify-content: flex-end; }
+    .totals-inner { width: 260px; }
+    .total-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.85rem; border-bottom: 1px solid #f0e8e0; }
+    .total-row.grand { border-top: 2px solid #CC5500; border-bottom: none; margin-top: 8px; padding-top: 10px; font-weight: 700; font-size: 1rem; color: #CC5500; }
+    .payment-box { margin-top: 24px; background: #fdf5ef; border-radius: 8px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
+    .payment-method { font-size: 0.8rem; }
+    .invoice-footer { margin-top: 36px; text-align: center; border-top: 1px solid #f0e8e0; padding-top: 20px; font-size: 0.72rem; color: #888; }
+    .status-pill { display: inline-block; background: #CC5500; color: white; font-size: 0.65rem; padding: 3px 10px; border-radius: 999px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+    @media print { body { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+  </style>
+</head>
+<body>
+<div class="invoice-wrap">
+  <div class="invoice-header">
+    <div>
+      <div class="brand-name">ALMAS</div>
+      <div class="brand-tagline">Indian Cuisine &middot; Toronto</div>
+      <div style="font-size:0.75rem; color:#888; margin-top:8px;">209 Ellesmere Rd, Scarborough, ON M1R 2Y8</div>
+      <div style="font-size:0.75rem; color:#888;">almasindiancuisine@gmail.com</div>
+    </div>
+    <div class="invoice-meta">
+      <div class="invoice-label">INVOICE</div>
+      <div class="invoice-id">${order.id}</div>
+      <div class="invoice-date">${dateStr}</div>
+    </div>
+  </div>
+
+  <div class="section-title">Bill To</div>
+  <div class="customer-box">
+    <div class="customer-name">${order.name || ''}</div>
+    <div class="customer-detail">&#x2709; ${order.email || ''}</div>
+    <div class="customer-detail">&#128222; ${order.phone || ''}</div>
+  </div>
+
+  <div class="section-title">Fulfillment Details</div>
+  <div style="font-size:0.82rem; color:#444; background:#fafafa; border-radius:8px; padding:12px 18px; margin-top:4px;">
+    <strong>Type:</strong> ${order.type || ''} &nbsp;|&nbsp; <strong>Time:</strong> ${order.time || 'ASAP'}
+  </div>
+
+  <table class="items-table">
+    <thead><tr><th style="width:70%"># Item</th><th style="text-align:right">Details</th></tr></thead>
+    <tbody>
+      ${items.map((item, i) => `<tr><td>${i + 1}. ${String(item).replace(/</g,'&lt;').replace(/>/g,'&gt;')}</td><td></td></tr>`).join('')}
+    </tbody>
+  </table>
+
+  <div class="totals-box">
+    <div class="totals-inner">
+      <div class="total-row"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
+      <div class="total-row"><span>Tax (HST 14%)</span><span>$${tax.toFixed(2)}</span></div>
+      <div class="total-row grand"><span>TOTAL</span><span>$${total.toFixed(2)} CAD</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">Payment</div>
+  <div class="payment-box">
+    <div>
+      <div class="payment-method" style="font-weight:600;">${order.payment || 'N/A'}</div>
+      <div style="font-size:0.75rem; color:#888;">Status: <span class="status-pill">${order.status || ''}</span></div>
+    </div>
+    <div style="font-size:0.72rem; color:#888; text-align:right;">Amount Paid<br><strong style="font-size:1rem; color:#CC5500;">$${total.toFixed(2)}</strong></div>
+  </div>
+
+  <div class="invoice-footer">
+    <strong style="color:#CC5500; font-size:0.9rem;">Thank you for dining with ALMAS!</strong><br>
+    &copy; ${new Date().getFullYear()} ALMAS Indian Cuisine. All Rights Reserved.
+  </div>
+</div>
+</body>
+</html>`;
+    }
+
+    window.viewAdminOrderInvoice = function(id) {
+      const order = cachedOrders.find(o => o.id === id);
+      if (!order) { showToast('Order not found.', 'danger'); return; }
+      const html = generateAdminInvoiceHTML(order);
+      const win = window.open('', '_blank', 'width=800,height=900');
+      if (win) { win.document.write(html); win.document.close(); }
+    };
+
+    window.downloadAdminOrderInvoice = function(id) {
+      const order = cachedOrders.find(o => o.id === id);
+      if (!order) { showToast('Order not found.', 'danger'); return; }
+      let html = generateAdminInvoiceHTML(order);
+      // Auto-trigger print on open
+      html = html.replace('</body>', '<script>window.onload=function(){window.print();};<\/script></body>');
+      const win = window.open('', '_blank', 'width=800,height=900');
+      if (win) { win.document.write(html); win.document.close(); }
+    };
+
+    window.editAdminOrder = function(id) {
+      const order = cachedOrders.find(o => o.id === id);
+      if (!order) { showToast('Order not found.', 'danger'); return; }
+
+      // Populate edit modal with order data
+      document.getElementById('edit-order-id').value = order.id;
+      document.getElementById('edit-order-id-display').value = order.id;
+      document.getElementById('edit-order-name').value = order.name || '';
+      document.getElementById('edit-order-email').value = order.email || '';
+      document.getElementById('edit-order-phone').value = order.phone || '';
+      document.getElementById('edit-order-time').value = order.time || '';
+      document.getElementById('edit-order-status').value = order.status || '';
+      document.getElementById('edit-order-items').value = Array.isArray(order.items) ? order.items.join('\n') : order.items;
+
+      openModal('edit-order-modal');
+    };
+
+    document.getElementById('edit-order-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('edit-order-id').value;
+      const status = document.getElementById('edit-order-status').value;
+
+      // Update status
+      const result = await apiFetch(`/api/admin/orders/${id}/status`, {
+        method: 'PUT',
+        body: JSON.stringify({ status })
+      });
+
+      if (result) {
+        showToast(`Order ${id} updated successfully!`);
+        closeModal('edit-order-modal');
+        loadOrders();
+      }
+    });
+
     // =========================================================================
     // MODAL STATE UTILITIES
     // =========================================================================
@@ -2750,5 +2914,66 @@
       // Toggle dropdown values or triggers if needed
     }
   </script>
+
+  <!-- EDIT ORDER MODAL -->
+  <div id="edit-order-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-content glass-card" style="max-width:620px; width:95%;">
+      <div class="modal-header">
+        <h3 class="modal-title">&#9999; Edit Order</h3>
+        <button class="modal-close" onclick="closeModal('edit-order-modal')">&#x2715;</button>
+      </div>
+      <form id="edit-order-form" class="modal-form-grid">
+        <input type="hidden" id="edit-order-id">
+
+        <div class="form-group">
+          <label class="form-label">Order ID</label>
+          <input type="text" id="edit-order-id-display" disabled style="opacity:0.5; cursor:not-allowed;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Customer Name</label>
+          <input type="text" id="edit-order-name" disabled style="opacity:0.6;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="edit-order-email" disabled style="opacity:0.6;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input type="tel" id="edit-order-phone" disabled style="opacity:0.6;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Pickup Time</label>
+          <input type="text" id="edit-order-time" disabled style="opacity:0.6;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="color:var(--primary);">Order Status (Editable)</label>
+          <select id="edit-order-status" style="width:100%; padding: 8px 12px; font-size: 0.85rem; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main);">
+            <option value="Pending Payment (Store Pickup)">Pending Payment (Store Pickup)</option>
+            <option value="Paid Online">Paid Online</option>
+            <option value="Preparing">Preparing</option>
+            <option value="Ready">Ready for Pickup</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <div class="form-group col-span-2">
+          <label class="form-label">Ordered Items (Read-only)</label>
+          <textarea id="edit-order-items" rows="6" disabled style="opacity:0.6; font-size:0.82rem; line-height:1.7;"></textarea>
+          <span style="font-size:0.7rem; color:var(--text-muted);">Items shown for reference only.</span>
+        </div>
+
+        <div class="modal-footer col-span-2">
+          <button type="button" class="btn-cancel" onclick="closeModal('edit-order-modal')">Cancel</button>
+          <button type="submit" class="btn-submit" style="width:auto; margin-top:0;">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </body>
 </html>

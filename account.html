@@ -1452,6 +1452,120 @@
       `;
     }
 
+    function generateInvoice(order) {
+      const items = Array.isArray(order.items) ? order.items : (typeof order.items === 'string' ? JSON.parse(order.items) : []);
+      const subtotal = parseFloat(order.total || 0) - parseFloat(order.tax || 0);
+      const tax = parseFloat(order.tax || 0);
+      const total = parseFloat(order.total || 0);
+      const dateStr = order.created_at ? new Date(order.created_at).toLocaleString() : (order.date || new Date().toLocaleString());
+
+      const invoiceHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice - ${order.id || 'ALMAS Order'}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@700;800&display=swap');
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Inter', sans-serif; background: #fff; color: #1a0800; }
+    .invoice-wrap { max-width: 700px; margin: 0 auto; padding: 40px 30px; }
+    .invoice-header { display:flex; justify-content:space-between; align-items:flex-start; border-bottom: 3px solid #CC5500; padding-bottom: 24px; margin-bottom: 30px; }
+    .brand-name { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; color: #CC5500; line-height:1.1; }
+    .brand-tagline { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 0.15em; margin-top: 4px; }
+    .invoice-meta { text-align: right; }
+    .invoice-label { font-size: 2rem; font-weight: 700; color: #CC5500; font-family: 'Playfair Display', serif; }
+    .invoice-id { font-size: 0.8rem; color: #555; margin-top: 4px; }
+    .invoice-date { font-size: 0.75rem; color: #888; margin-top: 2px; }
+    .section-title { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: #CC5500; font-weight: 700; margin-bottom: 6px; margin-top: 24px; }
+    .customer-box { background: #fdf5ef; border-left: 3px solid #CC5500; padding: 14px 18px; border-radius: 0 8px 8px 0; }
+    .customer-name { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .customer-detail { font-size: 0.8rem; color: #555; margin-bottom: 2px; }
+    .items-table { width: 100%; border-collapse: collapse; margin-top: 24px; }
+    .items-table th { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: #fff; background: #CC5500; padding: 10px 14px; text-align: left; }
+    .items-table td { padding: 10px 14px; font-size: 0.85rem; border-bottom: 1px solid #f0e8e0; vertical-align: top; }
+    .items-table tr:last-child td { border-bottom: none; }
+    .totals-box { margin-top: 20px; display: flex; justify-content: flex-end; }
+    .totals-inner { width: 260px; }
+    .total-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.85rem; border-bottom: 1px solid #f0e8e0; }
+    .total-row.grand { border-top: 2px solid #CC5500; border-bottom: none; margin-top: 8px; padding-top: 10px; font-weight: 700; font-size: 1rem; color: #CC5500; }
+    .payment-box { margin-top: 24px; background: #fdf5ef; border-radius: 8px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
+    .payment-method { font-size: 0.8rem; }
+    .payment-ref { font-size: 0.75rem; color: #888; }
+    .invoice-footer { margin-top: 36px; text-align: center; border-top: 1px solid #f0e8e0; padding-top: 20px; font-size: 0.72rem; color: #888; }
+    .status-pill { display: inline-block; background: #CC5500; color: white; font-size: 0.65rem; padding: 3px 10px; border-radius: 999px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; vertical-align: middle; }
+    @media print { body { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+  </style>
+</head>
+<body>
+<div class="invoice-wrap">
+  <div class="invoice-header">
+    <div>
+      <div class="brand-name">ALMAS</div>
+      <div class="brand-tagline">Indian Cuisine · Toronto</div>
+      <div style="font-size:0.75rem; color:#888; margin-top:8px;">209 Ellesmere Rd, Scarborough, ON M1R 2Y8</div>
+      <div style="font-size:0.75rem; color:#888;">almasindiancuisine@gmail.com</div>
+    </div>
+    <div class="invoice-meta">
+      <div class="invoice-label">INVOICE</div>
+      <div class="invoice-id">${order.id || 'N/A'}</div>
+      <div class="invoice-date">${dateStr}</div>
+    </div>
+  </div>
+
+  <div class="section-title">Bill To</div>
+  <div class="customer-box">
+    <div class="customer-name">${order.name || ''}</div>
+    ${order.email ? `<div class="customer-detail">✉ ${order.email}</div>` : ''}
+    ${order.phone ? `<div class="customer-detail">📞 ${order.phone}</div>` : ''}
+  </div>
+
+  <div class="section-title">Fulfillment Details</div>
+  <div style="font-size:0.82rem; color:#444; background:#fafafa; border-radius:8px; padding:12px 18px; margin-top:4px;">
+    <strong>Type:</strong> ${order.type || ''} &nbsp; | &nbsp; <strong>Pickup Time:</strong> ${order.time || 'ASAP'}
+  </div>
+
+  <table class="items-table">
+    <thead>
+      <tr><th style="width:70%"># Item</th><th style="text-align:right">Details</th></tr>
+    </thead>
+    <tbody>
+      ${items.map((item, i) => `<tr><td>${i + 1}. ${String(item)}</td><td></td></tr>`).join('')}
+    </tbody>
+  </table>
+
+  <div class="totals-box">
+    <div class="totals-inner">
+      <div class="total-row"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
+      <div class="total-row"><span>Tax (HST 14%)</span><span>$${tax.toFixed(2)}</span></div>
+      <div class="total-row grand"><span>TOTAL</span><span>$${total.toFixed(2)} CAD</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">Payment</div>
+  <div class="payment-box">
+    <div>
+      <div class="payment-method" style="font-weight:600;">${order.payment || 'N/A'}</div>
+      <div class="payment-ref">Status: <span class="status-pill">${order.status || ''}</span></div>
+    </div>
+    <div style="font-size:0.72rem; color:#888; text-align:right;">Amount Paid<br><strong style="font-size:1rem; color:#CC5500;">$${total.toFixed(2)}</strong></div>
+  </div>
+
+  <div class="invoice-footer">
+    <strong style="color:#CC5500; font-size:0.9rem;">Thank you for dining with ALMAS!</strong><br>
+    &copy; ${new Date().getFullYear()} ALMAS Indian Cuisine. All Rights Reserved.
+  </div>
+</div>
+<script>window.onload = function(){ window.print(); };<\/script>
+</body>
+</html>`;
+
+      const win = window.open('', '_blank', 'width=800,height=900');
+      if (win) {
+        win.document.write(invoiceHtml);
+        win.document.close();
+      }
+    }
+
     function renderOrderCard(order, idx) {
       const stepIdx = getPrepStatusIndex(order.prepStatus);
       const badgeCls = getStatusBadgeClass(order.status);
@@ -1491,6 +1605,13 @@
           </div>
 
           ${renderOrderTracker(stepIdx)}
+
+          <div style="margin-top:1rem; padding-top:0.75rem; border-top:1px solid rgba(255,255,255,0.06); text-align:right;">
+            <button class="order-invoice-btn" data-idx="${idx}" style="background:linear-gradient(135deg,#CC5500,#a34400); color:#fff; border:none; border-radius:999px; padding:8px 20px; font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s;">
+              <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              Download Invoice
+            </button>
+          </div>
         </div>
       `;
     }
@@ -1528,6 +1649,16 @@
               ${isOpen ? 'Hide Items' : 'View Items'}
             `;
           });
+        });
+
+        // Wire download invoice buttons
+        list.querySelectorAll('.order-invoice-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const idx = parseInt(btn.dataset.idx, 10);
+            generateInvoice(orders[idx]);
+          });
+          btn.addEventListener('mouseenter', () => btn.style.opacity = '0.85');
+          btn.addEventListener('mouseleave', () => btn.style.opacity = '1');
         });
       } catch (err) {
         empty.style.display = 'block';
