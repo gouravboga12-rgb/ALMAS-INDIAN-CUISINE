@@ -8,7 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/assets/order-DHvihSYo.js"></script>
+  <script type="text/javascript" src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+  <script type="module" crossorigin src="/assets/order-CbdKf5iG.js"></script>
   <link rel="modulepreload" crossorigin href="/assets/main-BA1o7NrL.js">
   <link rel="stylesheet" crossorigin href="/assets/main-BkPMw2jZ.css">
 </head>
@@ -263,24 +264,11 @@
               </div>
             </div>
 
-            <!-- Card inputs panel -->
+            <!-- Card inputs panel (Square Web Payments SDK mount) -->
             <div id="takeout-card-form" class="space-y-4 mb-8">
-              <label class="form-label">Card Information</label>
-              <div class="card-input-group">
-                <div class="card-input-row">
-                  <span class="card-icon">💳</span>
-                  <input type="text" id="t-card-num" class="card-input-field" placeholder="Card Number (4000 1234 5678 9010)" maxlength="19">
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0;">
-                  <div class="card-input-row" style="border-right:1px solid rgba(255,255,255,0.06);">
-                    <input type="text" id="t-card-exp" class="card-input-field" placeholder="MM/YY" maxlength="5">
-                  </div>
-                  <div class="card-input-row">
-                    <input type="password" id="t-card-cvv" class="card-input-field" placeholder="CVV" maxlength="4">
-                  </div>
-                </div>
-              </div>
-              <input type="text" id="t-card-name" class="form-input" placeholder="Name on Card">
+              <label class="form-label">Secure Card Information</label>
+              <div id="card-container" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.25rem; border-radius: 0.75rem; min-height: 80px;"></div>
+              <div id="card-errors" style="color: #f87171; font-size: 0.75rem; font-weight: 600; margin-top: 0.25rem;"></div>
             </div>
 
             <div class="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 border-t border-white/10 pt-6">

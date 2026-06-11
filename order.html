@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/style.css">
+  <script type="text/javascript" src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
 </head>
 <body class="bg-background text-text-primary">
 
@@ -261,24 +262,11 @@
               </div>
             </div>
 
-            <!-- Card inputs panel -->
+            <!-- Card inputs panel (Square Web Payments SDK mount) -->
             <div id="takeout-card-form" class="space-y-4 mb-8">
-              <label class="form-label">Card Information</label>
-              <div class="card-input-group">
-                <div class="card-input-row">
-                  <span class="card-icon">💳</span>
-                  <input type="text" id="t-card-num" class="card-input-field" placeholder="Card Number (4000 1234 5678 9010)" maxlength="19">
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0;">
-                  <div class="card-input-row" style="border-right:1px solid rgba(255,255,255,0.06);">
-                    <input type="text" id="t-card-exp" class="card-input-field" placeholder="MM/YY" maxlength="5">
-                  </div>
-                  <div class="card-input-row">
-                    <input type="password" id="t-card-cvv" class="card-input-field" placeholder="CVV" maxlength="4">
-                  </div>
-                </div>
-              </div>
-              <input type="text" id="t-card-name" class="form-input" placeholder="Name on Card">
+              <label class="form-label">Secure Card Information</label>
+              <div id="card-container" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1.25rem; border-radius: 0.75rem; min-height: 80px;"></div>
+              <div id="card-errors" style="color: #f87171; font-size: 0.75rem; font-weight: 600; margin-top: 0.25rem;"></div>
             </div>
 
             <div class="flex flex-col-reverse sm:flex-row justify-between items-center gap-4 border-t border-white/10 pt-6">
@@ -611,6 +599,32 @@
       };
       orders.unshift(newOrder);
       localStorage.setItem('almas_orders', JSON.stringify(orders));
+    }
+
+    let cardPaymentObject = null;
+
+    async function initializeSquarePayments() {
+      try {
+        const configRes = await fetch('/api/payment/config');
+        const config = await configRes.json();
+
+        if (!config.applicationId || !config.locationId) {
+          console.warn("Square payment configuration is incomplete.");
+          return;
+        }
+
+        if (!window.Square) {
+          console.error("Square SDK script was not loaded.");
+          return;
+        }
+
+        const payments = window.Square.payments(config.applicationId, config.locationId);
+        cardPaymentObject = await payments.card();
+        await cardPaymentObject.attach('#card-container');
+        console.log("Square Payment Form successfully attached.");
+      } catch (err) {
+        console.error("Failed to initialize Square Payments:", err);
+      }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -949,10 +963,28 @@
           return;
         }
 
+        let paymentToken = null;
         if (activeTakeoutMethod === 'online') {
-          const card = document.getElementById('t-card-num').value.trim();
-          if (!card) {
-            alert('Please provide your credit card payment details to complete authorization.');
+          if (!cardPaymentObject) {
+            alert('Payment checkout form not fully loaded. Please wait or refresh the page.');
+            return;
+          }
+
+          document.getElementById('card-errors').textContent = '';
+          
+          try {
+            const tokenResult = await cardPaymentObject.tokenize();
+            if (tokenResult.status === 'OK') {
+              paymentToken = tokenResult.token;
+            } else {
+              let errorMsg = tokenResult.errors[0].message;
+              document.getElementById('card-errors').textContent = errorMsg;
+              alert(`Payment Failed: ${errorMsg}`);
+              return;
+            }
+          } catch (tokenizeErr) {
+            console.error('Tokenize error:', tokenizeErr);
+            alert('An unexpected error occurred during card authorization.');
             return;
           }
         }
@@ -989,10 +1021,11 @@
             return `${i.qty}x ${i.name}${descStr}`;
           }),
           status: activeTakeoutMethod === 'online' ? 'Paid Online' : 'Pending Payment (Store Pickup)',
-          payment: activeTakeoutMethod === 'online' ? 'Credit Card Ending 4000' : 'In-Store Cash/Debit',
+          payment: activeTakeoutMethod === 'online' ? 'Credit Card via Square' : 'In-Store Cash/Debit',
           tax: finalTax,
           total: finalTotals.total,
-          promoCode: appliedPromo ? appliedPromo.code : null
+          promoCode: appliedPromo ? appliedPromo.code : null,
+          paymentToken: paymentToken
         };
 
         const token = localStorage.getItem('almas_token');
@@ -1020,7 +1053,14 @@
             await syncLocalOrders();
 
             // Complete takeout!
-            showInvoice({ ...orderData, totals: finalTotals });
+            const finalOrder = resData.order || orderData;
+            showInvoice({
+              ...finalOrder,
+              totals: {
+                tax: finalOrder.tax !== undefined ? parseFloat(finalOrder.tax) : finalTotals.tax,
+                total: finalOrder.total !== undefined ? parseFloat(finalOrder.total) : finalTotals.total
+              }
+            });
             clearCart();
           } else {
             const err = await response.json();
@@ -1241,6 +1281,7 @@
 
       // Initialize defaults on load
       initTakeoutReview();
+      initializeSquarePayments();
 
       // Check query parameter or hash for active tab
       const hashTab = window.location.hash.substring(1);

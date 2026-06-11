@@ -7,6 +7,7 @@ import multer from 'multer';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { OAuth2Client } from 'google-auth-library';
+import { Client as SquareClient, Environment as SquareEnvironment } from 'square';
 import { sendVerificationEmail, sendPasswordResetEmail } from './email.js';
 import {
   initializeDatabase,
@@ -62,6 +63,14 @@ const JWT_SECRET = 'almas_indian_cuisine_super_secret_key_2026';
 
 // Google OAuth Client
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+// Square payment client initialization
+const squareClient = new SquareClient({
+  accessToken: process.env.SQUARE_ACCESS_TOKEN,
+  environment: process.env.SQUARE_ENVIRONMENT === 'production' 
+    ? SquareEnvironment.Production 
+    : SquareEnvironment.Sandbox,
+});
 
 // Middleware
 app.use(cors());
@@ -469,6 +478,33 @@ app.post('/api/user/orders', authenticateUser, async (req, res) => {
     // Auto-update user record's phone number if it isn't set yet
     await updateUser(req.user.id, { phone: orderData.phone });
 
+    // Process payment token through Square API if online payment is requested
+    if (orderData.paymentToken && orderData.status === 'Paid Online') {
+      const amountInCents = Math.round(parseFloat(orderData.total) * 100);
+      try {
+        const response = await squareClient.paymentsApi.createPayment({
+          sourceId: orderData.paymentToken,
+          idempotencyKey: 'key-' + Date.now() + Math.random().toString(36).substring(7),
+          amountMoney: {
+            amount: amountInCents,
+            currency: 'CAD' // Matches the Canadian dollar currency for Almas' physical location
+          },
+          buyerEmailAddress: orderData.email || req.user.email,
+          note: `ALMAS Takeout Order - ${orderData.name}`
+        });
+
+        // Store the official reference from Square payment
+        orderData.payment = `Square Auth - Ref #${response.result.payment.id.substring(0, 8)}`;
+      } catch (payErr) {
+        console.error('Square Payment API error:', payErr);
+        let errorMsg = 'Payment authorization failed.';
+        if (payErr.errors && payErr.errors.length > 0) {
+          errorMsg = payErr.errors[0].detail;
+        }
+        return res.status(400).json({ success: false, error: errorMsg });
+      }
+    }
+
     const order = await createOrder({
       ...orderData,
       user_id: req.user.id
@@ -616,6 +652,14 @@ app.get('/api/admin/customers', authenticateAdmin, async (req, res) => {
 app.get('/api/auth/config', (req, res) => {
   res.json({
     googleClientId: process.env.GOOGLE_CLIENT_ID || ''
+  });
+});
+
+// GET /api/payment/config - Retrieve public payment configuration (Square App ID, Location ID)
+app.get('/api/payment/config', (req, res) => {
+  res.json({
+    applicationId: process.env.SQUARE_APPLICATION_ID || '',
+    locationId: process.env.SQUARE_LOCATION_ID || ''
   });
 });
 
