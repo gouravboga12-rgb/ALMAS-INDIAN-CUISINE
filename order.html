@@ -233,14 +233,14 @@
           <div class="checkout-panel" id="panel-t-3">
             <h3 style="font-family:var(--font-heading); font-size:1.5rem; color:white; font-weight:700; margin-bottom:1.5rem;">Select Payment Method</h3>
             
-            <!-- $50 limit warning -->
+            <!-- $100 limit warning -->
             <div class="payment-threshold-alert" id="takeout-alert">
               <svg style="width:20px; height:20px; flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
               </svg>
               <div>
                 <span class="font-bold">Mandatory Online Payment Required:</span>
-                Your products cost exceeds $50.00. For security and preparation assurance, we require credit card authorization.
+                Your products cost is equal to or exceeds $100.00. For security and preparation assurance, we require credit card authorization.
               </div>
             </div>
 
@@ -770,12 +770,12 @@
         document.getElementById('summary-t-tax').textContent = `$${tax.toFixed(2)}`;
         document.getElementById('summary-t-total').textContent = `$${total.toFixed(2)}`;
 
-        // Force online payment if takeout subtotal (products cost) exceeds $50
+        // Force online payment if takeout subtotal (products cost) is equal to or exceeds $100
         const takeoutAlert = document.getElementById('takeout-alert');
         const methodPickup = document.getElementById('method-t-pickup');
         const cardForm = document.getElementById('takeout-card-form');
 
-        if (subtotal > 50.00) {
+        if (subtotal >= 100.00) {
           takeoutAlert.classList.add('visible');
           methodPickup.classList.add('disabled');
           
@@ -881,7 +881,7 @@
       methodTOnline.addEventListener('click', () => selectTakeoutPayment('online'));
       methodTPickup.addEventListener('click', () => {
         const { subtotal } = getCartTotals();
-        if (subtotal <= 50.00) {
+        if (subtotal < 100.00) {
           selectTakeoutPayment('pickup');
         }
       });
@@ -943,8 +943,8 @@
         const time = document.getElementById('takeout-time').value;
         const { subtotal } = getCartTotals();
 
-        if (subtotal > 50.00 && activeTakeoutMethod !== 'online') {
-          alert('Since your order subtotal exceeds $50.00, online payment is required.');
+        if (subtotal >= 100.00 && activeTakeoutMethod !== 'online') {
+          alert('Since your order subtotal is equal to or exceeds $100.00, online payment is required.');
           selectTakeoutPayment('online');
           return;
         }

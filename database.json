@@ -1609,6 +1609,20 @@
       "created_at": 1780950307812
     },
     {
+      "id": "usr-bogagourav10-demo",
+      "name": "Gourav Boga",
+      "email": "bogagourav10@gmail.com",
+      "password_hash": "$2a$10$wPfZlDbT78NBISZUJVs5Ue76a6.w4ZDob8lOzB5Op3XPJBGSLd98S",
+      "google_id": null,
+      "avatar": null,
+      "provider": "email",
+      "created_at": 1780950307812,
+      "is_verified": 1,
+      "otp_code": null,
+      "otp_expires": null,
+      "phone": null
+    },
+    {
       "id": "usr-1780952416939-54",
       "name": "Test Verify",
       "email": "testverification@gmail.com",
@@ -1673,6 +1687,20 @@
       "is_verified": 0,
       "otp_code": "140627",
       "otp_expires": 1781132973108,
+      "phone": null
+    },
+    {
+      "id": "usr-1781188161173-373",
+      "name": "Test Checkout User",
+      "email": "testcheckout@example.com",
+      "password_hash": "$2a$10$pPt2dO.tO26G/9vRdJDzk.iVmvgd0fDCGys9O.8hAsX8sO1/pBHlG",
+      "google_id": null,
+      "avatar": null,
+      "provider": "email",
+      "created_at": 1781188161176,
+      "is_verified": 0,
+      "otp_code": "780562",
+      "otp_expires": 1781188905728,
       "phone": null
     }
   ],

@@ -142,8 +142,8 @@ function updateCheckoutPromptContent() {
   const textEl = document.getElementById('prompt-text');
   const btnEl = document.getElementById('btn-prompt-checkout');
   if (textEl && btnEl) {
-    if (subtotal > 50.00) {
-      textEl.innerHTML = `Your order subtotal is <strong style="color:#CC5500;">$${subtotal.toFixed(2)}</strong>. Since your order exceeds $50.00, online payment is required. Would you like to proceed to checkout to pay online?`;
+    if (subtotal >= 100.00) {
+      textEl.innerHTML = `Your order subtotal is <strong style="color:#CC5500;">$${subtotal.toFixed(2)}</strong>. Since your order is equal to or exceeds $100.00, online payment is required. Would you like to proceed to checkout to pay online?`;
       btnEl.textContent = "Pay Online";
     } else {
       textEl.textContent = "Would you like to proceed to checkout to enter your delivery address and pay, or continue browsing?";
