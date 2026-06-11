@@ -1255,7 +1255,15 @@
         document.getElementById('inv-time').textContent = orderInfo.time;
 
         // Render dishes list
-        document.getElementById('inv-items-list').innerHTML = orderInfo.items.map(item => `
+        let itemsArray = orderInfo.items || [];
+        if (typeof itemsArray === 'string') {
+          try {
+            itemsArray = JSON.parse(itemsArray);
+          } catch (e) {
+            itemsArray = [itemsArray];
+          }
+        }
+        document.getElementById('inv-items-list').innerHTML = itemsArray.map(item => `
           <div style="font-size:0.85rem; font-weight:600; padding:0.25rem 0; border-bottom:1px solid rgba(0,0,0,0.03); color:#1a1a1a;">
             ${item}
           </div>
