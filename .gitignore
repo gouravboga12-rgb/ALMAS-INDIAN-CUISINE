@@ -27,3 +27,9 @@ dist-ssr
 .env
 .env.*
 !.env.example
+
+# ---- DO NOT OVERWRITE LIVE DATA ----
+# Orders, users, and uploaded images live only on the server.
+# Never commit or pull-overwrite these files.
+database.json
+uploads/
