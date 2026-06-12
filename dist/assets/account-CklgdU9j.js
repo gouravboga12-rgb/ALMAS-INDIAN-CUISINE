@@ -77,7 +77,7 @@ import"./main-BA1o7NrL.js";var e=[`Order Received`,`Kitchen Preparing`,`Ready fo
       <tr><th style="width:70%"># Item</th><th style="text-align:right">Details</th></tr>
     </thead>
     <tbody>
-      ${t.map((e,t)=>`<tr><td>${t+1}. ${String(e)}</td><td></td></tr>`).join(``)}
+      ${t.map((e,t)=>{let n=String(e).split(` - $`),r=n[0],i=n[1]?`$${n[1]}`:``;return`<tr><td>${t+1}. ${r}</td><td style="text-align:right">${i}</td></tr>`}).join(``)}
     </tbody>
   </table>
 

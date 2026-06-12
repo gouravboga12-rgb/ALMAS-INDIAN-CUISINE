@@ -1017,7 +1017,7 @@
             if (i.spice) descParts.push(`Spice: ${i.spice}`);
             if (i.note) descParts.push(`Note: ${i.note}`);
             const descStr = descParts.length > 0 ? ` (${descParts.join(', ')})` : '';
-            return `${i.qty}x ${i.name}${descStr}`;
+            return `${i.qty}x ${i.name}${descStr} - $${(i.price * i.qty).toFixed(2)}`;
           }),
           status: activeTakeoutMethod === 'online' ? 'Paid Online' : 'Pending Payment (Store Pickup)',
           payment: activeTakeoutMethod === 'online' ? 'Credit Card via Square' : 'In-Store Cash/Debit',
@@ -1262,11 +1262,17 @@
             itemsArray = [itemsArray];
           }
         }
-        document.getElementById('inv-items-list').innerHTML = itemsArray.map(item => `
-          <div style="font-size:0.85rem; font-weight:600; padding:0.25rem 0; border-bottom:1px solid rgba(0,0,0,0.03); color:#1a1a1a;">
-            ${item}
-          </div>
-        `).join('');
+        document.getElementById('inv-items-list').innerHTML = itemsArray.map(item => {
+          const parts = String(item).split(' - $');
+          const itemName = parts[0];
+          const itemPrice = parts[1] ? `$${parts[1]}` : '';
+          return `
+            <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:600; padding:0.25rem 0; border-bottom:1px solid rgba(0,0,0,0.03); color:#1a1a1a;">
+              <span>${itemName}</span>
+              <span>${itemPrice}</span>
+            </div>
+          `;
+        }).join('');
 
         // Badge classes
         const badge = document.getElementById('inv-status-badge');

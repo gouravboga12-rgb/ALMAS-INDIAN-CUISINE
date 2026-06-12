@@ -1649,7 +1649,12 @@
       <tr><th style="width:70%"># Item</th><th style="text-align:right">Details</th></tr>
     </thead>
     <tbody>
-      ${items.map((item, i) => `<tr><td>${i + 1}. ${String(item)}</td><td></td></tr>`).join('')}
+      ${items.map((item, i) => {
+        const parts = String(item).split(' - $');
+        const itemName = parts[0];
+        const itemPrice = parts[1] ? `$${parts[1]}` : '';
+        return `<tr><td>${i + 1}. ${itemName}</td><td style="text-align:right">${itemPrice}</td></tr>`;
+      }).join('')}
     </tbody>
   </table>
 
