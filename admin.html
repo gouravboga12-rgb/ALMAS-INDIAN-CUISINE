@@ -608,6 +608,147 @@
     }
   </style>
   <style>
+    /* ─── Dashboard Stats ─── */
+    .dash-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .dash-stat-card {
+      padding: 22px 22px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .dash-stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--card-accent, rgba(212,175,55,0.6));
+      border-radius: 14px 14px 0 0;
+    }
+    .dash-stat-card:hover {
+      background: rgba(255,255,255,0.07);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .dash-stat-icon {
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+    .dash-stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+    }
+    .dash-stat-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .dash-stat-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .dash-section-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin: 0 0 14px;
+    }
+    .dash-recent-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .dash-recent-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      gap: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .dash-recent-row:hover { background: rgba(255,255,255,0.06); }
+    .dash-order-status-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .dash-status-chip {
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    /* Notification Cards */
+    .notif-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 20px 22px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: start;
+      transition: background 0.2s;
+    }
+    .notif-card:hover { background: rgba(255,255,255,0.06); }
+    .notif-card.has-phone { border-left: 3px solid #25D366; }
+    .notif-card.no-phone { border-left: 3px solid rgba(239,68,68,0.5); }
+    .notif-order-id { font-size:0.75rem; color:var(--gold); font-family:monospace; margin-bottom:4px; }
+    .notif-customer { font-size:1rem; font-weight:700; color:#fff; margin-bottom:2px; }
+    .notif-phone { font-size:0.85rem; color:#25D366; font-weight:600; margin-bottom:6px; }
+    .notif-no-phone { font-size:0.8rem; color:var(--danger); font-style:italic; margin-bottom:6px; }
+    .notif-items { font-size:0.78rem; color:var(--text-muted); margin-bottom:8px; line-height:1.5; }
+    .notif-status { display:inline-block; font-size:0.68rem; font-weight:700; padding:3px 10px; border-radius:4px; }
+    .notif-actions { display:flex; flex-direction:column; gap:8px; min-width:200px; }
+    .notif-template-btn {
+      display:flex; align-items:center; gap:8px;
+      padding: 9px 14px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: rgba(37,211,102,0.12);
+      color: #25D366;
+      border: 1px solid rgba(37,211,102,0.25);
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .notif-template-btn:hover { background: rgba(37,211,102,0.25); transform: translateX(2px); }
+    .notif-template-btn:disabled { opacity:0.35; cursor:not-allowed; transform:none; }
+    .notif-custom-area { width:100%; font-size:0.78rem; padding:8px 10px; border-radius:8px; resize:vertical; min-height:60px; background:rgba(0,0,0,0.25); border:1px solid var(--border-color); color:var(--text-main); }
+    .btn-send-custom {
+      background: #25D366; color:#000; font-weight:700; font-size:0.78rem;
+      padding:8px 14px; border-radius:8px; width:100%;
+    }
+    .btn-send-custom:hover { background: #1fba55; }
+
     /* Multi-pricing configurator */
     .multi-price-toggle-row {
       display: flex;
@@ -781,8 +922,10 @@
     <div class="admin-container">
       <!-- NAVIGATION -->
       <nav class="admin-nav">
-        <button class="nav-btn active" data-panel="inquiries-panel">📩 Inquiries</button>
+        <button class="nav-btn active" data-panel="dashboard-panel">🏠 Dashboard</button>
+        <button class="nav-btn" data-panel="inquiries-panel">📩 Inquiries</button>
         <button class="nav-btn" data-panel="orders-panel">🛍️ Takeout Orders</button>
+        <button class="nav-btn" data-panel="notifications-panel">📲 Notifications</button>
         <button class="nav-btn" data-panel="categories-panel">📁 Categories</button>
         <button class="nav-btn" data-panel="products-panel">🍲 Menu Items</button>
         <button class="nav-btn" data-panel="qr-menu-panel">📱 QR Menu Page</button>
@@ -795,8 +938,91 @@
       <!-- PANELS CONTENT -->
       <main class="admin-content">
         
+        <!-- ================= PANEL 0: DASHBOARD ================= -->
+        <section id="dashboard-panel" class="panel active">
+          <div class="panel-header">
+            <h2 class="panel-title">Dashboard Overview</h2>
+            <button class="btn-add" onclick="refreshDashboard()" style="background:rgba(212,175,55,0.15);color:var(--gold);border:1px solid rgba(212,175,55,0.3);">🔄 Refresh</button>
+          </div>
+
+          <!-- Quick Stats Grid -->
+          <div class="dash-stats-grid" id="dash-stats-grid">
+            <div class="dash-stat-card" style="--card-accent: rgba(204,85,0,0.7);" onclick="navToPanel('inquiries-panel')">
+              <div class="dash-stat-icon">📩</div>
+              <div class="dash-stat-value" id="dash-total-inquiries">—</div>
+              <div class="dash-stat-label">Total Inquiries</div>
+              <div class="dash-stat-sub" id="dash-new-inquiries">Loading…</div>
+            </div>
+            <div class="dash-stat-card" style="--card-accent: rgba(212,175,55,0.7);" onclick="navToPanel('orders-panel')">
+              <div class="dash-stat-icon">🛍️</div>
+              <div class="dash-stat-value" id="dash-total-orders">—</div>
+              <div class="dash-stat-label">Total Orders</div>
+              <div class="dash-stat-sub" id="dash-pending-orders">Loading…</div>
+            </div>
+            <div class="dash-stat-card" style="--card-accent: rgba(16,185,129,0.7);" onclick="navToPanel('orders-panel')">
+              <div class="dash-stat-icon">💰</div>
+              <div class="dash-stat-value" id="dash-total-revenue">—</div>
+              <div class="dash-stat-label">Total Revenue</div>
+              <div class="dash-stat-sub" id="dash-revenue-sub">from completed orders</div>
+            </div>
+            <div class="dash-stat-card" style="--card-accent: rgba(59,130,246,0.7);" onclick="navToPanel('customers-panel')">
+              <div class="dash-stat-icon">👥</div>
+              <div class="dash-stat-value" id="dash-total-customers">—</div>
+              <div class="dash-stat-label">Registered Customers</div>
+              <div class="dash-stat-sub">accounts created</div>
+            </div>
+            <div class="dash-stat-card" style="--card-accent: rgba(168,85,247,0.7);" onclick="navToPanel('products-panel')">
+              <div class="dash-stat-icon">🍲</div>
+              <div class="dash-stat-value" id="dash-total-items">—</div>
+              <div class="dash-stat-label">Menu Items</div>
+              <div class="dash-stat-sub" id="dash-items-sub">across categories</div>
+            </div>
+            <div class="dash-stat-card" style="--card-accent: rgba(244,114,182,0.7);" onclick="navToPanel('services-panel')">
+              <div class="dash-stat-icon">🤝</div>
+              <div class="dash-stat-value" id="dash-total-services">—</div>
+              <div class="dash-stat-label">Catering Services</div>
+              <div class="dash-stat-sub">available offerings</div>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:24px;">
+            <!-- Recent Orders -->
+            <div class="glass-card" style="padding:22px;">
+              <p class="dash-section-title">Recent Orders</p>
+              <div class="dash-recent-list" id="dash-recent-orders">
+                <span style="color:var(--text-muted);font-size:0.85rem;">Loading…</span>
+              </div>
+            </div>
+            <!-- Order Status Breakdown -->
+            <div class="glass-card" style="padding:22px;">
+              <p class="dash-section-title">Order Status Breakdown</p>
+              <div class="dash-order-status-bar" id="dash-order-status"></div>
+              <!-- New Inquiries breakdown -->
+              <p class="dash-section-title" style="margin-top:24px;">Recent Inquiries</p>
+              <div class="dash-recent-list" id="dash-recent-inquiries">
+                <span style="color:var(--text-muted);font-size:0.85rem;">Loading…</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="glass-card" style="padding:22px;">
+            <p class="dash-section-title">Quick Navigation</p>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;">
+              <button class="btn-add" onclick="navToPanel('orders-panel')" style="font-size:0.82rem;">🛍️ Takeout Orders</button>
+              <button class="btn-add" onclick="navToPanel('inquiries-panel')" style="font-size:0.82rem;background:rgba(204,85,0,0.15);color:var(--primary);border:1px solid rgba(204,85,0,0.3);">📩 Inquiries</button>
+              <button class="btn-add" onclick="navToPanel('notifications-panel')" style="font-size:0.82rem;background:rgba(37,211,102,0.12);color:#25D366;border:1px solid rgba(37,211,102,0.3);">📲 Notifications</button>
+              <button class="btn-add" onclick="navToPanel('products-panel')" style="font-size:0.82rem;background:rgba(168,85,247,0.1);color:#a855f7;border:1px solid rgba(168,85,247,0.3);">🍲 Menu Items</button>
+              <button class="btn-add" onclick="navToPanel('categories-panel')" style="font-size:0.82rem;background:rgba(59,130,246,0.1);color:#3b82f6;border:1px solid rgba(59,130,246,0.3);">📁 Categories</button>
+              <button class="btn-add" onclick="navToPanel('services-panel')" style="font-size:0.82rem;background:rgba(244,114,182,0.1);color:#f472b6;border:1px solid rgba(244,114,182,0.3);">🤝 Catering</button>
+              <button class="btn-add" onclick="navToPanel('customers-panel')" style="font-size:0.82rem;background:rgba(16,185,129,0.1);color:var(--success);border:1px solid rgba(16,185,129,0.3);">👥 Customers</button>
+              <button class="btn-add" onclick="navToPanel('settings-panel')" style="font-size:0.82rem;background:rgba(255,255,255,0.05);color:var(--text-muted);border:1px solid var(--border-color);">⚙️ Settings</button>
+            </div>
+          </div>
+        </section>
+
         <!-- ================= PANEL 1: INQUIRIES ================= -->
-        <section id="inquiries-panel" class="panel active">
+        <section id="inquiries-panel" class="panel">
           <div class="panel-header">
             <h2 class="panel-title">Inbox Inquiries</h2>
           </div>
@@ -1053,6 +1279,63 @@
                 <!-- Dynamically loaded -->
               </tbody>
             </table>
+          </div>
+        </section>
+
+        <!-- ================= PANEL: NOTIFICATIONS ================= -->
+        <section id="notifications-panel" class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">📲 Order Notifications</h2>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span style="font-size:0.8rem;color:var(--text-muted);">via WhatsApp</span>
+              <button class="btn-add" onclick="loadNotificationsPanel()" style="background:rgba(37,211,102,0.15);color:#25D366;border:1px solid rgba(37,211,102,0.3);font-size:0.82rem;">🔄 Refresh</button>
+            </div>
+          </div>
+
+          <!-- Info Banner -->
+          <div class="glass-card" style="padding:16px 20px;margin-bottom:22px;border-left:3px solid #25D366;display:flex;gap:14px;align-items:flex-start;">
+            <span style="font-size:1.8rem;">💬</span>
+            <div>
+              <div style="font-weight:700;color:#fff;margin-bottom:4px;">WhatsApp Order Communication Center</div>
+              <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.5;">Send instant WhatsApp messages to customers — order ready alerts, delay notices, and collection reminders. Click any template button to open WhatsApp with a pre-filled message. Customer phone numbers are pulled from their order details.</div>
+            </div>
+          </div>
+
+          <!-- Filters + Country Code -->
+          <div class="glass-card" style="padding:16px 20px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="form-label" style="margin:0;white-space:nowrap;">Filter by Status:</span>
+              <select id="notif-status-filter" onchange="renderNotifications()" style="width:auto;min-width:180px;">
+                <option value="all">All Orders</option>
+                <option value="Pending Payment (Store Pickup)">Pending Payment</option>
+                <option value="Paid Online">Paid Online</option>
+                <option value="Preparing">Preparing</option>
+                <option value="Ready">Ready for Pickup</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="form-label" style="margin:0;white-space:nowrap;">Country Code:</span>
+              <select id="notif-country-code" style="width:auto;min-width:120px;">
+                <option value="91">🇮🇳 +91 India</option>
+                <option value="1">🇨🇦 +1 Canada</option>
+                <option value="1-us">🇺🇸 +1 USA</option>
+                <option value="44">🇬🇧 +44 UK</option>
+                <option value="971">🇦🇪 +971 UAE</option>
+                <option value="65">🇸🇬 +65 Singapore</option>
+                <option value="61">🇦🇺 +61 Australia</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+              <span class="form-label" style="margin:0;">Search:</span>
+              <input type="text" id="notif-search" oninput="renderNotifications()" placeholder="Name or order ID..." style="min-width:200px;">
+            </div>
+          </div>
+
+          <!-- Notification Cards Grid -->
+          <div id="notifications-grid" style="display:flex;flex-direction:column;gap:18px;">
+            <div style="text-align:center;padding:40px;color:var(--text-muted);">Loading orders...</div>
           </div>
         </section>
 
@@ -1508,6 +1791,11 @@
               p.classList.remove('active');
             }
           });
+
+          // Lazy-render notifications panel when switched to
+          if (targetPanel === 'notifications-panel' && cachedOrders) {
+            renderNotifications();
+          }
         });
       });
 
@@ -1542,6 +1830,7 @@
         loadSettings(),
         loadCustomersList()
       ]);
+      renderDashboard();
     }
 
     // =========================================================================
@@ -2847,6 +3136,7 @@
               <button class="btn-action edit" onclick="viewAdminOrderInvoice('${order.id}')" title="View Invoice" style="flex:1; font-size:0.7rem;">🧾 View</button>
               <button class="btn-action edit" onclick="downloadAdminOrderInvoice('${order.id}')" title="Download Invoice" style="flex:1; font-size:0.7rem;">⬇ Invoice</button>
             </div>
+            <button class="btn-action delete" onclick="deleteAdminOrder('${order.id}')" title="Delete Order" style="width:100%; font-size:0.7rem; margin-top:2px;">🗑️ Delete Order</button>
           </div>
         `;
 
@@ -2876,6 +3166,260 @@
         showToast(`Order ${id} status updated to ${newStatus}`);
         loadOrders();
       }
+    };
+
+    window.deleteAdminOrder = async function(id) {
+      if (!confirm(`Are you sure you want to permanently delete order ${id}? This cannot be undone.`)) return;
+      const result = await apiFetch(`/api/admin/orders/${id}`, { method: 'DELETE' });
+      if (result && result.success) {
+        showToast(`Order ${id} deleted successfully.`);
+        cachedOrders = cachedOrders.filter(o => o.id !== id);
+        renderOrders();
+        renderDashboard();
+      }
+    };
+
+    function navToPanel(panelId) {
+      const btn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.dataset.panel === panelId);
+      if (btn) btn.click();
+    }
+    window.navToPanel = navToPanel;
+
+    function renderDashboard() {
+      // --- Stats ---
+      const totalInquiries = cachedInquiries ? cachedInquiries.length : 0;
+      const newInquiries = cachedInquiries ? cachedInquiries.filter(i => i.status === 'new').length : 0;
+      const totalOrders = cachedOrders ? cachedOrders.length : 0;
+      const pendingOrders = cachedOrders ? cachedOrders.filter(o => o.status && o.status.includes('Pending')).length : 0;
+      const completedOrders = cachedOrders ? cachedOrders.filter(o => o.status === 'Completed') : [];
+      const revenue = completedOrders.reduce((sum, o) => sum + parseFloat(o.total || 0), 0);
+
+      const el = id => document.getElementById(id);
+      if (el('dash-total-inquiries')) el('dash-total-inquiries').textContent = totalInquiries;
+      if (el('dash-new-inquiries')) el('dash-new-inquiries').textContent = `${newInquiries} new unread`;
+      if (el('dash-total-orders')) el('dash-total-orders').textContent = totalOrders;
+      if (el('dash-pending-orders')) el('dash-pending-orders').textContent = `${pendingOrders} pending payment`;
+      if (el('dash-total-revenue')) el('dash-total-revenue').textContent = '$' + revenue.toFixed(0);
+      if (el('dash-total-customers')) {
+        const custEl = document.getElementById('customers-table-body');
+        const rows = custEl ? custEl.querySelectorAll('tr').length : 0;
+        el('dash-total-customers').textContent = rows || '—';
+      }
+      if (el('dash-total-items')) {
+        const gridItems = document.getElementById('products-grid');
+        const itemCount = gridItems ? gridItems.querySelectorAll('.item-card').length : 0;
+        el('dash-total-items').textContent = itemCount || '—';
+      }
+      if (el('dash-total-services')) {
+        const sg = document.getElementById('services-grid');
+        el('dash-total-services').textContent = sg ? sg.querySelectorAll('.item-card').length : '—';
+      }
+
+      // --- Recent Orders (last 5) ---
+      const recentEl = el('dash-recent-orders');
+      if (recentEl && cachedOrders) {
+        const recent = [...cachedOrders].slice(0, 5);
+        if (recent.length === 0) {
+          recentEl.innerHTML = `<span style="color:var(--text-muted);font-size:0.85rem;">No orders yet.</span>`;
+        } else {
+          recentEl.innerHTML = recent.map(o => {
+            const statusColor = o.status === 'Completed' ? '#10B981' : o.status === 'Cancelled' ? '#EF4444' : o.status && o.status.includes('Pending') ? 'var(--primary)' : 'var(--gold)';
+            return `<div class="dash-recent-row" onclick="navToPanel('orders-panel')">
+              <div>
+                <div style="font-size:0.82rem;font-weight:700;color:#fff;">${escapeHTML(o.id)}</div>
+                <div style="font-size:0.72rem;color:var(--text-muted);">${escapeHTML(o.name)} &bull; ${o.created_at ? new Date(o.created_at).toLocaleDateString() : ''}</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:0.85rem;font-weight:700;color:var(--gold);">$${parseFloat(o.total||0).toFixed(2)}</div>
+                <div style="font-size:0.68rem;font-weight:600;color:${statusColor};">${escapeHTML(o.status)}</div>
+              </div>
+            </div>`;
+          }).join('');
+        }
+      }
+
+      // --- Order Status Breakdown ---
+      const statusEl = el('dash-order-status');
+      if (statusEl && cachedOrders) {
+        const statuses = [
+          { key: 'Pending Payment (Store Pickup)', label: 'Pending', color: 'rgba(204,85,0,0.15)', text: 'var(--primary)' },
+          { key: 'Paid Online', label: 'Paid Online', color: 'rgba(212,175,55,0.15)', text: 'var(--gold)' },
+          { key: 'Preparing', label: 'Preparing', color: 'rgba(59,130,246,0.15)', text: '#3b82f6' },
+          { key: 'Ready', label: 'Ready', color: 'rgba(16,185,129,0.15)', text: 'var(--success)' },
+          { key: 'Completed', label: 'Completed', color: 'rgba(16,185,129,0.25)', text: '#10B981' },
+          { key: 'Cancelled', label: 'Cancelled', color: 'rgba(239,68,68,0.15)', text: 'var(--danger)' },
+        ];
+        statusEl.innerHTML = statuses.map(s => {
+          const count = cachedOrders.filter(o => o.status === s.key).length;
+          return `<div class="dash-status-chip" style="background:${s.color};color:${s.text};">
+            <span style="font-size:1rem;font-weight:800;">${count}</span> ${s.label}
+          </div>`;
+        }).join('');
+      }
+
+      // --- Recent Inquiries (last 3) ---
+      const inqEl = el('dash-recent-inquiries');
+      if (inqEl && cachedInquiries) {
+        const recent = cachedInquiries.slice(0, 3);
+        if (recent.length === 0) {
+          inqEl.innerHTML = `<span style="color:var(--text-muted);font-size:0.85rem;">No inquiries yet.</span>`;
+        } else {
+          inqEl.innerHTML = recent.map(i => {
+            const isNew = i.status === 'new';
+            return `<div class="dash-recent-row" onclick="navToPanel('inquiries-panel')">
+              <div>
+                <div style="font-size:0.82rem;font-weight:700;color:#fff;">${escapeHTML(i.name || 'Unknown')}</div>
+                <div style="font-size:0.72rem;color:var(--text-muted);">${escapeHTML(i.type || '')} &bull; ${i.created_at ? new Date(i.created_at).toLocaleDateString() : ''}</div>
+              </div>
+              <span style="font-size:0.68rem;font-weight:700;padding:3px 8px;border-radius:4px;background:${isNew ? 'rgba(204,85,0,0.15)' : 'rgba(16,185,129,0.15)'};color:${isNew ? 'var(--primary)' : 'var(--success)'}">${isNew ? 'NEW' : 'READ'}</span>
+            </div>`;
+          }).join('');
+        }
+      }
+    }
+    window.refreshDashboard = async function() {
+      await loadDashboardData();
+      renderDashboard();
+      showToast('Dashboard refreshed!');
+    };
+
+    // =========================================================================
+    // NOTIFICATIONS PANEL (WhatsApp Order Notifications)
+    // =========================================================================
+    window.loadNotificationsPanel = async function() {
+      const data = await apiFetch('/api/admin/orders');
+      if (!data) return;
+      cachedOrders = data;
+      renderNotifications();
+    };
+
+    function getWhatsAppPhone(rawPhone, countryCodeVal) {
+      if (!rawPhone) return null;
+      // Strip all non-digits
+      let digits = rawPhone.replace(/\D/g, '');
+      const cc = countryCodeVal === '1-us' ? '1' : countryCodeVal;
+      // If already starts with country code, use as-is; otherwise prefix
+      if (digits.startsWith(cc) && digits.length > cc.length + 5) {
+        return digits;
+      }
+      return cc + digits;
+    }
+
+    window.openWhatsAppTemplate = function(phone, name, orderId, template) {
+      const countryCodeVal = document.getElementById('notif-country-code')?.value || '91';
+      const waPhone = getWhatsAppPhone(phone, countryCodeVal);
+      if (!waPhone) { showToast('No phone number available for this customer.'); return; }
+
+      const templates = {
+        ready: `Hi ${name}! 🎉 Great news — your order *#${orderId}* at ALMAS Indian Cuisine is *ready for pickup*! Please come collect it at your earliest convenience. We look forward to seeing you! 🍛`,
+        delay: `Hi ${name}, we sincerely apologize for the inconvenience. Your order *#${orderId}* is running a little behind schedule. We're working hard on it and will have it ready as soon as possible. Thank you for your patience! 🙏`,
+        reminder: `Hi ${name}! 👋 This is a friendly reminder from ALMAS Indian Cuisine that your order *#${orderId}* is still waiting for you. Please collect it at your earliest convenience. Thank you!`,
+        cancelled: `Hi ${name}, we regret to inform you that your order *#${orderId}* has been cancelled. We apologize for any inconvenience caused. Please contact us directly for assistance. — ALMAS Indian Cuisine 🙏`,
+        confirm: `Hi ${name}! ✅ Your order *#${orderId}* has been received at ALMAS Indian Cuisine and is being processed. We'll notify you once it's ready for pickup. Thank you for choosing us! 🍛`
+      };
+
+      const msg = templates[template] || templates.ready;
+      const url = `https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    };
+
+    window.openWhatsAppCustom = function(phone, cardId) {
+      const countryCodeVal = document.getElementById('notif-country-code')?.value || '91';
+      const waPhone = getWhatsAppPhone(phone, countryCodeVal);
+      if (!waPhone) { showToast('No phone number available for this customer.'); return; }
+      const textarea = document.getElementById(`custom-msg-${cardId}`);
+      const msg = textarea ? textarea.value.trim() : '';
+      if (!msg) { showToast('Please type a custom message first.'); return; }
+      const url = `https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    };
+
+    window.renderNotifications = function() {
+      const grid = document.getElementById('notifications-grid');
+      if (!grid || !cachedOrders) return;
+
+      const statusFilter = document.getElementById('notif-status-filter')?.value || 'all';
+      const search = (document.getElementById('notif-search')?.value || '').toLowerCase().trim();
+
+      let filtered = cachedOrders;
+      if (statusFilter !== 'all') filtered = filtered.filter(o => o.status === statusFilter);
+      if (search) filtered = filtered.filter(o =>
+        (o.name || '').toLowerCase().includes(search) ||
+        (o.id || '').toLowerCase().includes(search) ||
+        (o.phone || '').includes(search)
+      );
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--text-muted);">
+          <div style="font-size:2.5rem;margin-bottom:12px;">📭</div>
+          <div style="font-size:1rem;font-weight:600;">No orders match the selected filter</div>
+          <div style="font-size:0.82rem;margin-top:6px;">Try changing the status filter or search term</div>
+        </div>`;
+        return;
+      }
+
+      const statusColors = {
+        'Pending Payment (Store Pickup)': { bg: 'rgba(204,85,0,0.15)', color: 'var(--primary)' },
+        'Paid Online': { bg: 'rgba(212,175,55,0.15)', color: 'var(--gold)' },
+        'Preparing': { bg: 'rgba(59,130,246,0.15)', color: '#3b82f6' },
+        'Ready': { bg: 'rgba(16,185,129,0.15)', color: 'var(--success)' },
+        'Completed': { bg: 'rgba(16,185,129,0.25)', color: '#10B981' },
+        'Cancelled': { bg: 'rgba(239,68,68,0.15)', color: 'var(--danger)' },
+      };
+
+      grid.innerHTML = filtered.map((order, idx) => {
+        const hasPhone = !!(order.phone);
+        const sc = statusColors[order.status] || { bg: 'rgba(255,255,255,0.08)', color: 'var(--text-muted)' };
+        const dateStr = order.created_at ? new Date(order.created_at).toLocaleDateString() : '';
+        const itemsText = Array.isArray(order.items)
+          ? order.items.map(i => typeof i === 'object' ? `${i.quantity || 1}x ${i.name}` : i).join(', ')
+          : (order.items || '').split(' / ').join(', ');
+        const shortItems = itemsText.length > 80 ? itemsText.substring(0, 80) + '…' : itemsText;
+
+        const disabledAttr = hasPhone ? '' : 'disabled title="No phone number on record"';
+        const phoneDisplay = hasPhone
+          ? `<div class="notif-phone">📱 ${escapeHTML(order.phone)}</div>`
+          : `<div class="notif-no-phone">⚠️ No phone number on record</div>`;
+
+        return `<div class="notif-card ${hasPhone ? 'has-phone' : 'no-phone'}">
+          <div>
+            <div class="notif-order-id">#${escapeHTML(order.id)} &bull; ${escapeHTML(order.type || '')} &bull; ${dateStr}</div>
+            <div class="notif-customer">${escapeHTML(order.name)}</div>
+            ${phoneDisplay}
+            <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:6px;">✉️ ${escapeHTML(order.email || '')} &nbsp;|&nbsp; 🕒 ${escapeHTML(order.time || '')}</div>
+            <div class="notif-items">🍽️ ${escapeHTML(shortItems)}</div>
+            <div style="margin-top:6px;">
+              <span class="notif-status" style="background:${sc.bg};color:${sc.color};">${escapeHTML(order.status)}</span>
+              <span style="font-size:0.75rem;color:var(--text-muted);margin-left:8px;">Total: <strong style="color:var(--gold);">$${parseFloat(order.total||0).toFixed(2)}</strong></span>
+            </div>
+          </div>
+          <div class="notif-actions">
+            <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:2px;font-weight:700;">Quick Send via WhatsApp</div>
+            <button class="notif-template-btn" ${disabledAttr} onclick="openWhatsAppTemplate('${escapeHTML(order.phone||'')}','${escapeHTML(order.name)}','${escapeHTML(order.id)}','confirm')">
+              ✅ Order Confirmed
+            </button>
+            <button class="notif-template-btn" ${disabledAttr} onclick="openWhatsAppTemplate('${escapeHTML(order.phone||'')}','${escapeHTML(order.name)}','${escapeHTML(order.id)}','ready')">
+              🎉 Order Ready for Pickup
+            </button>
+            <button class="notif-template-btn" ${disabledAttr} onclick="openWhatsAppTemplate('${escapeHTML(order.phone||'')}','${escapeHTML(order.name)}','${escapeHTML(order.id)}','delay')">
+              ⏰ Order is Delayed
+            </button>
+            <button class="notif-template-btn" ${disabledAttr} onclick="openWhatsAppTemplate('${escapeHTML(order.phone||'')}','${escapeHTML(order.name)}','${escapeHTML(order.id)}','reminder')">
+              👋 Collection Reminder
+            </button>
+            <button class="notif-template-btn" ${disabledAttr} onclick="openWhatsAppTemplate('${escapeHTML(order.phone||'')}','${escapeHTML(order.name)}','${escapeHTML(order.id)}','cancelled')">
+              ❌ Order Cancelled
+            </button>
+            <div style="border-top:1px solid var(--border-color);padding-top:8px;margin-top:2px;">
+              <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:6px;font-weight:700;">Custom Message</div>
+              <textarea class="notif-custom-area" id="custom-msg-${idx}" placeholder="Type a custom message here..."></textarea>
+              <button class="btn-send-custom" ${disabledAttr} onclick="openWhatsAppCustom('${escapeHTML(order.phone||'')}','${idx}')">
+                💬 Send Custom via WhatsApp
+              </button>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
     };
 
     function generateAdminInvoiceHTML(order) {

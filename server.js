@@ -49,6 +49,7 @@ import {
   getOrdersByUserId,
   getAllOrders,
   updateOrderStatus,
+  deleteOrder,
   createReview,
   getReviewsByProductId,
   getReviewById,
@@ -514,6 +515,15 @@ app.post('/api/user/orders', authenticateUser, async (req, res) => {
       user_id: req.user.id
     });
 
+    // Auto-save phone to user profile if not already stored
+    if (orderData.phone && req.user && !req.user.phone) {
+      try {
+        await updateUser(req.user.id, { phone: orderData.phone });
+      } catch (phoneErr) {
+        console.warn('Could not save phone to user profile:', phoneErr.message);
+      }
+    }
+
     res.status(201).json({ success: true, order });
   } catch (err) {
     console.error('Create order error:', err);
@@ -717,8 +727,20 @@ app.put('/api/admin/orders/:id/status', authenticateAdmin, async (req, res) => {
   }
 });
 
-
-
+// DELETE /api/admin/orders/:id - Delete order permanently (Admin Only)
+app.delete('/api/admin/orders/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const ok = await deleteOrder(id);
+    if (!ok) {
+      return res.status(404).json({ success: false, error: 'Order not found.' });
+    }
+    res.json({ success: true, message: 'Order deleted.' });
+  } catch (err) {
+    console.error('Delete order error:', err);
+    res.status(500).json({ success: false, error: 'Server error deleting order.' });
+  }
+});
 
 // GET /api/auth/config - Retrieve public authentication config
 app.get('/api/auth/config', (req, res) => {

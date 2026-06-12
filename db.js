@@ -1219,6 +1219,20 @@ export async function updateOrderStatus(id, status) {
   }
 }
 
+export async function deleteOrder(id) {
+  if (pool) {
+    const [result] = await pool.query("DELETE FROM orders WHERE id = ?", [id]);
+    return result.affectedRows > 0;
+  } else {
+    const db = readJSONDB();
+    if (!db.orders) return false;
+    const before = db.orders.length;
+    db.orders = db.orders.filter(o => o.id !== id);
+    writeJSONDB(db);
+    return db.orders.length < before;
+  }
+}
+
 // ─── REVIEWS CRUD
 export async function createReview(review) {
   const newReview = {
