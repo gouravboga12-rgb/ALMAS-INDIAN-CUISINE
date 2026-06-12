@@ -54,7 +54,8 @@ import {
   getReviewById,
   updateReview,
   deleteReview,
-  getCustomersList
+  getCustomersList,
+  deleteCustomer
 } from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -671,6 +672,18 @@ app.get('/api/admin/customers', authenticateAdmin, async (req, res) => {
   } catch (err) {
     console.error('Fetch customers error:', err);
     res.status(500).json({ success: false, error: 'Server error fetching customers.' });
+  }
+});
+
+// DELETE /api/admin/customers/:id - Delete a customer (Admin Only)
+app.delete('/api/admin/customers/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await deleteCustomer(id);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Delete customer error:', err);
+    res.status(500).json({ success: false, error: 'Server error deleting customer.' });
   }
 });
 

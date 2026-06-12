@@ -466,52 +466,60 @@ async function initMySQL() {
 
 async function seedMySQLIfNeeded() {
   try {
+    // 1. Seed categories & products
     const [cats] = await pool.query("SELECT COUNT(*) as count FROM categories");
     if (cats[0].count === 0) {
-      console.log("[DB] MySQL tables are empty. Seeding initial data...");
+      console.log("[DB] MySQL categories are empty. Seeding initial products & categories...");
       const { products, categories } = await loadSeedProducts();
-
-      // Seed categories
       for (const cat of categories) {
         await pool.query(
           "INSERT INTO categories (id, name, icon, order_num) VALUES (?, ?, ?, ?)",
           [cat.id, cat.name, cat.icon, cat.order]
         );
       }
-
-      // Seed products
       for (const p of products) {
         await pool.query(
           "INSERT INTO products (id, name, price, image, category, diet, badge, dietColor, \`desc\`, spiceDefault) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
           [p.id, p.name, p.price, p.image, p.category, p.diet, p.badge || '', p.dietColor || '', p.desc || '', p.spiceDefault || 'Mild']
         );
       }
+    }
 
-      // Seed settings
+    // 2. Seed settings
+    const [settingsCount] = await pool.query("SELECT COUNT(*) as count FROM settings");
+    if (settingsCount[0].count === 0) {
+      console.log("[DB] MySQL settings are empty. Seeding settings...");
       await pool.query(
         "INSERT INTO settings (id, val) VALUES (?, ?)",
         ['global', JSON.stringify(defaultSettings)]
       );
+    }
 
-      // Seed services
+    // 3. Seed services
+    const [servicesCount] = await pool.query("SELECT COUNT(*) as count FROM services");
+    if (servicesCount[0].count === 0) {
+      console.log("[DB] MySQL services are empty. Seeding services...");
       for (const s of defaultServices) {
         await pool.query(
           "INSERT INTO services (id, badge, title, description, image, link, linkText, order_num) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
           [s.id, s.badge, s.title, s.description, s.image, s.link, s.linkText, s.order]
         );
       }
+    }
 
-      // Seed packages
+    // 4. Seed packages
+    const [packagesCount] = await pool.query("SELECT COUNT(*) as count FROM packages");
+    if (packagesCount[0].count === 0) {
+      console.log("[DB] MySQL packages are empty. Seeding packages...");
       for (const pkg of defaultPackages) {
         await pool.query(
           "INSERT INTO packages (id, name, badge, badgeBg, price, description) VALUES (?, ?, ?, ?, ?, ?)",
           [pkg.id, pkg.name, pkg.badge, pkg.badgeBg, pkg.price, pkg.description]
         );
       }
-
-      console.log("[DB] MySQL initialization and seeding complete!");
     }
 
+    // 5. Seed QR categories & products
     const [qrCats] = await pool.query("SELECT COUNT(*) as count FROM qr_categories");
     if (qrCats[0].count === 0) {
       console.log("[DB] MySQL qr_categories is empty. Seeding QR menu data...");
@@ -1331,5 +1339,17 @@ export async function getCustomersList() {
         orders_count: userOrders.length
       };
     }).sort((a, b) => b.created_at - a.created_at);
+  }
+}
+
+export async function deleteCustomer(id) {
+  if (pool) {
+    await pool.query("DELETE FROM users WHERE id=?", [id]);
+  } else {
+    const db = readJSONDB();
+    if (db.users) {
+      db.users = db.users.filter(u => u.id !== id);
+      writeJSONDB(db);
+    }
   }
 }
