@@ -196,7 +196,8 @@ async function migrate() {
         payment VARCHAR(100) NOT NULL,
         tax DECIMAL(10,2) NOT NULL,
         total DECIMAL(10,2) NOT NULL,
-        created_at BIGINT NOT NULL
+        created_at BIGINT NOT NULL,
+        dismissed_notification TINYINT(1) NOT NULL DEFAULT 0
       )
     `);
 
@@ -225,6 +226,9 @@ async function migrate() {
     } catch (e) {}
     try {
       await connection.query("ALTER TABLE users ADD COLUMN phone VARCHAR(50) NULL");
+    } catch (e) {}
+    try {
+      await connection.query("ALTER TABLE orders ADD COLUMN dismissed_notification TINYINT(1) NOT NULL DEFAULT 0");
     } catch (e) {}
     
     console.log("[MIGRATION] Schema initialization complete.");
@@ -456,8 +460,8 @@ async function migrate() {
         continue;
       }
       await connection.query(
-        `INSERT INTO orders (id, user_id, name, email, phone, type, address, time, items, status, payment, tax, total, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO orders (id, user_id, name, email, phone, type, address, time, items, status, payment, tax, total, created_at, dismissed_notification)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           o.id,
           o.user_id,
@@ -472,7 +476,8 @@ async function migrate() {
           o.payment,
           parseFloat(o.tax || 0),
           parseFloat(o.total || 0),
-          o.created_at || Date.now()
+          o.created_at || Date.now(),
+          o.dismissed_notification || 0
         ]
       );
       ordersMigrated++;

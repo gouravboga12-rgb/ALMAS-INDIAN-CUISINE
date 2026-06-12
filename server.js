@@ -56,7 +56,8 @@ import {
   updateReview,
   deleteReview,
   getCustomersList,
-  deleteCustomer
+  deleteCustomer,
+  dismissOrderNotification
 } from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -161,7 +162,7 @@ app.post('/api/auth/login', async (req, res) => {
 
 // POST /api/user/auth/register - Email/Password Registration (with OTP Email Verification)
 app.post('/api/user/auth/register', async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, phone } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({ success: false, error: 'Name, email, and password are required.' });
   }
@@ -177,7 +178,7 @@ app.post('/api/user/auth/register', async (req, res) => {
         return res.status(400).json({ success: false, error: 'Email address is already registered.' });
       }
       // Reuse existing unverified account
-      user = await updateUser(existing.id, { name, password_hash, provider: 'email' });
+      user = await updateUser(existing.id, { name, password_hash, provider: 'email', phone });
     } else {
       // Create new unverified account
       user = await createUser({
@@ -185,7 +186,8 @@ app.post('/api/user/auth/register', async (req, res) => {
         email,
         password_hash,
         provider: 'email',
-        is_verified: 0
+        is_verified: 0,
+        phone
       });
     }
 
@@ -739,6 +741,21 @@ app.delete('/api/admin/orders/:id', authenticateAdmin, async (req, res) => {
   } catch (err) {
     console.error('Delete order error:', err);
     res.status(500).json({ success: false, error: 'Server error deleting order.' });
+  }
+});
+
+// POST /api/admin/orders/:id/dismiss-notification - Dismiss notification (Admin Only)
+app.post('/api/admin/orders/:id/dismiss-notification', authenticateAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const ok = await dismissOrderNotification(id);
+    if (!ok) {
+      return res.status(404).json({ success: false, error: 'Order not found.' });
+    }
+    res.json({ success: true, message: 'Notification dismissed.' });
+  } catch (err) {
+    console.error('Dismiss order notification error:', err);
+    res.status(500).json({ success: false, error: 'Server error dismissing notification.' });
   }
 });
 

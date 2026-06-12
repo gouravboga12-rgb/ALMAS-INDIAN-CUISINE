@@ -2072,11 +2072,12 @@
         clearAuthAlert();
         const name = document.getElementById('signup-name').value.trim();
         const email = document.getElementById('signup-email').value.trim();
+        const phone = document.getElementById('signup-phone').value.trim();
         const pass = document.getElementById('signup-password').value.trim();
         if (!name || !email || !pass) { showAuthAlert('Required fields missing.'); return; }
 
         try {
-          const data = await apiPost('/api/user/auth/register', { name, email, password: pass });
+          const data = await apiPost('/api/user/auth/register', { name, email, phone, password: pass });
           if (data.requiresVerification) {
             showOtpPanel(data.email, data.message);
           } else {

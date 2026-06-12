@@ -422,7 +422,8 @@ async function initMySQL() {
         payment VARCHAR(100) NOT NULL,
         tax DECIMAL(10,2) NOT NULL,
         total DECIMAL(10,2) NOT NULL,
-        created_at BIGINT NOT NULL
+        created_at BIGINT NOT NULL,
+        dismissed_notification TINYINT(1) NOT NULL DEFAULT 0
       )
     `);
 
@@ -451,6 +452,9 @@ async function initMySQL() {
     } catch (e) { /* already exists */ }
     try {
       await conn.query("ALTER TABLE users ADD COLUMN phone VARCHAR(50) NULL");
+    } catch (e) { /* already exists */ }
+    try {
+      await conn.query("ALTER TABLE orders ADD COLUMN dismissed_notification TINYINT(1) NOT NULL DEFAULT 0");
     } catch (e) { /* already exists */ }
 
     conn.release();
@@ -1159,13 +1163,14 @@ export async function createOrder(order) {
     payment: order.payment,
     tax: parseFloat(order.tax || 0),
     total: parseFloat(order.total || 0),
-    created_at: order.created_at || Date.now()
+    created_at: order.created_at || Date.now(),
+    dismissed_notification: order.dismissed_notification || 0
   };
 
   if (pool) {
     await pool.query(
-      "INSERT INTO orders (id, user_id, name, email, phone, type, address, time, items, status, payment, tax, total, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [newOrder.id, newOrder.user_id, newOrder.name, newOrder.email, newOrder.phone, newOrder.type, newOrder.address, newOrder.time, newOrder.items, newOrder.status, newOrder.payment, newOrder.tax, newOrder.total, newOrder.created_at]
+      "INSERT INTO orders (id, user_id, name, email, phone, type, address, time, items, status, payment, tax, total, created_at, dismissed_notification) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [newOrder.id, newOrder.user_id, newOrder.name, newOrder.email, newOrder.phone, newOrder.type, newOrder.address, newOrder.time, newOrder.items, newOrder.status, newOrder.payment, newOrder.tax, newOrder.total, newOrder.created_at, newOrder.dismissed_notification]
     );
   } else {
     const db = readJSONDB();
@@ -1230,6 +1235,23 @@ export async function deleteOrder(id) {
     db.orders = db.orders.filter(o => o.id !== id);
     writeJSONDB(db);
     return db.orders.length < before;
+  }
+}
+
+export async function dismissOrderNotification(id) {
+  if (pool) {
+    const [result] = await pool.query("UPDATE orders SET dismissed_notification = 1 WHERE id = ?", [id]);
+    return result.affectedRows > 0;
+  } else {
+    const db = readJSONDB();
+    if (!db.orders) return false;
+    const idx = db.orders.findIndex(o => o.id === id);
+    if (idx !== -1) {
+      db.orders[idx].dismissed_notification = 1;
+      writeJSONDB(db);
+      return true;
+    }
+    return false;
   }
 }
 

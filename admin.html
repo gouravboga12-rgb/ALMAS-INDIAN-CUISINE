@@ -715,6 +715,29 @@
       gap: 18px;
       align-items: start;
       transition: background 0.2s;
+      position: relative;
+    }
+    .notif-delete-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      z-index: 10;
+    }
+    .notif-delete-btn:hover {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--danger);
     }
     .notif-card:hover { background: rgba(255,255,255,0.06); }
     .notif-card.has-phone { border-left: 3px solid #25D366; }
@@ -3334,6 +3357,22 @@
       window.open(url, '_blank');
     };
 
+    window.deleteNotificationClick = async function(id) {
+      if (!confirm('Are you sure you want to delete this notification from this view? This will NOT delete the actual order or customer profile.')) return;
+      const result = await apiFetch(`/api/admin/orders/${id}/dismiss-notification`, { method: 'POST' });
+      if (result) {
+        showToast('Notification deleted from notifications panel.');
+        if (cachedOrders) {
+          const idx = cachedOrders.findIndex(o => o.id === id);
+          if (idx !== -1) {
+            cachedOrders[idx].dismissed_notification = 1;
+          }
+        }
+        renderNotifications();
+        renderDashboard();
+      }
+    };
+
     window.renderNotifications = function() {
       const grid = document.getElementById('notifications-grid');
       if (!grid || !cachedOrders) return;
@@ -3341,7 +3380,8 @@
       const statusFilter = document.getElementById('notif-status-filter')?.value || 'all';
       const search = (document.getElementById('notif-search')?.value || '').toLowerCase().trim();
 
-      let filtered = cachedOrders;
+      // Only show notifications that haven't been dismissed
+      let filtered = cachedOrders.filter(o => o.dismissed_notification !== 1);
       if (statusFilter !== 'all') filtered = filtered.filter(o => o.status === statusFilter);
       if (search) filtered = filtered.filter(o =>
         (o.name || '').toLowerCase().includes(search) ||
@@ -3382,6 +3422,7 @@
           : `<div class="notif-no-phone">⚠️ No phone number on record</div>`;
 
         return `<div class="notif-card ${hasPhone ? 'has-phone' : 'no-phone'}">
+          <button class="notif-delete-btn" onclick="deleteNotificationClick('${escapeHTML(order.id)}')" title="Delete Notification from View">✕</button>
           <div>
             <div class="notif-order-id">#${escapeHTML(order.id)} &bull; ${escapeHTML(order.type || '')} &bull; ${dateStr}</div>
             <div class="notif-customer">${escapeHTML(order.name)}</div>
