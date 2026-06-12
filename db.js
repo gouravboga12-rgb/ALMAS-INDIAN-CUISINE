@@ -1344,12 +1344,23 @@ export async function getCustomersList() {
 
 export async function deleteCustomer(id) {
   if (pool) {
-    await pool.query("DELETE FROM users WHERE id=?", [id]);
+    const conn = await pool.getConnection();
+    try {
+      await conn.query("SET FOREIGN_KEY_CHECKS = 0");
+      await conn.query("DELETE FROM reviews WHERE user_id = ?", [id]);
+      await conn.query("DELETE FROM users WHERE id = ?", [id]);
+    } finally {
+      await conn.query("SET FOREIGN_KEY_CHECKS = 1");
+      conn.release();
+    }
   } else {
     const db = readJSONDB();
     if (db.users) {
       db.users = db.users.filter(u => u.id !== id);
-      writeJSONDB(db);
     }
+    if (db.reviews) {
+      db.reviews = db.reviews.filter(r => r.user_id !== id);
+    }
+    writeJSONDB(db);
   }
 }

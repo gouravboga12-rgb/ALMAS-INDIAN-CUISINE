@@ -2901,7 +2901,11 @@
     .payment-method { font-size: 0.8rem; }
     .invoice-footer { margin-top: 36px; text-align: center; border-top: 1px solid #f0e8e0; padding-top: 20px; font-size: 0.72rem; color: #888; }
     .status-pill { display: inline-block; background: #CC5500; color: white; font-size: 0.65rem; padding: 3px 10px; border-radius: 999px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
-    @media print { body { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+    @media print { 
+      body { print-color-adjust: exact; -webkit-print-color-adjust: exact; } 
+      #tax-percent { border: none !important; background: transparent !important; appearance: textfield !important; -moz-appearance: textfield !important; text-align: left !important; padding: 0 !important; width: 30px !important; }
+      input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    }
   </style>
 </head>
 <body>
@@ -2946,8 +2950,11 @@
   <div class="totals-box">
     <div class="totals-inner">
       <div class="total-row"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
-      <div class="total-row"><span>Tax (HST 14%)</span><span>$${tax.toFixed(2)}</span></div>
-      <div class="total-row grand"><span>TOTAL</span><span>$${total.toFixed(2)} CAD</span></div>
+      <div class="total-row" style="align-items: center;">
+        <span>Tax (<input type="number" id="tax-percent" value="${subtotal > 0 ? ((tax / subtotal) * 100).toFixed(1).replace(/\.0$/, '') : '14'}" min="0" max="100" step="0.1" style="width: 45px; padding: 2px 4px; border: 1px solid #f0e8e0; border-radius: 4px; font-family: inherit; font-size: inherit; text-align: center;" oninput="recalculateInvoiceTotals()">%)</span>
+        <span id="invoice-tax-display">$${tax.toFixed(2)}</span>
+      </div>
+      <div class="total-row grand"><span>TOTAL</span><span id="invoice-total-display">$${total.toFixed(2)} CAD</span></div>
     </div>
   </div>
 
@@ -2957,7 +2964,7 @@
       <div class="payment-method" style="font-weight:600;">${order.payment || 'N/A'}</div>
       <div style="font-size:0.75rem; color:#888;">Status: <span class="status-pill">${order.status || ''}</span></div>
     </div>
-    <div style="font-size:0.72rem; color:#888; text-align:right;">Amount Paid<br><strong style="font-size:1rem; color:#CC5500;">$${total.toFixed(2)}</strong></div>
+    <div style="font-size:0.72rem; color:#888; text-align:right;">Amount Paid<br><strong id="amount-paid-val" style="font-size:1rem; color:#CC5500;">$${total.toFixed(2)}</strong></div>
   </div>
 
   <div class="invoice-footer">
@@ -2965,6 +2972,25 @@
     &copy; ${new Date().getFullYear()} ALMAS Indian Cuisine. All Rights Reserved.
   </div>
 </div>
+<script>
+  function recalculateInvoiceTotals() {
+    const subtotal = ${subtotal};
+    const percentInput = document.getElementById('tax-percent');
+    let pct = parseFloat(percentInput.value);
+    if (isNaN(pct) || pct < 0) pct = 0;
+    
+    const tax = subtotal * (pct / 100);
+    const total = subtotal + tax;
+    
+    document.getElementById('invoice-tax-display').textContent = '$' + tax.toFixed(2);
+    document.getElementById('invoice-total-display').textContent = '$' + total.toFixed(2) + ' CAD';
+    
+    const amountPaidVal = document.getElementById('amount-paid-val');
+    if (amountPaidVal) {
+      amountPaidVal.textContent = '$' + total.toFixed(2);
+    }
+  }
+</script>
 </body>
 </html>`;
     }
