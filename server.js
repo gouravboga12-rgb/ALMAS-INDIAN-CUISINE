@@ -9,7 +9,7 @@ import bcrypt from 'bcryptjs';
 import { OAuth2Client } from 'google-auth-library';
 import pkg from 'square';
 const { SquareClient, SquareEnvironment } = pkg;
-import { sendVerificationEmail, sendPasswordResetEmail } from './email.js';
+import { sendVerificationEmail, sendPasswordResetEmail, sendInvoiceEmail } from './email.js';
 import {
   initializeDatabase,
   getMenu,
@@ -523,6 +523,17 @@ app.post('/api/user/orders', authenticateUser, async (req, res) => {
         await updateUser(req.user.id, { phone: orderData.phone });
       } catch (phoneErr) {
         console.warn('Could not save phone to user profile:', phoneErr.message);
+      }
+    }
+
+    // Send email invoice receipt if order total is above $100
+    const orderTotal = parseFloat(order.total || 0);
+    if (orderTotal > 100) {
+      const customerEmail = order.email || req.user.email;
+      if (customerEmail) {
+        sendInvoiceEmail(customerEmail, order.name, order).catch(mailErr => {
+          console.error('[SMTP] Failed to send purchase invoice email:', mailErr.message);
+        });
       }
     }
 
