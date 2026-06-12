@@ -1,4 +1,4 @@
-import"./main-BA1o7NrL.js";var e=[`Order Received`,`Kitchen Preparing`,`Ready for Pickup`];function t(e){if(!e)return`U`;let t=e.trim().split(/\s+/);return t.length===1?t[0].charAt(0).toUpperCase():(t[0].charAt(0)+t[t.length-1].charAt(0)).toUpperCase()}function n(t){let n=e.indexOf(t);return n===-1?0:n}function r(e){let t=(e||``).toLowerCase();return t.includes(`paid`)||t.includes(`authorized`)?`paid`:t.includes(`pending`)?`pending`:`authorized`}function i(t){return`
+import"./main-BA1o7NrL.js";var e=[`Order Received`,`Kitchen Preparing`,`Ready for Pickup`];function t(e){if(!e)return`U`;let t=e.trim().split(/\s+/);return t.length===1?t[0].charAt(0).toUpperCase():(t[0].charAt(0)+t[t.length-1].charAt(0)).toUpperCase()}function n(e){let t=(e||``).toLowerCase().trim();return t.includes(`preparing`)?1:t.includes(`ready`)?2:t.includes(`completed`)?3:t.includes(`cancelled`)?-1:0}function r(e){let t=(e||``).toLowerCase();return t.includes(`paid`)||t.includes(`authorized`)?`paid`:t.includes(`pending`)?`pending`:`authorized`}function i(t){return`
         <div class="order-status-track">
           ${e.map((e,n)=>{let r=``;return n<t?r=`done`:n===t&&(r=`active`),`
               <div class="track-step ${r}">
@@ -105,7 +105,7 @@ import"./main-BA1o7NrL.js";var e=[`Order Received`,`Kitchen Preparing`,`Ready fo
 </div>
 <script>window.onload = function(){ window.print(); };<\/script>
 </body>
-</html>`,s=window.open(``,`_blank`,`width=800,height=900`);s&&(s.document.write(o),s.document.close())}function o(e,t){let a=n(e.prepStatus),o=r(e.status),s=Array.isArray(e.items)?e.items.join(` · `):e.items,c=Array.isArray(e.items)?e.items.map(e=>`<div class="order-item-line">${e}</div>`).join(``):`<div class="order-item-line">${e.items}</div>`;return`
+</html>`,s=window.open(``,`_blank`,`width=800,height=900`);s&&(s.document.write(o),s.document.close())}function o(e,t){let a=n(e.status),o=r(e.status),s=Array.isArray(e.items)?e.items.join(` · `):e.items,c=Array.isArray(e.items)?e.items.map(e=>`<div class="order-item-line">${e}</div>`).join(``):`<div class="order-item-line">${e.items}</div>`;return`
         <div class="order-card" id="order-card-${t}">
           <div class="order-card-header">
             <div>

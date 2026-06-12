@@ -1539,8 +1539,12 @@
     }
 
     function getPrepStatusIndex(status) {
-      const idx = PREP_STEPS.indexOf(status);
-      return idx === -1 ? 0 : idx;
+      const s = (status || '').toLowerCase().trim();
+      if (s.includes('preparing')) return 1;
+      if (s.includes('ready')) return 2;
+      if (s.includes('completed')) return 3;
+      if (s.includes('cancelled')) return -1;
+      return 0; // default to 'Order Received'
     }
 
     function getStatusBadgeClass(status) {
@@ -1683,7 +1687,7 @@
     }
 
     function renderOrderCard(order, idx) {
-      const stepIdx = getPrepStatusIndex(order.prepStatus);
+      const stepIdx = getPrepStatusIndex(order.status);
       const badgeCls = getStatusBadgeClass(order.status);
       const itemsText = Array.isArray(order.items) ? order.items.join(' · ') : order.items;
       const expandedItems = Array.isArray(order.items)
