@@ -1357,11 +1357,14 @@
         const cleanNameLower = cleanName.toLowerCase().trim();
         const foundProd = (cachedMenu.products || []).find(p => p.name.toLowerCase().trim() === cleanNameLower);
         if (foundProd && foundProd.price !== undefined) {
-          const totalItemPrice = (parseFloat(foundProd.price) * qty).toFixed(2);
-          return {
-            name: fullName,
-            price: `$${totalItemPrice}`
-          };
+          const unitPrice = parseFloat(String(foundProd.price).replace(/[^0-9.]/g, ''));
+          if (!isNaN(unitPrice)) {
+            const totalItemPrice = (unitPrice * qty).toFixed(2);
+            return {
+              name: itemStr,
+              price: `$${totalItemPrice}`
+            };
+          }
         }
       }
 

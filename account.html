@@ -1553,10 +1553,10 @@
         }
 
         const unitPrice = productsPriceMap[cleanName.toLowerCase().trim()];
-        if (unitPrice !== undefined) {
+        if (unitPrice !== undefined && !isNaN(unitPrice)) {
           const totalItemPrice = (unitPrice * qty).toFixed(2);
           return {
-            name: fullName,
+            name: itemStr,
             price: `$${totalItemPrice}`
           };
         }
@@ -1794,7 +1794,7 @@
             const menuData = await menuRes.json();
             if (menuData && menuData.products) {
               menuData.products.forEach(p => {
-                productsPriceMap[p.name.toLowerCase().trim()] = parseFloat(p.price);
+                productsPriceMap[p.name.toLowerCase().trim()] = parseFloat(String(p.price).replace(/[^0-9.]/g, ''));
               });
             }
           }
