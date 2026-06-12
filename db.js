@@ -259,7 +259,10 @@ async function initJSONDB() {
 async function initMySQL() {
   const host = process.env.DB_HOST || process.env.MYSQL_HOST;
   const user = process.env.DB_USER || process.env.MYSQL_USER;
-  const password = process.env.DB_PASSWORD || process.env.MYSQL_PASSWORD;
+  let password = process.env.DB_PASSWORD || process.env.MYSQL_PASSWORD;
+  if (password && typeof password === 'string') {
+    password = password.replace(/\\\$/g, '$');
+  }
   const database = process.env.DB_NAME || process.env.MYSQL_DATABASE;
   const port = parseInt(process.env.DB_PORT || process.env.MYSQL_PORT || '3306');
 
