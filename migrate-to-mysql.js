@@ -55,6 +55,179 @@ async function migrate() {
       port
     });
     console.log("[MIGRATION] Connected successfully to MySQL!");
+    
+    // Schema Initialization
+    console.log("[MIGRATION] Initializing tables if they do not exist...");
+    
+    // 1. Categories table
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS categories (
+        id VARCHAR(255) PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        icon VARCHAR(255) NOT NULL,
+        order_num INT NOT NULL DEFAULT 0
+      )
+    `);
+
+    // 2. Products table
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS products (
+        id VARCHAR(255) PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        price VARCHAR(255) NOT NULL,
+        image VARCHAR(255) NOT NULL,
+        category VARCHAR(255) NOT NULL,
+        diet VARCHAR(255) NOT NULL,
+        badge VARCHAR(255) NOT NULL,
+        dietColor VARCHAR(255) NOT NULL,
+        \`desc\` TEXT NOT NULL,
+        spiceDefault VARCHAR(255) NOT NULL
+      )
+    `);
+
+    // QR Categories table
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS qr_categories (
+        id VARCHAR(255) PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        icon VARCHAR(255) NOT NULL,
+        order_num INT NOT NULL DEFAULT 0
+      )
+    `);
+
+    // QR Products table
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS qr_products (
+        id VARCHAR(255) PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        price VARCHAR(255) NOT NULL,
+        image VARCHAR(255) NOT NULL,
+        category VARCHAR(255) NOT NULL,
+        diet VARCHAR(255) NOT NULL,
+        badge VARCHAR(255) NOT NULL,
+        dietColor VARCHAR(255) NOT NULL,
+        \`desc\` TEXT NOT NULL,
+        spiceDefault VARCHAR(255) NOT NULL
+      )
+    `);
+
+    // 3. Settings table
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS settings (
+        id VARCHAR(255) PRIMARY KEY,
+        val TEXT NOT NULL
+      )
+    `);
+
+    // 4. Services table
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS services (
+        id VARCHAR(255) PRIMARY KEY,
+        badge VARCHAR(255) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
+        image VARCHAR(255) NOT NULL,
+        link VARCHAR(255) NOT NULL,
+        linkText VARCHAR(255) NOT NULL,
+        order_num INT NOT NULL DEFAULT 0
+      )
+    `);
+
+    // 5. Packages table
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS packages (
+        id VARCHAR(255) PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        badge VARCHAR(255) NOT NULL,
+        badgeBg VARCHAR(255) NOT NULL,
+        price DECIMAL(10,2) NOT NULL,
+        description TEXT NOT NULL
+      )
+    `);
+
+    // 6. Inquiries table
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS inquiries (
+        id VARCHAR(255) PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        phone VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        message TEXT NOT NULL,
+        type VARCHAR(255) NOT NULL,
+        selectedPackage VARCHAR(255),
+        guestCount INT,
+        timestamp BIGINT NOT NULL,
+        dateString VARCHAR(255) NOT NULL,
+        status VARCHAR(255) NOT NULL DEFAULT 'new'
+      )
+    `);
+
+    // 7. Users table
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id VARCHAR(255) PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL UNIQUE,
+        password_hash VARCHAR(255),
+        google_id VARCHAR(255),
+        avatar VARCHAR(255),
+        provider VARCHAR(50) NOT NULL DEFAULT 'email',
+        created_at BIGINT NOT NULL,
+        is_verified TINYINT(1) NOT NULL DEFAULT 0,
+        otp_code VARCHAR(255) NULL,
+        otp_expires BIGINT NULL,
+        phone VARCHAR(50) NULL
+      )
+    `);
+
+    // 8. Orders table
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS orders (
+        id VARCHAR(50) PRIMARY KEY,
+        user_id VARCHAR(255) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(50) NOT NULL,
+        type VARCHAR(100) NOT NULL,
+        address VARCHAR(255) NOT NULL,
+        time VARCHAR(100) NOT NULL,
+        items TEXT NOT NULL,
+        status VARCHAR(100) NOT NULL,
+        payment VARCHAR(100) NOT NULL,
+        tax DECIMAL(10,2) NOT NULL,
+        total DECIMAL(10,2) NOT NULL,
+        created_at BIGINT NOT NULL
+      )
+    `);
+
+    // 9. Reviews table
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS reviews (
+        id VARCHAR(50) PRIMARY KEY,
+        product_id VARCHAR(255) NOT NULL,
+        user_id VARCHAR(255) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        rating INT NOT NULL,
+        comment TEXT NOT NULL,
+        created_at BIGINT NOT NULL
+      )
+    `);
+
+    // Run safe migrations for users fields
+    try {
+      await connection.query("ALTER TABLE users ADD COLUMN is_verified TINYINT(1) NOT NULL DEFAULT 0");
+    } catch (e) {}
+    try {
+      await connection.query("ALTER TABLE users ADD COLUMN otp_code VARCHAR(255) NULL");
+    } catch (e) {}
+    try {
+      await connection.query("ALTER TABLE users ADD COLUMN otp_expires BIGINT NULL");
+    } catch (e) {}
+    try {
+      await connection.query("ALTER TABLE users ADD COLUMN phone VARCHAR(50) NULL");
+    } catch (e) {}
+    
+    console.log("[MIGRATION] Schema initialization complete.");
   } catch (err) {
     console.error("[MIGRATION] MySQL connection failed:", err.message);
     process.exit(1);
