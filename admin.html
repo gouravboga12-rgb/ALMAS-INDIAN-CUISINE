@@ -1447,6 +1447,8 @@
           btn.classList.add('active');
 
           const targetPanel = btn.dataset.panel;
+          localStorage.setItem('admin_active_panel', targetPanel);
+
           panels.forEach(p => {
             if (p.id === targetPanel) {
               p.classList.add('active');
@@ -1456,6 +1458,24 @@
           });
         });
       });
+
+      // Restore active tab from localStorage if it exists
+      const savedPanel = localStorage.getItem('admin_active_panel');
+      if (savedPanel) {
+        const matchingBtn = Array.from(navButtons).find(btn => btn.dataset.panel === savedPanel);
+        if (matchingBtn) {
+          // Temporarily bypass animations if any, or trigger click
+          navButtons.forEach(b => b.classList.remove('active'));
+          matchingBtn.classList.add('active');
+          panels.forEach(p => {
+            if (p.id === savedPanel) {
+              p.classList.add('active');
+            } else {
+              p.classList.remove('active');
+            }
+          });
+        }
+      }
     }
 
     // Fetch and Populate all Dashboard components
