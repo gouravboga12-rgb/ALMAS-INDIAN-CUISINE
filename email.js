@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
+import PDFDocument from 'pdfkit';
 
-export async function sendEmail({ to, subject, html }) {
+export async function sendEmail({ to, subject, html, attachments = [] }) {
   const host = process.env.SMTP_HOST;
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASSWORD;
@@ -27,7 +28,8 @@ export async function sendEmail({ to, subject, html }) {
     from,
     to,
     subject,
-    html
+    html,
+    attachments
   });
 }
 
@@ -113,6 +115,179 @@ function getItemNameAndPrice(itemStr) {
     name: itemStr,
     price: ''
   };
+}
+
+export function generateInvoicePdfBuffer(order) {
+  return new Promise((resolve, reject) => {
+    try {
+      const doc = new PDFDocument({ margin: 40 });
+      const chunks = [];
+
+      doc.on('data', chunk => chunks.push(chunk));
+      doc.on('end', () => resolve(Buffer.concat(chunks)));
+      doc.on('error', err => reject(err));
+
+      const total = parseFloat(order.total || 0);
+      const tax = parseFloat(order.tax || 0);
+      const subtotal = total - tax;
+      const taxRate = subtotal > 0 ? Math.round((tax / subtotal) * 100) : 14;
+      const dateStr = order.created_at ? new Date(order.created_at).toLocaleString() : new Date().toLocaleString();
+
+      // 1. BRAND HEADER
+      doc.fillColor('#CC5500')
+         .font('Helvetica-Bold')
+         .fontSize(26)
+         .text('ALMAS', { align: 'center' });
+      
+      doc.fillColor('#D4AF37')
+         .font('Helvetica')
+         .fontSize(9)
+         .text('INDIAN CUISINE', { align: 'center', letterSpacing: 2 });
+      
+      doc.moveDown(1);
+      
+      // 2. INVOICE META
+      doc.fillColor('#1a0800')
+         .font('Helvetica-Bold')
+         .fontSize(16)
+         .text('INVOICE', { align: 'left' });
+      
+      doc.font('Helvetica')
+         .fontSize(9)
+         .fillColor('#555555')
+         .text(`Order ID: #${order.id}`)
+         .text(`Date: ${dateStr}`);
+      
+      doc.moveDown(1);
+      
+      // Draw horizontal line
+      doc.strokeColor('#CC5500')
+         .lineWidth(2)
+         .moveTo(40, doc.y)
+         .lineTo(570, doc.y)
+         .stroke();
+      
+      doc.moveDown(1);
+
+      // 3. CUSTOMER & FULFILLMENT BOX
+      const startY = doc.y;
+      doc.rect(40, startY, 530, 80)
+         .fill('#fdf5ef');
+      
+      doc.fillColor('#CC5500')
+         .font('Helvetica-Bold')
+         .fontSize(10)
+         .text('FULFILLMENT DETAILS', 55, startY + 10);
+      
+      doc.fillColor('#1a0800')
+         .font('Helvetica')
+         .fontSize(9)
+         .text(`Name: ${order.name}`, 55, startY + 24)
+         .text(`Phone: ${order.phone}`, 55, startY + 36)
+         .text(`Fulfillment: ${order.type}`, 55, startY + 48)
+         .text(`Pickup Time: ${order.time || 'ASAP'}`, 55, startY + 60);
+      
+      doc.y = startY + 95;
+
+      // 4. ITEMS TABLE HEADER
+      const tableHeaderY = doc.y;
+      doc.font('Helvetica-Bold')
+         .fontSize(9)
+         .fillColor('#555555');
+      
+      doc.text('Item Description', 40, tableHeaderY, { width: 380 });
+      doc.text('Price', 480, tableHeaderY, { width: 90, align: 'right' });
+
+      doc.y = tableHeaderY + 14;
+      
+      doc.strokeColor('#e0e0e0')
+         .lineWidth(1)
+         .moveTo(40, doc.y)
+         .lineTo(570, doc.y)
+         .stroke();
+      
+      doc.y += 6;
+
+      // 5. LOOP ITEMS
+      const items = Array.isArray(order.items) ? order.items : (typeof order.items === 'string' ? JSON.parse(order.items) : []);
+      doc.font('Helvetica')
+         .fontSize(9)
+         .fillColor('#202124');
+
+      items.forEach((item, idx) => {
+        const detail = getItemNameAndPrice(item);
+        const rowY = doc.y;
+        
+        doc.text(`${idx + 1}. ${detail.name}`, 40, rowY, { width: 380 });
+        doc.text(detail.price || '', 480, rowY, { width: 90, align: 'right' });
+        
+        doc.y = rowY + 16;
+        doc.strokeColor('#f0e8e0')
+           .lineWidth(0.5)
+           .moveTo(40, doc.y)
+           .lineTo(570, doc.y)
+           .stroke();
+        doc.y += 6;
+      });
+
+      doc.y += 6;
+
+      // 6. TOTALS TABLE (right aligned)
+      const totalY = doc.y;
+      doc.font('Helvetica')
+         .fontSize(9)
+         .fillColor('#555555');
+      
+      doc.text('Subtotal:', 350, totalY);
+      doc.text(`$${subtotal.toFixed(2)}`, 480, totalY, { width: 90, align: 'right' });
+      
+      doc.text(`Tax (HST ${taxRate}%):`, 350, totalY + 14);
+      doc.text(`$${tax.toFixed(2)}`, 480, totalY + 14, { width: 90, align: 'right' });
+      
+      doc.strokeColor('#CC5500')
+         .lineWidth(1.5)
+         .moveTo(350, totalY + 28)
+         .lineTo(570, totalY + 28)
+         .stroke();
+      
+      doc.font('Helvetica-Bold')
+         .fontSize(10)
+         .fillColor('#CC5500');
+      
+      doc.text('Total Paid:', 350, totalY + 34);
+      doc.text(`$${total.toFixed(2)} CAD`, 480, totalY + 34, { width: 90, align: 'right' });
+
+      doc.y = totalY + 55;
+
+      // 7. PAYMENT INFO
+      const payY = doc.y;
+      doc.rect(40, payY, 530, 40)
+         .fill('#fafafa');
+      
+      doc.font('Helvetica')
+         .fontSize(8)
+         .fillColor('#555555')
+         .text(`Payment Method: ${order.payment}`, 55, payY + 10)
+         .text(`Status: ${order.status}`, 55, payY + 22);
+      
+      doc.y = payY + 55;
+
+      // 8. FOOTER
+      doc.fillColor('#CC5500')
+         .font('Helvetica-Bold')
+         .fontSize(9)
+         .text('Thank you for dining with ALMAS!', { align: 'center' });
+      
+      doc.fillColor('#888888')
+         .font('Helvetica')
+         .fontSize(7.5)
+         .text('209 Ellesmere Rd, Unit 6, Scarborough, ON, M1R 4E2 | almasindiancuisine@gmail.com', { align: 'center' });
+
+      doc.end();
+    } catch (err) {
+      reject(err);
+    }
+  });
 }
 
 export async function sendInvoiceEmail(email, name, order) {
@@ -229,5 +404,22 @@ export async function sendInvoiceEmail(email, name, order) {
   `;
 
   console.log(`[SMTP Invoice Email] Sending to: ${email} | Order ID: ${order.id} | Total: $${total}`);
-  return sendEmail({ to: email, subject, html });
+
+  let pdfBuffer = null;
+  try {
+    pdfBuffer = await generateInvoicePdfBuffer(order);
+  } catch (pdfErr) {
+    console.error('[PDF] Failed to generate invoice PDF:', pdfErr.message);
+  }
+
+  const attachments = [];
+  if (pdfBuffer) {
+    attachments.push({
+      filename: `Invoice-${order.id}.pdf`,
+      content: pdfBuffer,
+      contentType: 'application/pdf'
+    });
+  }
+
+  return sendEmail({ to: email, subject, html, attachments });
 }
