@@ -1531,6 +1531,43 @@
 
     const PREP_STEPS = ['Order Received', 'Kitchen Preparing', 'Ready for Pickup'];
 
+    const productsPriceMap = {};
+
+    function getItemNameAndPrice(itemStr) {
+      const parts = String(itemStr).split(' - $');
+      if (parts.length > 1) {
+        return {
+          name: parts[0],
+          price: `$${parts[1]}`
+        };
+      }
+
+      const match = String(itemStr).match(/^(\d+)x\s+(.+)$/);
+      if (match) {
+        const qty = parseInt(match[1], 10);
+        let fullName = match[2];
+        let cleanName = fullName;
+        const optIndex = fullName.lastIndexOf(' (');
+        if (optIndex !== -1) {
+          cleanName = fullName.substring(0, optIndex).trim();
+        }
+
+        const unitPrice = productsPriceMap[cleanName.toLowerCase().trim()];
+        if (unitPrice !== undefined) {
+          const totalItemPrice = (unitPrice * qty).toFixed(2);
+          return {
+            name: fullName,
+            price: `$${totalItemPrice}`
+          };
+        }
+      }
+
+      return {
+        name: itemStr,
+        price: ''
+      };
+    }
+
     function getInitials(name) {
       if (!name) return 'U';
       const parts = name.trim().split(/\s+/);
@@ -1650,10 +1687,8 @@
     </thead>
     <tbody>
       ${items.map((item, i) => {
-        const parts = String(item).split(' - $');
-        const itemName = parts[0];
-        const itemPrice = parts[1] ? `$${parts[1]}` : '';
-        return `<tr><td>${i + 1}. ${itemName}</td><td style="text-align:right">${itemPrice}</td></tr>`;
+        const itemDetail = getItemNameAndPrice(item);
+        return `<tr><td>${i + 1}. ${itemDetail.name}</td><td style="text-align:right">${itemDetail.price}</td></tr>`;
       }).join('')}
     </tbody>
   </table>
@@ -1694,10 +1729,13 @@
     function renderOrderCard(order, idx) {
       const stepIdx = getPrepStatusIndex(order.status);
       const badgeCls = getStatusBadgeClass(order.status);
-      const itemsText = Array.isArray(order.items) ? order.items.join(' · ') : order.items;
-      const expandedItems = Array.isArray(order.items)
-        ? order.items.map(i => `<div class="order-item-line">${i}</div>`).join('')
-        : `<div class="order-item-line">${order.items}</div>`;
+      const rawItems = Array.isArray(order.items) ? order.items : [order.items];
+      const parsedItems = rawItems.map(item => {
+        const detail = getItemNameAndPrice(item);
+        return detail.price ? `${detail.name} (${detail.price})` : detail.name;
+      });
+      const itemsText = parsedItems.join(' · ');
+      const expandedItems = parsedItems.map(i => `<div class="order-item-line">${i}</div>`).join('');
 
       return `
         <div class="order-card" id="order-card-${idx}">
@@ -1749,6 +1787,21 @@
       const totalCount = document.getElementById('total-order-count');
 
       try {
+        // Fetch menu to populate price map for legacy orders
+        try {
+          const menuRes = await fetch('/api/menu');
+          if (menuRes.ok) {
+            const menuData = await menuRes.json();
+            if (menuData && menuData.products) {
+              menuData.products.forEach(p => {
+                productsPriceMap[p.name.toLowerCase().trim()] = parseFloat(p.price);
+              });
+            }
+          }
+        } catch (menuErr) {
+          console.error('Failed to load menu catalog for price mapping:', menuErr);
+        }
+
         const orders = await apiGet('/api/user/orders', token);
         badge.textContent = `${orders.length} order${orders.length !== 1 ? 's' : ''}`;
         totalCount.textContent = orders.length;
