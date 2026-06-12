@@ -1,4 +1,4 @@
-import"./main-BA1o7NrL.js";var e=[`Order Received`,`Kitchen Preparing`,`Ready for Pickup`],t={};function n(e){let n=String(e).split(` - $`);if(n.length>1)return{name:n[0],price:`$${n[1]}`};let r=String(e).match(/^(\d+)x\s+(.+)$/);if(r){let n=parseInt(r[1],10),i=r[2],a=i,o=i.lastIndexOf(` (`);o!==-1&&(a=i.substring(0,o).trim());let s=t[a.toLowerCase().trim()];if(s!==void 0&&!isNaN(s))return{name:e,price:`$${(s*n).toFixed(2)}`}}return{name:e,price:``}}function r(e){if(!e)return`U`;let t=e.trim().split(/\s+/);return t.length===1?t[0].charAt(0).toUpperCase():(t[0].charAt(0)+t[t.length-1].charAt(0)).toUpperCase()}function i(e){let t=(e||``).toLowerCase().trim();return t.includes(`preparing`)?1:t.includes(`ready`)?2:t.includes(`completed`)?3:t.includes(`cancelled`)?-1:0}function a(e){let t=(e||``).toLowerCase();return t.includes(`paid`)||t.includes(`authorized`)?`paid`:t.includes(`pending`)?`pending`:`authorized`}function o(t){return`
+import"./main-Boqvh8oj.js";var e=[`Order Received`,`Kitchen Preparing`,`Ready for Pickup`],t={};function n(e){let n=String(e).split(` - $`);if(n.length>1)return{name:n[0],price:`$${n[1]}`};let r=String(e).match(/^(\d+)x\s+(.+)$/);if(r){let n=parseInt(r[1],10),i=r[2],a=i,o=i.lastIndexOf(` (`);o!==-1&&(a=i.substring(0,o).trim());let s=t[a.toLowerCase().trim()];if(s!==void 0&&!isNaN(s))return{name:e,price:`$${(s*n).toFixed(2)}`}}return{name:e,price:``}}function r(e){if(!e)return`U`;let t=e.trim().split(/\s+/);return t.length===1?t[0].charAt(0).toUpperCase():(t[0].charAt(0)+t[t.length-1].charAt(0)).toUpperCase()}function i(e){let t=(e||``).toLowerCase().trim();return t.includes(`preparing`)?1:t.includes(`ready`)?2:t.includes(`completed`)?3:t.includes(`cancelled`)?-1:0}function a(e){let t=(e||``).toLowerCase();return t.includes(`paid`)||t.includes(`authorized`)?`paid`:t.includes(`pending`)?`pending`:`authorized`}function o(t){return`
         <div class="order-status-track">
           ${e.map((e,n)=>{let r=``;return n<t?r=`done`:n===t&&(r=`active`),`
               <div class="track-step ${r}">
@@ -7,7 +7,7 @@ import"./main-BA1o7NrL.js";var e=[`Order Received`,`Kitchen Preparing`,`Ready fo
               </div>
             `}).join(``)}
         </div>
-      `}function s(e){let t=Array.isArray(e.items)?e.items:typeof e.items==`string`?JSON.parse(e.items):[],r=parseFloat(e.total||0)-parseFloat(e.tax||0),i=parseFloat(e.tax||0),a=parseFloat(e.total||0),o=e.created_at?new Date(e.created_at).toLocaleString():e.date||new Date().toLocaleString(),s=`<!DOCTYPE html>
+      `}function s(e){let t=Array.isArray(e.items)?e.items:typeof e.items==`string`?JSON.parse(e.items):[],r=parseFloat(e.total||0)-parseFloat(e.tax||0),i=parseFloat(e.tax||0),a=parseFloat(e.total||0),o=r>0?Math.round(i/r*100):14,s=e.created_at?new Date(e.created_at).toLocaleString():e.date||new Date().toLocaleString(),c=`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -56,7 +56,7 @@ import"./main-BA1o7NrL.js";var e=[`Order Received`,`Kitchen Preparing`,`Ready fo
     <div class="invoice-meta">
       <div class="invoice-label">INVOICE</div>
       <div class="invoice-id">${e.id||`N/A`}</div>
-      <div class="invoice-date">${o}</div>
+      <div class="invoice-date">${s}</div>
     </div>
   </div>
 
@@ -84,7 +84,7 @@ import"./main-BA1o7NrL.js";var e=[`Order Received`,`Kitchen Preparing`,`Ready fo
   <div class="totals-box">
     <div class="totals-inner">
       <div class="total-row"><span>Subtotal</span><span>$${r.toFixed(2)}</span></div>
-      <div class="total-row"><span>Tax (HST 14%)</span><span>$${i.toFixed(2)}</span></div>
+      <div class="total-row"><span>Tax (HST ${o}%)</span><span>$${i.toFixed(2)}</span></div>
       <div class="total-row grand"><span>TOTAL</span><span>$${a.toFixed(2)} CAD</span></div>
     </div>
   </div>
@@ -105,7 +105,7 @@ import"./main-BA1o7NrL.js";var e=[`Order Received`,`Kitchen Preparing`,`Ready fo
 </div>
 <script>window.onload = function(){ window.print(); };<\/script>
 </body>
-</html>`,c=window.open(``,`_blank`,`width=800,height=900`);c&&(c.document.write(s),c.document.close())}function c(e,t){let r=i(e.status),s=a(e.status),c=(Array.isArray(e.items)?e.items:[e.items]).map(e=>{let t=n(e);return t.price?`${t.name} (${t.price})`:t.name}),l=c.join(` · `),u=c.map(e=>`<div class="order-item-line">${e}</div>`).join(``);return`
+</html>`,l=window.open(``,`_blank`,`width=800,height=900`);l&&(l.document.write(c),l.document.close())}function c(e,t){let r=i(e.status),s=a(e.status),c=(Array.isArray(e.items)?e.items:[e.items]).map(e=>{let t=n(e);return t.price?`${t.name} (${t.price})`:t.name}),l=c.join(` · `),u=c.map(e=>`<div class="order-item-line">${e}</div>`).join(``);return`
         <div class="order-card" id="order-card-${t}">
           <div class="order-card-header">
             <div>

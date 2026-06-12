@@ -1614,6 +1614,7 @@
       const subtotal = parseFloat(order.total || 0) - parseFloat(order.tax || 0);
       const tax = parseFloat(order.tax || 0);
       const total = parseFloat(order.total || 0);
+      const taxRatePercent = subtotal > 0 ? Math.round((tax / subtotal) * 100) : 14;
       const dateStr = order.created_at ? new Date(order.created_at).toLocaleString() : (order.date || new Date().toLocaleString());
 
       const invoiceHtml = `<!DOCTYPE html>
@@ -1696,7 +1697,7 @@
   <div class="totals-box">
     <div class="totals-inner">
       <div class="total-row"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
-      <div class="total-row"><span>Tax (HST 14%)</span><span>$${tax.toFixed(2)}</span></div>
+      <div class="total-row"><span>Tax (HST ${taxRatePercent}%)</span><span>$${tax.toFixed(2)}</span></div>
       <div class="total-row grand"><span>TOTAL</span><span>$${total.toFixed(2)} CAD</span></div>
     </div>
   </div>

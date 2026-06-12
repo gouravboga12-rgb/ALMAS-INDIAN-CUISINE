@@ -1014,7 +1014,19 @@
                 <label class="form-label">SkipTheDishes Link</label>
                 <input type="url" id="setting-delivery-skip" required placeholder="https://skipthedishes.com/...">
               </div>
-              <button type="submit" class="btn-submit" style="margin-top: 25px;">Save All Settings</button>
+            </div>
+
+            <!-- Financial & Tax Settings -->
+            <div class="glass-card settings-section">
+              <h3 class="settings-section-title">💸 Financial & Tax Settings</h3>
+              <div class="form-group">
+                <label class="form-label">Tax Rate (%)</label>
+                <input type="number" id="setting-tax-rate" min="0" max="100" step="0.01" required placeholder="E.g., 14">
+              </div>
+            </div>
+
+            <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; margin-top: 10px;">
+              <button type="submit" class="btn-submit" style="width: auto; padding: 12px 30px; margin-top: 0;">Save All Settings</button>
             </div>
           </form>
         </section>
@@ -2516,8 +2528,8 @@
       document.getElementById('setting-hours-sun').value = data.timings.sun;
 
       // Scrolling and WhatsApp
-      document.getElementById('setting-marquee').value = data.marquee;
-      document.getElementById('setting-whatsapp').value = data.whatsapp;
+      document.getElementById('setting-marquee').value = data.marquee || '';
+      document.getElementById('setting-whatsapp').value = data.whatsapp || '';
 
       // Socials
       document.getElementById('setting-social-instagram').value = data.socials.instagram || '';
@@ -2527,14 +2539,18 @@
       document.getElementById('setting-social-tripadvisor').value = data.socials.trip_advisor || '';
 
       // Delivery
-      document.getElementById('setting-delivery-uber').value = data.delivery.uber_eats;
-      document.getElementById('setting-delivery-doordash').value = data.delivery.doordash;
-      document.getElementById('setting-delivery-skip').value = data.delivery.skip;
+      document.getElementById('setting-delivery-uber').value = data.delivery.uber_eats || '';
+      document.getElementById('setting-delivery-doordash').value = data.delivery.doordash || '';
+      document.getElementById('setting-delivery-skip').value = data.delivery.skip || '';
+
+      // Tax Rate
+      document.getElementById('setting-tax-rate').value = data.tax_rate !== undefined ? data.tax_rate : 14;
     }
 
     document.getElementById('settings-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       
+      const taxInputVal = parseFloat(document.getElementById('setting-tax-rate').value);
       const payload = {
         timings: {
           mon_thu: document.getElementById('setting-hours-mon-thu').value.trim(),
@@ -2554,7 +2570,8 @@
           uber_eats: document.getElementById('setting-delivery-uber').value.trim(),
           doordash: document.getElementById('setting-delivery-doordash').value.trim(),
           skip: document.getElementById('setting-delivery-skip').value.trim()
-        }
+        },
+        tax_rate: isNaN(taxInputVal) ? 14 : taxInputVal
       };
 
       const result = await apiFetch('/api/settings', {

@@ -72,7 +72,7 @@ function injectCartUI() {
         <span id="cart-subtotal">$0.00</span>
       </div>
       <div class="cart-total-row">
-        <span>Estimated Tax (14%)</span>
+        <span id="cart-tax-label">Estimated Tax (14%)</span>
         <span id="cart-tax">$0.00</span>
       </div>
       <div class="cart-total-row grand">
@@ -402,10 +402,27 @@ export function openCartDrawer() {
   }
 }
 
+// Get Dynamic Tax Rate from cached settings
+export function getTaxRate() {
+  try {
+    const settingsStr = localStorage.getItem('almas_global_settings');
+    if (settingsStr) {
+      const settings = JSON.parse(settingsStr);
+      if (settings && settings.tax_rate !== undefined) {
+        return parseFloat(settings.tax_rate);
+      }
+    }
+  } catch (e) {
+    console.error("Error reading tax rate from localStorage:", e);
+  }
+  return 14; // Default fallback to 14%
+}
+
 // Calculate Cart Totals
 export function getCartTotals() {
   const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-  const tax = subtotal * 0.14;
+  const taxRate = getTaxRate();
+  const tax = subtotal * (taxRate / 100);
   const total = subtotal + tax;
   return { subtotal, tax, total };
 }
@@ -473,6 +490,11 @@ export function renderCart() {
     checkoutBtn.style.pointerEvents = 'none';
     
     document.getElementById('cart-subtotal').textContent = '$0.00';
+    const taxRate = getTaxRate();
+    const taxLabel = document.getElementById('cart-tax-label');
+    if (taxLabel) {
+      taxLabel.textContent = `Estimated Tax (${taxRate}%)`;
+    }
     document.getElementById('cart-tax').textContent = '$0.00';
     document.getElementById('cart-grand-total').textContent = '$0.00';
     return;
@@ -520,6 +542,11 @@ export function renderCart() {
   // Update Totals
   const { subtotal, tax, total } = getCartTotals();
   document.getElementById('cart-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+  const taxRate = getTaxRate();
+  const taxLabel = document.getElementById('cart-tax-label');
+  if (taxLabel) {
+    taxLabel.textContent = `Estimated Tax (${taxRate}%)`;
+  }
   document.getElementById('cart-tax').textContent = `$${tax.toFixed(2)}`;
   document.getElementById('cart-grand-total').textContent = `$${total.toFixed(2)}`;
 }

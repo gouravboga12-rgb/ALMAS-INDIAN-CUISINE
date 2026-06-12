@@ -310,7 +310,7 @@
               <span id="summary-t-discount" class="ml-auto font-bold">-$0.00</span>
             </div>
             <div style="display:flex; justify-content:space-between; color:rgba(255,255,255,0.6); font-size:0.85rem;">
-              <span>Tax (14%)</span>
+              <span id="summary-t-tax-label">Tax (14%)</span>
               <span id="summary-t-tax" class="ml-auto font-bold text-white">$0.00</span>
             </div>
             <div style="display:flex; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.08); padding-top:1rem; font-size:1.1rem; color:white; font-weight:700;">
@@ -518,7 +518,7 @@
             <span id="inv-payment-opt" class="font-bold">Visa Ending 4000</span>
           </div>
           <div class="invoice-row">
-            <span>Tax (14%)</span>
+            <span id="inv-tax-label">Tax (14%)</span>
             <span id="inv-tax" class="font-bold">$0.00</span>
           </div>
           <div class="invoice-row total">
@@ -542,7 +542,7 @@
 
   <script type="module" src="/src/main.js"></script>
   <script type="module">
-    import { getCart, getCartTotals, updateCartItemQty, clearCart, showToast } from '/src/ecommerce.js';
+    import { getCart, getCartTotals, updateCartItemQty, clearCart, showToast, getTaxRate } from '/src/ecommerce.js';
 
     async function syncLocalOrders() {
       const localOrders = JSON.parse(localStorage.getItem('almas_orders')) || [];
@@ -778,11 +778,16 @@
         }
 
         const discountedSubtotal = subtotal - discount;
-        const tax = discountedSubtotal * 0.14;
+        const taxRate = getTaxRate();
+        const tax = discountedSubtotal * (taxRate / 100);
         const total = discountedSubtotal + tax;
         currentTakeoutTotal = total; // Save to script-level variable
 
         document.getElementById('summary-t-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+        const taxLabel = document.getElementById('summary-t-tax-label');
+        if (taxLabel) {
+          taxLabel.textContent = `Tax (${taxRate}%)`;
+        }
         document.getElementById('summary-t-tax').textContent = `$${tax.toFixed(2)}`;
         document.getElementById('summary-t-total').textContent = `$${total.toFixed(2)}`;
 
@@ -997,7 +1002,8 @@
         if (appliedPromo) {
           discount = baseTotals.subtotal * (appliedPromo.discountPercent / 100);
         }
-        const finalTax = (baseTotals.subtotal - discount) * 0.14;
+        const taxRate = getTaxRate();
+        const finalTax = (baseTotals.subtotal - discount) * (taxRate / 100);
         const finalTotals = {
           subtotal: baseTotals.subtotal,
           discount: discount,
@@ -1283,6 +1289,11 @@
           badge.className = 'invoice-badge pending';
         }
 
+        const taxRate = (orderInfo.totals && orderInfo.totals.subtotal > 0) ? Math.round((orderInfo.totals.tax / orderInfo.totals.subtotal) * 100) : getTaxRate();
+        const invTaxLabel = document.getElementById('inv-tax-label');
+        if (invTaxLabel) {
+          invTaxLabel.textContent = `Tax (${taxRate}%)`;
+        }
         document.getElementById('inv-payment-opt').textContent = orderInfo.payment;
         document.getElementById('inv-tax').textContent = `$${orderInfo.totals.tax.toFixed(2)}`;
         document.getElementById('inv-total').textContent = `$${orderInfo.totals.total.toFixed(2)}`;

@@ -378,6 +378,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!res.ok) return;
       const data = await res.json();
       
+      // Cache settings for dynamic pages / offline support
+      localStorage.setItem('almas_global_settings', JSON.stringify(data));
+      
       // Update Announcement Marquee
       if (data.marquee) {
         const marqueeContent = document.getElementById('announcement-marquee-content');

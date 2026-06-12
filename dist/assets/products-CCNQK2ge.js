@@ -1,0 +1,97 @@
+import{l as e,s as t,u as n}from"./main-Boqvh8oj.js";var r=n(e(),1);async function i(){try{let e=await fetch(`/api/menu`);if(!e.ok){a();return}let t=await e.json(),n=document.getElementById(`dynamic-mobile-quick-nav`);n&&(n.innerHTML=`
+            <button class="category-btn pb-1 text-xs font-semibold uppercase tracking-wider text-primary border-b-2 border-primary active whitespace-nowrap cursor-pointer" data-category="all">All</button>
+            ${t.categories.sort((e,t)=>e.order-t.order).map(e=>`
+              <button class="category-btn pb-1 text-xs font-semibold uppercase tracking-wider text-text-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer" data-category="${e.id}">${e.name}</button>
+            `).join(``)}
+          `);let r=document.getElementById(`dynamic-category-sidebar`);r&&(r.innerHTML=`
+            <button class="category-sidebar-btn category-btn active" data-category="all">
+              <div class="category-sidebar-thumb"><span>🍽️</span></div>
+              <span>All items</span>
+            </button>
+            ${t.categories.sort((e,t)=>e.order-t.order).map(e=>`
+              <button class="category-sidebar-btn category-btn" data-category="${e.id}">
+                <div class="category-sidebar-thumb"><span>${e.icon||`🍽️`}</span></div>
+                <span>${e.name}</span>
+              </button>
+            `).join(``)}
+          `);let i={soups:`Broths & slow-simmered warmth`,appetizers:`Bold starters & sharing plates`,tandoor:`Clay oven crafted`,"tandoor-treasures":`Clay oven crafted`,mains:`Curries & slow-cooked gravies`,biryani:`Muglai saffron standard`,mandi:`Arabic smoked rice`,pulao:`Aromatic one-pot rice dishes`,beverages:`Teas & cold mocktails`,chinese:`Wok tossed`,momo:`Steamed or fried`,breads:`Tandoor baked`,desserts:`Sweet endings`},o=document.getElementById(`dynamic-products-container`);if(o){let e=``;t.categories.sort((e,t)=>e.order-t.order).forEach(n=>{let r=t.products.filter(e=>e.category===n.name);if(r.length===0)return;let a=i[n.id]||`Freshly prepared`;e+=`
+              <section id="${n.id}" class="scroll-mt-40" data-aos="fade-up">
+                <div class="flex items-center gap-10 mb-16">
+                  <div class="flex-1 h-px bg-primary/10"></div>
+                  <div class="text-center">
+                    <span class="text-gold text-2xl mb-2 block">${n.icon||`🍽️`}</span>
+                    <h2 class="text-4xl font-heading">${n.name}</h2>
+                    <p class="text-text-secondary text-xs uppercase tracking-widest mt-2">${a}</p>
+                  </div>
+                  <div class="flex-1 h-px bg-primary/10"></div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
+                  ${r.map(e=>{let t=e.badge||(e.diet===`VEG`?`VEG`:e.diet),n=e.diet===`VEG`?`text-green-600`:e.diet===`SEAFOOD`?`text-blue-600`:`text-red-600`;return`
+                      <div class="card-premium flex flex-col md:flex-row gap-6 group" data-name="${e.name.toLowerCase()}" data-desc="${(e.desc||``).toLowerCase()}" data-diet="${e.diet?e.diet.toLowerCase():``}">
+                        <div class="w-full md:w-2/5 aspect-square overflow-hidden rounded-2xl">
+                          <img src="${e.image||`/logo.png`}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="${e.name}">
+                        </div>
+                        <div class="w-full md:w-3/5 flex flex-col justify-center">
+                          <span class="${n} font-bold text-[10px] uppercase tracking-widest mb-2">${t}</span>
+                          <h3 class="text-xl font-bold mb-3">${e.name}</h3>
+                          <p class="text-text-secondary text-xs italic mb-6 leading-relaxed">${e.desc||``}</p>
+                          <div class="flex items-center justify-between mt-auto">
+                            <span class="text-primary font-bold text-xl">${e.price}</span>
+                          </div>
+                        </div>
+                      </div>
+                    `}).join(``)}
+                </div>
+              </section>
+            `}),e+=`
+            <!-- Call to Action -->
+            <section class="text-center py-20 bg-primary-deep rounded-3xl text-white shadow-2xl relative overflow-hidden">
+              <div class="absolute inset-0 bg-primary/20 backdrop-blur-sm"></div>
+              <div class="relative z-10">
+                <h2 class="text-4xl md:text-5xl font-heading mb-8 italic">Ready to Experience Royalty?</h2>
+                <p class="text-white/70 max-w-2xl mx-auto mb-12 font-light leading-relaxed">Whether it's a quick lunch or a
+                  grand family dinner, Almas brings the authentic flavors of Hyderabad and the Middle East to your table.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-6">
+                  <a href="/order.html" class="btn-premium px-12 py-4">Order for Delivery</a>
+                  <a href="/contact.html"
+                    class="border border-white/20 hover:bg-white/10 px-12 py-4 rounded-full transition-all uppercase tracking-widest text-[10px] font-bold flex items-center justify-center">Reserve
+                    a Table</a>
+                </div>
+              </div>
+            </section>
+          `,o.innerHTML=e}a()}catch(e){console.error(`Failed loading dynamic menu:`,e),a()}}document.addEventListener(`DOMContentLoaded`,i);function a(){let e=!1;document.querySelectorAll(`section .grid`).forEach(e=>{e.className=`grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6`}),document.querySelectorAll(`.card-premium`).forEach((e,n)=>{let r=e.querySelector(`h3`);if(!r)return;let i=r.textContent.trim(),a=i.toLowerCase().replace(/[^a-z0-9]+/g,`-`);e.id=a,e.className=`card-premium flex flex-col group justify-between h-full bg-white border border-gray-100 shadow-sm rounded-2xl p-4 transition-all duration-300`;let o=e.querySelector(`.aspect-square`)||e.firstElementChild;if(o){o.className=`relative w-full aspect-square overflow-hidden rounded-xl mb-4 shrink-0 cursor-pointer`;let e=o.querySelector(`img`);if(e&&(e.className=`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500`),!o.querySelector(`.img-hover-overlay`)){let e=document.createElement(`div`);e.className=`img-hover-overlay`,e.innerHTML=`
+              <div class="img-hover-overlay-circle">
+                <svg class="img-hover-overlay-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
+            `,o.appendChild(e)}o.addEventListener(`click`,()=>{window.location.href=`/product-detail.html?id=${a}`})}let s=e.querySelector(`.flex-col.justify-center`)||e.querySelector(`.w-full.md\\:w-3\\/5`)||e.lastElementChild;if(s){if(s.className=`flex flex-col flex-grow`,r){r.className=`text-base font-bold text-text-primary mb-1.5 line-clamp-1 cursor-pointer hover:text-primary transition-colors`,r.addEventListener(`click`,()=>{window.location.href=`/product-detail.html?id=${a}`});let e=s.querySelector(`.view-details-link`);e?(e.href=`/product-detail.html?id=${a}`,e.className=`view-details-link text-[10px] text-[#CC5500] font-bold uppercase tracking-wider hover:underline mt-1.5 block`):(e=document.createElement(`a`),e.href=`/product-detail.html?id=${a}`,e.className=`view-details-link text-[10px] text-[#CC5500] font-bold uppercase tracking-wider hover:underline mt-1.5 block`,e.textContent=`View Details`,r.nextSibling?r.parentNode.insertBefore(e,r.nextSibling):r.parentNode.appendChild(e))}let e=s.querySelector(`p`);e&&(e.className=`text-text-secondary text-xs italic leading-relaxed line-clamp-2 mb-4`);let t=s.querySelector(`.flex.items-center.justify-between.mt-auto`)||s.querySelector(`.mt-auto`);t&&(t.className=`flex items-center justify-between mt-auto pt-2 border-t border-gray-100`)}let c=e.querySelector(`img`),l=c?c.getAttribute(`src`):``,u=e.querySelector(`p`),d=u?u.textContent.trim():``,f=[0],p=[],m=e.querySelector(`.space-y-1`)||e.querySelector(`.space-y-2`);if(m){let e=m.querySelectorAll(`.flex.justify-between.items-center`)||m.querySelectorAll(`.flex`);e.length>0&&(f=[],e.forEach(e=>{let t=e.querySelector(`span:first-child`),n=e.querySelector(`span:last-child`);if(t&&n){let e=t.textContent.trim(),r=n.textContent.trim().match(/([0-9]+\.[0-9]+)/);r&&(f.push(parseFloat(r[1])),p.push(e))}}))}if(f.length===1&&f[0]===0){let t=e.querySelector(`.flex.items-center.justify-between.mt-auto`)||e.querySelector(`.mt-auto`);if(t){let e=t.querySelector(`.text-primary`)||t.querySelector(`.font-bold`)||t;if(e){let t=e.textContent.trim();if(t.includes(`/`))f=[],p=[],t.split(`/`).forEach(e=>{let t=e.match(/([0-9]+\.[0-9]+)/);if(t){f.push(parseFloat(t[1]));let n=e.replace(t[0],``).replace(/[$:/]/g,``).trim();n&&p.push(n)}});else{let e=t.match(/([0-9]+\.[0-9]+)/g);e&&(f=e.map(e=>parseFloat(e)))}}}}let h=`non-veg`,g=e.querySelector(`span`),_=g?g.textContent.trim().toUpperCase():``;_===`VEG`?h=`veg`:_===`NON-VEG`?h=`non-veg`:(_.includes(`SEAFOOD`)||i.toUpperCase().includes(`FISH`)||i.toUpperCase().includes(`SHRIMP`)||i.toUpperCase().includes(`PRAWN`))&&(h=`seafood`),e.dataset.index=n,e.dataset.name=i,e.dataset.id=a,e.dataset.image=l,e.dataset.desc=d,e.dataset.diet=h,e.dataset.price=f[0],e.dataset.prices=JSON.stringify(f);let v=e.querySelector(`.flex.items-center.justify-between.mt-auto`)||e.querySelector(`.mt-auto`);if(!v){let t=e.querySelector(`.flex.flex-col.justify-center`)||e.lastElementChild;t&&(v=document.createElement(`div`),t.appendChild(v))}if(!v)return;let y=``;if(f.length>1){let e=d.toLowerCase().includes(`half`)||i.toLowerCase().includes(`half`),t=``;if(p.length===f.length)f.forEach((e,n)=>{let r=p[n];t+=`<option value="${e}" data-label="${r}">${r} ($${e.toFixed(2)})</option>`});else if(f.length===2){let n=a===`grill-chicken`||i.toLowerCase().includes(`grill chicken`),r=n||e?`Half`:`Single`,o=n?`Full`:e?`Whole`:`Family`;t=`
+              <option value="${f[0]}" data-label="${r}">${r} ($${f[0].toFixed(2)})</option>
+              <option value="${f[1]}" data-label="${o}">${o} ($${f[1].toFixed(2)})</option>
+            `}else if(f.length===3){let n=e?`Half`:`Single`,r=e?`Whole`:`Two People`,i=`Three People`;t=`
+              <option value="${f[0]}" data-label="${n}">${n} ($${f[0].toFixed(2)})</option>
+              <option value="${f[1]}" data-label="${r}">${r} ($${f[1].toFixed(2)})</option>
+              <option value="${f[2]}" data-label="${i}">${i} ($${f[2].toFixed(2)})</option>
+            `}else f.forEach((e,n)=>{t+=`<option value="${e}" data-label="Portion ${n+1}">Portion ${n+1} ($${e.toFixed(2)})</option>`});y=`
+            <div class="size-selector-container flex items-center gap-1.5 text-[10px] mt-1">
+              <span class="text-text-secondary/70">${p.length>0?`Option:`:`Portion:`}</span>
+              <select class="price-size-select bg-[#FFFAF3] border border-primary/20 rounded px-1.5 py-0.5 text-[10px] font-bold text-text-primary focus:outline-none cursor-pointer">
+                ${t}
+              </select>
+            </div>
+          `}v.className=`flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3 mt-auto pt-4 border-t border-primary/5 justify-between w-full`,v.innerHTML=`
+          <div class="flex flex-col">
+            <span class="card-price-display text-primary font-bold text-xl">$${f[0].toFixed(2)}</span>
+            ${y}
+          </div>
+          <div class="flex items-center gap-2 mt-2 sm:mt-0">
+            <button class="add-to-cart-btn px-4 py-2 text-[10px] font-bold uppercase tracking-wider rounded-full border border-primary text-primary hover:bg-primary hover:text-white transition-all active:scale-95 cursor-pointer">
+              Add to Cart
+            </button>
+            <button class="buy-now-btn px-4 py-2 text-[10px] font-bold uppercase tracking-wider rounded-full bg-primary text-white hover:bg-primary-deep transition-all active:scale-95 shadow-md cursor-pointer">
+              Buy Now
+            </button>
+          </div>
+        `;let b=v.querySelector(`.price-size-select`),x=v.querySelector(`.card-price-display`);b&&x&&b.addEventListener(`change`,e=>{x.textContent=`$${parseFloat(e.target.value).toFixed(2)}`});let S=v.querySelector(`.add-to-cart-btn`),C=v.querySelector(`.buy-now-btn`),w=()=>{let e=f[0],t=``;return b&&(e=parseFloat(b.value),t=` (${b.options[b.selectedIndex].dataset.label})`),{id:a+(t?`-`+t.toLowerCase().trim().replace(/[^a-z0-9]+/g,`-`):``),name:i+t,price:e,image:l}};S&&S.addEventListener(`click`,()=>{if(!localStorage.getItem(`almas_token`)){window.location.href=`/account.html?tab=login&message=Please%20login%20or%20sign%20up%20to%20continue`;return}t(w())}),C&&C.addEventListener(`click`,()=>{if(!localStorage.getItem(`almas_token`)){window.location.href=`/account.html?tab=login&message=Please%20login%20or%20sign%20up%20to%20continue`;return}t(w())})});let n=``,i=`all`,a=`all`,o=()=>{document.querySelectorAll(`section.scroll-mt-40`).forEach(e=>{let t=!1;e.querySelectorAll(`.card-premium`).forEach(e=>{let r=(e.dataset.name||``).toLowerCase(),a=(e.dataset.desc||``).toLowerCase(),o=e.dataset.diet||``;(r.includes(n)||a.includes(n))&&(i===`all`||o===i)?(e.style.display=``,t=!0):e.style.display=`none`});let r=e.querySelectorAll(`.mb-24`);r.length>0&&r.forEach(e=>{let t=Array.from(e.querySelectorAll(`.card-premium`)).some(e=>e.style.display!==`none`);e.style.display=t?``:`none`}),e.style.display=t?``:`none`}),r.default.refresh()},s=e=>{document.querySelectorAll(`section .grid`).forEach(t=>{let n=Array.from(t.querySelectorAll(`.card-premium`));n.length!==0&&(n.sort((t,n)=>e===`price-asc`?parseFloat(t.dataset.price)-parseFloat(n.dataset.price):e===`price-desc`?parseFloat(n.dataset.price)-parseFloat(t.dataset.price):e===`name-asc`?t.dataset.name.localeCompare(n.dataset.name):e===`name-desc`?n.dataset.name.localeCompare(t.dataset.name):parseInt(t.dataset.index)-parseInt(n.dataset.index)),n.forEach(e=>t.appendChild(e)))})},c=document.getElementById(`product-search`);if(c){c.addEventListener(`input`,e=>{n=e.target.value.toLowerCase().trim(),n!==``&&(a=`all`,document.querySelectorAll(`.category-btn`).forEach(e=>{e.dataset.category===`all`?(e.classList.add(`text-primary`,`border-b-2`,`border-primary`,`active`),e.classList.remove(`text-text-primary`)):(e.classList.remove(`text-primary`,`border-b-2`,`border-primary`,`active`),e.classList.add(`text-text-primary`))})),o()}),c.addEventListener(`keydown`,e=>{if(e.key===`Enter`){e.preventDefault();let t=document.querySelectorAll(`.card-premium:not([style*="display: none"])`);t.length>0&&(t[0].scrollIntoView({behavior:`smooth`,block:`center`}),t[0].classList.add(`highlight-premium`),setTimeout(()=>{t[0].classList.remove(`highlight-premium`)},2e3)),c.blur()}});let e=c.nextElementSibling;e&&(e.style.cursor=`pointer`,e.addEventListener(`click`,()=>{let e=document.querySelectorAll(`.card-premium:not([style*="display: none"])`);e.length>0&&(e[0].scrollIntoView({behavior:`smooth`,block:`center`}),e[0].classList.add(`highlight-premium`),setTimeout(()=>{e[0].classList.remove(`highlight-premium`)},2e3))}))}let l=document.querySelectorAll(`.diet-btn`);l.forEach(e=>{e.addEventListener(`click`,t=>{l.forEach(e=>{e.classList.remove(`active`,`text-white`,`bg-primary`),e.classList.add(`border-primary/20`,`text-text-primary`)}),e.classList.add(`active`,`text-white`,`bg-primary`),e.classList.remove(`border-primary/20`,`text-text-primary`),i=e.dataset.diet,o()})});let u=document.getElementById(`product-sort`);u&&u.addEventListener(`change`,e=>{s(e.target.value)});let d=document.querySelectorAll(`.category-btn`);d.forEach(t=>{t.addEventListener(`click`,r=>{r.preventDefault();let a=t.dataset.category;d.forEach(e=>{e.dataset.category===a?(e.classList.add(`active`),e.classList.contains(`category-sidebar-btn`)?e.classList.add(`text-primary`):(e.classList.add(`text-primary`,`border-b-2`,`border-primary`),e.classList.remove(`text-text-primary`))):(e.classList.remove(`active`,`text-primary`,`border-b-2`,`border-primary`),e.classList.contains(`category-sidebar-btn`)||e.classList.add(`text-text-primary`))});let s=document.getElementById(`product-search`);s&&(s.value=``);let c=document.getElementById(`mobile-search-input`);if(c&&(c.value=``),n=``,i=`all`,l.forEach(e=>{e.classList.remove(`active`,`text-white`,`bg-primary`),e.classList.add(`border-primary/20`,`text-text-primary`),e.dataset.diet===`all`&&(e.classList.add(`active`,`text-white`,`bg-primary`),e.classList.remove(`border-primary/20`,`text-text-primary`))}),o(),e=!0,a===`all`)window.scrollTo({top:0,behavior:`smooth`});else{let e=document.getElementById(a);if(e){let t=e.getBoundingClientRect().top+window.pageYOffset+-180;window.scrollTo({top:t,behavior:`smooth`})}}setTimeout(()=>{e=!1},1e3)})}),window.addEventListener(`scroll`,()=>{if(e)return;let t=document.querySelectorAll(`section.scroll-mt-40`),n=`all`,r=window.scrollY+220;t.forEach(e=>{if(e.style.display===`none`)return;let t=e.offsetTop,i=e.offsetHeight;r>=t&&r<t+i&&(n=e.id)}),n&&a!==n&&(a=n,document.querySelectorAll(`.category-btn`).forEach(e=>{e.dataset.category===n?(e.classList.add(`active`),e.classList.contains(`category-sidebar-btn`)?e.classList.add(`text-primary`):(e.classList.add(`text-primary`,`border-b-2`,`border-primary`),e.classList.remove(`text-text-primary`)),e.classList.contains(`pb-1`)&&e.scrollIntoView({behavior:`smooth`,inline:`center`,block:`nearest`})):(e.classList.remove(`active`,`text-primary`,`border-b-2`,`border-primary`),e.classList.contains(`category-sidebar-btn`)||e.classList.add(`text-text-primary`))}))});let f=()=>{let e=window.location.hash;if(e){let t=e.substring(1),r=document.getElementById(t);if(r){n=``,i=`all`,a=`all`;let e=document.getElementById(`product-search`);e&&(e.value=``),document.querySelectorAll(`.diet-btn`).forEach(e=>{e.dataset.diet===`all`?(e.classList.add(`active`,`text-white`,`bg-primary`),e.classList.remove(`border-primary/20`,`text-text-primary`)):(e.classList.remove(`active`,`text-white`,`bg-primary`),e.classList.add(`border-primary/20`,`text-text-primary`))}),document.querySelectorAll(`.category-btn`).forEach(e=>{e.dataset.category===`all`?(e.classList.add(`text-primary`,`border-b-2`,`border-primary`,`active`),e.classList.remove(`text-text-primary`)):(e.classList.remove(`text-primary`,`border-b-2`,`border-primary`,`active`),e.classList.add(`text-text-primary`))}),o(),setTimeout(()=>{r.scrollIntoView({behavior:`smooth`,block:`center`}),r.classList.add(`highlight-premium`),setTimeout(()=>{r.classList.remove(`highlight-premium`)},2500)},300)}}};new URLSearchParams(window.location.search).get(`search`)&&setTimeout(()=>{let e=document.querySelectorAll(`.card-premium:not([style*="display: none"])`);e.length>0&&(e[0].scrollIntoView({behavior:`smooth`,block:`center`}),e[0].classList.add(`highlight-premium`),setTimeout(()=>{e[0].classList.remove(`highlight-premium`)},2500))},600),setTimeout(f,350),window.addEventListener(`hashchange`,f)}

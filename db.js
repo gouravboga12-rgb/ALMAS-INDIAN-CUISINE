@@ -52,7 +52,8 @@ const defaultSettings = {
     uber_eats: "https://www.ubereats.com/",
     doordash: "https://www.doordash.com/",
     skip: "https://www.skipthedishes.com/"
-  }
+  },
+  tax_rate: 14
 };
 
 const defaultServices = [
