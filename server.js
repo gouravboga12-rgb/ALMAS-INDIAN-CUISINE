@@ -531,6 +531,26 @@ app.get('/api/user/orders', authenticateUser, async (req, res) => {
   }
 });
 
+// GET /api/debug-db-test - Temporary debug helper
+app.get('/api/debug-db-test', async (req, res) => {
+  const host = process.env.DB_HOST || process.env.MYSQL_HOST || 'localhost';
+  const user = process.env.DB_USER || process.env.MYSQL_USER;
+  const password = process.env.DB_PASSWORD || process.env.MYSQL_PASSWORD;
+  const database = process.env.DB_NAME || process.env.MYSQL_DATABASE;
+  const port = parseInt(process.env.DB_PORT || process.env.MYSQL_PORT || '3306');
+
+  res.json({
+    DB_HOST: host,
+    DB_USER: user,
+    DB_NAME: database,
+    DB_PORT: port,
+    hasPassword: !!password,
+    passwordLength: password ? password.length : 0,
+    passwordStarts: password ? password.substring(0, 3) : '',
+    passwordEnds: password ? password.substring(password.length - 3) : ''
+  });
+});
+
 // ─── MENU ITEMS REVIEWS ENDPOINTS ─────────────────────────────────────────────
 
 // GET /api/reviews/:productId - Get reviews for a menu item
