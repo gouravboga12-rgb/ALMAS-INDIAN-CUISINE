@@ -539,6 +539,13 @@ app.get('/api/debug-db-test', async (req, res) => {
   const database = process.env.DB_NAME || process.env.MYSQL_DATABASE;
   const port = parseInt(process.env.DB_PORT || process.env.MYSQL_PORT || '3306');
 
+  const charCodes = [];
+  if (password) {
+    for (let i = 0; i < password.length; i++) {
+      charCodes.push(password.charCodeAt(i));
+    }
+  }
+
   res.json({
     DB_HOST: host,
     DB_USER: user,
@@ -546,8 +553,7 @@ app.get('/api/debug-db-test', async (req, res) => {
     DB_PORT: port,
     hasPassword: !!password,
     passwordLength: password ? password.length : 0,
-    passwordStarts: password ? password.substring(0, 3) : '',
-    passwordEnds: password ? password.substring(password.length - 3) : ''
+    charCodes
   });
 });
 
