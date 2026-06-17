@@ -21,6 +21,12 @@ export default defineConfig({
             req.url = '/product-detail.html';
           } else if (pathname === '/admin' || pathname === '/admin/') {
             req.url = '/admin.html';
+          } else if (pathname === '/terms') {
+            req.url = '/terms.html';
+          } else if (pathname === '/privacy') {
+            req.url = '/privacy.html';
+          } else if (pathname === '/refunds') {
+            req.url = '/refunds.html';
           }
           next();
         });
@@ -46,6 +52,9 @@ export default defineConfig({
         account: resolve(__dirname, 'account.html'),
         'product-detail': resolve(__dirname, 'product-detail.html'),
         admin: resolve(__dirname, 'admin.html'),
+        terms: resolve(__dirname, 'terms.html'),
+        privacy: resolve(__dirname, 'privacy.html'),
+        refunds: resolve(__dirname, 'refunds.html'),
       },
     },
   },
