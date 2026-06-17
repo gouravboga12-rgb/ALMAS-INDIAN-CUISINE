@@ -131,7 +131,7 @@ export function generateInvoicePdfBuffer(order) {
       const tax = parseFloat(order.tax || 0);
       const subtotal = total - tax;
       const taxRate = subtotal > 0 ? Math.round((tax / subtotal) * 100) : 14;
-      const dateStr = order.created_at ? new Date(order.created_at).toLocaleString() : new Date().toLocaleString();
+      const dateStr = order.created_at ? new Date(order.created_at).toLocaleString('en-US', { timeZone: 'America/Toronto' }) : new Date().toLocaleString('en-US', { timeZone: 'America/Toronto' });
 
       // 1. BRAND HEADER
       doc.fillColor('#CC5500')
@@ -299,7 +299,7 @@ export async function sendInvoiceEmail(email, name, order) {
   const subtotal = total - tax;
   const taxRate = subtotal > 0 ? Math.round((tax / subtotal) * 100) : 14;
   
-  const dateStr = order.created_at ? new Date(order.created_at).toLocaleString() : new Date().toLocaleString();
+  const dateStr = order.created_at ? new Date(order.created_at).toLocaleString('en-US', { timeZone: 'America/Toronto' }) : new Date().toLocaleString('en-US', { timeZone: 'America/Toronto' });
 
   const itemsListHtml = items.map((item, idx) => {
     const detail = getItemNameAndPrice(item);
@@ -391,6 +391,28 @@ export async function sendInvoiceEmail(email, name, order) {
             <strong>Payment Method:</strong> ${order.payment}<br>
             <strong>Status:</strong> ${order.status}
           </div>
+
+          <!-- Invoice Action Buttons -->
+          <div style="text-align: center; margin-bottom: 1.5rem;">
+            <p style="font-size: 0.85rem; color: #5f6368; margin-bottom: 1rem;">Your invoice PDF is attached to this email. You can also use the buttons below:</p>
+            <table style="margin: 0 auto; border-collapse: collapse;">
+              <tr>
+                <td style="padding: 0 8px;">
+                  <a href="${process.env.APP_URL || 'https://almasindiancuisine.ca'}/account.html" 
+                     style="display: inline-block; background-color: #ffffff; color: #CC5500; border: 2px solid #CC5500; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 0.85rem; font-family: Arial, sans-serif;">
+                    📄 View Invoice
+                  </a>
+                </td>
+                <td style="padding: 0 8px;">
+                  <a href="${process.env.APP_URL || 'https://almasindiancuisine.ca'}/account.html" 
+                     style="display: inline-block; background-color: #CC5500; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 700; font-size: 0.85rem; font-family: Arial, sans-serif;">
+                    ⬇ Download Invoice
+                  </a>
+                </td>
+              </tr>
+            </table>
+            <p style="font-size: 0.75rem; color: #9aa0a6; margin-top: 0.75rem;">The PDF invoice is also attached to this email for your records.</p>
+          </div>
         </div>
         
         <!-- Footer -->
@@ -423,3 +445,41 @@ export async function sendInvoiceEmail(email, name, order) {
 
   return sendEmail({ to: email, subject, html, attachments });
 }
+
+export async function sendAdminNotificationEmail(adminEmails, subject, html) {
+  const emails = [];
+  if (adminEmails) {
+    if (typeof adminEmails === 'string') {
+      emails.push(adminEmails);
+    } else if (Array.isArray(adminEmails)) {
+      emails.push(...adminEmails);
+    } else if (typeof adminEmails === 'object') {
+      if (adminEmails.email_1) emails.push(adminEmails.email_1);
+      if (adminEmails.email_2) emails.push(adminEmails.email_2);
+      if (adminEmails.email_3) emails.push(adminEmails.email_3);
+    }
+  }
+
+  // Filter out invalid/empty emails, clean whitespaces
+  const validEmails = emails
+    .map(e => String(e).trim())
+    .filter(e => e && e.includes('@'));
+
+  // If no valid emails found, fall back to default admin email
+  if (validEmails.length === 0) {
+    validEmails.push('almasindiancuisine@gmail.com');
+  }
+
+  console.log(`[SMTP Admin Alert] Sending alert to admins: ${validEmails.join(', ')} | Subject: ${subject}`);
+
+  // Send to all admin emails
+  const sendPromises = validEmails.map(email => 
+    sendEmail({ to: email, subject, html }).catch(err => {
+      console.error(`[SMTP Admin Alert Error] Failed to send to ${email}:`, err.message);
+      return { error: true, email };
+    })
+  );
+
+  return Promise.all(sendPromises);
+}
+

@@ -631,16 +631,25 @@
     document.addEventListener('DOMContentLoaded', () => {
       // Login Check Guard
       const token = localStorage.getItem('almas_token');
-      if (!token) {
+      const savedAccount = localStorage.getItem('almas_account');
+      let account = {};
+      try {
+        if (savedAccount) account = JSON.parse(savedAccount);
+      } catch (e) {}
+
+      if (!token && !account.isGuest) {
         window.location.href = "/account.html?tab=login&message=Please%20login%20or%20sign%20up%20to%20continue";
         return;
       }
 
       // Pre-populate fields
-      const savedAccount = localStorage.getItem('almas_account');
       if (savedAccount) {
         try {
           const user = JSON.parse(savedAccount);
+          if (user.isGuest) {
+            // Do not pre-populate with Guest placeholder values
+            return;
+          }
           if (user.name) {
             const takeoutName = document.getElementById('takeout-name');
             if (takeoutName) takeoutName.value = user.name;

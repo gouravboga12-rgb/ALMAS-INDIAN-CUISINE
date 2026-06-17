@@ -9,7 +9,7 @@ import bcrypt from 'bcryptjs';
 import { OAuth2Client } from 'google-auth-library';
 import pkg from 'square';
 const { SquareClient, SquareEnvironment } = pkg;
-import { sendVerificationEmail, sendPasswordResetEmail, sendInvoiceEmail } from './email.js';
+import { sendVerificationEmail, sendPasswordResetEmail, sendInvoiceEmail, sendAdminNotificationEmail } from './email.js';
 import {
   initializeDatabase,
   getMenu,
@@ -130,6 +130,11 @@ function authenticateUser(req, res, next) {
 
   const token = authHeader.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Access denied. Token missing.' });
+
+  if (token === 'guest') {
+    req.user = { id: 'guest', email: 'guest@almas.ca', isGuest: true };
+    return next();
+  }
 
   try {
     const userSecret = process.env.JWT_USER_SECRET || 'almas_user_auth_secret_token_2026_xyz';
@@ -483,7 +488,13 @@ app.post('/api/user/orders', authenticateUser, async (req, res) => {
     }
     
     // Auto-update user record's phone number if it isn't set yet
-    await updateUser(req.user.id, { phone: orderData.phone });
+    if (req.user.id !== 'guest') {
+      try {
+        await updateUser(req.user.id, { phone: orderData.phone });
+      } catch (err) {
+        console.warn('Could not auto-update user phone:', err.message);
+      }
+    }
 
     // Process payment token through Square API if online payment is requested
     if (orderData.paymentToken && orderData.status === 'Paid Online') {
@@ -518,7 +529,7 @@ app.post('/api/user/orders', authenticateUser, async (req, res) => {
     });
 
     // Auto-save phone to user profile if not already stored
-    if (orderData.phone && req.user && !req.user.phone) {
+    if (orderData.phone && req.user && !req.user.phone && req.user.id !== 'guest') {
       try {
         await updateUser(req.user.id, { phone: orderData.phone });
       } catch (phoneErr) {
@@ -526,15 +537,41 @@ app.post('/api/user/orders', authenticateUser, async (req, res) => {
       }
     }
 
-    // Send email invoice receipt if order total is above $100
-    const orderTotal = parseFloat(order.total || 0);
-    if (orderTotal > 100) {
-      const customerEmail = order.email || req.user.email;
-      if (customerEmail) {
-        sendInvoiceEmail(customerEmail, order.name, order).catch(mailErr => {
-          console.error('[SMTP] Failed to send purchase invoice email:', mailErr.message);
-        });
-      }
+    // Send email invoice receipt to customer (all order totals)
+    const customerEmail = order.email || req.user.email;
+    if (customerEmail) {
+      sendInvoiceEmail(customerEmail, order.name, order).catch(mailErr => {
+        console.error('[SMTP] Failed to send purchase invoice email:', mailErr.message);
+      });
+    }
+
+    // Notify admins about the new takeout order
+    try {
+      const settings = await getSettings();
+      const orderTotal = parseFloat(order.total || 0);
+      const items = Array.isArray(order.items) ? order.items : (typeof order.items === 'string' ? JSON.parse(order.items) : []);
+      const itemsListHtml = items.map(item => `<li>${item}</li>`).join('');
+
+      const emailHtml = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
+          <h2 style="color: #CC5500;">New Takeout Order Placed!</h2>
+          <p><strong>Order ID:</strong> #${order.id}</p>
+          <p><strong>Customer Name:</strong> ${order.name}</p>
+          <p><strong>Phone:</strong> ${order.phone}</p>
+          <p><strong>Email:</strong> ${customerEmail || 'N/A'}</p>
+          <p><strong>Fulfillment Type:</strong> ${order.type}</p>
+          <p><strong>Fulfillment Time:</strong> ${order.time || 'ASAP'}</p>
+          <p><strong>Payment Method / Status:</strong> ${order.payment} (${order.status})</p>
+          <p><strong>Total:</strong> $${orderTotal.toFixed(2)} CAD</p>
+          <h3>Items Ordered:</h3>
+          <ul>${itemsListHtml}</ul>
+        </div>
+      `;
+      sendAdminNotificationEmail(settings.admin_emails, `[Order Alert] New Takeout Order #${order.id} Placed`, emailHtml).catch(err => {
+        console.error('[SMTP Admin Alert Error] Failed to send order notification to admins:', err);
+      });
+    } catch (adminErr) {
+      console.error('[SMTP Admin Alert Error] Failed to prepare admin alert for new order:', adminErr);
     }
 
     res.status(201).json({ success: true, order });
@@ -547,6 +584,9 @@ app.post('/api/user/orders', authenticateUser, async (req, res) => {
 // GET /api/user/orders - Get order history for logged-in user
 app.get('/api/user/orders', authenticateUser, async (req, res) => {
   try {
+    if (req.user.id === 'guest') {
+      return res.json([]);
+    }
     const list = await getOrdersByUserId(req.user.id);
     res.json(list);
   } catch (err) {
@@ -733,6 +773,7 @@ app.put('/api/admin/orders/:id/status', authenticateAdmin, async (req, res) => {
     if (!updated) {
       return res.status(404).json({ success: false, error: 'Order not found.' });
     }
+
     res.json({ success: true, order: updated });
   } catch (err) {
     console.error('Update order status error:', err);
@@ -748,6 +789,7 @@ app.delete('/api/admin/orders/:id', authenticateAdmin, async (req, res) => {
     if (!ok) {
       return res.status(404).json({ success: false, error: 'Order not found.' });
     }
+
     res.json({ success: true, message: 'Order deleted.' });
   } catch (err) {
     console.error('Delete order error:', err);
@@ -1006,6 +1048,7 @@ app.get('/api/settings', async (req, res) => {
 app.put('/api/settings', authenticateAdmin, async (req, res) => {
   try {
     const settings = await updateSettings(req.body);
+
     res.json({ success: true, settings });
   } catch (err) {
     console.error("PUT /api/settings error:", err);
@@ -1032,6 +1075,7 @@ app.post('/api/services', authenticateAdmin, async (req, res) => {
       return res.status(400).json({ error: 'Service must have id and title.' });
     }
     await addService(newService);
+
     res.json({ success: true, service: newService });
   } catch (err) {
     console.error("POST /api/services error:", err);
@@ -1044,6 +1088,7 @@ app.put('/api/services/:id', authenticateAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const updated = await updateService(id, req.body);
+
     res.json({ success: true, service: updated });
   } catch (err) {
     console.error("PUT /api/services error:", err);
@@ -1056,6 +1101,7 @@ app.delete('/api/services/:id', authenticateAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     await deleteService(id);
+
     res.json({ success: true });
   } catch (err) {
     console.error("DELETE /api/services error:", err);
@@ -1082,6 +1128,7 @@ app.post('/api/packages', authenticateAdmin, async (req, res) => {
       return res.status(400).json({ error: 'Package must have id, name, and price.' });
     }
     await addPackage(newPackage);
+
     res.json({ success: true, package: newPackage });
   } catch (err) {
     console.error("POST /api/packages error:", err);
@@ -1094,6 +1141,7 @@ app.put('/api/packages/:id', authenticateAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const updated = await updatePackage(id, req.body);
+
     res.json({ success: true, package: updated });
   } catch (err) {
     console.error("PUT /api/packages error:", err);
@@ -1106,6 +1154,7 @@ app.delete('/api/packages/:id', authenticateAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     await deletePackage(id);
+
     res.json({ success: true });
   } catch (err) {
     console.error("DELETE /api/packages error:", err);
@@ -1121,6 +1170,33 @@ app.post('/api/inquiries', async (req, res) => {
       return res.status(400).json({ error: 'Name, phone, and email are required.' });
     }
     const newInquiry = await addInquiry(inquiry);
+
+    // Notify admins about new inquiry/catering request
+    try {
+      const settings = await getSettings();
+      const inqType = newInquiry.type === 'catering' ? 'Catering Quote Request' : 'Contact Message';
+      const emailHtml = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
+          <h2 style="color: #CC5500;">New Inquiry Received!</h2>
+          <p><strong>Type:</strong> ${inqType}</p>
+          <p><strong>Name:</strong> ${newInquiry.name}</p>
+          <p><strong>Email:</strong> ${newInquiry.email}</p>
+          <p><strong>Phone:</strong> ${newInquiry.phone}</p>
+          ${newInquiry.selectedPackage ? `<p><strong>Selected Package:</strong> ${newInquiry.selectedPackage}</p>` : ''}
+          ${newInquiry.guestCount ? `<p><strong>Guest Count:</strong> ${newInquiry.guestCount}</p>` : ''}
+          <p><strong>Message:</strong></p>
+          <blockquote style="background: #fdf5ef; padding: 12px; border-left: 4px solid #CC5500; font-style: italic;">
+            ${newInquiry.message || '(No message provided)'}
+          </blockquote>
+        </div>
+      `;
+      sendAdminNotificationEmail(settings.admin_emails, `[Inquiry Alert] New ${inqType} from ${newInquiry.name}`, emailHtml).catch(err => {
+        console.error('[SMTP Admin Alert Error] Failed to send inquiry notification to admins:', err);
+      });
+    } catch (adminErr) {
+      console.error('[SMTP Admin Alert Error] Failed to prepare admin alert for new inquiry:', adminErr);
+    }
+
     res.json({ success: true, inquiry: newInquiry });
   } catch (err) {
     console.error("POST /api/inquiries error:", err);
@@ -1145,6 +1221,7 @@ app.put('/api/inquiries/:id', authenticateAdmin, async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
     await updateInquiryStatus(id, status || 'read');
+
     res.json({ success: true });
   } catch (err) {
     console.error("PUT /api/inquiries error:", err);
@@ -1157,6 +1234,7 @@ app.delete('/api/inquiries/:id', authenticateAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     await deleteInquiry(id);
+
     res.json({ success: true });
   } catch (err) {
     console.error("DELETE /api/inquiries error:", err);
@@ -1209,7 +1287,7 @@ app.get('*', (req, res) => {
 });
 
 // Start Server & Run Seeding
-app.listen(PORT, async () => {
+app.listen(PORT, '0.0.0.0', async () => {
   console.log(`Server is running on port ${PORT}`);
   await initializeDatabase();
 });

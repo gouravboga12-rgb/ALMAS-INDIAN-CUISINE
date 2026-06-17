@@ -807,6 +807,7 @@
       text-decoration: underline;
     }
 
+
     /* ---- Light Auth Card (Reference Image Style) ---- */
     .auth-card-light {
       background: #ffffff !important;
@@ -1282,9 +1283,10 @@
 
         <!-- Login Form -->
         <div id="auth-panel-login">
-          <div class="social-login-group" style="margin-bottom:1rem;">
+          <div class="social-login-group" style="margin-bottom:0.75rem;">
             <div id="btn-google-login" style="display:flex; justify-content:center;"></div>
           </div>
+
 
           <div class="auth-divider" style="margin-bottom:1.25rem;">OR</div>
 
@@ -1314,6 +1316,7 @@
             Need to create an account?<button type="button" class="auth-switch-link" id="switch-to-signup">Sign UP</button>
           </div>
         </div>
+
 
         <!-- Sign Up Form -->
         <div id="auth-panel-signup" style="display:none;">
@@ -1615,7 +1618,7 @@
       const tax = parseFloat(order.tax || 0);
       const total = parseFloat(order.total || 0);
       const taxRatePercent = subtotal > 0 ? Math.round((tax / subtotal) * 100) : 14;
-      const dateStr = order.created_at ? new Date(order.created_at).toLocaleString() : (order.date || new Date().toLocaleString());
+      const dateStr = order.created_at ? new Date(order.created_at).toLocaleString('en-CA', { timeZone: 'America/Toronto' }) : (order.date || new Date().toLocaleString('en-CA', { timeZone: 'America/Toronto' }));
 
       const invoiceHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -1787,6 +1790,23 @@
       const badge = document.getElementById('order-count-badge');
       const totalCount = document.getElementById('total-order-count');
 
+      // Guest users have no token — show empty state gracefully
+      if (!token || token === 'guest') {
+        badge.textContent = '0 orders';
+        totalCount.textContent = '0';
+        list.innerHTML = '';
+        if (empty) {
+          empty.style.display = 'block';
+          empty.innerHTML = `
+            <div class="orders-empty-icon">🍽️</div>
+            <h3>Browsing as Guest</h3>
+            <p>Sign in or create an account to track your orders and access exclusive member benefits.</p>
+            <button onclick="window.location.href='/account.html'" class="btn-premium inline-flex text-xs px-8 py-3" style="border:none;cursor:pointer;margin-top:0.5rem;text-decoration:none;">Sign In / Sign Up</button>
+          `;
+        }
+        return;
+      }
+
       try {
         // Fetch menu to populate price map for legacy orders
         try {
@@ -1957,7 +1977,10 @@
     document.addEventListener('DOMContentLoaded', () => {
       const token = localStorage.getItem('almas_token');
       const saved = JSON.parse(localStorage.getItem('almas_account'));
-      if (token && saved) {
+      if (saved && saved.isGuest) {
+        // Guest session — show logged-in view without API call
+        showLoggedIn(saved.name, saved.email);
+      } else if (token && saved) {
         showLoggedIn(saved.name, saved.email, saved.avatar);
         apiGet('/api/user/profile', token)
           .then(data => {
@@ -2170,6 +2193,8 @@
         });
 
       document.getElementById('btn-logout').addEventListener('click', handleLogout);
+
+
     });
   </script>
   <script type="module" src="/src/main.js"></script>

@@ -424,7 +424,7 @@ async function migrate() {
           inq.selectedPackage || null,
           inq.guestCount || null,
           inq.timestamp || Date.now(),
-          inq.dateString || new Date().toLocaleString(),
+          inq.dateString || new Date().toLocaleString('en-CA', { timeZone: 'America/Toronto' }),
           inq.status || 'new'
         ]
       );

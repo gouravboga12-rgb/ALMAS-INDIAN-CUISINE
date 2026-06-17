@@ -904,6 +904,45 @@
     .qr-section.active {
       display: block;
     }
+
+    /* Header Refresh Button Style */
+    .btn-refresh-header {
+      background: rgba(212, 175, 55, 0.1);
+      color: var(--gold);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .btn-refresh-header:hover {
+      background: rgba(212, 175, 55, 0.2);
+      border-color: var(--gold);
+      color: #FFF;
+    }
+
+    .btn-refresh-header:active {
+      transform: scale(0.95);
+    }
+
+    .btn-refresh-header .refresh-icon {
+      display: inline-block;
+      transition: transform 0.5s ease;
+    }
+
+    .btn-refresh-header.spinning .refresh-icon {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -939,7 +978,16 @@
         <img src="/logo.png" alt="ALMAS" class="header-logo">
         <h1 class="header-title">Control Panel</h1>
       </div>
-      <button id="logout-btn" class="btn-logout">Sign Out</button>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button id="header-refresh-btn" class="btn-refresh-header" onclick="window.refreshActivePanel()" title="Refresh Page">
+          <svg class="refresh-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
+          Refresh
+        </button>
+        <button id="logout-btn" class="btn-logout">Sign Out</button>
+      </div>
     </header>
 
     <div class="admin-container">
@@ -948,7 +996,6 @@
         <button class="nav-btn active" data-panel="dashboard-panel">🏠 Dashboard</button>
         <button class="nav-btn" data-panel="inquiries-panel">📩 Inquiries</button>
         <button class="nav-btn" data-panel="orders-panel">🛍️ Takeout Orders</button>
-        <button class="nav-btn" data-panel="notifications-panel">📲 Notifications</button>
         <button class="nav-btn" data-panel="categories-panel">📁 Categories</button>
         <button class="nav-btn" data-panel="products-panel">🍲 Menu Items</button>
         <button class="nav-btn" data-panel="qr-menu-panel">📱 QR Menu Page</button>
@@ -965,7 +1012,6 @@
         <section id="dashboard-panel" class="panel active">
           <div class="panel-header">
             <h2 class="panel-title">Dashboard Overview</h2>
-            <button class="btn-add" onclick="refreshDashboard()" style="background:rgba(212,175,55,0.15);color:var(--gold);border:1px solid rgba(212,175,55,0.3);">🔄 Refresh</button>
           </div>
 
           <!-- Quick Stats Grid -->
@@ -1034,7 +1080,6 @@
             <div style="display:flex;flex-wrap:wrap;gap:10px;">
               <button class="btn-add" onclick="navToPanel('orders-panel')" style="font-size:0.82rem;">🛍️ Takeout Orders</button>
               <button class="btn-add" onclick="navToPanel('inquiries-panel')" style="font-size:0.82rem;background:rgba(204,85,0,0.15);color:var(--primary);border:1px solid rgba(204,85,0,0.3);">📩 Inquiries</button>
-              <button class="btn-add" onclick="navToPanel('notifications-panel')" style="font-size:0.82rem;background:rgba(37,211,102,0.12);color:#25D366;border:1px solid rgba(37,211,102,0.3);">📲 Notifications</button>
               <button class="btn-add" onclick="navToPanel('products-panel')" style="font-size:0.82rem;background:rgba(168,85,247,0.1);color:#a855f7;border:1px solid rgba(168,85,247,0.3);">🍲 Menu Items</button>
               <button class="btn-add" onclick="navToPanel('categories-panel')" style="font-size:0.82rem;background:rgba(59,130,246,0.1);color:#3b82f6;border:1px solid rgba(59,130,246,0.3);">📁 Categories</button>
               <button class="btn-add" onclick="navToPanel('services-panel')" style="font-size:0.82rem;background:rgba(244,114,182,0.1);color:#f472b6;border:1px solid rgba(244,114,182,0.3);">🤝 Catering</button>
@@ -1049,6 +1094,42 @@
           <div class="panel-header">
             <h2 class="panel-title">Inbox Inquiries</h2>
           </div>
+
+          <!-- Search, Type & Date Filter Bar -->
+          <div class="glass-card" style="padding:16px 20px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="form-label" style="margin:0;white-space:nowrap;">Inquiry Type:</span>
+              <select id="inquiry-type-filter" onchange="renderInquiries()" style="width:auto;min-width:140px;">
+                <option value="all">All Types</option>
+                <option value="catering">Catering Quotes</option>
+                <option value="contact">Contact Messages</option>
+              </select>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="form-label" style="margin:0;white-space:nowrap;">Preset:</span>
+              <select id="inquiry-date-preset" onchange="handlePresetChange('inquiry')" style="width:auto;min-width:140px;">
+                <option value="all">All Time</option>
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="last7">Last 7 Days</option>
+                <option value="last30">Last 30 Days</option>
+                <option value="custom">Custom Range</option>
+              </select>
+            </div>
+            
+            <div id="inquiry-custom-date-container" style="display:none;align-items:center;gap:8px;">
+              <input type="date" id="inquiry-date-start" onchange="renderInquiries()" style="width:auto;padding:6px 10px;">
+              <span style="color:var(--text-muted);">to</span>
+              <input type="date" id="inquiry-date-end" onchange="renderInquiries()" style="width:auto;padding:6px 10px;">
+            </div>
+
+            <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+              <span class="form-label" style="margin:0;">Search:</span>
+              <input type="text" id="inquiry-search" oninput="renderInquiries()" placeholder="Name, email, phone..." style="min-width:220px;padding:6px 10px;">
+            </div>
+          </div>
+
           <div class="glass-card table-container">
             <table>
               <thead>
@@ -1084,6 +1165,32 @@
             <button class="qr-sub-btn" id="btn-order-filter-ready" onclick="setOrderFilter('ready')">Ready for Pickup</button>
             <button class="qr-sub-btn" id="btn-order-filter-completed" onclick="setOrderFilter('completed')">Completed</button>
             <button class="qr-sub-btn" id="btn-order-filter-cancelled" onclick="setOrderFilter('cancelled')">Cancelled</button>
+          </div>
+
+          <!-- Search & Date Filter Bar -->
+          <div class="glass-card" style="padding:16px 20px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="form-label" style="margin:0;white-space:nowrap;">Preset:</span>
+              <select id="order-date-preset" onchange="handlePresetChange('order')" style="width:auto;min-width:140px;">
+                <option value="all">All Time</option>
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="last7">Last 7 Days</option>
+                <option value="last30">Last 30 Days</option>
+                <option value="custom">Custom Range</option>
+              </select>
+            </div>
+            
+            <div id="order-custom-date-container" style="display:none;align-items:center;gap:8px;">
+              <input type="date" id="order-date-start" onchange="renderOrders()" style="width:auto;padding:6px 10px;">
+              <span style="color:var(--text-muted);">to</span>
+              <input type="date" id="order-date-end" onchange="renderOrders()" style="width:auto;padding:6px 10px;">
+            </div>
+
+            <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+              <span class="form-label" style="margin:0;">Search:</span>
+              <input type="text" id="order-search" oninput="renderOrders()" placeholder="Name, phone, or order ID..." style="min-width:220px;padding:6px 10px;">
+            </div>
           </div>
 
           <div class="glass-card table-container">
@@ -1265,6 +1372,23 @@
               </div>
             </div>
 
+            <!-- Admin Notification Emails -->
+            <div class="glass-card settings-section">
+              <h3 class="settings-section-title">📧 Admin Notification Emails</h3>
+              <div class="form-group">
+                <label class="form-label">Admin Email 1</label>
+                <input type="email" id="setting-admin-email-1" required placeholder="E.g., almasindiancuisine@gmail.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Admin Email 2</label>
+                <input type="email" id="setting-admin-email-2" placeholder="E.g., manager@almas.ca">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Admin Email 3</label>
+                <input type="email" id="setting-admin-email-3" placeholder="E.g., info@almas.ca">
+              </div>
+            </div>
+
             <!-- Financial & Tax Settings -->
             <div class="glass-card settings-section">
               <h3 class="settings-section-title">💸 Financial & Tax Settings</h3>
@@ -1285,6 +1409,33 @@
           <div class="panel-header">
             <h2 class="panel-title">Customer Details</h2>
           </div>
+
+          <!-- Customer Search & Date Filter Bar -->
+          <div class="glass-card" style="padding:16px 20px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="form-label" style="margin:0;white-space:nowrap;">Registration Preset:</span>
+              <select id="customer-date-preset" onchange="handlePresetChange('customer')" style="width:auto;min-width:140px;">
+                <option value="all">All Time</option>
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="last7">Last 7 Days</option>
+                <option value="last30">Last 30 Days</option>
+                <option value="custom">Custom Range</option>
+              </select>
+            </div>
+            
+            <div id="customer-custom-date-container" style="display:none;align-items:center;gap:8px;">
+              <input type="date" id="customer-date-start" onchange="renderCustomers()" style="width:auto;padding:6px 10px;">
+              <span style="color:var(--text-muted);">to</span>
+              <input type="date" id="customer-date-end" onchange="renderCustomers()" style="width:auto;padding:6px 10px;">
+            </div>
+
+            <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+              <span class="form-label" style="margin:0;">Search:</span>
+              <input type="text" id="customer-search" oninput="renderCustomers()" placeholder="Name, email, phone or ID..." style="min-width:220px;padding:6px 10px;">
+            </div>
+          </div>
+
           <div class="glass-card table-container">
             <table>
               <thead>
@@ -1302,63 +1453,6 @@
                 <!-- Dynamically loaded -->
               </tbody>
             </table>
-          </div>
-        </section>
-
-        <!-- ================= PANEL: NOTIFICATIONS ================= -->
-        <section id="notifications-panel" class="panel">
-          <div class="panel-header">
-            <h2 class="panel-title">📲 Order Notifications</h2>
-            <div style="display:flex;gap:10px;align-items:center;">
-              <span style="font-size:0.8rem;color:var(--text-muted);">via WhatsApp</span>
-              <button class="btn-add" onclick="loadNotificationsPanel()" style="background:rgba(37,211,102,0.15);color:#25D366;border:1px solid rgba(37,211,102,0.3);font-size:0.82rem;">🔄 Refresh</button>
-            </div>
-          </div>
-
-          <!-- Info Banner -->
-          <div class="glass-card" style="padding:16px 20px;margin-bottom:22px;border-left:3px solid #25D366;display:flex;gap:14px;align-items:flex-start;">
-            <span style="font-size:1.8rem;">💬</span>
-            <div>
-              <div style="font-weight:700;color:#fff;margin-bottom:4px;">WhatsApp Order Communication Center</div>
-              <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.5;">Send instant WhatsApp messages to customers — order ready alerts, delay notices, and collection reminders. Click any template button to open WhatsApp with a pre-filled message. Customer phone numbers are pulled from their order details.</div>
-            </div>
-          </div>
-
-          <!-- Filters + Country Code -->
-          <div class="glass-card" style="padding:16px 20px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;">
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span class="form-label" style="margin:0;white-space:nowrap;">Filter by Status:</span>
-              <select id="notif-status-filter" onchange="renderNotifications()" style="width:auto;min-width:180px;">
-                <option value="all">All Orders</option>
-                <option value="Pending Payment (Store Pickup)">Pending Payment</option>
-                <option value="Paid Online">Paid Online</option>
-                <option value="Preparing">Preparing</option>
-                <option value="Ready">Ready for Pickup</option>
-                <option value="Completed">Completed</option>
-                <option value="Cancelled">Cancelled</option>
-              </select>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span class="form-label" style="margin:0;white-space:nowrap;">Country Code:</span>
-              <select id="notif-country-code" style="width:auto;min-width:120px;">
-                <option value="91">🇮🇳 +91 India</option>
-                <option value="1">🇨🇦 +1 Canada</option>
-                <option value="1-us">🇺🇸 +1 USA</option>
-                <option value="44">🇬🇧 +44 UK</option>
-                <option value="971">🇦🇪 +971 UAE</option>
-                <option value="65">🇸🇬 +65 Singapore</option>
-                <option value="61">🇦🇺 +61 Australia</option>
-              </select>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
-              <span class="form-label" style="margin:0;">Search:</span>
-              <input type="text" id="notif-search" oninput="renderNotifications()" placeholder="Name or order ID..." style="min-width:200px;">
-            </div>
-          </div>
-
-          <!-- Notification Cards Grid -->
-          <div id="notifications-grid" style="display:flex;flex-direction:column;gap:18px;">
-            <div style="text-align:center;padding:40px;color:var(--text-muted);">Loading orders...</div>
           </div>
         </section>
 
@@ -1653,6 +1747,101 @@
     let cachedPackages = [];
     let cachedInquiries = [];
     let cachedOrders = [];
+    let cachedCustomers = [];
+
+    // Toronto Date matching helper
+    function isDateMatch(timestamp, filterType, startInputVal, endInputVal) {
+      if (filterType === 'all') return true;
+      if (!timestamp) return false;
+      
+      const itemDate = new Date(timestamp);
+      if (isNaN(itemDate.getTime())) return false;
+      
+      // Get current date/time in Toronto timezone
+      const nowToronto = new Date();
+      
+      // Helper to get YYYY-MM-DD in Toronto
+      const getTorontoYMD = (date) => {
+        const formatter = new Intl.DateTimeFormat('en-US', {
+          timeZone: 'America/Toronto',
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric'
+        });
+        const parts = formatter.formatToParts(date);
+        let month = '', day = '', year = '';
+        for (const part of parts) {
+          if (part.type === 'month') month = part.value.padStart(2, '0');
+          if (part.type === 'day') day = part.value.padStart(2, '0');
+          if (part.type === 'year') year = part.value;
+        }
+        return `${year}-${month}-${day}`;
+      };
+
+      const itemYMD = getTorontoYMD(itemDate);
+      const nowYMD = getTorontoYMD(nowToronto);
+
+      if (filterType === 'today') {
+        return itemYMD === nowYMD;
+      }
+      
+      if (filterType === 'yesterday') {
+        const yesterday = new Date(nowToronto.getTime() - 24 * 60 * 60 * 1000);
+        const yesterdayYMD = getTorontoYMD(yesterday);
+        return itemYMD === yesterdayYMD;
+      }
+      
+      if (filterType === 'last7') {
+        const sevenDaysAgo = new Date(nowToronto.getTime() - 7 * 24 * 60 * 60 * 1000);
+        const itemDateToronto = new Date(itemYMD + 'T00:00:00');
+        const limitDateToronto = new Date(getTorontoYMD(sevenDaysAgo) + 'T00:00:00');
+        return itemDateToronto >= limitDateToronto;
+      }
+      
+      if (filterType === 'last30') {
+        const thirtyDaysAgo = new Date(nowToronto.getTime() - 30 * 24 * 60 * 60 * 1000);
+        const itemDateToronto = new Date(itemYMD + 'T00:00:00');
+        const limitDateToronto = new Date(getTorontoYMD(thirtyDaysAgo) + 'T00:00:00');
+        return itemDateToronto >= limitDateToronto;
+      }
+      
+      if (filterType === 'custom') {
+        if (!startInputVal && !endInputVal) return true;
+        const itemDateToronto = new Date(itemYMD + 'T00:00:00');
+        if (startInputVal) {
+          const startLimit = new Date(startInputVal + 'T00:00:00');
+          if (itemDateToronto < startLimit) return false;
+        }
+        if (endInputVal) {
+          const endLimit = new Date(endInputVal + 'T00:00:00');
+          if (itemDateToronto > endLimit) return false;
+        }
+        return true;
+      }
+      
+      return true;
+    }
+
+    window.handlePresetChange = function(type) {
+      const select = document.getElementById(`${type}-date-preset`);
+      const container = document.getElementById(`${type}-custom-date-container`);
+      if (select && container) {
+        if (select.value === 'custom') {
+          container.style.display = 'inline-flex';
+        } else {
+          container.style.display = 'none';
+          const startInput = document.getElementById(`${type}-date-start`);
+          const endInput = document.getElementById(`${type}-date-end`);
+          if (startInput) startInput.value = '';
+          if (endInput) endInput.value = '';
+        }
+      }
+      
+      if (type === 'order') renderOrders();
+      if (type === 'inquiry') renderInquiries();
+      if (type === 'notif') renderNotifications();
+      if (type === 'customer') renderCustomers();
+    };
 
     function getItemNameAndPrice(itemStr) {
       const parts = String(itemStr).split(' - $');
@@ -1863,16 +2052,46 @@
       const data = await apiFetch('/api/inquiries');
       if (!data) return;
       cachedInquiries = data;
+      renderInquiries();
+    }
 
+    window.renderInquiries = function() {
+      if (!cachedInquiries) return;
       const tbody = document.getElementById('inquiries-table-body');
       tbody.innerHTML = '';
 
-      if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted)">No inquiries received in the inbox.</td></tr>`;
+      const typeFilter = document.getElementById('inquiry-type-filter')?.value || 'all';
+      const datePreset = document.getElementById('inquiry-date-preset')?.value || 'all';
+      const startVal = document.getElementById('inquiry-date-start')?.value || '';
+      const endVal = document.getElementById('inquiry-date-end')?.value || '';
+      const search = (document.getElementById('inquiry-search')?.value || '').toLowerCase().trim();
+
+      let filtered = cachedInquiries;
+
+      // Filter by type
+      if (typeFilter !== 'all') {
+        filtered = filtered.filter(inq => inq.type === typeFilter);
+      }
+
+      // Filter by date range
+      filtered = filtered.filter(inq => isDateMatch(inq.timestamp, datePreset, startVal, endVal));
+
+      // Filter by search
+      if (search) {
+        filtered = filtered.filter(inq =>
+          (inq.name || '').toLowerCase().includes(search) ||
+          (inq.email || '').toLowerCase().includes(search) ||
+          (inq.phone || '').includes(search) ||
+          (inq.requirements || inq.message || '').toLowerCase().includes(search)
+        );
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted)">No inquiries match the filters.</td></tr>`;
         return;
       }
 
-      data.forEach(inq => {
+      filtered.forEach(inq => {
         const tr = document.createElement('tr');
         
         const typeBadge = inq.type === 'catering' ? `<span class="badge-p" style="background:rgba(212,175,55,0.15); color:var(--gold)">Catering</span>` :
@@ -1887,8 +2106,11 @@
         const detailExcerpt = inq.requirements ? inq.requirements.substring(0, 50) + (inq.requirements.length > 50 ? '...' : '') :
                                (inq.message ? inq.message.substring(0, 50) + (inq.message.length > 50 ? '...' : '') : '');
 
+        // Localized date formatting
+        const displayDate = inq.dateString || (inq.timestamp ? new Date(inq.timestamp).toLocaleString('en-CA', { timeZone: 'America/Toronto' }) : 'N/A');
+
         tr.innerHTML = `
-          <td style="white-space:nowrap">${inq.dateString || new Date(inq.timestamp).toLocaleDateString()}</td>
+          <td style="white-space:nowrap">${displayDate}</td>
           <td>${typeBadge}</td>
           <td style="font-weight:600">${inq.name}</td>
           <td style="font-size:0.8rem">
@@ -1910,15 +2132,17 @@
         `;
         tbody.appendChild(tr);
       });
-    }
+    };
 
     window.viewInquiryDetail = async function(id) {
       const inq = cachedInquiries.find(i => i.id === id);
       if (!inq) return;
 
+      const displayDate = inq.dateString || (inq.timestamp ? new Date(inq.timestamp).toLocaleString('en-CA', { timeZone: 'America/Toronto' }) : 'N/A');
+
       const body = document.getElementById('inquiry-modal-body');
       body.innerHTML = `
-        <div style="margin-bottom: 12px;"><strong>Date Received:</strong> ${inq.dateString || new Date(inq.timestamp).toLocaleString()}</div>
+        <div style="margin-bottom: 12px;"><strong>Date Received:</strong> ${displayDate}</div>
         <div style="margin-bottom: 12px;"><strong>Fulfillment Type:</strong> ${inq.type ? inq.type.toUpperCase() : 'N/A'}</div>
         <div style="margin-bottom: 12px;"><strong>Customer Name:</strong> ${inq.name}</div>
         <div style="margin-bottom: 12px;"><strong>Customer Email:</strong> ${inq.email}</div>
@@ -2857,6 +3081,12 @@
 
       // Tax Rate
       document.getElementById('setting-tax-rate').value = data.tax_rate !== undefined ? data.tax_rate : 14;
+
+      // Admin Emails
+      const adminEmails = data.admin_emails || {};
+      document.getElementById('setting-admin-email-1').value = adminEmails.email_1 || '';
+      document.getElementById('setting-admin-email-2').value = adminEmails.email_2 || '';
+      document.getElementById('setting-admin-email-3').value = adminEmails.email_3 || '';
     }
 
     document.getElementById('settings-form').addEventListener('submit', async (e) => {
@@ -2883,7 +3113,12 @@
           doordash: document.getElementById('setting-delivery-doordash').value.trim(),
           skip: document.getElementById('setting-delivery-skip').value.trim()
         },
-        tax_rate: isNaN(taxInputVal) ? 14 : taxInputVal
+        tax_rate: isNaN(taxInputVal) ? 14 : taxInputVal,
+        admin_emails: {
+          email_1: document.getElementById('setting-admin-email-1').value.trim(),
+          email_2: document.getElementById('setting-admin-email-2').value.trim(),
+          email_3: document.getElementById('setting-admin-email-3').value.trim()
+        }
       };
 
       const result = await apiFetch('/api/settings', {
@@ -2913,20 +3148,45 @@
     async function loadCustomersList() {
       const data = await apiFetch('/api/admin/customers');
       if (!data) return;
+      cachedCustomers = data;
+      renderCustomers();
+    }
 
+    window.renderCustomers = function() {
+      if (!cachedCustomers) return;
       const tbody = document.getElementById('customers-table-body');
       tbody.innerHTML = '';
 
-      if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted)">No registered customers found.</td></tr>`;
+      const datePreset = document.getElementById('customer-date-preset')?.value || 'all';
+      const startVal = document.getElementById('customer-date-start')?.value || '';
+      const endVal = document.getElementById('customer-date-end')?.value || '';
+      const search = (document.getElementById('customer-search')?.value || '').toLowerCase().trim();
+
+      let filtered = cachedCustomers;
+
+      // Filter by date range
+      filtered = filtered.filter(user => isDateMatch(user.created_at, datePreset, startVal, endVal));
+
+      // Filter by search
+      if (search) {
+        filtered = filtered.filter(user =>
+          (user.name || '').toLowerCase().includes(search) ||
+          (user.email || '').toLowerCase().includes(search) ||
+          (user.phone || '').includes(search) ||
+          (user.id || '').toLowerCase().includes(search)
+        );
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted)">No registered customers match the filters.</td></tr>`;
         return;
       }
 
-      data.forEach(user => {
+      filtered.forEach(user => {
         const tr = document.createElement('tr');
         
-        // Format date
-        const regDate = user.created_at ? new Date(user.created_at).toLocaleString() : 'N/A';
+        // Format date in America/Toronto
+        const regDate = user.created_at ? new Date(user.created_at).toLocaleString('en-CA', { timeZone: 'America/Toronto' }) : 'N/A';
 
         tr.innerHTML = `
           <td style="font-family: monospace; color: var(--gold);">${user.id}</td>
@@ -2941,7 +3201,7 @@
         `;
         tbody.appendChild(tr);
       });
-    }
+    };
 
     window.deleteCustomerClick = async function(id) {
       if (!confirm('Are you sure you want to delete this customer? This will permanently remove their account.')) return;
@@ -3072,16 +3332,33 @@
         filtered = cachedOrders.filter(o => o.status === 'Cancelled');
       }
 
+      // Date Filter
+      const datePreset = document.getElementById('order-date-preset')?.value || 'all';
+      const startVal = document.getElementById('order-date-start')?.value || '';
+      const endVal = document.getElementById('order-date-end')?.value || '';
+      filtered = filtered.filter(o => isDateMatch(o.created_at, datePreset, startVal, endVal));
+
+      // Search Filter
+      const search = (document.getElementById('order-search')?.value || '').toLowerCase().trim();
+      if (search) {
+        filtered = filtered.filter(o =>
+          (o.name || '').toLowerCase().includes(search) ||
+          (o.phone || '').includes(search) ||
+          (o.id || '').toLowerCase().includes(search) ||
+          (o.email || '').toLowerCase().includes(search)
+        );
+      }
+
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted)">No orders found for the selected status.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted)">No orders found matching the filters.</td></tr>`;
         return;
       }
 
       filtered.forEach(order => {
         const tr = document.createElement('tr');
         
-        // Date and ID
-        const dateStr = order.created_at ? new Date(order.created_at).toLocaleString() : 'N/A';
+        // Date and ID formatted in America/Toronto
+        const dateStr = order.created_at ? new Date(order.created_at).toLocaleString('en-CA', { timeZone: 'America/Toronto' }) : 'N/A';
         
         // Customer Details
         const customerHtml = `
@@ -3250,7 +3527,7 @@
             return `<div class="dash-recent-row" onclick="navToPanel('orders-panel')">
               <div>
                 <div style="font-size:0.82rem;font-weight:700;color:#fff;">${escapeHTML(o.id)}</div>
-                <div style="font-size:0.72rem;color:var(--text-muted);">${escapeHTML(o.name)} &bull; ${o.created_at ? new Date(o.created_at).toLocaleDateString() : ''}</div>
+                <div style="font-size:0.72rem;color:var(--text-muted);">${escapeHTML(o.name)} &bull; ${o.created_at ? new Date(o.created_at).toLocaleDateString('en-CA', { timeZone: 'America/Toronto' }) : ''}</div>
               </div>
               <div style="text-align:right;">
                 <div style="font-size:0.85rem;font-weight:700;color:var(--gold);">$${parseFloat(o.total||0).toFixed(2)}</div>
@@ -3292,7 +3569,7 @@
             return `<div class="dash-recent-row" onclick="navToPanel('inquiries-panel')">
               <div>
                 <div style="font-size:0.82rem;font-weight:700;color:#fff;">${escapeHTML(i.name || 'Unknown')}</div>
-                <div style="font-size:0.72rem;color:var(--text-muted);">${escapeHTML(i.type || '')} &bull; ${i.created_at ? new Date(i.created_at).toLocaleDateString() : ''}</div>
+                <div style="font-size:0.72rem;color:var(--text-muted);">${escapeHTML(i.type || '')} &bull; ${(i.timestamp || i.created_at) ? new Date(i.timestamp || i.created_at).toLocaleDateString('en-CA', { timeZone: 'America/Toronto' }) : ''}</div>
               </div>
               <span style="font-size:0.68rem;font-weight:700;padding:3px 8px;border-radius:4px;background:${isNew ? 'rgba(204,85,0,0.15)' : 'rgba(16,185,129,0.15)'};color:${isNew ? 'var(--primary)' : 'var(--success)'}">${isNew ? 'NEW' : 'READ'}</span>
             </div>`;
@@ -3379,10 +3656,17 @@
 
       const statusFilter = document.getElementById('notif-status-filter')?.value || 'all';
       const search = (document.getElementById('notif-search')?.value || '').toLowerCase().trim();
+      const datePreset = document.getElementById('notif-date-preset')?.value || 'all';
+      const startVal = document.getElementById('notif-date-start')?.value || '';
+      const endVal = document.getElementById('notif-date-end')?.value || '';
 
       // Only show notifications that haven't been dismissed
       let filtered = cachedOrders.filter(o => o.dismissed_notification !== 1);
       if (statusFilter !== 'all') filtered = filtered.filter(o => o.status === statusFilter);
+      
+      // Date Filter
+      filtered = filtered.filter(o => isDateMatch(o.created_at, datePreset, startVal, endVal));
+      
       if (search) filtered = filtered.filter(o =>
         (o.name || '').toLowerCase().includes(search) ||
         (o.id || '').toLowerCase().includes(search) ||
@@ -3392,8 +3676,8 @@
       if (filtered.length === 0) {
         grid.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--text-muted);">
           <div style="font-size:2.5rem;margin-bottom:12px;">📭</div>
-          <div style="font-size:1rem;font-weight:600;">No orders match the selected filter</div>
-          <div style="font-size:0.82rem;margin-top:6px;">Try changing the status filter or search term</div>
+          <div style="font-size:1rem;font-weight:600;">No orders match the selected filters</div>
+          <div style="font-size:0.82rem;margin-top:6px;">Try changing the status, date filters, or search term</div>
         </div>`;
         return;
       }
@@ -3410,7 +3694,7 @@
       grid.innerHTML = filtered.map((order, idx) => {
         const hasPhone = !!(order.phone);
         const sc = statusColors[order.status] || { bg: 'rgba(255,255,255,0.08)', color: 'var(--text-muted)' };
-        const dateStr = order.created_at ? new Date(order.created_at).toLocaleDateString() : '';
+        const dateStr = order.created_at ? new Date(order.created_at).toLocaleDateString('en-CA', { timeZone: 'America/Toronto' }) : '';
         const itemsText = Array.isArray(order.items)
           ? order.items.map(i => typeof i === 'object' ? `${i.quantity || 1}x ${i.name}` : i).join(', ')
           : (order.items || '').split(' / ').join(', ');
@@ -3468,7 +3752,7 @@
       const subtotal = parseFloat(order.total || 0) - parseFloat(order.tax || 0);
       const tax = parseFloat(order.tax || 0);
       const total = parseFloat(order.total || 0);
-      const dateStr = order.created_at ? new Date(order.created_at).toLocaleString() : 'N/A';
+      const dateStr = order.created_at ? new Date(order.created_at).toLocaleString('en-CA', { timeZone: 'America/Toronto' }) : 'N/A';
 
       return `<!DOCTYPE html>
 <html lang="en">
@@ -3674,6 +3958,69 @@
     function setupEventListeners() {
       // Toggle dropdown values or triggers if needed
     }
+
+    window.navToPanel = function(panelId) {
+      const navButtons = document.querySelectorAll('.nav-btn');
+      const matchingBtn = Array.from(navButtons).find(btn => btn.dataset.panel === panelId);
+      if (matchingBtn) {
+        matchingBtn.click();
+      }
+    };
+
+    window.refreshActivePanel = async function() {
+      const activePanel = localStorage.getItem('admin_active_panel') || 'dashboard-panel';
+      const refreshBtn = document.getElementById('header-refresh-btn');
+      
+      if (refreshBtn) {
+        refreshBtn.classList.add('spinning');
+        refreshBtn.disabled = true;
+      }
+
+      try {
+        showToast('Refreshing page contents...');
+        switch (activePanel) {
+          case 'dashboard-panel':
+            await loadDashboardData();
+            break;
+          case 'inquiries-panel':
+            await loadInquiries();
+            break;
+          case 'orders-panel':
+            await loadOrders();
+            break;
+          case 'categories-panel':
+          case 'products-panel':
+            await loadMenuCatalog();
+            break;
+          case 'qr-menu-panel':
+            await loadQRMenuCatalog();
+            break;
+          case 'services-panel':
+            await loadCateringServices();
+            break;
+          case 'packages-panel':
+            await loadCateringPackages();
+            break;
+          case 'settings-panel':
+            await loadSettings();
+            break;
+          case 'customers-panel':
+            await loadCustomersList();
+            break;
+          default:
+            await loadDashboardData();
+        }
+        showToast('Refreshed successfully!');
+      } catch (err) {
+        console.error(err);
+        showToast('Failed to refresh data.', 'danger');
+      } finally {
+        if (refreshBtn) {
+          refreshBtn.classList.remove('spinning');
+          refreshBtn.disabled = false;
+        }
+      }
+    };
   </script>
 
   <!-- EDIT ORDER MODAL -->

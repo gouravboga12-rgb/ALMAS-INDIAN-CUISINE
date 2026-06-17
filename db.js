@@ -53,7 +53,12 @@ const defaultSettings = {
     doordash: "https://www.doordash.com/",
     skip: "https://www.skipthedishes.com/"
   },
-  tax_rate: 14
+  tax_rate: 14,
+  admin_emails: {
+    email_1: "almasindiancuisine@gmail.com",
+    email_2: "",
+    email_3: ""
+  }
 };
 
 const defaultServices = [
@@ -856,16 +861,30 @@ export async function deleteQRCategory(id) {
 
 // ─── SETTINGS
 export async function getSettings() {
+  let parsed = {};
   if (pool) {
     const [rows] = await pool.query("SELECT val FROM settings WHERE id='global'");
     if (rows.length > 0) {
-      return JSON.parse(rows[0].val);
+      try {
+        parsed = JSON.parse(rows[0].val);
+      } catch (err) {
+        parsed = {};
+      }
+    } else {
+      return defaultSettings;
     }
-    return defaultSettings;
   } else {
     const db = readJSONDB();
-    return db.settings || defaultSettings;
+    parsed = db.settings || {};
   }
+  return {
+    ...defaultSettings,
+    ...parsed,
+    timings: { ...defaultSettings.timings, ...(parsed.timings || {}) },
+    socials: { ...defaultSettings.socials, ...(parsed.socials || {}) },
+    delivery: { ...defaultSettings.delivery, ...(parsed.delivery || {}) },
+    admin_emails: { ...defaultSettings.admin_emails, ...(parsed.admin_emails || {}) }
+  };
 }
 
 export async function updateSettings(s) {
@@ -1009,7 +1028,7 @@ export async function addInquiry(inq) {
     ...inq,
     id: inq.id || 'inq-' + Date.now() + '-' + Math.round(Math.random() * 1000),
     timestamp: Date.now(),
-    dateString: new Date().toLocaleString(),
+    dateString: new Date().toLocaleString('en-CA', { timeZone: 'America/Toronto' }),
     status: 'new'
   };
 
