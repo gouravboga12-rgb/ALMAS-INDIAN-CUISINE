@@ -905,12 +905,12 @@ body:has(#checkout-prompt-overlay.open) .whatsapp-float {
 }
 
 .footer-legal-links {
-  opacity: 0.85 !important;
+  opacity: 1 !important;
   font-size: 0.7rem !important;
-  letter-spacing: 0.15em !important;
+  letter-spacing: 0.12em !important;
 }
 .footer-legal-links a {
-  color: rgba(255, 255, 255, 0.75) !important;
+  color: rgba(255, 255, 255, 0.4) !important; /* Dimmed light-gray color */
   text-decoration: none !important;
   transition: color 0.3s ease !important;
 }
@@ -918,7 +918,7 @@ body:has(#checkout-prompt-overlay.open) .whatsapp-float {
   color: #D4AF37 !important;
 }
 .footer-legal-links span {
-  color: rgba(255, 255, 255, 0.25) !important;
+  color: rgba(255, 255, 255, 0.18) !important; /* Separator lines */
 }
 
 .footer-social-links {
