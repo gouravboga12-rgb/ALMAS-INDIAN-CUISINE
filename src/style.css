@@ -901,7 +901,24 @@ body:has(#checkout-prompt-overlay.open) .whatsapp-float {
 
 /* Footer Adjustments */
 .footer-bottom-container {
-  @apply border-t border-white/5 pt-16 flex flex-col md:flex-row justify-between items-center text-white/20 text-[10px] uppercase tracking-[0.4em] px-6 md:px-12;
+  @apply border-t border-white/5 pt-16 pb-8 flex flex-col justify-center items-center text-center text-white/40 text-[10px] uppercase tracking-[0.4em] px-6 md:px-12 gap-4;
+}
+
+.footer-legal-links {
+  opacity: 0.85 !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.15em !important;
+}
+.footer-legal-links a {
+  color: rgba(255, 255, 255, 0.75) !important;
+  text-decoration: none !important;
+  transition: color 0.3s ease !important;
+}
+.footer-legal-links a:hover {
+  color: #D4AF37 !important;
+}
+.footer-legal-links span {
+  color: rgba(255, 255, 255, 0.25) !important;
 }
 
 .footer-social-links {
