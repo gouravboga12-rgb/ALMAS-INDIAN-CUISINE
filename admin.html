@@ -4,6 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | ALMAS Indian Cuisine</title>
+  <script>
+    // Strict admin access control check before rendering the page body
+    (function() {
+      const hasUserToken = !!localStorage.getItem('almas_token');
+      const hasAdminToken = !!localStorage.getItem('almas_admin_token');
+      if (hasUserToken && !hasAdminToken) {
+        window.location.replace('/account.html');
+      }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
@@ -1898,6 +1908,10 @@
         document.getElementById('dashboard-screen').style.display = 'flex';
         loadDashboardData();
       } else {
+        if (localStorage.getItem('almas_token')) {
+          window.location.replace('/account.html');
+          return;
+        }
         document.getElementById('auth-screen').style.display = 'flex';
         document.getElementById('dashboard-screen').style.display = 'none';
       }
