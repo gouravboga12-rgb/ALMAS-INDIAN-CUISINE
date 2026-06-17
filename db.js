@@ -78,7 +78,7 @@ const defaultServices = [
     title: "Dine-In Experience",
     description: "Enjoy a warm and inviting atmosphere inspired by Hyderabadi hospitality, serving authentic Indian and Lebanese flavors. A perfect blend of tradition, comfort, and rich culinary heritage.",
     image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop",
-    link: "/contact.html",
+    link: "/reservations",
     linkText: "Book a Table",
     order: 2
   },
