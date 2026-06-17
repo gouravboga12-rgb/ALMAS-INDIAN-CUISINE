@@ -1741,6 +1741,67 @@
     </div>
   </div>
 
+  <!-- EDIT ORDER MODAL -->
+  <div id="edit-order-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-content glass-card" style="max-width:620px; width:95%;">
+      <div class="modal-header">
+        <h3 class="modal-title">&#9999; Edit Order</h3>
+        <button class="modal-close" onclick="closeModal('edit-order-modal')">&#x2715;</button>
+      </div>
+      <form id="edit-order-form" class="modal-form-grid">
+        <input type="hidden" id="edit-order-id">
+
+        <div class="form-group">
+          <label class="form-label">Order ID</label>
+          <input type="text" id="edit-order-id-display" disabled style="opacity:0.5; cursor:not-allowed;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Customer Name</label>
+          <input type="text" id="edit-order-name" disabled style="opacity:0.6;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="edit-order-email" disabled style="opacity:0.6;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input type="tel" id="edit-order-phone" disabled style="opacity:0.6;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Pickup Time</label>
+          <input type="text" id="edit-order-time" disabled style="opacity:0.6;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="color:var(--primary);">Order Status (Editable)</label>
+          <select id="edit-order-status" style="width:100%; padding: 8px 12px; font-size: 0.85rem; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main);">
+            <option value="Pending Payment (Store Pickup)">Pending Payment (Store Pickup)</option>
+            <option value="Paid Online">Paid Online</option>
+            <option value="Preparing">Preparing</option>
+            <option value="Ready">Ready for Pickup</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <div class="form-group col-span-2">
+          <label class="form-label">Ordered Items (Read-only)</label>
+          <textarea id="edit-order-items" rows="6" disabled style="opacity:0.6; font-size:0.82rem; line-height:1.7;"></textarea>
+          <span style="font-size:0.7rem; color:var(--text-muted);">Items shown for reference only.</span>
+        </div>
+
+        <div class="modal-footer col-span-2">
+          <button type="button" class="btn-cancel" onclick="closeModal('edit-order-modal')">Cancel</button>
+          <button type="submit" class="btn-submit" style="width:auto; margin-top:0;">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- CLIENT SCRIPTS -->
   <script>
     // Configuration
@@ -4036,66 +4097,5 @@
       }
     };
   </script>
-
-  <!-- EDIT ORDER MODAL -->
-  <div id="edit-order-modal" class="modal-overlay" style="display:none;">
-    <div class="modal-content glass-card" style="max-width:620px; width:95%;">
-      <div class="modal-header">
-        <h3 class="modal-title">&#9999; Edit Order</h3>
-        <button class="modal-close" onclick="closeModal('edit-order-modal')">&#x2715;</button>
-      </div>
-      <form id="edit-order-form" class="modal-form-grid">
-        <input type="hidden" id="edit-order-id">
-
-        <div class="form-group">
-          <label class="form-label">Order ID</label>
-          <input type="text" id="edit-order-id-display" disabled style="opacity:0.5; cursor:not-allowed;">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Customer Name</label>
-          <input type="text" id="edit-order-name" disabled style="opacity:0.6;">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" id="edit-order-email" disabled style="opacity:0.6;">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Phone</label>
-          <input type="tel" id="edit-order-phone" disabled style="opacity:0.6;">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Pickup Time</label>
-          <input type="text" id="edit-order-time" disabled style="opacity:0.6;">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" style="color:var(--primary);">Order Status (Editable)</label>
-          <select id="edit-order-status" style="width:100%; padding: 8px 12px; font-size: 0.85rem; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main);">
-            <option value="Pending Payment (Store Pickup)">Pending Payment (Store Pickup)</option>
-            <option value="Paid Online">Paid Online</option>
-            <option value="Preparing">Preparing</option>
-            <option value="Ready">Ready for Pickup</option>
-            <option value="Completed">Completed</option>
-            <option value="Cancelled">Cancelled</option>
-          </select>
-        </div>
-
-        <div class="form-group col-span-2">
-          <label class="form-label">Ordered Items (Read-only)</label>
-          <textarea id="edit-order-items" rows="6" disabled style="opacity:0.6; font-size:0.82rem; line-height:1.7;"></textarea>
-          <span style="font-size:0.7rem; color:var(--text-muted);">Items shown for reference only.</span>
-        </div>
-
-        <div class="modal-footer col-span-2">
-          <button type="button" class="btn-cancel" onclick="closeModal('edit-order-modal')">Cancel</button>
-          <button type="submit" class="btn-submit" style="width:auto; margin-top:0;">Save Changes</button>
-        </div>
-      </form>
-    </div>
-  </div>
 </body>
 </html>

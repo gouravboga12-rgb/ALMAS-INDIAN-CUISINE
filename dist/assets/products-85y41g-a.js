@@ -1,4 +1,4 @@
-import{l as e,s as t,u as n}from"./main-BYyKFm1w.js";var r=n(e(),1);async function i(){try{let e=await fetch(`/api/menu`);if(!e.ok){a();return}let t=await e.json(),n=document.getElementById(`dynamic-mobile-quick-nav`);n&&(n.innerHTML=`
+import{l as e,s as t,u as n}from"./main-BEG6eN0f.js";var r=n(e(),1);async function i(){try{let e=await fetch(`/api/menu`);if(!e.ok){a();return}let t=await e.json(),n=document.getElementById(`dynamic-mobile-quick-nav`);n&&(n.innerHTML=`
             <button class="category-btn pb-1 text-xs font-semibold uppercase tracking-wider text-primary border-b-2 border-primary active whitespace-nowrap cursor-pointer" data-category="all">All</button>
             ${t.categories.sort((e,t)=>e.order-t.order).map(e=>`
               <button class="category-btn pb-1 text-xs font-semibold uppercase tracking-wider text-text-primary hover:text-primary transition-all whitespace-nowrap cursor-pointer" data-category="${e.id}">${e.name}</button>
@@ -54,7 +54,7 @@ import{l as e,s as t,u as n}from"./main-BYyKFm1w.js";var r=n(e(),1);async functi
                   grand family dinner, Almas brings the authentic flavors of Hyderabad and the Middle East to your table.</p>
                 <div class="flex flex-col sm:flex-row justify-center gap-6">
                   <a href="/order.html" class="btn-premium px-12 py-4">Order for Delivery</a>
-                  <a href="/contact.html"
+                  <a href="/reservations"
                     class="border border-white/20 hover:bg-white/10 px-12 py-4 rounded-full transition-all uppercase tracking-widest text-[10px] font-bold flex items-center justify-center">Reserve
                     a Table</a>
                 </div>

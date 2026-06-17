@@ -1262,7 +1262,7 @@ app.use((req, res, next) => {
     return next();
   }
 
-  const cleanRoutes = ['menu', 'account', 'products', 'order', 'product-detail', 'about', 'services', 'contact', 'admin', 'terms', 'privacy', 'refunds'];
+  const cleanRoutes = ['menu', 'account', 'products', 'order', 'product-detail', 'about', 'services', 'contact', 'admin', 'terms', 'privacy', 'refunds', 'reservations'];
   const baseName = pathname.replace(/^\/|\/$/g, ''); // strip leading/trailing slashes
 
   if (cleanRoutes.includes(baseName)) {

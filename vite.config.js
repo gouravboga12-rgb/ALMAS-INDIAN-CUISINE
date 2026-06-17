@@ -27,6 +27,8 @@ export default defineConfig({
             req.url = '/privacy.html';
           } else if (pathname === '/refunds') {
             req.url = '/refunds.html';
+          } else if (pathname === '/reservations') {
+            req.url = '/reservations.html';
           }
           next();
         });
@@ -55,6 +57,7 @@ export default defineConfig({
         terms: resolve(__dirname, 'terms.html'),
         privacy: resolve(__dirname, 'privacy.html'),
         refunds: resolve(__dirname, 'refunds.html'),
+        reservations: resolve(__dirname, 'reservations.html'),
       },
     },
   },
