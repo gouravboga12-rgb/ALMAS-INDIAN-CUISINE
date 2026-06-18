@@ -33,3 +33,9 @@ dist-ssr
 # Never commit or pull-overwrite these files.
 database.json
 uploads/
+
+# User recordings and screenshots
+*.mp4
+image copy *.png
+Screenshot *.png
+
