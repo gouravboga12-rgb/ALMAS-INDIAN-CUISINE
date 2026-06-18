@@ -1,4 +1,4 @@
-import{l as e,u as t}from"./main-DMEoeXYM.js";var n=t(e(),1);async function r(){try{let e=await fetch(`/api/services`);if(!e.ok)return;let t=await e.json(),r=document.getElementById(`dynamic-services-grid`);if(!r||!t||t.length===0)return;r.innerHTML=t.map((e,t)=>{let n=t%2==0,r=n?`order-2 md:order-1`:`order-2 md:order-2`,i=n?`fade-right`:`fade-left`,a=n?`order-1 md:order-2`:`order-1 md:order-1`;return`
+import{l as e,u as t}from"./main-D7HEDzHp.js";var n=t(e(),1);async function r(){try{let e=await fetch(`/api/services`);if(!e.ok)return;let t=await e.json(),r=document.getElementById(`dynamic-services-grid`);if(!r||!t||t.length===0)return;r.innerHTML=t.map((e,t)=>{let n=t%2==0,r=n?`order-2 md:order-1`:`order-2 md:order-2`,i=n?`fade-right`:`fade-left`,a=n?`order-1 md:order-2`:`order-1 md:order-1`;return`
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-20 items-center">
               <div class="${r} text-center md:text-left" data-aos="${i}">
                 <span class="text-gold font-bold tracking-widest uppercase text-xs mb-4 block">${e.badge||``}</span>

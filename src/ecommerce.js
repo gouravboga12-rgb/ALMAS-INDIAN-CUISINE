@@ -556,3 +556,14 @@ document.addEventListener('DOMContentLoaded', () => {
   injectCartUI();
   updateCartBadge(false);
 });
+
+// Clear cart on logout
+if (typeof window !== 'undefined') {
+  window.addEventListener('auth-change', () => {
+    const token = localStorage.getItem('almas_token');
+    if (!token) {
+      clearCart();
+    }
+  });
+}
+

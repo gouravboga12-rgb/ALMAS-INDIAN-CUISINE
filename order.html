@@ -653,7 +653,7 @@
         if (savedAccount) account = JSON.parse(savedAccount);
       } catch (e) {}
 
-      if (!token && !account.isGuest) {
+      if (!token) {
         window.location.href = "/account.html?tab=login&message=Please%20login%20or%20sign%20up%20to%20continue";
         return;
       }
