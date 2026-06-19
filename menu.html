@@ -1641,7 +1641,8 @@
       }
 
       // 2. Chicken
-      if (name.includes('chicken') || 
+      if (diet === 'chicken' || 
+          name.includes('chicken') || 
           badge.includes('chicken') || 
           desc.includes('chicken') || 
           name.includes('alfaham') || 
@@ -1654,7 +1655,8 @@
       }
 
       // 3. Mutton / Lamb
-      if (name.includes('mutton') || 
+      if (diet === 'mutton' || 
+          name.includes('mutton') || 
           badge.includes('mutton') || 
           desc.includes('mutton') || 
           name.includes('lamb') || 

@@ -778,7 +778,7 @@
       }
 
       const dietEl = document.getElementById('detail-diet');
-      dietEl.textContent = product.diet || 'NON-VEG';
+      dietEl.textContent = product.diet === 'CHICKEN' ? 'NON-VEG (CHICKEN)' : (product.diet === 'MUTTON' ? 'NON-VEG (MUTTON)' : (product.diet || 'NON-VEG'));
       dietEl.style.borderColor = product.dietColor || '#dc2626';
       dietEl.style.color = product.dietColor || '#dc2626';
 
@@ -946,7 +946,7 @@
               <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="${p.name}">
             </div>
             <div class="flex flex-col flex-grow">
-              <span class="font-bold text-[9px] uppercase tracking-widest mb-1" style="color: ${p.dietColor || '#dc2626'}">${p.diet || 'NON-VEG'}</span>
+              <span class="font-bold text-[9px] uppercase tracking-widest mb-1" style="color: ${p.dietColor || '#dc2626'}">${p.diet === 'CHICKEN' ? 'NON-VEG (CHICKEN)' : (p.diet === 'MUTTON' ? 'NON-VEG (MUTTON)' : (p.diet || 'NON-VEG'))}</span>
               <h3 class="text-base font-bold text-text-primary mb-1 group-hover:text-primary transition-colors line-clamp-1">${p.name}</h3>
               <p class="text-text-secondary text-[11px] leading-relaxed italic line-clamp-2 mb-4 flex-grow">${p.desc || ''}</p>
               <div class="flex items-center justify-between mt-auto pt-2 border-t border-primary/5">

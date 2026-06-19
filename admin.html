@@ -1598,7 +1598,8 @@
           <label class="form-label">Diet Profile</label>
           <select id="product-diet" required>
             <option value="VEG">VEG (Green)</option>
-            <option value="NON-VEG">NON-VEG (Red)</option>
+            <option value="CHICKEN">NON-VEG (Chicken)</option>
+            <option value="MUTTON">NON-VEG (Mutton)</option>
             <option value="SEAFOOD">SEAFOOD (Blue)</option>
           </select>
         </div>
@@ -2410,7 +2411,9 @@
         
         const dietBadge = p.diet === 'VEG' ? `<span class="badge-p" style="border-color:#16a34a; color:#16a34a;">VEG</span>` :
                            (p.diet === 'SEAFOOD' ? `<span class="badge-p" style="border-color:#2563eb; color:#2563eb;">SEAFOOD</span>` :
-                           `<span class="badge-p" style="border-color:#dc2626; color:#dc2626;">NON-VEG</span>`);
+                           (p.diet === 'CHICKEN' ? `<span class="badge-p" style="border-color:#ea580c; color:#ea580c;">CHICKEN</span>` :
+                           (p.diet === 'MUTTON' ? `<span class="badge-p" style="border-color:#b91c1c; color:#b91c1c;">MUTTON</span>` :
+                           `<span class="badge-p" style="border-color:#dc2626; color:#dc2626;">NON-VEG</span>`)));
 
         const badgeHtml = p.badge ? `<span class="badge-p" style="border-color:var(--gold); color:var(--gold); margin-left: 5px;">${p.badge}</span>` : '';
 
@@ -2573,7 +2576,9 @@
       });
       formSelect.value = p.category;
 
-      document.getElementById('product-diet').value = p.diet || 'NON-VEG';
+      let dietVal = p.diet || 'CHICKEN';
+      if (dietVal === 'NON-VEG') dietVal = 'CHICKEN';
+      document.getElementById('product-diet').value = dietVal;
       document.getElementById('product-badge').value = p.badge || '';
       document.getElementById('product-img-url').value = p.image || '';
       document.getElementById('product-desc').value = p.desc || '';
@@ -2639,7 +2644,10 @@
       }
 
       // Map color based on diet
-      const dietColor = diet === 'VEG' ? '#16a34a' : (diet === 'SEAFOOD' ? '#2563eb' : '#dc2626');
+      const dietColor = diet === 'VEG' ? '#16a34a' : 
+                        (diet === 'SEAFOOD' ? '#2563eb' : 
+                        (diet === 'CHICKEN' ? '#ea580c' : 
+                        (diet === 'MUTTON' ? '#b91c1c' : '#dc2626')));
 
       const payload = {
         id, name, price, category, diet, badge, image: imageUrl, desc, dietColor, spiceDefault: 'Medium'
@@ -2765,7 +2773,9 @@
         
         const dietBadge = p.diet === 'VEG' ? `<span class="badge-p" style="border-color:#16a34a; color:#16a34a;">VEG</span>` :
                            (p.diet === 'SEAFOOD' ? `<span class="badge-p" style="border-color:#2563eb; color:#2563eb;">SEAFOOD</span>` :
-                           `<span class="badge-p" style="border-color:#dc2626; color:#dc2626;">NON-VEG</span>`);
+                           (p.diet === 'CHICKEN' ? `<span class="badge-p" style="border-color:#ea580c; color:#ea580c;">CHICKEN</span>` :
+                           (p.diet === 'MUTTON' ? `<span class="badge-p" style="border-color:#b91c1c; color:#b91c1c;">MUTTON</span>` :
+                           `<span class="badge-p" style="border-color:#dc2626; color:#dc2626;">NON-VEG</span>`)));
 
         const badgeHtml = p.badge ? `<span class="badge-p" style="border-color:var(--gold); color:var(--gold); margin-left: 5px;">${p.badge}</span>` : '';
 
@@ -2882,7 +2892,9 @@
       });
       formSelect.value = p.category;
 
-      document.getElementById('product-diet').value = p.diet || 'NON-VEG';
+      let dietVal = p.diet || 'CHICKEN';
+      if (dietVal === 'NON-VEG') dietVal = 'CHICKEN';
+      document.getElementById('product-diet').value = dietVal;
       document.getElementById('product-badge').value = p.badge || '';
       document.getElementById('product-img-url').value = p.image || '';
       document.getElementById('product-desc').value = p.desc || '';
