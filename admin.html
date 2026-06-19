@@ -2390,15 +2390,36 @@
     // =========================================================================
     // MENU PRODUCTS MANAGEMENT
     // =========================================================================
+    // Diet sort score: VEG=1, CHICKEN=2, MUTTON=3, SEAFOOD=4, other=5
+    function getAdminDietSortScore(p) {
+      const diet = (p.diet || '').toUpperCase();
+      const name = (p.name || '').toLowerCase();
+      const desc = (p.desc || '').toLowerCase();
+      if (diet === 'VEG') return 1;
+      if (diet === 'CHICKEN' || name.includes('chicken') || desc.includes('chicken') || name.includes('murgh') || name.includes('tawook') || name.includes('alfaham') || name.includes('tangdi') || name.includes('kodi') || name.includes('wings')) return 2;
+      if (diet === 'MUTTON' || name.includes('mutton') || desc.includes('mutton') || name.includes('lamb') || name.includes('gosht') || name.includes('marag') || name.includes('kheema') || name.includes('paya') || name.includes('shank')) return 3;
+      if (diet === 'SEAFOOD' || name.includes('fish') || name.includes('shrimp') || name.includes('prawn') || name.includes('crab') || name.includes('royyala') || name.includes('chepa')) return 4;
+      return 5;
+    }
+
     function renderProductsGrid() {
       const grid = document.getElementById('products-grid');
       const catFilter = document.getElementById('product-category-filter').value;
       grid.innerHTML = '';
 
-      let items = cachedMenu.products;
+      let items = [...cachedMenu.products];
       if (catFilter !== 'all') {
         items = items.filter(p => p.category === catFilter);
       }
+
+      // Sort: by category alphabetically, then by Veg > Chicken > Mutton > Seafood within each category
+      items.sort((a, b) => {
+        const catCmp = (a.category || '').localeCompare(b.category || '');
+        if (catCmp !== 0) return catCmp;
+        const dietCmp = getAdminDietSortScore(a) - getAdminDietSortScore(b);
+        if (dietCmp !== 0) return dietCmp;
+        return (a.name || '').localeCompare(b.name || '');
+      });
 
       if (items.length === 0) {
         grid.innerHTML = `<div class="glass-card" style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted)">No menu items match this category filter.</div>`;
@@ -2757,10 +2778,19 @@
       const catFilter = document.getElementById('qr-product-category-filter').value;
       grid.innerHTML = '';
 
-      let items = cachedQRMenu.products;
+      let items = [...cachedQRMenu.products];
       if (catFilter !== 'all') {
         items = items.filter(p => p.category === catFilter);
       }
+
+      // Sort: by category alphabetically, then by Veg > Chicken > Mutton > Seafood within each category
+      items.sort((a, b) => {
+        const catCmp = (a.category || '').localeCompare(b.category || '');
+        if (catCmp !== 0) return catCmp;
+        const dietCmp = getAdminDietSortScore(a) - getAdminDietSortScore(b);
+        if (dietCmp !== 0) return dietCmp;
+        return (a.name || '').localeCompare(b.name || '');
+      });
 
       if (items.length === 0) {
         grid.innerHTML = `<div class="glass-card" style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted)">No QR menu items match this category filter.</div>`;
