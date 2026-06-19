@@ -28,7 +28,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/style.css">
-</head>
   <style>
     :root {
       --paper-bg: #FFF9F0;
@@ -1608,9 +1607,86 @@
   <script type="module">
     import AOS from 'aos';
 
+    function getDietSortScore(p) {
+      const name = (p.name || '').toLowerCase();
+      const badge = (p.badge || '').toLowerCase();
+      const diet = (p.diet || '').toLowerCase();
+      const desc = (p.desc || '').toLowerCase();
+
+      // 1. Veg (Vegetarian)
+      if (diet === 'veg' || 
+          badge === 'veg' || 
+          name.includes('paneer') || 
+          name.includes('veg ') || 
+          name.startsWith('veg ') || 
+          name.includes('vegetable') || 
+          name.includes('mushroom') || 
+          name.includes('gobi') || 
+          name.includes('aloo') || 
+          name.includes('dal') || 
+          name.includes('okra') || 
+          name.includes('broccoli') || 
+          name.includes('chaap') || 
+          name.includes('egg plant') || 
+          name.includes('aubergine') || 
+          name.includes('chai') || 
+          name.includes('apricot') || 
+          name.includes('meetha') || 
+          name.includes('lassi') || 
+          name.includes('falooda') || 
+          name.includes('kofta') || 
+          name.includes('naan') || 
+          name.includes('roti')) {
+        return 1;
+      }
+
+      // 2. Chicken
+      if (name.includes('chicken') || 
+          badge.includes('chicken') || 
+          desc.includes('chicken') || 
+          name.includes('alfaham') || 
+          name.includes('tangdi') || 
+          name.includes('tawook') || 
+          name.includes('wings') || 
+          name.includes('murgh') || 
+          name.includes('kodi')) {
+        return 2;
+      }
+
+      // 3. Mutton / Lamb
+      if (name.includes('mutton') || 
+          badge.includes('mutton') || 
+          desc.includes('mutton') || 
+          name.includes('lamb') || 
+          badge.includes('lamb') || 
+          desc.includes('lamb') || 
+          name.includes('marag') || 
+          name.includes('paya') || 
+          name.includes('gosht') || 
+          name.includes('kheema') || 
+          name.includes('shank')) {
+        return 3;
+      }
+
+      // 4. Seafood (Fish, Shrimp, Crab, Prawn)
+      if (diet === 'seafood' || 
+          badge.includes('seafood') || 
+          name.includes('fish') || 
+          name.includes('shrimp') || 
+          name.includes('crab') || 
+          name.includes('prawn') || 
+          name.includes('chepa') || 
+          name.includes('royyala')) {
+        return 4;
+      }
+
+      // 5. Other Non-Veg
+      return 5;
+    }
+
     async function loadDynamicMenu() {
       try {
-        const res = await fetch('/api/qr-menu');
+        const res = await fetch('/api/qr-menu?_t=' + Date.now());
         if (!res.ok) {
           runInit();
           return;
@@ -1655,6 +1731,21 @@
             
             const vegProducts = catProducts.filter(p => p.diet === 'VEG');
             const nonVegProducts = catProducts.filter(p => p.diet !== 'VEG');
+
+            // Sort products to ensure correct display order
+            vegProducts.sort((a, b) => a.name.localeCompare(b.name));
+            nonVegProducts.sort((a, b) => {
+              const scoreA = getDietSortScore(a);
+              const scoreB = getDietSortScore(b);
+              if (scoreA !== scoreB) return scoreA - scoreB;
+              return a.name.localeCompare(b.name);
+            });
+            catProducts.sort((a, b) => {
+              const scoreA = getDietSortScore(a);
+              const scoreB = getDietSortScore(b);
+              if (scoreA !== scoreB) return scoreA - scoreB;
+              return a.name.localeCompare(b.name);
+            });
 
             html += `
               <section id="${cat.id}" class="scroll-mt-16">

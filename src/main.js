@@ -368,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load global website settings from API
   async function loadGlobalSettings() {
     try {
-      const res = await fetch('/api/settings');
+      const res = await fetch('/api/settings?_t=' + Date.now());
       if (!res.ok) return;
       const data = await res.json();
       

@@ -663,7 +663,7 @@
     async function loadProductDetails(id) {
       let product = null;
       try {
-        const res = await fetch('/api/menu');
+        const res = await fetch('/api/menu?_t=' + Date.now());
         if (res.ok) {
           const data = await res.json();
           product = data.products.find(p => p.id === id);
@@ -996,7 +996,7 @@
 
     async function fetchAndRenderReviews(productId) {
       try {
-        const response = await fetch(`/api/reviews/${productId}`);
+        const response = await fetch(`/api/reviews/${productId}?_t=${Date.now()}`);
         if (response.ok) {
           const list = await response.json();
           currentProductReviews = list;

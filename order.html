@@ -625,7 +625,7 @@
 
     async function initializeSquarePayments() {
       try {
-        const configRes = await fetch('/api/payment/config');
+        const configRes = await fetch('/api/payment/config?_t=' + Date.now());
         const config = await configRes.json();
 
         if (!config.applicationId || !config.locationId) {
@@ -1119,7 +1119,7 @@
         const container = document.getElementById('dynamic-packages-grid');
         
         try {
-          const res = await fetch('/api/packages');
+          const res = await fetch('/api/packages?_t=' + Date.now());
           if (res.ok) {
             const pkgs = await res.json();
             if (container && pkgs && pkgs.length > 0) {

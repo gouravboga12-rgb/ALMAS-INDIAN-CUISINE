@@ -579,9 +579,7 @@ async function autoSyncDatabase() {
     for (const cat of seedCategories) {
       const exists = existingCategories.find(c => c.id === cat.id);
       if (exists) {
-        if (exists.name !== cat.name || exists.icon !== cat.icon || exists.order !== cat.order) {
-          await updateCategory(cat.id, cat);
-        }
+        // Skip updating existing category to preserve Admin Panel changes
       } else {
         console.log(`[DB] Auto-sync: Adding missing category ${cat.name}`);
         await addCategory(cat);
@@ -592,18 +590,7 @@ async function autoSyncDatabase() {
     for (const prod of seedProducts) {
       const exists = existingProducts.find(p => p.id === prod.id);
       if (exists) {
-        const isChanged = exists.name !== prod.name ||
-                          exists.price !== prod.price ||
-                          exists.image !== prod.image ||
-                          exists.category !== prod.category ||
-                          exists.diet !== prod.diet ||
-                          exists.badge !== (prod.badge || '') ||
-                          exists.dietColor !== (prod.dietColor || '') ||
-                          exists.desc !== (prod.desc || '') ||
-                          exists.spiceDefault !== (prod.spiceDefault || 'Mild');
-        if (isChanged) {
-          await updateProduct(prod.id, prod);
-        }
+        // Skip updating existing product to preserve Admin Panel changes
       } else {
         console.log(`[DB] Auto-sync: Adding missing product ${prod.name}`);
         await addProduct(prod);

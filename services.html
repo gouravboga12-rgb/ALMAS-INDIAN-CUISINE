@@ -359,7 +359,7 @@
 
     async function loadServices() {
       try {
-        const res = await fetch('/api/services');
+        const res = await fetch('/api/services?_t=' + Date.now());
         if (!res.ok) return;
         const services = await res.json();
         const container = document.getElementById('dynamic-services-grid');

@@ -82,6 +82,14 @@ const squareClient = new SquareClient({
 app.use(cors());
 app.use(express.json());
 
+// Disable caching for all API routes to prevent stale data on pages
+app.use('/api', (req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  next();
+});
+
 // Ensure uploads directory exists
 const UPLOADS_DIR = path.join(__dirname, 'public', 'uploads');
 if (!fs.existsSync(UPLOADS_DIR)) {
