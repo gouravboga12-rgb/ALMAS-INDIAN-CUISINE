@@ -2435,11 +2435,18 @@
             const catProducts = data.products.filter(p => p.category === cat.name);
             if (catProducts.length === 0) return;
 
-            // Sort products by Veg -> Chicken -> Mutton -> Seafood
+            // Sort: Veg -> Chicken -> Mutton -> Seafood, then cheapest first within each group
+            const parsePrice = p => {
+              const raw = (p.price || '').replace(/[^0-9.]/g, ' ').trim().split(/\s+/)[0];
+              return parseFloat(raw) || 0;
+            };
             catProducts.sort((a, b) => {
               const scoreA = getDietSortScore(a);
               const scoreB = getDietSortScore(b);
               if (scoreA !== scoreB) return scoreA - scoreB;
+              const priceA = parsePrice(a);
+              const priceB = parsePrice(b);
+              if (priceA !== priceB) return priceA - priceB;
               return a.name.localeCompare(b.name);
             });
 

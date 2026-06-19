@@ -14,14 +14,14 @@ import{l as e,s as t,u as n}from"./main-DP1CC4ZW.js";var r=n(e(),1);function i(e
                 <span>${e.name}</span>
               </button>
             `).join(``)}
-          `);let a={soups:`Broths & slow-simmered warmth`,appetizers:`Bold starters & sharing plates`,tandoor:`Clay oven crafted`,"tandoor-treasures":`Clay oven crafted`,mains:`Curries & slow-cooked gravies`,biryani:`Muglai saffron standard`,mandi:`Arabic smoked rice`,pulao:`Aromatic one-pot rice dishes`,beverages:`Teas & cold mocktails`,chinese:`Wok tossed`,momo:`Steamed or fried`,breads:`Tandoor baked`,desserts:`Sweet endings`},s=document.getElementById(`dynamic-products-container`);if(s){let e=``;t.categories.sort((e,t)=>e.order-t.order).forEach(n=>{let r=t.products.filter(e=>e.category===n.name);if(r.length===0)return;r.sort((e,t)=>{let n=i(e),r=i(t);return n===r?e.name.localeCompare(t.name):n-r});let o=a[n.id]||`Freshly prepared`;e+=`
+          `);let a={soups:`Broths & slow-simmered warmth`,appetizers:`Bold starters & sharing plates`,tandoor:`Clay oven crafted`,"tandoor-treasures":`Clay oven crafted`,mains:`Curries & slow-cooked gravies`,biryani:`Muglai saffron standard`,mandi:`Arabic smoked rice`,pulao:`Aromatic one-pot rice dishes`,beverages:`Teas & cold mocktails`,chinese:`Wok tossed`,momo:`Steamed or fried`,breads:`Tandoor baked`,desserts:`Sweet endings`},s=document.getElementById(`dynamic-products-container`);if(s){let e=``;t.categories.sort((e,t)=>e.order-t.order).forEach(n=>{let r=t.products.filter(e=>e.category===n.name);if(r.length===0)return;let o=e=>{let t=(e.price||``).replace(/[^0-9.]/g,` `).trim().split(/\s+/)[0];return parseFloat(t)||0};r.sort((e,t)=>{let n=i(e),r=i(t);if(n!==r)return n-r;let a=o(e),s=o(t);return a===s?e.name.localeCompare(t.name):a-s});let s=a[n.id]||`Freshly prepared`;e+=`
               <section id="${n.id}" class="scroll-mt-40" data-aos="fade-up">
                 <div class="flex items-center gap-10 mb-16">
                   <div class="flex-1 h-px bg-primary/10"></div>
                   <div class="text-center">
                     <span class="text-gold text-2xl mb-2 block">${n.icon||`🍽️`}</span>
                     <h2 class="text-4xl font-heading">${n.name}</h2>
-                    <p class="text-text-secondary text-xs uppercase tracking-widest mt-2">${o}</p>
+                    <p class="text-text-secondary text-xs uppercase tracking-widest mt-2">${s}</p>
                   </div>
                   <div class="flex-1 h-px bg-primary/10"></div>
                 </div>

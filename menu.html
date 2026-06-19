@@ -1734,18 +1734,30 @@
             const vegProducts = catProducts.filter(p => p.diet === 'VEG');
             const nonVegProducts = catProducts.filter(p => p.diet !== 'VEG');
 
-            // Sort products to ensure correct display order
-            vegProducts.sort((a, b) => a.name.localeCompare(b.name));
+            // Sort: Veg -> Chicken -> Mutton -> Seafood, then cheapest first within each group
+            const parseMenuPrice = p => {
+              const raw = (p.price || '').replace(/[^0-9.]/g, ' ').trim().split(/\s+/)[0];
+              return parseFloat(raw) || 0;
+            };
+            vegProducts.sort((a, b) => {
+              const priceDiff = parseMenuPrice(a) - parseMenuPrice(b);
+              if (priceDiff !== 0) return priceDiff;
+              return a.name.localeCompare(b.name);
+            });
             nonVegProducts.sort((a, b) => {
               const scoreA = getDietSortScore(a);
               const scoreB = getDietSortScore(b);
               if (scoreA !== scoreB) return scoreA - scoreB;
+              const priceDiff = parseMenuPrice(a) - parseMenuPrice(b);
+              if (priceDiff !== 0) return priceDiff;
               return a.name.localeCompare(b.name);
             });
             catProducts.sort((a, b) => {
               const scoreA = getDietSortScore(a);
               const scoreB = getDietSortScore(b);
               if (scoreA !== scoreB) return scoreA - scoreB;
+              const priceDiff = parseMenuPrice(a) - parseMenuPrice(b);
+              if (priceDiff !== 0) return priceDiff;
               return a.name.localeCompare(b.name);
             });
 
