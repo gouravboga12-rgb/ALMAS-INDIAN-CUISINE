@@ -666,7 +666,16 @@
         const res = await fetch('/api/menu?_t=' + Date.now());
         if (res.ok) {
           const data = await res.json();
+          // Primary: exact id match
           product = data.products.find(p => p.id === id);
+          // Fallback: case-insensitive id match or slugified name match
+          if (!product) {
+            const idLower = id.toLowerCase();
+            product = data.products.find(p =>
+              p.id.toLowerCase() === idLower ||
+              (p.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-') === idLower
+            );
+          }
         }
       } catch (err) {
         console.error("Error fetching dynamic product details:", err);
