@@ -596,6 +596,63 @@ async function autoSyncDatabase() {
         await addProduct(prod);
       }
     }
+
+    // Perform migration/fix for beverage images on live site/local json
+    if (pool) {
+      try {
+        console.log('[DB] Performing MySQL migration for beverage images...');
+        await pool.query("UPDATE products SET image = ? WHERE id = ? AND (image = '/uploads/image-1781900801373-668097026.jpg' OR image LIKE '%photo-1587132137056%')", ["/image%20copy%20118.png", "Butter Milk"]);
+        await pool.query("UPDATE products SET image = ? WHERE id = ? AND (image = '/uploads/image-1781901811139-859138215.jpg' OR image LIKE '%photo-1556679343%')", ["/image%20copy%20117.png", "Fresh Lemon Soda"]);
+        await pool.query("UPDATE products SET image = ? WHERE id = ? AND image = '/uploads/image-1781900499782-73015311.jpg'", ["https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=800", "pops"]);
+        
+        await pool.query("UPDATE qr_products SET image = ? WHERE id = ? AND (image = '/uploads/image-1781900801373-668097026.jpg' OR image LIKE '%photo-1587132137056%')", ["/image%20copy%20118.png", "Butter Milk"]);
+        await pool.query("UPDATE qr_products SET image = ? WHERE id = ? AND (image = '/uploads/image-1781901811139-859138215.jpg' OR image LIKE '%photo-1556679343%')", ["/image%20copy%20117.png", "Fresh Lemon Soda"]);
+        await pool.query("UPDATE qr_products SET image = ? WHERE id = ? AND image = '/uploads/image-1781900499782-73015311.jpg'", ["https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=800", "pops"]);
+        console.log('[DB] MySQL migration for beverage images completed.');
+      } catch (err) {
+        console.error('[DB] Failed to migrate live images in MySQL:', err);
+      }
+    } else {
+      let localDbUpdated = false;
+      const db = readJSONDB();
+      if (db && db.products) {
+        db.products.forEach(p => {
+          if ((p.id === "Butter Milk" || p.id === "butter-milk") && (p.image === "/uploads/image-1781900801373-668097026.jpg" || p.image.includes('unsplash') || p.image.includes('photo-1587132137056'))) {
+            p.image = "/image%20copy%20118.png";
+            localDbUpdated = true;
+          }
+          if ((p.id === "Fresh Lemon Soda" || p.id === "fresh-lime-soda") && (p.image === "/uploads/image-1781901811139-859138215.jpg" || p.image.includes('unsplash') || p.image.includes('photo-1556679343'))) {
+            p.image = "/image%20copy%20117.png";
+            localDbUpdated = true;
+          }
+          if ((p.id === "pops" || p.id === "Pops") && (p.image === "/uploads/image-1781900499782-73015311.jpg" || p.image.includes('unsplash') || p.image.includes('photo-1622483767028'))) {
+            p.image = "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=800";
+            localDbUpdated = true;
+          }
+        });
+      }
+      if (db && db.qr_products) {
+        db.qr_products.forEach(p => {
+          if ((p.id === "Butter Milk" || p.id === "butter-milk") && (p.image === "/uploads/image-1781900801373-668097026.jpg" || p.image.includes('unsplash') || p.image.includes('photo-1587132137056'))) {
+            p.image = "/image%20copy%20118.png";
+            localDbUpdated = true;
+          }
+          if ((p.id === "Fresh Lemon Soda" || p.id === "fresh-lime-soda") && (p.image === "/uploads/image-1781901811139-859138215.jpg" || p.image.includes('unsplash') || p.image.includes('photo-1556679343'))) {
+            p.image = "/image%20copy%20117.png";
+            localDbUpdated = true;
+          }
+          if ((p.id === "pops" || p.id === "Pops") && (p.image === "/uploads/image-1781900499782-73015311.jpg" || p.image.includes('unsplash') || p.image.includes('photo-1622483767028'))) {
+            p.image = "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=800";
+            localDbUpdated = true;
+          }
+        });
+      }
+      if (localDbUpdated) {
+        writeJSONDB(db);
+        console.log('[DB] Local database.json images updated.');
+      }
+    }
+
     console.log('[DB] Auto-sync complete!');
   } catch (err) {
     console.error('[DB] Auto-sync failed:', err);

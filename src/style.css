@@ -2629,17 +2629,7 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
 @media (max-width: 1023px) {
 
   /* Override section grids to 2-column on mobile */
-  #soups .grid,
-  #appetizers .grid,
-  #tandoor .grid,
-  #mains .grid,
-  #biryani .grid,
-  #mandi .grid,
-  #pulao .grid,
-  #chinese .grid,
-  #momo .grid,
-  #breads .grid,
-  #desserts .grid {
+  .products-container section .grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 0.65rem !important;
   }
@@ -2780,24 +2770,12 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   }
 
   /* Section heading margin */
-  #soups .flex.items-center.gap-10,
-  #appetizers .flex.items-center.gap-10,
-  #tandoor .flex.items-center.gap-10,
-  #mains .flex.items-center.gap-10,
-  #biryani .flex.items-center.gap-10,
-  #mandi .flex.items-center.gap-10,
-  #pulao .flex.items-center.gap-10,
-  #chinese .flex.items-center.gap-10,
-  #momo .flex.items-center.gap-10,
-  #breads .flex.items-center.gap-10,
-  #desserts .flex.items-center.gap-10 {
+  .products-container section .flex.items-center.gap-10 {
     margin-bottom: 0.75rem !important;
   }
 
   /* Section heading size */
-  #soups h2, #appetizers h2, #tandoor h2, #mains h2,
-  #biryani h2, #mandi h2, #pulao h2, #chinese h2,
-  #momo h2, #breads h2, #desserts h2 {
+  .products-container section h2 {
     font-size: 1.35rem !important;
   }
 

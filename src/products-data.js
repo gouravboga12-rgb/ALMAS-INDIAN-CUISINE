@@ -913,6 +913,42 @@ export const products = [
     "spiceDefault": "Mild"
   },
   {
+    "id": "Butter Milk",
+    "name": "Butter Milk",
+    "price": "$3.99",
+    "image": "/image%20copy%20118.png",
+    "category": "Beverages",
+    "diet": "VEG",
+    "badge": "VEG",
+    "dietColor": "#16a34a",
+    "desc": "Spiced and Salted churned yogurt drink with roasted cumin --- a natural digestif.",
+    "spiceDefault": "Medium"
+  },
+  {
+    "id": "Fresh Lemon Soda",
+    "name": "Fresh Lemon Soda",
+    "price": "$5.99",
+    "image": "/image%20copy%20117.png",
+    "category": "Beverages",
+    "diet": "VEG",
+    "badge": "VEG",
+    "dietColor": "#16a34a",
+    "desc": "Thick house-churned yogurt drink in Mango , Sweet , or Salt Cooling and Classic.",
+    "spiceDefault": "Medium"
+  },
+  {
+    "id": "pops",
+    "name": "Pops",
+    "price": "$1.99",
+    "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=800",
+    "category": "Beverages",
+    "diet": "VEG",
+    "badge": "VEG",
+    "dietColor": "#16a34a",
+    "desc": "Chilled Soft Drink of Your Choice- the perfect palate refresher between courses/",
+    "spiceDefault": "Medium"
+  },
+  {
     "id": "qubani-ka-meetha",
     "name": "Qubani Ka Meetha",
     "price": "$7.99",
