@@ -393,7 +393,7 @@ export const products = [
     "diet": "NON-VEG",
     "badge": "NON-VEG",
     "dietColor": "#dc2626",
-    "desc": "Lebanese-style boneless chicken skewers in Malai, Afghani, or Tandoori marinade — smoky and succulent. A classic Lebanese preparation perfected in our clay oven.",
+    "desc": "Authentic Lebanese grilled chicken Scarborough foodies love. Boneless skewers in Malai, Afghani, or Tandoori marinade — smoky, succulent, and clay-oven perfected.",
     "spiceDefault": "Medium"
   },
   {
@@ -405,7 +405,7 @@ export const products = [
     "diet": "NON-VEG",
     "badge": "SIGNATURE",
     "dietColor": "#b45309",
-    "desc": "A whole chicken split and slow-grilled over open flame — a showstopper for the table. Available as half or full bird, marinated in our signature spice blend. The undisputed star of our grill section.",
+    "desc": "A whole grilled chicken Scarborough specialty, slow-grilled over an open flame — a showstopper for the table. Halal whole chicken Toronto families love. Available as half or full bird, marinated in our signature spice blend. The undisputed star of our grill section.",
     "spiceDefault": "Medium"
   },
   {
@@ -597,7 +597,7 @@ export const products = [
     "diet": "NON-VEG",
     "badge": "CLASSIC",
     "dietColor": "#dc2626",
-    "desc": "Classic bone-in chicken sealed in dum with saffron basmati, rose water, and caramelized onions. Every grain of rice tells the story of slow, patient cooking.",
+    "desc": "Classic Hyderabadi biryani Scarborough diners love. Bone-in chicken sealed in dum with saffron basmati, rose water, and caramelized onions. Every grain of rice tells a story of slow, patient cooking.",
     "spiceDefault": "Medium"
   },
   {
@@ -657,7 +657,7 @@ export const products = [
     "diet": "NON-VEG",
     "badge": "FEAST",
     "dietColor": "#dc2626",
-    "desc": "Half or whole open-flame grilled chicken over fragrant Mandi rice — a feast for the table. Served for 1, 2, or 3 people with traditional Mandi accompaniments.",
+    "desc": "Half or whole open-flame grilled chicken over fragrant Mandi rice — a premium halal mandi Scarborough feast for the table. Served for 1, 2, or 3 people with traditional Mandi accompaniments.",
     "spiceDefault": "Medium"
   },
   {
