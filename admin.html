@@ -1625,6 +1625,12 @@
           <input type="file" id="product-img-file" accept="image/*">
           <input type="text" id="product-img-url" placeholder="or paste image URL link" style="margin-top: 8px;">
         </div>
+        <div class="form-group col-span-2" style="display:flex; align-items:center; gap:10px;">
+          <input type="checkbox" id="product-hidden" style="width:auto; cursor:pointer;">
+          <label for="product-hidden" style="cursor:pointer; font-weight:600; color:var(--danger); display:flex; align-items:center; gap:5px; margin-bottom:0;">
+            Hide from website/menu page (Out of stock / Unavailable)
+          </label>
+        </div>
         <div class="form-group col-span-2">
           <label class="form-label">Chef's Description</label>
           <textarea id="product-desc" rows="3" placeholder="Tell us about the ingredients, background..."></textarea>
@@ -2428,7 +2434,11 @@
 
       items.forEach(p => {
         const card = document.createElement('div');
+        const isHidden = p.hidden === 1 || p.hidden === true;
         card.className = 'glass-card item-card';
+        if (isHidden) {
+          card.style.opacity = '0.65';
+        }
         
         const dietBadge = p.diet === 'VEG' ? `<span class="badge-p" style="border-color:#16a34a; color:#16a34a;">VEG</span>` :
                            (p.diet === 'SEAFOOD' ? `<span class="badge-p" style="border-color:#2563eb; color:#2563eb;">SEAFOOD</span>` :
@@ -2437,6 +2447,7 @@
                            `<span class="badge-p" style="border-color:#dc2626; color:#dc2626;">NON-VEG</span>`)));
 
         const badgeHtml = p.badge ? `<span class="badge-p" style="border-color:var(--gold); color:var(--gold); margin-left: 5px;">${p.badge}</span>` : '';
+        const hiddenBadge = isHidden ? `<span class="badge-p" style="border-color:var(--danger); color:var(--danger); margin-left: 5px; font-weight: bold; background: rgba(239, 68, 68, 0.15);">OUT OF STOCK (HIDDEN)</span>` : '';
 
         card.innerHTML = `
           <div>
@@ -2445,6 +2456,7 @@
             <div style="margin-bottom:10px;">
               ${dietBadge}
               ${badgeHtml}
+              ${hiddenBadge}
               <span class="badge-p" style="margin-left: 5px;">${p.category}</span>
             </div>
             <div class="item-desc">${p.desc || 'No description provided.'}</div>
@@ -2562,6 +2574,7 @@
       document.getElementById('product-img-url').value = '';
       document.getElementById('product-desc').value = '';
       document.getElementById('product-img-file').value = '';
+      document.getElementById('product-hidden').checked = false;
       resetMultiPrice();
 
       // Populate category select list with standard categories
@@ -2604,6 +2617,7 @@
       document.getElementById('product-img-url').value = p.image || '';
       document.getElementById('product-desc').value = p.desc || '';
       document.getElementById('product-img-file').value = '';
+      document.getElementById('product-hidden').checked = p.hidden === 1 || p.hidden === true;
 
       // Auto-detect multi-pricing
       if (p.price && p.price.includes('/')) {
@@ -2656,6 +2670,7 @@
       const diet = document.getElementById('product-diet').value;
       const badge = document.getElementById('product-badge').value.trim();
       const desc = document.getElementById('product-desc').value.trim();
+      const hidden = document.getElementById('product-hidden').checked ? 1 : 0;
       
       // Determine image URL
       let imageUrl = document.getElementById('product-img-url').value.trim();
@@ -2671,7 +2686,7 @@
                         (diet === 'MUTTON' ? '#b91c1c' : '#dc2626')));
 
       const payload = {
-        id, name, price, category, diet, badge, image: imageUrl, desc, dietColor, spiceDefault: 'Medium'
+        id, name, price, category, diet, badge, image: imageUrl, desc, dietColor, spiceDefault: 'Medium', hidden
       };
 
       let result;
@@ -2799,7 +2814,11 @@
 
       items.forEach(p => {
         const card = document.createElement('div');
+        const isHidden = p.hidden === 1 || p.hidden === true;
         card.className = 'glass-card item-card';
+        if (isHidden) {
+          card.style.opacity = '0.65';
+        }
         
         const dietBadge = p.diet === 'VEG' ? `<span class="badge-p" style="border-color:#16a34a; color:#16a34a;">VEG</span>` :
                            (p.diet === 'SEAFOOD' ? `<span class="badge-p" style="border-color:#2563eb; color:#2563eb;">SEAFOOD</span>` :
@@ -2808,6 +2827,7 @@
                            `<span class="badge-p" style="border-color:#dc2626; color:#dc2626;">NON-VEG</span>`)));
 
         const badgeHtml = p.badge ? `<span class="badge-p" style="border-color:var(--gold); color:var(--gold); margin-left: 5px;">${p.badge}</span>` : '';
+        const hiddenBadge = isHidden ? `<span class="badge-p" style="border-color:var(--danger); color:var(--danger); margin-left: 5px; font-weight: bold; background: rgba(239, 68, 68, 0.15);">OUT OF STOCK (HIDDEN)</span>` : '';
 
         card.innerHTML = `
           <div>
@@ -2815,6 +2835,7 @@
             <div style="margin-bottom:10px;">
               ${dietBadge}
               ${badgeHtml}
+              ${hiddenBadge}
               <span class="badge-p" style="margin-left: 5px;">${p.category}</span>
             </div>
             <div class="item-desc">${p.desc || 'No description provided.'}</div>
@@ -2887,6 +2908,7 @@
       document.getElementById('product-img-url').value = '';
       document.getElementById('product-desc').value = '';
       document.getElementById('product-img-file').value = '';
+      document.getElementById('product-hidden').checked = false;
       resetMultiPrice();
 
       // Populate category select list with QR categories
@@ -2929,6 +2951,7 @@
       document.getElementById('product-img-url').value = p.image || '';
       document.getElementById('product-desc').value = p.desc || '';
       document.getElementById('product-img-file').value = '';
+      document.getElementById('product-hidden').checked = p.hidden === 1 || p.hidden === true;
 
       // Auto-detect multi-pricing
       if (p.price && p.price.includes('/')) {

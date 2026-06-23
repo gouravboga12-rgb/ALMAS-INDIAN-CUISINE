@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALMAS Indian Cuisine - Print Menu QR Code</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Styling variables */
+    :root {
+      --primary: #CC5500; /* Deep orange */
+      --secondary: #d4af37; /* Gold */
+      --dark: #121212; /* Rich dark charcoal */
+      --cream: #FFF9F0; /* Soft cream background */
+      --light-gold: #fcf6e8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #333;
+      color: var(--dark);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    /* Screen UI Controls (Hidden on print) */
+    .controls {
+      background: white;
+      padding: 20px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+      color: #333;
+    }
+
+    .controls h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .controls p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .btn-print {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+      box-shadow: 0 4px 10px rgba(204, 85, 0, 0.3);
+    }
+
+    .btn-print:hover {
+      background-color: #ab4400;
+    }
+
+    .layout-select {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .btn-tab {
+      background: #eee;
+      border: 1px solid #ddd;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .btn-tab.active {
+      background: var(--dark);
+      color: white;
+      border-color: var(--dark);
+    }
+
+    /* Flyer Page Layout (Letter size) */
+    .print-page {
+      background-color: var(--cream);
+      width: 8.5in;
+      height: 11in;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      padding: 0.5in;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      border: none;
+    }
+
+    /* Beautiful vintage-modern border */
+    .border-container {
+      position: absolute;
+      top: 0.25in;
+      bottom: 0.25in;
+      left: 0.25in;
+      right: 0.25in;
+      border: 1px solid var(--secondary);
+      pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .border-inner {
+      position: absolute;
+      top: 6px;
+      bottom: 6px;
+      left: 6px;
+      right: 6px;
+      border: 2px solid var(--primary);
+    }
+
+    /* Design Content */
+    .header {
+      text-align: center;
+      z-index: 10;
+      margin-top: 20px;
+    }
+
+    .logo {
+      height: 1.2in;
+      object-contain: contain;
+      margin-bottom: 15px;
+    }
+
+    .title {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--dark);
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .divider {
+      width: 80px;
+      height: 2px;
+      background-color: var(--secondary);
+      margin: 15px auto;
+    }
+
+    .main-content {
+      text-align: center;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
+    }
+
+    .cta-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-style: italic;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 15px;
+      max-width: 5.5in;
+      line-height: 1.2;
+    }
+
+    .qr-container {
+      background: white;
+      padding: 15px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      display: inline-block;
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    .qr-image {
+      width: 2.4in;
+      height: 2.4in;
+      display: block;
+    }
+
+    .scan-instruction {
+      font-size: 14px;
+      color: var(--dark);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      max-width: 4.5in;
+      line-height: 1.6;
+    }
+
+    .scan-subtext {
+      font-size: 11px;
+      color: #666;
+      margin-top: 6px;
+      font-weight: 400;
+    }
+
+    .footer {
+      text-align: center;
+      z-index: 10;
+      margin-bottom: 15px;
+    }
+
+    .address {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--dark);
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .contact-info {
+      font-size: 12px;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* Foldable Table Tent Layout */
+    .table-tent {
+      display: none; /* Controlled by JS tab */
+      background-color: white;
+      width: 11in;
+      height: 8.5in;
+      padding: 0.4in;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      position: relative;
+      justify-content: space-between;
+    }
+
+    /* Table tent fold indicators */
+    .fold-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      border-left: 1px dashed #ccc;
+      transform: translateX(-50%);
+    }
+
+    .fold-label {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px;
+      color: #999;
+      background: white;
+      padding: 2px 8px;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      text-transform: uppercase;
+    }
+
+    /* Double sided design panels */
+    .tent-panel {
+      width: 4.6in;
+      height: 7.2in;
+      background-color: var(--cream);
+      border: 1px solid var(--secondary);
+      position: relative;
+      padding: 0.3in;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tent-panel .border-inner {
+      top: 4px;
+      bottom: 4px;
+      left: 4px;
+      right: 4px;
+      border: 1px solid var(--primary);
+    }
+
+    .tent-panel .title {
+      font-size: 28px;
+    }
+
+    .tent-panel .logo {
+      height: 0.8in;
+    }
+
+    .tent-panel .cta-text {
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+
+    .tent-panel .qr-container {
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .tent-panel .qr-image {
+      width: 1.8in;
+      height: 1.8in;
+    }
+
+    .tent-panel .scan-instruction {
+      font-size: 11px;
+    }
+
+    .tent-panel .address {
+      font-size: 9px;
+      letter-spacing: 1px;
+    }
+
+    .tent-panel .contact-info {
+      font-size: 10px;
+    }
+
+    /* Right panel (rotated for standard fold if printing double sided, but normally two matching panels work perfectly when folded) */
+    .panel-left {
+      /* Can rotate if needed: transform: rotate(180deg); */
+    }
+
+    .panel-right {
+      /* Keep both upright so they print side by side and fold over a triangular prism card! */
+    }
+
+    /* Print styles */
+    @media print {
+      @page {
+        size: letter;
+        margin: 0;
+      }
+      html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: none;
+      }
+      body {
+        display: block;
+      }
+      .controls {
+        display: none !important;
+      }
+      .print-page {
+        width: 8.5in;
+        height: 11in;
+        box-shadow: none !important;
+        margin: 0 !important;
+        page-break-after: always;
+        border: none !important;
+        box-sizing: border-box;
+      }
+      .table-tent {
+        width: 11in;
+        height: 8.5in;
+        box-shadow: none !important;
+        margin: 0 !important;
+        page-break-after: always;
+        display: flex !important;
+        box-sizing: border-box;
+      }
+      
+      /* Hide the inactive design depending on selection */
+      body.show-flyer .table-tent {
+        display: none !important;
+      }
+      body.show-tent .print-page {
+        display: none !important;
+      }
+      body.show-tent .table-tent {
+        display: flex !important;
+      }
+    }
+  </style>
+</head>
+<body class="show-flyer">
+
+  <!-- UI Controls (Visible on screen, hidden on print) -->
+  <div class="controls">
+    <h1>ALMAS Print QR flyer generator</h1>
+    <p>We have designed two printable templates matching your branding. Choose a layout below, then click <strong>"Print Flyer"</strong>. In the print dialog, set <strong>Margins: None</strong> and check <strong>Background Graphics</strong> for the best quality.</p>
+    
+    <div class="layout-select">
+      <button class="btn-tab active" onclick="setLayout('flyer')">Full Page Poster (8.5" x 11")</button>
+      <button class="btn-tab" onclick="setLayout('tent')">Table Tents (Foldable Cards)</button>
+    </div>
+
+    <button class="btn-print" onclick="window.print()">Print / Save as PDF</button>
+  </div>
+
+  <!-- LAYOUT 1: Full Page Poster (8.5" x 11" Letter) -->
+  <div class="print-page">
+    <div class="border-container">
+      <div class="border-inner"></div>
+    </div>
+    
+    <div class="header">
+      <img src="logo.png" alt="ALMAS Logo" class="logo">
+      <h2 class="title">ALMAS</h2>
+      <p class="subtitle">Indian Cuisine</p>
+      <div class="divider"></div>
+    </div>
+    
+    <div class="main-content">
+      <h3 class="cta-text">Scan the QR code below to view our menu</h3>
+      
+      <div class="qr-container">
+        <img src="menu-qr.png" alt="ALMAS Menu QR Code" class="qr-image">
+      </div>
+      
+      <p class="scan-instruction">
+        Open your smartphone camera or Google Lens to scan
+      </p>
+      <p class="scan-subtext">Direct access to authentic Biryanis, Mandi, Lebanese Grills, and desserts.</p>
+    </div>
+    
+    <div class="footer">
+      <p class="address">209 Ellesmere Rd, Unit 6, Scarborough, ON</p>
+      <p class="contact-info">416-385-7979 &bull; almasindiancuisine.ca</p>
+    </div>
+  </div>
+
+  <!-- LAYOUT 2: Foldable Table Tent (11" x 8.5" landscape) -->
+  <div class="table-tent">
+    <div class="fold-line"></div>
+    <div class="fold-label">Fold Line</div>
+
+    <!-- Side 1 (Panel Left) -->
+    <div class="tent-panel panel-left">
+      <div class="border-inner"></div>
+      
+      <div class="header" style="margin-top: 10px;">
+        <img src="logo.png" alt="ALMAS Logo" class="logo">
+        <h2 class="title">ALMAS</h2>
+        <p class="subtitle" style="font-size: 10px; letter-spacing: 2px;">Indian Cuisine</p>
+        <div class="divider" style="margin: 8px auto; height: 1px;"></div>
+      </div>
+      
+      <div class="main-content">
+        <h3 class="cta-text">Scan QR to View Menu</h3>
+        <div class="qr-container">
+          <img src="menu-qr.png" alt="ALMAS Menu QR Code" class="qr-image">
+        </div>
+        <p class="scan-instruction" style="font-size: 10px;">Open your camera or Google Lens to scan</p>
+      </div>
+      
+      <div class="footer" style="margin-bottom: 10px;">
+        <p class="address">209 Ellesmere Rd, Unit 6, Scarborough</p>
+        <p class="contact-info" style="font-size: 9px;">almasindiancuisine.ca</p>
+      </div>
+    </div>
+
+    <!-- Side 2 (Panel Right) -->
+    <div class="tent-panel panel-right">
+      <div class="border-inner"></div>
+      
+      <div class="header" style="margin-top: 10px;">
+        <img src="logo.png" alt="ALMAS Logo" class="logo">
+        <h2 class="title">ALMAS</h2>
+        <p class="subtitle" style="font-size: 10px; letter-spacing: 2px;">Indian Cuisine</p>
+        <div class="divider" style="margin: 8px auto; height: 1px;"></div>
+      </div>
+      
+      <div class="main-content">
+        <h3 class="cta-text">Scan QR to View Menu</h3>
+        <div class="qr-container">
+          <img src="menu-qr.png" alt="ALMAS Menu QR Code" class="qr-image">
+        </div>
+        <p class="scan-instruction" style="font-size: 10px;">Open your camera or Google Lens to scan</p>
+      </div>
+      
+      <div class="footer" style="margin-bottom: 10px;">
+        <p class="address">209 Ellesmere Rd, Unit 6, Scarborough</p>
+        <p class="contact-info" style="font-size: 9px;">almasindiancuisine.ca</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function setLayout(layout) {
+      // Toggle body class for print queries
+      if (layout === 'flyer') {
+        document.body.className = 'show-flyer';
+        document.querySelector('.print-page').style.display = 'flex';
+        document.querySelector('.table-tent').style.display = 'none';
+        
+        document.querySelectorAll('.btn-tab')[0].classList.add('active');
+        document.querySelectorAll('.btn-tab')[1].classList.remove('active');
+      } else {
+        document.body.className = 'show-tent';
+        document.querySelector('.print-page').style.display = 'none';
+        document.querySelector('.table-tent').style.display = 'flex';
+        
+        document.querySelectorAll('.btn-tab')[0].classList.remove('active');
+        document.querySelectorAll('.btn-tab')[1].classList.add('active');
+      }
+    }
+    
+    // Set initial display
+    setLayout('flyer');
+  </script>
+</body>
+</html>

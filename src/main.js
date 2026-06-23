@@ -478,6 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   loadGlobalSettings();
+  loadDynamicSignatures();
 
   // ── Navbar live auth update ──────────────────────────────────────────────────
   // Re-render both desktop & mobile auth slots whenever auth state changes.
@@ -612,4 +613,71 @@ function showWarningToast(message) {
   toast.timeoutId = setTimeout(() => {
     toast.classList.remove('show');
   }, 5000);
+}
+
+async function loadDynamicSignatures() {
+  const container = document.getElementById('dynamic-signatures-container');
+  if (!container) return;
+
+  try {
+    const res = await fetch('/api/menu?_t=' + Date.now());
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data || !data.products) return;
+
+    const signatureIds = [
+      'grill-chicken',
+      'pathar-ka-gosht',
+      'coriander-chicken',
+      'tandoor-full-fish',
+      'crab-stuffed-shrimp',
+      'irani-chai-bun-maska'
+    ];
+
+    const signatureInfo = {
+      'grill-chicken': { tagline: 'Flame-Grilled Perfection', fallbackImg: '/grill_chicken_whole.png' },
+      'pathar-ka-gosht': { tagline: 'Stone-Grilled Delicacy', fallbackImg: '/signature_pathar_la_gosh.png' },
+      'coriander-chicken': { tagline: 'Aromatic Herb Infusion', fallbackImg: '/signature_coriander_chicken.png' },
+      'tandoor-full-fish': { tagline: 'Ocean\'s Bounty', fallbackImg: '/signature_tandoori_fish.jpg' },
+      'crab-stuffed-shrimp': { tagline: 'Seafood Symphony', fallbackImg: '/crab_stuffed_shrimp_v2.png' },
+      'irani-chai-bun-maska': { tagline: 'The Classic Pair', fallbackImg: '/signature_irani_chai.png' }
+    };
+
+    const matchedProducts = [];
+    signatureIds.forEach(id => {
+      const prod = data.products.find(p => p.id === id);
+      if (prod) {
+        matchedProducts.push(prod);
+      }
+    });
+
+    if (matchedProducts.length > 0) {
+      container.innerHTML = matchedProducts.map(p => {
+        const info = signatureInfo[p.id] || { tagline: p.category, fallbackImg: p.image };
+        const img = p.image || info.fallbackImg;
+        const priceDisplay = p.price || '$15.99';
+        return `
+          <a href="/product-detail.html?id=${p.id}" class="group block cursor-pointer" data-aos="fade-up">
+            <div class="relative overflow-hidden rounded-2xl mb-3 md:mb-8 aspect-[4/5]">
+              <img src="${img}"
+                alt="${p.name}"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+              <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500"></div>
+            </div>
+            <div class="text-center">
+              <h3 class="text-sm md:text-2xl mb-1 md:mb-2 group-hover:text-primary transition-colors">${p.name}</h3>
+              <p class="text-text-secondary font-light text-[10px] md:text-sm tracking-widest uppercase mb-2 md:mb-4">${info.tagline}</p>
+              <span class="text-gold font-bold text-sm md:text-lg">${priceDisplay}</span>
+            </div>
+          </a>
+        `;
+      }).join('');
+      
+      if (typeof AOS !== 'undefined' && AOS.refresh) {
+        AOS.refresh();
+      }
+    }
+  } catch (err) {
+    console.error("Error loading dynamic signature dishes:", err);
+  }
 }

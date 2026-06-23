@@ -39,3 +39,13 @@ uploads/
 image copy *.png
 Screenshot *.png
 
+# Printable QR menu assets and templates
+public/menu-qr.png
+public/menu-qr.svg
+public/menu-qr-flyer.pdf
+public/print-menu-qr.html
+
+# Printable QR website assets
+public/website-qr.png
+public/website-qr.svg
+public/website-qr-flyer.pdf

@@ -312,7 +312,8 @@ async function initMySQL() {
         badge VARCHAR(255) NOT NULL,
         dietColor VARCHAR(255) NOT NULL,
         \`desc\` TEXT NOT NULL,
-        spiceDefault VARCHAR(255) NOT NULL
+        spiceDefault VARCHAR(255) NOT NULL,
+        hidden TINYINT(1) NOT NULL DEFAULT 0
       )
     `);
 
@@ -338,7 +339,8 @@ async function initMySQL() {
         badge VARCHAR(255) NOT NULL,
         dietColor VARCHAR(255) NOT NULL,
         \`desc\` TEXT NOT NULL,
-        spiceDefault VARCHAR(255) NOT NULL
+        spiceDefault VARCHAR(255) NOT NULL,
+        hidden TINYINT(1) NOT NULL DEFAULT 0
       )
     `);
 
@@ -460,6 +462,12 @@ async function initMySQL() {
     } catch (e) { /* already exists */ }
     try {
       await conn.query("ALTER TABLE orders ADD COLUMN dismissed_notification TINYINT(1) NOT NULL DEFAULT 0");
+    } catch (e) { /* already exists */ }
+    try {
+      await conn.query("ALTER TABLE products ADD COLUMN hidden TINYINT(1) NOT NULL DEFAULT 0");
+    } catch (e) { /* already exists */ }
+    try {
+      await conn.query("ALTER TABLE qr_products ADD COLUMN hidden TINYINT(1) NOT NULL DEFAULT 0");
     } catch (e) { /* already exists */ }
 
     conn.release();
@@ -690,12 +698,12 @@ export async function getMenu() {
 export async function addProduct(p) {
   if (pool) {
     await pool.query(
-      "INSERT INTO products (id, name, price, image, category, diet, badge, dietColor, \`desc\`, spiceDefault) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [p.id, p.name, p.price, p.image, p.category, p.diet, p.badge || '', p.dietColor || '', p.desc || '', p.spiceDefault || 'Mild']
+      "INSERT INTO products (id, name, price, image, category, diet, badge, dietColor, \`desc\`, spiceDefault, hidden) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [p.id, p.name, p.price, p.image, p.category, p.diet, p.badge || '', p.dietColor || '', p.desc || '', p.spiceDefault || 'Mild', p.hidden || 0]
     );
   } else {
     const db = readJSONDB();
-    db.products.push(p);
+    db.products.push({ ...p, hidden: p.hidden || 0 });
     writeJSONDB(db);
   }
   return p;
@@ -704,14 +712,14 @@ export async function addProduct(p) {
 export async function updateProduct(id, p) {
   if (pool) {
     await pool.query(
-      "UPDATE products SET name=?, price=?, image=?, category=?, diet=?, badge=?, dietColor=?, \`desc\`=?, spiceDefault=? WHERE id=?",
-      [p.name, p.price, p.image, p.category, p.diet, p.badge || '', p.dietColor || '', p.desc || '', p.spiceDefault || 'Mild', id]
+      "UPDATE products SET name=?, price=?, image=?, category=?, diet=?, badge=?, dietColor=?, \`desc\`=?, spiceDefault=?, hidden=? WHERE id=?",
+      [p.name, p.price, p.image, p.category, p.diet, p.badge || '', p.dietColor || '', p.desc || '', p.spiceDefault || 'Mild', p.hidden || 0, id]
     );
   } else {
     const db = readJSONDB();
     const idx = db.products.findIndex(prod => prod.id === id);
     if (idx !== -1) {
-      db.products[idx] = { ...db.products[idx], ...p, id };
+      db.products[idx] = { ...db.products[idx], ...p, id, hidden: p.hidden || 0 };
       writeJSONDB(db);
     }
   }
@@ -806,12 +814,12 @@ export async function getQRMenu() {
 export async function addQRProduct(p) {
   if (pool) {
     await pool.query(
-      "INSERT INTO qr_products (id, name, price, image, category, diet, badge, dietColor, \`desc\`, spiceDefault) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [p.id, p.name, p.price, p.image, p.category, p.diet, p.badge || '', p.dietColor || '', p.desc || '', p.spiceDefault || 'Mild']
+      "INSERT INTO qr_products (id, name, price, image, category, diet, badge, dietColor, \`desc\`, spiceDefault, hidden) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [p.id, p.name, p.price, p.image, p.category, p.diet, p.badge || '', p.dietColor || '', p.desc || '', p.spiceDefault || 'Mild', p.hidden || 0]
     );
   } else {
     const db = readJSONDB();
-    db.qr_products.push(p);
+    db.qr_products.push({ ...p, hidden: p.hidden || 0 });
     writeJSONDB(db);
   }
   return p;
@@ -820,14 +828,14 @@ export async function addQRProduct(p) {
 export async function updateQRProduct(id, p) {
   if (pool) {
     await pool.query(
-      "UPDATE qr_products SET name=?, price=?, image=?, category=?, diet=?, badge=?, dietColor=?, \`desc\`=?, spiceDefault=? WHERE id=?",
-      [p.name, p.price, p.image, p.category, p.diet, p.badge || '', p.dietColor || '', p.desc || '', p.spiceDefault || 'Mild', id]
+      "UPDATE qr_products SET name=?, price=?, image=?, category=?, diet=?, badge=?, dietColor=?, \`desc\`=?, spiceDefault=?, hidden=? WHERE id=?",
+      [p.name, p.price, p.image, p.category, p.diet, p.badge || '', p.dietColor || '', p.desc || '', p.spiceDefault || 'Mild', p.hidden || 0, id]
     );
   } else {
     const db = readJSONDB();
     const idx = db.qr_products.findIndex(prod => prod.id === id);
     if (idx !== -1) {
-      db.qr_products[idx] = { ...db.qr_products[idx], ...p, id };
+      db.qr_products[idx] = { ...db.qr_products[idx], ...p, id, hidden: p.hidden || 0 };
       writeJSONDB(db);
     }
   }

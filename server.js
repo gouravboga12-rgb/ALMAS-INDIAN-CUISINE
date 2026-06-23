@@ -839,6 +839,26 @@ app.get('/api/payment/config', (req, res) => {
 app.get('/api/menu', async (req, res) => {
   try {
     const menu = await getMenu();
+    
+    // Check if the request is from an admin (has valid Authorization token)
+    const authHeader = req.headers['authorization'];
+    let isAdmin = false;
+    if (authHeader) {
+      const token = authHeader.split(' ')[1];
+      if (token) {
+        try {
+          jwt.verify(token, JWT_SECRET);
+          isAdmin = true;
+        } catch (err) {
+          // Token invalid, treat as guest
+        }
+      }
+    }
+
+    if (!isAdmin && menu.products) {
+      menu.products = menu.products.filter(p => p.hidden !== 1 && p.hidden !== true);
+    }
+    
     res.json(menu);
   } catch (err) {
     console.error("GET /api/menu error:", err);
@@ -942,6 +962,26 @@ app.delete('/api/menu/categories/:id', authenticateAdmin, async (req, res) => {
 app.get('/api/qr-menu', async (req, res) => {
   try {
     const menu = await getQRMenu();
+    
+    // Check if the request is from an admin (has valid Authorization token)
+    const authHeader = req.headers['authorization'];
+    let isAdmin = false;
+    if (authHeader) {
+      const token = authHeader.split(' ')[1];
+      if (token) {
+        try {
+          jwt.verify(token, JWT_SECRET);
+          isAdmin = true;
+        } catch (err) {
+          // Token invalid, treat as guest
+        }
+      }
+    }
+
+    if (!isAdmin && menu.products) {
+      menu.products = menu.products.filter(p => p.hidden !== 1 && p.hidden !== true);
+    }
+    
     res.json(menu);
   } catch (err) {
     console.error("GET /api/qr-menu error:", err);
