@@ -1640,21 +1640,19 @@
         return 1;
       }
 
-      // 2. Chicken
-      if (diet === 'chicken' || 
-          name.includes('chicken') || 
-          badge.includes('chicken') || 
-          desc.includes('chicken') || 
-          name.includes('alfaham') || 
-          name.includes('tangdi') || 
-          name.includes('tawook') || 
-          name.includes('wings') || 
-          name.includes('murgh') || 
-          name.includes('kodi')) {
-        return 2;
+      // 4. Seafood (Fish, Shrimp, Crab, Prawn) - Checked early for robustness
+      if (diet === 'seafood' || 
+          badge.includes('seafood') || 
+          name.includes('fish') || 
+          name.includes('shrimp') || 
+          name.includes('crab') || 
+          name.includes('prawn') || 
+          name.includes('chepa') || 
+          name.includes('royyala')) {
+        return 4;
       }
 
-      // 3. Mutton / Lamb
+      // 3. Mutton / Lamb - Checked early for robustness
       if (diet === 'mutton' || 
           name.includes('mutton') || 
           badge.includes('mutton') || 
@@ -1670,16 +1668,18 @@
         return 3;
       }
 
-      // 4. Seafood (Fish, Shrimp, Crab, Prawn)
-      if (diet === 'seafood' || 
-          badge.includes('seafood') || 
-          name.includes('fish') || 
-          name.includes('shrimp') || 
-          name.includes('crab') || 
-          name.includes('prawn') || 
-          name.includes('chepa') || 
-          name.includes('royyala')) {
-        return 4;
+      // 2. Chicken
+      if (diet === 'chicken' || 
+          name.includes('chicken') || 
+          badge.includes('chicken') || 
+          desc.includes('chicken') || 
+          name.includes('alfaham') || 
+          name.includes('tangdi') || 
+          name.includes('tawook') || 
+          name.includes('wings') || 
+          name.includes('murgh') || 
+          name.includes('kodi')) {
+        return 2;
       }
 
       // 5. Other Non-Veg

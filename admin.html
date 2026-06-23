@@ -2611,7 +2611,34 @@
       formSelect.value = p.category;
 
       let dietVal = p.diet || 'CHICKEN';
-      if (dietVal === 'NON-VEG') dietVal = 'CHICKEN';
+      if (dietVal === 'NON-VEG') {
+        const nameLower = (p.name || '').toLowerCase();
+        const badgeLower = (p.badge || '').toLowerCase();
+        const color = p.dietColor || '';
+        if (color === '#2563eb' || 
+            badgeLower.includes('seafood') || 
+            nameLower.includes('fish') || 
+            nameLower.includes('shrimp') || 
+            nameLower.includes('crab') || 
+            nameLower.includes('prawn') || 
+            nameLower.includes('chepa') || 
+            nameLower.includes('royyala')) {
+          dietVal = 'SEAFOOD';
+        } else if (color === '#b91c1c' || 
+                   badgeLower.includes('mutton') || 
+                   badgeLower.includes('lamb') || 
+                   nameLower.includes('mutton') || 
+                   nameLower.includes('lamb') || 
+                   nameLower.includes('marag') || 
+                   nameLower.includes('paya') || 
+                   nameLower.includes('gosht') || 
+                   nameLower.includes('kheema') || 
+                   nameLower.includes('shank')) {
+          dietVal = 'MUTTON';
+        } else {
+          dietVal = 'CHICKEN';
+        }
+      }
       document.getElementById('product-diet').value = dietVal;
       document.getElementById('product-badge').value = p.badge || '';
       document.getElementById('product-img-url').value = p.image || '';
@@ -2945,7 +2972,34 @@
       formSelect.value = p.category;
 
       let dietVal = p.diet || 'CHICKEN';
-      if (dietVal === 'NON-VEG') dietVal = 'CHICKEN';
+      if (dietVal === 'NON-VEG') {
+        const nameLower = (p.name || '').toLowerCase();
+        const badgeLower = (p.badge || '').toLowerCase();
+        const color = p.dietColor || '';
+        if (color === '#2563eb' || 
+            badgeLower.includes('seafood') || 
+            nameLower.includes('fish') || 
+            nameLower.includes('shrimp') || 
+            nameLower.includes('crab') || 
+            nameLower.includes('prawn') || 
+            nameLower.includes('chepa') || 
+            nameLower.includes('royyala')) {
+          dietVal = 'SEAFOOD';
+        } else if (color === '#b91c1c' || 
+                   badgeLower.includes('mutton') || 
+                   badgeLower.includes('lamb') || 
+                   nameLower.includes('mutton') || 
+                   nameLower.includes('lamb') || 
+                   nameLower.includes('marag') || 
+                   nameLower.includes('paya') || 
+                   nameLower.includes('gosht') || 
+                   nameLower.includes('kheema') || 
+                   nameLower.includes('shank')) {
+          dietVal = 'MUTTON';
+        } else {
+          dietVal = 'CHICKEN';
+        }
+      }
       document.getElementById('product-diet').value = dietVal;
       document.getElementById('product-badge').value = p.badge || '';
       document.getElementById('product-img-url').value = p.image || '';
