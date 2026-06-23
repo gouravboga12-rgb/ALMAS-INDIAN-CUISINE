@@ -388,6 +388,25 @@
       color: #FFF;
     }
 
+    .btn-action.toggle-hide {
+      background: rgba(255, 165, 0, 0.1);
+      color: #ffa500;
+      border: 1px solid rgba(255, 165, 0, 0.2);
+    }
+    .btn-action.toggle-hide:hover {
+      background: #ffa500;
+      color: #000;
+    }
+    .btn-action.toggle-show {
+      background: rgba(22, 163, 74, 0.1);
+      color: #16a34a;
+      border: 1px solid rgba(22, 163, 74, 0.2);
+    }
+    .btn-action.toggle-show:hover {
+      background: #16a34a;
+      color: #fff;
+    }
+
     /* Grid layout */
     .grid-container {
       display: grid;
@@ -2464,7 +2483,10 @@
           <div>
             <div class="item-meta">
               <span class="item-price">${p.price}</span>
-              <div class="action-btn-group">
+              <div class="action-btn-group" style="display: flex; gap: 6px;">
+                <button class="btn-action ${isHidden ? 'toggle-show' : 'toggle-hide'}" onclick="toggleProductVisibility('${p.id}')">
+                  ${isHidden ? 'Show' : 'Hide'}
+                </button>
                 <button class="btn-action edit" onclick="editProductClick('${p.id}')">Edit</button>
                 <button class="btn-action delete" onclick="deleteProduct('${p.id}')">✕</button>
               </div>
@@ -2750,6 +2772,27 @@
       }
     };
 
+    window.toggleProductVisibility = async function(id) {
+      const p = cachedMenu.products.find(item => item.id === id);
+      if (!p) return;
+      const updatedHidden = (p.hidden === 1 || p.hidden === true) ? 0 : 1;
+      
+      const payload = {
+        ...p,
+        hidden: updatedHidden
+      };
+      
+      const result = await apiFetch(`/api/menu/products/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(payload)
+      });
+      
+      if (result) {
+        showToast(`Item availability updated!`);
+        loadMenuCatalog();
+      }
+    };
+
     // =========================================================================
     // QR MENU PAGE MANAGEMENT
     // =========================================================================
@@ -2870,7 +2913,10 @@
           <div>
             <div class="item-meta">
               <span class="item-price">${p.price}</span>
-              <div class="action-btn-group">
+              <div class="action-btn-group" style="display: flex; gap: 6px;">
+                <button class="btn-action ${isHidden ? 'toggle-show' : 'toggle-hide'}" onclick="toggleQRProductVisibility('${p.id}')">
+                  ${isHidden ? 'Show' : 'Hide'}
+                </button>
                 <button class="btn-action edit" onclick="editQRProductClick('${p.id}')">Edit</button>
                 <button class="btn-action delete" onclick="deleteQRProduct('${p.id}')">✕</button>
               </div>
@@ -3023,6 +3069,27 @@
       const result = await apiFetch(`/api/qr-menu/products/${id}`, { method: 'DELETE' });
       if (result) {
         showToast('QR Menu item deleted.');
+        loadQRMenuCatalog();
+      }
+    };
+
+    window.toggleQRProductVisibility = async function(id) {
+      const p = cachedQRMenu.products.find(item => item.id === id);
+      if (!p) return;
+      const updatedHidden = (p.hidden === 1 || p.hidden === true) ? 0 : 1;
+      
+      const payload = {
+        ...p,
+        hidden: updatedHidden
+      };
+      
+      const result = await apiFetch(`/api/qr-menu/products/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(payload)
+      });
+      
+      if (result) {
+        showToast(`QR Item availability updated!`);
         loadQRMenuCatalog();
       }
     };
