@@ -1833,14 +1833,21 @@
         const defaultLabels = ['Single', 'Two People', 'Three People', 'Four People'];
         const tierRows = parts.map((part, idx) => {
           const priceMatch = part.match(/(\$[\d,.]+)/);
-          const priceVal = priceMatch ? priceMatch[1] : part;
+          let priceVal = priceMatch ? priceMatch[1] : part;
+          if (priceVal && !priceVal.startsWith('$')) {
+            priceVal = '$' + priceVal;
+          }
           let label = priceMatch ? part.replace(priceMatch[0], '').trim() : '';
           if (!label) label = defaultLabels[idx] || `Option ${idx + 1}`;
           return `<div class="mp-tier"><span class="mp-tier-label">${label}</span><span class="mp-tier-price">${priceVal}</span></div>`;
         }).join('');
         priceHtml = `<div class="menu-item-price--multi">${tierRows}</div>`;
       } else {
-        priceHtml = `<span class="menu-item-price">${rawPrice}</span>`;
+        let displayPrice = rawPrice;
+        if (displayPrice && !displayPrice.startsWith('$')) {
+          displayPrice = '$' + displayPrice;
+        }
+        priceHtml = `<span class="menu-item-price">${displayPrice}</span>`;
       }
 
       return `
