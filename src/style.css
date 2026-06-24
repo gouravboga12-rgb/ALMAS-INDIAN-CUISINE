@@ -2140,6 +2140,10 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
    PRINT MEDIA STYLES
    ============================================= */
 @media print {
+  @page {
+    margin: 0;
+  }
+
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -2177,7 +2181,7 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
     background-image: none !important;
     color: #000000 !important;
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 1.6cm !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
