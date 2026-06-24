@@ -333,9 +333,9 @@
       }
     }
   </style>
-  <script type="module" crossorigin src="/assets/menu-CI1JqBAu.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/main-u1InNo33.js">
-  <link rel="stylesheet" crossorigin href="/assets/main-Cz8m41Pp.css">
+  <script type="module" crossorigin src="/assets/menu-DMxfyuc3.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/main-B5oc_6Iz.js">
+  <link rel="stylesheet" crossorigin href="/assets/main-Dnel9iDj.css">
 </head>
 <body class="menu-page">
 
@@ -435,9 +435,17 @@
 
   <main class="max-w-5xl mx-auto px-6 md:px-12 lg:px-16 pb-40">
 
-    <!-- Search Bar -->
-    <div class="pt-10 pb-2">
-      <div class="menu-search-wrap">
+    <!-- Print Only Header -->
+    <div class="hidden print:block text-center border-b pb-6 mb-8" style="border-color: rgba(0,0,0,0.15);">
+      <img src="/logo.png" alt="ALMAS INDIAN CUISINE" class="mx-auto h-20 w-auto mb-3">
+      <h1 class="text-3xl font-bold text-black font-heading tracking-wide" style="font-family: 'Playfair Display', serif;">ALMAS INDIAN CUISINE</h1>
+      <p class="text-xs text-gray-600 mt-1" style="font-family: 'Inter', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;">Authentic Indian & Middle Eastern Flavors</p>
+      <p class="text-xs text-gray-500 mt-1" style="font-family: 'Inter', sans-serif;">209 Ellesmere Rd, Unit 6, Scarborough, ON | Tel: +1 416-385-7979 | almasindiancuisine.ca</p>
+    </div>
+
+    <!-- Search & Print Options -->
+    <div class="pt-10 pb-2 flex flex-col md:flex-row items-center justify-between gap-4 max-w-[680px] mx-auto mb-10 screen-only no-print">
+      <div class="menu-search-wrap flex-grow w-full md:w-auto relative" style="margin: 0 !important; width: 100% !important; max-width: 100% !important;">
         <svg class="menu-search-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"></path>
         </svg>
@@ -451,8 +459,14 @@
         >
         <button id="menu-search-clear" class="menu-search-clear" title="Clear search">✕</button>
       </div>
-      <div id="menu-search-result-count" class="menu-search-result-count"></div>
+      <button onclick="window.print()" class="w-full md:w-auto flex items-center justify-center gap-2 bg-[#CC5500] hover:bg-[#A34300] text-white px-6 py-3.5 rounded-full font-semibold shadow-md transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer whitespace-nowrap" style="font-family: 'Inter', sans-serif; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase;">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+        </svg>
+        <span>Download PDF</span>
+      </button>
     </div>
+    <div id="menu-search-result-count" class="menu-search-result-count"></div>
 
     <!-- No Results State -->
     <div id="menu-no-results" class="menu-no-results">

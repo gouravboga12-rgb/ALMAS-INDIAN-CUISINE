@@ -2140,10 +2140,16 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
    PRINT MEDIA STYLES
    ============================================= */
 @media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   /* Hide interactive web elements */
   nav,
   footer,
   .whatsapp-float,
+  .announcement-bar,
   #splash-screen,
   #menu-overlay,
   #mobile-menu,
@@ -2170,8 +2176,8 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   }
 
   /* Hide other wizard panels on the checkout page so only the active panel/invoice prints */
-  main > *:not(#panel-invoice),
-  .ecom-tab-panel:not(#panel-invoice) {
+  body:has(#panel-invoice) main > *:not(#panel-invoice),
+  body:has(#panel-invoice) .ecom-tab-panel:not(#panel-invoice) {
     display: none !important;
   }
 
@@ -2209,6 +2215,194 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   .invoice-row.total {
     border-top-color: #000000 !important;
     color: #CC5500 !important;
+  }
+
+  /* =============================================
+     MENU PAGE PRINT & PDF STYLES
+     ============================================= */
+  body.menu-page {
+    background-color: #FFF9F0 !important;
+    background-image: 
+      radial-gradient(circle at center, transparent 0%, rgba(26, 10, 0, 0.08) 100%),
+      url("https://www.transparenttextures.com/patterns/natural-paper.png") !important;
+    color: #1a1a1a !important;
+  }
+
+  /* Hide screen-only and interactive elements */
+  body.menu-page #menu-category-bar,
+  body.menu-page .pt-10.pb-2,
+  body.menu-page .menu-search-wrap,
+  body.menu-page .whatsapp-float,
+  body.menu-page footer,
+  body.menu-page #mandi-lightbox,
+  body.menu-page .no-print,
+  body.menu-page section.h-\[60vh\] {
+    display: none !important;
+  }
+
+  /* Reset main spacing for print pages */
+  body.menu-page main {
+    max-width: 1024px !important;
+    padding: 2rem 1.5rem !important;
+    margin: 0 auto !important;
+  }
+
+  /* Scale and style section titles */
+  body.menu-page .section-title {
+    font-family: 'Playfair Display', serif !important;
+    font-size: 2.2rem !important;
+    margin-top: 3.5rem !important;
+    margin-bottom: 2.5rem !important;
+    color: #1a1a1a !important;
+    text-align: center !important;
+    page-break-after: avoid;
+    page-break-before: auto;
+  }
+
+  body.menu-page .section-title::after {
+    background-color: #CC5500 !important;
+    height: 2px !important;
+    bottom: -15px !important;
+    width: 80px !important;
+  }
+
+  body.menu-page .category-title {
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.2em !important;
+    color: #CC5500 !important;
+    margin-top: 2rem !important;
+    margin-bottom: 1.5rem !important;
+    border-bottom: 1px solid rgba(204, 85, 0, 0.1) !important;
+    padding-bottom: 0.5rem !important;
+    display: block !important;
+    width: fit-content !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Format dynamic menu grid into a neat 2-column paper layout matching screen */
+  body.menu-page #dynamic-menu-sections .grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1.5rem 2.5rem !important;
+    margin-bottom: 2.5rem !important;
+  }
+
+  /* Allow category sections to break naturally across pages, preventing large blank spaces */
+  body.menu-page section {
+    page-break-inside: auto !important;
+  }
+
+  body.menu-page #dynamic-menu-sections section:not(:first-of-type):not(#breads) {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+
+  /* Prevent page-breaks splitting a single dish row in half, and force inline layout */
+  body.menu-page .menu-item-row {
+    page-break-inside: avoid !important;
+    border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+    padding-bottom: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 1rem 1.5rem !important;
+  }
+
+  body.menu-page .menu-item-info {
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+
+  body.menu-page .menu-item-name {
+    font-family: 'Playfair Display', serif !important;
+    font-weight: 700 !important;
+    font-size: 1.25rem !important;
+    color: #1a1a1a !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  body.menu-page .menu-item-description {
+    font-family: 'Crimson Text', serif !important;
+    font-style: italic !important;
+    color: #4A4A4A !important;
+    font-size: 0.95rem !important;
+    margin-top: 0.4rem !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Retain exact background, borders, and styles for the price bubbles */
+  body.menu-page .menu-item-price {
+    font-family: 'Playfair Display', serif !important;
+    font-weight: 700 !important;
+    color: #CC5500 !important;
+    font-size: 1.1rem !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    background: rgba(204, 85, 0, 0.10) !important;
+    border: 1px solid rgba(204, 85, 0, 0.22) !important;
+    border-radius: 8px !important;
+    padding: 5px 14px !important;
+    letter-spacing: 0.01em !important;
+    display: inline-block !important;
+    margin-top: 4px !important;
+    line-height: 1.5 !important;
+    text-align: center !important;
+    align-self: flex-start !important;
+  }
+
+  body.menu-page .menu-item-price--multi {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    align-items: flex-end !important;
+    flex-shrink: 0 !important;
+    min-width: 140px !important;
+    margin-top: 4px !important;
+    background: rgba(204, 85, 0, 0.07) !important;
+    border: 1px solid rgba(204, 85, 0, 0.18) !important;
+    border-radius: 10px !important;
+    padding: 8px 12px !important;
+    align-self: flex-start !important;
+  }
+
+  body.menu-page .mp-tier {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  body.menu-page .mp-tier-label {
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    color: #888 !important;
+    font-size: 0.65rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    white-space: nowrap !important;
+  }
+
+  body.menu-page .mp-tier-price {
+    font-family: 'Playfair Display', serif !important;
+    font-weight: 700 !important;
+    color: #CC5500 !important;
+    font-size: 0.95rem !important;
+  }
+
+  body.menu-page .mp-tier + .mp-tier {
+    border-top: 1px solid rgba(204, 85, 0, 0.12) !important;
+    padding-top: 4px !important;
   }
 }
 
