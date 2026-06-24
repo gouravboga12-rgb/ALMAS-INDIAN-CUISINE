@@ -49,3 +49,6 @@ public/print-menu-qr.html
 public/website-qr.png
 public/website-qr.svg
 public/website-qr-flyer.pdf
+
+# Locally generated PDFs
+*.pdf
