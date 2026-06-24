@@ -2154,6 +2154,13 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
   #menu-overlay,
   #mobile-menu,
   #mobile-search-bar,
+  #cart-drawer,
+  #cart-drawer-overlay,
+  #customization-modal,
+  #customization-modal-overlay,
+  #notification-toast,
+  #mobile-floating-cart,
+  #checkout-prompt-overlay,
   .checkout-steps,
   .ecom-tabs,
   button,
@@ -2283,11 +2290,11 @@ a.nav-cart-btn, a[href*="account"] svg, nav a svg.w-6 {
     break-after: avoid !important;
   }
 
-  /* Format dynamic menu grid into a neat 2-column paper layout matching screen */
+  /* Format dynamic menu grid into a neat 1-column paper layout matching screen */
   body.menu-page #dynamic-menu-sections .grid {
     display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 1.5rem 2.5rem !important;
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
     margin-bottom: 2.5rem !important;
   }
 
